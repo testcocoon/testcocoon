@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="682.5473"
+   height="544.9314"
+   viewBox="0 0 594 441"
+   id="svg2876"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="statistic_csv_fig.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.0">
+  <metadata
+     id="metadata2945">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     inkscape:window-height="960"
+     inkscape:window-width="1266"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     guidetolerance="10.0"
+     gridtolerance="10.0"
+     objecttolerance="10.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base"
+     showgrid="false"
+     inkscape:zoom="1"
+     inkscape:cx="371.25"
+     inkscape:cy="275.39999"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:current-layer="svg2876" />
+  <title
+     id="title2878">statistic_csv_fig.fig</title>
+  <desc
+     id="desc2880">Converted by fig2vect, see http://fig2vect.sourceforge.net</desc>
+  <defs
+     id="defs2882">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 275.39999 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="742.5 : 275.39999 : 1"
+       inkscape:persp3d-origin="371.25 : 183.6 : 1"
+       id="perspective2947" />
+    <style
+       type="text/css"
+       id="style2884">
+.cA {
+fill: none;
+stroke: #000000;
+stroke-width: 2.7;
+stroke-linecap: round;
+stroke-linejoin: round;
+}
+.cB {
+fill: #000000;
+stroke: #000000;
+stroke-width: 2.7;
+}
+.cC {
+font-family: &quot;Helvetica&quot;, sans-serif;
+font-style: normal;
+font-weight: normal;
+font-size: 14.4;
+text-anchor: start;
+fill: #000000;
+}
+</style>
+  </defs>
+<!-- line 182, layer 58 --><!-- line 159, layer 50 --><!-- line 162, layer 50 --><!-- line 168, layer 50 --><!-- line 175, layer 50 --><!-- line 179, layer 50 --><!-- line 185, layer 50 --><!-- line 188, layer 50 --><!-- line 191, layer 50 --><!-- line 193, layer 50 --><!-- line 196, layer 50 --><!-- line 164, layer 50 --><!-- line 165, layer 50 --><!-- line 170, layer 50 --><!-- line 171, layer 50 --><!-- line 177, layer 50 --><!-- line 198, layer 50 --><!-- line 199, layer 50 --><!-- line 200, layer 50 -->  <image
+     x="15.664848"
+     y="173.91074"
+     width="577.85883"
+     height="124.44852"
+     xlink:href="statistic_csv.png"
+     id="image2886" />
+  <g
+     id="g2888"
+     transform="matrix(1.0869487,0,0,1.0869487,-52.810434,-20.042484)">
+    <polyline
+       class="cA"
+       points="275.6,98.82 305.3,98.82 448.81,221.39"
+       id="polyline2890"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="442.89,211 450.52,222.85 437.63,217.16 442.82,216.27 442.89,211 "
+       id="polygon2892"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <rect
+     x="21.102085"
+     y="69.956879"
+     width="223.04187"
+     height="64.564751"
+     rx="6.8477769"
+     ry="6.8477769"
+     class="cA"
+     id="rect2894"
+     style="fill:#ececec;stroke:#000000;stroke-width:2.93476152;stroke-linecap:round;stroke-linejoin:round" />
+  <rect
+     x="255.03192"
+     y="309.41309"
+     width="149.67284"
+     height="76.303795"
+     rx="6.8477769"
+     ry="6.8477769"
+     class="cA"
+     id="rect2896"
+     style="fill:#ececec;stroke:#000000;stroke-width:2.93476152;stroke-linecap:round;stroke-linejoin:round" />
+  <rect
+     x="255.03192"
+     y="412.12973"
+     width="152.60759"
+     height="44.021423"
+     rx="6.8477769"
+     ry="6.8477769"
+     class="cA"
+     id="rect2898"
+     style="fill:#ececec;stroke:#000000;stroke-width:2.93476152;stroke-linecap:round;stroke-linejoin:round" />
+  <g
+     id="g2900"
+     transform="matrix(1.0869487,0,0,1.0869487,-30.183434,-18.301944)">
+    <polyline
+       class="cA"
+       points="400.1,328.5 446,328.5 492.63,276.95"
+       id="polyline2902"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="482.08,282.58 494.14,275.28 488.09,288.01 487.35,282.79 482.08,282.58 "
+       id="polygon2904"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <g
+     id="g2906"
+     transform="matrix(1.0869487,0,0,1.0869487,-30.183434,-18.301944)">
+    <polyline
+       class="cA"
+       points="402.8,406.8 489.2,406.8 543.2,278.21"
+       id="polyline2908"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="535.11,287.01 544.08,276.13 542.58,290.15 540.15,285.47 535.11,287.01 "
+       id="polygon2910"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <g
+     transform="matrix(1.0869487,0,0,1.0869487,-4.9456235,-19.172213)"
+     id="g2912">
+    <polyline
+       class="cA"
+       points="167.9,331.2 216.5,331.2 258.79,261.54"
+       id="polyline2914"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="249.49,269.05 259.96,259.62 256.41,273.26 254.7,268.27 249.49,269.05 "
+       id="polygon2916"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <rect
+     x="1.4673808"
+     y="320.28183"
+     width="173.15092"
+     height="44.021423"
+     rx="6.8477769"
+     ry="6.8477769"
+     class="cA"
+     id="rect2918"
+     style="fill:#ececec;stroke:#000000;stroke-width:2.93476152;stroke-linecap:round;stroke-linejoin:round" />
+  <g
+     id="g2920"
+     transform="matrix(1.0869487,0,0,1.0869487,-52.810434,-20.042484)">
+    <polyline
+       class="cA"
+       points="211.1,31.5 440.6,31.5 574.17,212.21"
+       id="polyline2922"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="570.74,200.76 575.5,214.02 564.22,205.57 569.48,205.88 570.74,200.76 "
+       id="polygon2924"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <rect
+     x="21.102085"
+     y="-15.151214"
+     width="155.54236"
+     height="67.499512"
+     rx="6.8477769"
+     ry="6.8477769"
+     class="cA"
+     id="rect2926"
+     style="fill:#ececec;stroke:#000000;stroke-width:2.93476152;stroke-linecap:round;stroke-linejoin:round" />
+  <text
+     x="26.971592"
+     y="122.78256"
+     class="cC"
+     id="text2928"
+     style="font-size:15.65206051px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Source and Executions</text>
+  <text
+     x="26.971592"
+     y="93.434967"
+     class="cC"
+     id="text2930"
+     style="font-size:15.65206051px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Coverage per</text>
+  <text
+     x="272.6405"
+     y="341.69547"
+     class="cC"
+     id="text2932"
+     style="font-size:15.65206051px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Coverage per</text>
+  <text
+     x="272.6405"
+     y="371.04309"
+     class="cC"
+     id="text2934"
+     style="font-size:15.65206051px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Source File</text>
+  <text
+     x="257.96667"
+     y="441.47736"
+     class="cC"
+     id="text2936"
+     style="font-size:15.65206051px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Global Coverage</text>
+  <text
+     x="13.206425"
+     y="349.62946"
+     class="cC"
+     id="text2938"
+     style="font-size:15.65206051px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Execution Status</text>
+  <text
+     x="32.841129"
+     y="11.261641"
+     class="cC"
+     id="text2940"
+     style="font-size:15.65206051px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Coverage per</text>
+  <text
+     x="32.841129"
+     y="40.609249"
+     class="cC"
+     id="text2942"
+     style="font-size:15.65206051px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Executions</text>
+</svg>

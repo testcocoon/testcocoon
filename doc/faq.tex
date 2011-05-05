@@ -1,0 +1,272 @@
+\partHTMLnonu{Frequently Asked Questions}\cutname{faq.html}
+
+\chapterHTMLnonu{Code Coverage Instrumentation}
+
+\sectionHTMLnonu{Does \TestCocoon\ support line coverage?}
+
+TestCocoon does not support line coverage because this
+kind of measurement and statistic is not accurate. 
+
+
+This metric  depends on how you format the code.
+For example, take the following function:
+\begin{lstlisting}
+int main()
+{
+  if (true) return 1;
+    foo();
+  return 0;
+}
+\end{lstlisting}
+
+Execute it and the line code coverage will produce:
+\begin{lstlisting}[escapechar=?]
+int main()
+{
+?\textcolor{green}{HIT}?   if (true) return 1;
+?\textcolor{red}{MIS}?   foo();
+?\textcolor{red}{MIS}?   return 0;
+}
+\end{lstlisting}
+Line Coverage: 33\%\\
+
+Reformat the code as follows:
+\begin{lstlisting}[escapechar=?]
+int main()
+{
+  if (true)
+    return 1;
+  foo();
+  return 0;
+}
+\end{lstlisting}
+
+
+Execute it and the line code coverage will produce:
+\begin{lstlisting}[escapechar=?]
+int main()
+{
+?\textcolor{green}{HIT}?   if (true)
+?\textcolor{green}{HIT}?     return 1;
+?\textcolor{red}{MIS}?   foo();
+?\textcolor{red}{MIS}?   return 0;
+}
+\end{lstlisting}
+Line Coverage: 50\%\\
+
+Reformat the code as follows:
+\begin{lstlisting}[escapechar=?]
+int main()
+{
+  if (true)
+    return 1;
+  foo(); return 0;
+}
+\end{lstlisting}
+
+
+Execute it and the line code coverage will produce:
+\begin{lstlisting}[escapechar=?]
+int main()
+{
+?\textcolor{green}{HIT}?   if (true)
+?\textcolor{green}{HIT}?     return 1;
+?\textcolor{red}{MIS}?   foo(); return 0;
+}
+\end{lstlisting}
+Line Coverage: 66\%\\
+
+Reformat the code as follows:
+\begin{lstlisting}[escapechar=?]
+int main()
+{
+  if (true) return 1; foo(); return 0;
+}
+\end{lstlisting}
+
+Execute it and the line code coverage will produce:
+\begin{lstlisting}[escapechar=?]
+int main()
+{
+?\textcolor{green}{HIT}?   if (true) return 1; foo(); return 0;
+}
+\end{lstlisting}
+Line Coverage: 100\%\\
+
+This small example shows that line coverage produces very different result
+depending on how the source code is formated.
+The decision coverage provided by \TestCocoon\ is independent of the coding style.
+
+
+\chapterHTMLnonu{Compiling}
+
+\sectionHTMLnonu{\label{always-rebuild}\VisualStudio\ rebuilds always my project even if it is not modified.}
+This problem occurs if a project is compiled with code coverage and precompiled headers support enabled.
+Simply deactivate the precompiled headers in the concerned build mode.
+
+\chapterHTMLnonu{Instrumentation}
+
+\sectionHTMLnonu{\label{exclude-source-coverage}How to exclude a source file from the code coverage analysis?}
+
+Excluding some source files from the code coverage analysis needs to be performed during the compilation. Two methods are possible:
+\begin{enumerate}
+\item Compile using \CoverageScanner\ with the command line option \CMDoption{exclude-file-regex}, \CMDoption{exclude-file-wildcard} and \CMDoption{exclude-path}.
+\item Use \CoverageScanner\ pragmas to deactivate the instrumentation, by adding the following lines after all \lstinline$#include$ commands.
+\begin{lstlisting}
+#ifdef __COVERAGESCANNER__
+#pragma CoverageScanner (cov-off)
+#endif
+\end{lstlisting}
+\NOTE{Adding this portion of code at the top of the source file (and so before all \texttt{\#include} commands), will also deactivate the coverage analysis of the headers.}
+\end{enumerate}
+
+\sectionHTMLnonu{\label{inline-functions}My source code contains inline functions, are they instrumented?}
+Inline functions are instrumented like other functions.
+To avoid instrumenting templates and inline functions of 3rd party library or
+the standard C++ library, \CoverageScanner\ instrument all functions and procedures of the source
+file and the headers present in the current directory. 
+If its header file is not in the current directory, it is necessary to tell \CoverageScanner\ to instrument it too.
+The command line options \CMDoption{include-file-regex}, \CMDoption{include-file-wildcard} and \CMDoption{include-path} permits to force the instrumentation of additional files.
+
+\sectionHTMLnonu{Is it normal that the .csmes file contains a copy of the source code?}
+Yes.\\
+The \verb$.csmes$ file contains all information necessary for \CoverageBrowser.
+That's why the source code and the preprocessed source file is also included.
+
+\chapterHTMLnonu{\CoverageBrowser}
+
+\sectionHTMLnonu{Performance}
+
+\subsectionHTMLnonu{\label{cpu-usage}Is there a way to minimize the CPU usage?}
+\CoverageBrowser\ needs a lot of CPU resources and disk accesses to calculate the statistics for each execution.
+This calculation is performed in background, but can also be deactivated.
+Just proceed as follows:
+ hide the column \verb$Coverage$ of the docking window \GUIwindow{Executions} using the context menu \GUIContextMenuTwo{Show/Hide Columns}{Coverage}.
+
+
+\subsectionHTMLnonu{When I'm exporting the statistics per methods I can only see the 65536 first entries}
+This is a limitation of Microsoft Excel or OpenOffice.
+Excel 97 can only display 16384 rows. Excel 2000 and Excel 2003 can display up to 65536 rows and newer version of Excel can display up to 1048576 rows. OpenOffice Calc is limited to using 32000 rows.
+
+
+\chapterHTMLnonu{Miscellaneous}
+
+\sectionHTMLnonu{\label{linux-symbols}Installation issue: \CoverageBrowser\ does not work on my \Linux\ distribution}
+Symptoms:\\
+Calling \CoverageBrowser\ brings the following error:
+\begin{verbatim}
+symbol lookup error: /opt/TestCocoon/5.1.1/libQtCore.so.4: 
+undefined symbol: _ZN13TestCocoon7QObject5eventEPNS_6QEventE
+\end{verbatim}
+In this case, The \QtLibrary\ provided is not compatible with the linux distribution.
+Workaround:\\
+The \TestCocoon\ distribution provides a script \verb$buildqt.sh$ which permits to rebuild the \QtLibrary.
+Process as follows:\\
+\begin{verbatim}
+cd /opt/TestCocoon/5.1.1/
+./buildqt.sh
+\end{verbatim}
+
+\sectionHTMLnonu{\label{windows-path-issue}Installation issue: \texttt{PATH} variable wiped after installation}
+
+Two sulutions:
+\begin{itemize}
+\item The installer makes a backup of the \verb$PATH$ variable in the system variable \verb$PATH_TESTCOCOON_INSTALLER$ during the installation.
+Simply copy the contain of this variable in the \verb$PATH$ variable.
+\item The installer create a system restore point before the installation and the uninstallation. Use the \MicrosoftWindows\ System Restore program to go to the restore point called '\verb$Uninstalled TestCocoon vx.x.x$' or '\verb$Installed TestCocoon vx.x.x$'.
+\end{itemize}
+
+\sectionHTMLnonu{\label{linux-install}Installation issue: \CoverageBrowser\ windows are not redraw correctly}
+In this case, it is necessary to regenerate the \QtLibrary.\seechapref{linux-symbols}
+
+\sectionHTMLnonu{\label{D9002}Installation issue: \VisualStudio\ Compiler warning D9002}
+\VisualStudio\ compiler produces following warning:
+\begin{verbatim}
+cl : warning D9002: Unknown Option "--cs-on" ignored.
+\end{verbatim}
+
+The path to \CoverageScanner\ compiler wrapper is missing, add it as described in the documentation. \seechapref{visual-studio-compiler}
+
+\sectionHTMLnonu{\label{addin-install}Installation issue: \VisualStudioVsAddIn\ is not installed}
+Verify that \VisualStudioVsAddIn\ is loaded by \VisualStudio:
+\begin{enumerate}
+\item Open \verb$"My Document"$ folder.
+\item Open the folder \verb$"Visual Studio 2005"$ (or \verb$"Visual Studio 2008"$)
+\item Open the folder \verb$"Addins"$
+\item You should find the files \verb$TestCocoonVs2005AddIn.dll$ and \verb$TestCocoonVs2005AddIn.addin$. If the files are missing, please reinstall \TestCocoon.
+\item Start \VisualStudio.
+\item Click on \GUIMenuTwo{Tools}{Options\ldots}. Select the entry \verb$Environment - Add-in/Macro Security$. Verify that \verb$%VSMYDOCUMENTS%\addins$ is present in the path, and that the macros are enabled.
+\InsertPictureDescription{addinsettings}{\VisualStudio\ Option Dialog}
+\item Click on \GUIMenuTwo{Tools}{Add-In Manager\ldots}. The list of addins loaded are displayed. Verify that \TestCocoon\ is checked and also that the startup flag is set. \newline
+\InsertPictureDescription{addinmanager}{Add-In Manager}
+\item Open a \CorCPlusPlus\ project.
+\item Click on \GUIMenuTwo{Tools}{Code Coverage Build Mode\ldots}. \VisualStudioVsAddIn\ window should appear.
+\end{enumerate}
+
+\sectionHTMLnonu{\label{reporting-coveragescanner-issue}How to report an issue concerning \CoverageScanner?}
+
+It is possible to generate a log file which permits to investigate on issues concerning \CoverageScanner. Proceed as follows on \MicrosoftWindows:
+\begin{enumerate}
+\item In a console window:
+\begin{verbatim}
+cd %TESTCOCOON%
+testcocoon_debug.bat
+\end{verbatim}
+
+This will install a debug version of \CoverageScanner\ which will produce a set of log files.
+\item Reproduce your issue.
+\item In the console window, press enter to install the normal version of \CoverageScanner.
+\item The log files are located in \verb$%TESTCOCOON%\logfiles$. Zip it together and send it to \TestCocoon\ support (\email{support@testcocoon.org}).
+\end{enumerate}
+
+Proceed as follows on \Linux:
+\begin{enumerate}
+\item In a console window:
+\begin{verbatim}
+cd /opt/TestCocoon/{version_of_testcocoon}
+mv coveragescanner coveragescanner.back
+cp coveragescannerdbg coveragescanner
+\end{verbatim}
+
+This will install a debug version of \CoverageScanner\ which will produce a set of log files.
+\item Reproduce your issue.
+\item Restore the release version of \CoverageScanner:
+\begin{verbatim}
+cd /opt/TestCocoon/{version_of_testcocoon}
+mv coveragescanner.back coveragescanner 
+\end{verbatim}
+\item The log files are located in \verb$/tmp/TestCocoon$. Zip it together and send it to \TestCocoon\ support (\email{support@testcocoon.org}).
+\end{enumerate}
+
+\WARNING{The log file may contains part of your source code. If this is an issue, simply remove the concerned lines with your favorite editor.}
+
+\sectionHTMLnonu{\label{debug-vsaddin}How to debug \VisualStudioVsAddIn?}
+
+\begin{itemize}
+  \item Deactivate \VisualStudioVsAddIn\\
+        This is necessary in order to avoid issues which files which cannot be overwritten.
+        \begin{itemize}
+          \item Start \VisualStudio.
+          \item Start the Addin manager: click on \GUIMenuTwo{Tools}{Add-in Manager}.
+          \item Uncheck all items in the line in which \TestCocoon\ is listed.
+          \item Close \VisualStudio.
+        \end{itemize}
+  \item Load \VisualStudioVsAddIn\ project\\
+        \begin{itemize}
+          \item Unpack the source code of \TestCocoon.
+          \item Open \VisualStudioVsAddIn\ with the corresponding version of \VisualStudio.
+          \item Edit the property settings:
+          \begin{itemize}
+            \item Debugging option: select external application and enter the path of the \VisualStudio\ IDE executable (devenv.exe).
+            \item Build option: enter the path of the \VisualStudioVsAddIn\ DLL: \verb$%USERPROFILE%\Documents\Visual Sudio 20??\Addins\TestCocoonVS20??AddIn.dll$
+          \end{itemize}
+          \item Start the Addin manager and reenable the \VisualStudioVsAddIn.
+
+        \end{itemize}
+      \item Start debugging: \VisualStudio\ should start and setting breakpoints into the addin should work.
+     
+\end{itemize}
+
+\sectionHTMLnonu{How can I get informed about new releases?}
+
+New versions of \TestCocoon\ are published using the \ahref{http://en.wikipedia.org/wiki/RSS_(file_format)}{RSS} feed \url{http://www.testcocoon.org/testcocoon_rss.xml}.

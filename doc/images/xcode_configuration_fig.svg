@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="996.47406"
+   height="595.82635"
+   viewBox="0 0 900 585"
+   id="svg3318"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="xcode_configuration_fig.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.0">
+  <metadata
+     id="metadata3359">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     inkscape:window-height="960"
+     inkscape:window-width="1266"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     guidetolerance="10.0"
+     gridtolerance="10.0"
+     objecttolerance="10.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base"
+     showgrid="false"
+     inkscape:zoom="0.49688889"
+     inkscape:cx="562.5"
+     inkscape:cy="365.39999"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:current-layer="svg3318" />
+  <title
+     id="title3320">xcode_configuration_fig.fig</title>
+  <desc
+     id="desc3322">Converted by fig2vect, see http://fig2vect.sourceforge.net</desc>
+  <defs
+     id="defs3324">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 365.39999 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="1125 : 365.39999 : 1"
+       inkscape:persp3d-origin="562.5 : 243.6 : 1"
+       id="perspective3361" />
+    <style
+       type="text/css"
+       id="style3326">
+.cA {
+fill: none;
+stroke: #000000;
+stroke-width: 2.7;
+}
+.cB {
+fill: #000000;
+stroke: #000000;
+stroke-width: 2.7;
+}
+.cC {
+font-family: &quot;Helvetica&quot;, sans-serif;
+font-style: normal;
+font-weight: normal;
+font-size: 14.4;
+text-anchor: start;
+fill: #000000;
+}
+</style>
+  </defs>
+<!-- line 10, layer 51 --><!-- line 13, layer 50 --><!-- line 16, layer 50 --><!-- line 19, layer 50 --><!-- line 21, layer 50 --><!-- line 23, layer 50 --><!-- line 24, layer 50 --><!-- line 25, layer 50 --><!-- line 26, layer 50 --><!-- line 27, layer 50 --><!-- line 28, layer 50 -->  <image
+     x="217.07364"
+     y="2.7749989"
+     width="721.64478"
+     height="582.22498"
+     xlink:href="xcode_configuration.png"
+     id="image3328" />
+  <polyline
+     style="fill:none;stroke:#000000;stroke-width:2.70000005"
+     id="polyline3332"
+     points="187.2,73.35 349.2,73.35 478.69,218.38"
+     class="cA"
+     transform="matrix(1.2265318,0,0,1.2265318,-37.991693,-38.635753)" />
+  <polygon
+     style="fill:#000000;stroke:#000000;stroke-width:2.70000005"
+     id="polygon3334"
+     points="470.13,200.69 480.49,220.4 462.08,207.88 469.7,208.31 470.13,200.69 "
+     class="cB"
+     transform="matrix(1.2265318,0,0,1.2265318,-37.991693,-38.635753)" />
+  <polyline
+     style="fill:none;stroke:#000000;stroke-width:2.70000005"
+     id="polyline3338"
+     points="200.7,270.45 362.7,270.45 476.61,425.78"
+     class="cA"
+     transform="matrix(1.2265318,0,0,1.2265318,-41.943601,-58.395295)" />
+  <polygon
+     style="fill:#000000;stroke:#000000;stroke-width:2.70000005"
+     id="polygon3340"
+     points="469.79,407.35 478.21,427.96 461.08,413.74 468.63,414.9 469.79,407.35 "
+     class="cB"
+     transform="matrix(1.2265318,0,0,1.2265318,-41.943601,-58.395295)" />
+  <rect
+     x="-30.264542"
+     y="1.6558187"
+     width="221.87959"
+     height="96.037445"
+     rx="7.7271504"
+     ry="7.7271504"
+     class="cA"
+     id="rect3342"
+     style="fill:#ececec;stroke:#000000;stroke-width:3.31163597" />
+  <rect
+     x="-37.528088"
+     y="223.64566"
+     width="241.74942"
+     height="99.349075"
+     rx="7.7271504"
+     ry="7.7271504"
+     class="cA"
+     id="rect3344"
+     style="fill:#ececec;stroke:#000000;stroke-width:3.31163597" />
+  <text
+     x="-20.969908"
+     y="256.76205"
+     class="cC"
+     id="text3346"
+     style="font-size:17.66205788px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Add the compiler</text>
+  <text
+     x="-17.658272"
+     y="283.2551"
+     class="cC"
+     id="text3348"
+     style="font-size:17.66205788px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">command line option</text>
+  <text
+     x="-17.658272"
+     y="306.43658"
+     class="cC"
+     id="text3350"
+     style="font-size:17.66205788px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">'--cs-on' here</text>
+  <text
+     x="-17.017998"
+     y="61.265263"
+     class="cC"
+     id="text3352"
+     style="font-size:17.66205788px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">command line option</text>
+  <text
+     x="-13.706364"
+     y="84.446709"
+     class="cC"
+     id="text3354"
+     style="font-size:17.66205788px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">'--cs-on' here</text>
+  <text
+     x="-17.017998"
+     y="34.772167"
+     class="cC"
+     id="text3356"
+     style="font-size:17.66205788px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Add the linker</text>
+</svg>

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd"
+>
+<svg width="10.12in" height="3.62in" viewBox="0 0 729 261"
+xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+>
+<title>testcocoon_overview.fig</title>
+<desc>Converted by fig2vect, see http://fig2vect.sourceforge.net</desc>
+<defs>
+<style type="text/css"><![CDATA[
+.cA {
+fill: none;
+stroke: #000000;
+stroke-width: 2.7;
+}
+.cB {
+fill: #F4F4F4;
+stroke: #000000;
+stroke-width: 2.7;
+}
+.cC {
+fill: #000000;
+stroke: #000000;
+stroke-width: 2.7;
+}
+.cD {
+font-family: "Helvetica", sans-serif;
+font-style: normal;
+font-weight: normal;
+font-size: 11.2;
+text-anchor: start;
+fill: #000000;
+}
+.cE {
+font-family: "Helvetica", sans-serif;
+font-style: normal;
+font-weight: normal;
+font-size: 14.4;
+text-anchor: start;
+fill: #000000;
+}
+]]></style>
+</defs>
+<!-- line 89, layer 100 -->
+<rect x="525" y="8.07" width="200.28" height="244.86" class="cB"
+/>
+<!-- line 91, layer 100 -->
+<image x="546.78" y="74.87" width="156.18" height="120.8"
+xlink:href="testcocoon_title_small.png"
+/>
+<!-- line 94, layer 50 -->
+<g>
+<polyline class="cA"
+points="493.26,59.01
+516.73,59.01"
+/>
+<polygon class="cC"
+points="508.63,56.31 519.43,59.01 508.63,61.71 511.33,59.01"
+/>
+</g>
+<!-- line 97, layer 50 -->
+<g>
+<polyline class="cA"
+points="493.26,135.21
+516.73,135.21"
+/>
+<polygon class="cC"
+points="508.63,132.51 519.43,135.21 508.63,137.91 511.33,135.21"
+/>
+</g>
+<!-- line 100, layer 50 -->
+<g>
+<polyline class="cA"
+points="315.18,135.21
+343.8,135.21
+343.8,59.01
+373.69,59.01"
+/>
+<polygon class="cC"
+points="365.59,56.31 376.39,59.01 365.59,61.71 368.29,59.01"
+/>
+</g>
+<!-- line 103, layer 50 -->
+<g>
+<polyline class="cA"
+points="318.42,214.77
+373.69,214.77"
+/>
+<polygon class="cC"
+points="365.59,212.07 376.39,214.77 365.59,217.47 368.29,214.77"
+/>
+</g>
+<!-- line 106, layer 50 -->
+<g>
+<polyline class="cA"
+points="108.66,65.31
+138.49,65.31"
+/>
+<polygon class="cC"
+points="130.39,62.61 141.19,65.31 130.39,68.01 133.09,65.31"
+/>
+</g>
+<!-- line 109, layer 50 -->
+<rect x="3.72" y="42.57" width="104.82" height="45.36"
+rx="6.3" ry="6.3" class="cA"
+/>
+<!-- line 111, layer 50 -->
+<g>
+<polyline class="cA"
+points="238.98,154.29
+238.98,187.42"
+/>
+<polygon class="cC"
+points="241.68,179.32 238.98,190.12 236.28,179.32 238.98,182.02"
+/>
+</g>
+<!-- line 114, layer 50 -->
+<g>
+<polyline class="cA"
+points="235.74,78.09
+235.74,111.1"
+/>
+<polygon class="cC"
+points="238.44,103 235.74,113.8 233.04,103 235.74,105.7"
+/>
+</g>
+<!-- line 117, layer 50 -->
+<rect x="162.72" y="48.15" width="149.34" height="29.94"
+rx="6.3" ry="6.3" class="cA"
+/>
+<!-- line 119, layer 50 -->
+<rect x="165.84" y="121.29" width="149.34" height="29.88"
+rx="6.3" ry="6.3" class="cA"
+/>
+<!-- line 121, layer 50 -->
+<rect x="165.84" y="197.61" width="149.34" height="29.82"
+rx="6.3" ry="6.3" class="cA"
+/>
+<!-- line 123, layer 50 -->
+<g>
+<polyline class="cA"
+points="429.66,182.91
+429.66,156.26"
+/>
+<polygon class="cC"
+points="426.96,164.36 429.66,153.56 432.36,164.36 429.66,161.66"
+/>
+</g>
+<!-- line 126, layer 50 -->
+<rect x="385.08" y="182.49" width="104.94" height="45.36"
+rx="6.3" ry="6.3" class="cA"
+/>
+<!-- line 128, layer 50 -->
+<rect x="385.08" y="102.93" width="104.94" height="45.36"
+rx="6.3" ry="6.3" class="cA"
+/>
+<!-- line 130, layer 50 -->
+<rect x="385.08" y="29.91" width="104.94" height="45.36"
+rx="6.3" ry="6.3" class="cA"
+/>
+<!-- line 132, layer 50 -->
+<rect x="149.94" y="8.07" width="184.32" height="244.86" class="cA"
+/>
+<!-- line 87, layer 50 -->
+<text x="170.76" y="27.69" class="cE"
+>CoverageScanner</text>
+<!-- line 134, layer 50 -->
+<text x="554.1" y="29.25" class="cE"
+>CoverageBrowser</text>
+<!-- line 135, layer 50 -->
+<text x="16.8" y="58.95" class="cD"
+>Source Code</text>
+<!-- line 136, layer 50 -->
+<text x="27.6" y="77.85" class="cD"
+>(.cpp file)</text>
+<!-- line 137, layer 50 -->
+<text x="168" y="67.05" class="cD"
+>C/C++ Preprocessing</text>
+<!-- line 138, layer 50 -->
+<text x="192.3" y="139.95" class="cD"
+>Instrumentation</text>
+<!-- line 139, layer 50 -->
+<text x="205.8" y="218.25" class="cD"
+>Compiling</text>
+<!-- line 140, layer 50 -->
+<text x="389.4" y="48.15" class="cD"
+>Instrumentation</text>
+<!-- line 141, layer 50 -->
+<text x="400.2" y="64.35" class="cD"
+>(.csmes file)</text>
+<!-- line 142, layer 50 -->
+<text x="402.9" y="121.05" class="cD"
+>Executions</text>
+<!-- line 143, layer 50 -->
+<text x="402.9" y="139.95" class="cD"
+>(.csexe file)</text>
+<!-- line 144, layer 50 -->
+<text x="402.9" y="199.35" class="cD"
+>Application</text>
+<!-- line 145, layer 50 -->
+<text x="408.3" y="218.25" class="cD"
+>(.exe file)</text>
+</svg>

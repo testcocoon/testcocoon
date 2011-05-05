@@ -1,0 +1,1276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WMainUI</class>
+ <widget class="QMainWindow" name="WMainUI">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>852</width>
+    <height>398</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Coverage Browser</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+    <normaloff>:/images/testcocoon.svg</normaloff>:/images/testcocoon.svg</iconset>
+  </property>
+  <property name="dockNestingEnabled">
+   <bool>true</bool>
+  </property>
+  <widget class="QWidget" name="widget"/>
+  <widget class="QToolBar" name="toolbar_file_p">
+   <property name="windowTitle">
+    <string>File</string>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="fileOpenCSMesAction"/>
+   <addaction name="LoadExecutionResultAction"/>
+   <addaction name="fileSaveCSMesAction"/>
+   <addaction name="viewSourceAction"/>
+  </widget>
+  <widget class="QToolBar" name="toolbar_navigation_source_p">
+   <property name="windowTitle">
+    <string>Navigation File</string>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>true</bool>
+   </attribute>
+   <addaction name="previousModuleAction"/>
+   <addaction name="nextModuleAction"/>
+  </widget>
+  <widget class="QToolBar" name="toolbar_instrumentation_p">
+   <property name="windowTitle">
+    <string>Instrumentation</string>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="setCommentAction"/>
+   <addaction name="clearCommentAction"/>
+   <addaction name="setManuallyValidatedAction"/>
+   <addaction name="clearManuallyValidatedAction"/>
+  </widget>
+  <widget class="QMenuBar" name="MenuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>852</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="instrumentationMenu">
+    <property name="tearOffEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>&amp;Instrumentation</string>
+    </property>
+    <widget class="QMenu" name="menuCoverage_Method">
+     <property name="tearOffEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="title">
+      <string>Coverage Method</string>
+     </property>
+     <addaction name="actionCondition_and_Branch"/>
+     <addaction name="actionBranch_only"/>
+    </widget>
+    <addaction name="setCommentAction"/>
+    <addaction name="clearCommentAction"/>
+    <addaction name="setManuallyValidatedAction"/>
+    <addaction name="clearManuallyValidatedAction"/>
+    <addaction name="coverageLevelAction"/>
+    <addaction name="menuCoverage_Method"/>
+   </widget>
+   <widget class="QMenu" name="fileMenu">
+    <property name="tearOffEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <widget class="QMenu" name="menuRecently_Opened">
+     <property name="tearOffEnabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Recently Opened</string>
+     </property>
+    </widget>
+    <addaction name="fileOpenCSMesAction"/>
+    <addaction name="menuRecently_Opened"/>
+    <addaction name="LoadExecutionResultAction"/>
+    <addaction name="fileMergeCSMesAction"/>
+    <addaction name="actionImportUnitTests"/>
+    <addaction name="fileSaveCSMesAction"/>
+    <addaction name="separator"/>
+    <addaction name="saveBlackBoxConfigurationAction"/>
+    <addaction name="actionBlackBoxTestingMode"/>
+    <addaction name="separator"/>
+    <addaction name="Options"/>
+    <addaction name="fileExitAction"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="tearOffEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <widget class="QMenu" name="menuCompareWithRecentlyOpen">
+     <property name="title">
+      <string>Compare with recently opened</string>
+     </property>
+    </widget>
+    <addaction name="executionBenefitAnalysisAction"/>
+    <addaction name="actionTest_Coverage_Count"/>
+    <addaction name="actionOptimizedExecutionOrder"/>
+    <addaction name="separator"/>
+    <addaction name="actionCompareCSMes"/>
+    <addaction name="actionStopComparingCSMes"/>
+    <addaction name="menuCompareWithRecentlyOpen"/>
+    <addaction name="actionSwitchCSMesFiles"/>
+    <addaction name="actionRegressionAnalysis"/>
+    <addaction name="actionNewCodeAnalysis"/>
+   </widget>
+   <widget class="QMenu" name="helpMenu">
+    <property name="tearOffEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="helpContentsAction"/>
+    <addaction name="filter_help_p"/>
+    <addaction name="actionTestCocoon_Website"/>
+    <addaction name="separator"/>
+    <addaction name="helpAboutAction"/>
+    <addaction name="actionAboutQt"/>
+   </widget>
+   <widget class="QMenu" name="navigationMenu">
+    <property name="tearOffEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>&amp;Navigation</string>
+    </property>
+    <addaction name="previousModuleAction"/>
+    <addaction name="nextModuleAction"/>
+    <addaction name="previousInstrumentationAction"/>
+    <addaction name="nextInstrumentationAction"/>
+    <addaction name="previousInstrumentationManuallyValidatedAction"/>
+    <addaction name="nextInstrumentationManuallyValidatedAction"/>
+    <addaction name="previousInstrumentationUnTestedAction"/>
+    <addaction name="nextInstrumentationUnTestedAction"/>
+    <addaction name="previousInstrumentationTestedAction"/>
+    <addaction name="nextInstrumentationTestedAction"/>
+    <addaction name="previousInstrumentationCommentAction"/>
+    <addaction name="nextInstrumentationCommentAction"/>
+   </widget>
+   <widget class="QMenu" name="viewMenu">
+    <property name="tearOffEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="viewSourceAction"/>
+    <addaction name="findTextAction"/>
+    <addaction name="separator"/>
+    <addaction name="preprocessorViewAction"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="windowMenu">
+    <property name="title">
+     <string>&amp;Window</string>
+    </property>
+    <addaction name="actionCloseWindow"/>
+    <addaction name="actionCascadeWindow"/>
+    <addaction name="actionNextWindow"/>
+    <addaction name="actionPreviousWindow"/>
+    <addaction name="actionTileWindow"/>
+    <addaction name="actionCloseAllWindow"/>
+   </widget>
+   <widget class="QMenu" name="menuReports">
+    <property name="title">
+     <string>Reports</string>
+    </property>
+    <addaction name="exportStatisticModuleAction"/>
+    <addaction name="exportStatisticFunctionAction"/>
+    <addaction name="exportStatisticEMMAAction"/>
+    <addaction name="generateHtmlReportAction"/>
+    <addaction name="actionExecutionTextDump"/>
+   </widget>
+   <addaction name="fileMenu"/>
+   <addaction name="viewMenu"/>
+   <addaction name="navigationMenu"/>
+   <addaction name="instrumentationMenu"/>
+   <addaction name="menuTools"/>
+   <addaction name="menuReports"/>
+   <addaction name="windowMenu"/>
+   <addaction name="helpMenu"/>
+  </widget>
+  <widget class="QToolBar" name="toolbar_comparing_p">
+   <property name="windowTitle">
+    <string>Comparing</string>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionCompareCSMes"/>
+   <addaction name="actionStopComparingCSMes"/>
+   <addaction name="actionSwitchCSMesFiles"/>
+   <addaction name="actionRegressionAnalysis"/>
+   <addaction name="actionNewCodeAnalysis"/>
+  </widget>
+  <widget class="QDockWidget" name="dwExplanation_p">
+   <property name="windowTitle">
+    <string>Explanation</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_2">
+    <layout class="QVBoxLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="WExplanation" name="explanation_p" native="true"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dwFunctions_p">
+   <property name="windowTitle">
+    <string>Methods</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_4">
+    <layout class="QVBoxLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="WFunctionList" name="functions_browser_p" native="true"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dwExecutions_p">
+   <property name="windowIcon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/executions.svg</normaloff>:/images/executions.svg</iconset>
+   </property>
+   <property name="windowTitle">
+    <string>Executions</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_3">
+    <layout class="QVBoxLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="WExecutionList" name="executions_p" native="true"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dwModules_p">
+   <property name="windowTitle">
+    <string>Sources</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_5">
+    <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="WModuleList" name="modules_browser_p" native="true"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dwStatistics_p">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="windowIcon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/statistics.svg</normaloff>:/images/statistics.svg</iconset>
+   </property>
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="features">
+    <set>QDockWidget::AllDockWidgetFeatures</set>
+   </property>
+   <property name="windowTitle">
+    <string>Statistic</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="WStatistic" name="statistics_p" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dwExecutionComment_p">
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="windowTitle">
+    <string>Execution Comment</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_6">
+    <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="WCommentWidget" name="execution_comment_p" native="true"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QToolBar" name="toolbar_coverage_settings_p">
+   <property name="windowTitle">
+    <string>Coverage Settings</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionTest_Coverage_Count"/>
+   <addaction name="executionBenefitAnalysisAction"/>
+   <addaction name="actionOptimizedExecutionOrder"/>
+   <addaction name="coverageLevelAction"/>
+  </widget>
+  <widget class="QToolBar" name="toolbar_navigation_comment_p">
+   <property name="windowTitle">
+    <string>Navigation - Comments</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="previousInstrumentationCommentAction"/>
+   <addaction name="nextInstrumentationCommentAction"/>
+  </widget>
+  <widget class="QToolBar" name="toolbar_navigation_all_p">
+   <property name="windowTitle">
+    <string>Navigation - Instrumentations</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="previousInstrumentationAction"/>
+   <addaction name="nextInstrumentationAction"/>
+  </widget>
+  <widget class="QToolBar" name="toolbar_navigation_untested_p">
+   <property name="windowTitle">
+    <string>Navigation - Unexecuted Instrumentations</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="previousInstrumentationUnTestedAction"/>
+   <addaction name="nextInstrumentationUnTestedAction"/>
+  </widget>
+  <widget class="QToolBar" name="toolbar_navigation_tested_p">
+   <property name="windowTitle">
+    <string>Navigation - Executed Instrumentations</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="previousInstrumentationTestedAction"/>
+   <addaction name="nextInstrumentationTestedAction"/>
+  </widget>
+  <widget class="QToolBar" name="toolbar_navigation_manually_validated_p">
+   <property name="windowTitle">
+    <string>Navigation - Manually Validated Instrumentations</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="previousInstrumentationManuallyValidatedAction"/>
+   <addaction name="nextInstrumentationManuallyValidatedAction"/>
+  </widget>
+  <widget class="QToolBar" name="toolbar_statistics_p">
+   <property name="windowTitle">
+    <string>Statistics</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>true</bool>
+   </attribute>
+   <addaction name="generateHtmlReportAction"/>
+   <addaction name="exportStatisticModuleAction"/>
+   <addaction name="exportStatisticFunctionAction"/>
+   <addaction name="exportStatisticEMMAAction"/>
+   <addaction name="actionExecutionTextDump"/>
+  </widget>
+  <widget class="QToolBar" name="toolbar_blackbox_p">
+   <property name="windowTitle">
+    <string>Blackbox</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionBlackBoxTestingMode"/>
+   <addaction name="saveBlackBoxConfigurationAction"/>
+  </widget>
+  <widget class="QToolBar" name="toolbar_source_p">
+   <property name="windowTitle">
+    <string>Source</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="preprocessorViewAction"/>
+   <addaction name="findTextAction"/>
+  </widget>
+  <action name="fileOpenCSMesAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/csmesopen.svg</normaloff>:/images/csmesopen.svg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Open...</string>
+   </property>
+   <property name="iconText">
+    <string>Open</string>
+   </property>
+   <property name="statusTip">
+    <string>Open Code Coverage Database (.csmes file)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="exportStatisticModuleAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/statisticsExportModule.svg</normaloff>:/images/statisticsExportModule.svg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Export Statistics per Source File...</string>
+   </property>
+  </action>
+  <action name="fileSaveCSMesAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/csmessave.svg</normaloff>:/images/csmessave.svg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+   <property name="iconText">
+    <string>Save</string>
+   </property>
+   <property name="statusTip">
+    <string>Save Code Coverage Database</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="fileExitAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/exit.svg</normaloff>:/images/exit.svg</iconset>
+   </property>
+   <property name="text">
+    <string>E&amp;xit</string>
+   </property>
+   <property name="iconText">
+    <string>Exit</string>
+   </property>
+   <property name="statusTip">
+    <string>Application Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q, Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="helpContentsAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/help.svg</normaloff>:/images/help.svg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Contents...</string>
+   </property>
+   <property name="iconText">
+    <string>Contents</string>
+   </property>
+   <property name="statusTip">
+    <string>Display PDF manual</string>
+   </property>
+   <property name="shortcut">
+    <string/>
+   </property>
+  </action>
+  <action name="helpAboutAction">
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+   <property name="iconText">
+    <string>About</string>
+   </property>
+   <property name="statusTip">
+    <string>About</string>
+   </property>
+   <property name="shortcut">
+    <string/>
+   </property>
+  </action>
+  <action name="viewSourceAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/newview.svg</normaloff>:/images/newview.svg</iconset>
+   </property>
+   <property name="iconText">
+    <string>New Source Window</string>
+   </property>
+   <property name="statusTip">
+    <string>New Source Window</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+J</string>
+   </property>
+  </action>
+  <action name="LoadExecutionResultAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/csexeopen.svg</normaloff>:/images/csexeopen.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Load Execution Report...</string>
+   </property>
+   <property name="iconText">
+    <string>Load Execution Report</string>
+   </property>
+   <property name="statusTip">
+    <string>Load Execution Report</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+O</string>
+   </property>
+  </action>
+  <action name="nextInstrumentationUnTestedAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/nextInstrumentationUnTested.svg</normaloff>:/images/nextInstrumentationUnTested.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Next Unexecuted Instrumentation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
+   </property>
+  </action>
+  <action name="previousInstrumentationUnTestedAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/previousInstrumentationUnTested.svg</normaloff>:/images/previousInstrumentationUnTested.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Previous Unexecuted Instrumentation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+U</string>
+   </property>
+  </action>
+  <action name="nextInstrumentationTestedAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/nextInstrumentationTested.svg</normaloff>:/images/nextInstrumentationTested.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Next Executed Instrumentation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="previousInstrumentationTestedAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/previousInstrumentationTested.svg</normaloff>:/images/previousInstrumentationTested.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Previous Executed Instrumentation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+T</string>
+   </property>
+  </action>
+  <action name="nextInstrumentationCommentAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/nextInstrumentationComment.svg</normaloff>:/images/nextInstrumentationComment.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Next Comment</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="nextInstrumentationManuallyValidatedAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/nextInstrumentationManuallyValidated.svg</normaloff>:/images/nextInstrumentationManuallyValidated.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Next Manually Validated Instrumentation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="previousInstrumentationCommentAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/previousInstrumentationComment.svg</normaloff>:/images/previousInstrumentationComment.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Previous Comment</string>
+   </property>
+   <property name="iconText">
+    <string>Previous Comment</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+B</string>
+   </property>
+  </action>
+  <action name="previousInstrumentationManuallyValidatedAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/previousInstrumentationManuallyValidated.svg</normaloff>:/images/previousInstrumentationManuallyValidated.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Previous Manually Validated Instrumentation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+V</string>
+   </property>
+  </action>
+  <action name="nextInstrumentationAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/nextInstrumentation.svg</normaloff>:/images/nextInstrumentation.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Next Instrumentation</string>
+   </property>
+   <property name="iconText">
+    <string>Next Instrumentation</string>
+   </property>
+   <property name="statusTip">
+    <string>Next Instrumentation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="previousInstrumentationAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/previousInstrumentation.svg</normaloff>:/images/previousInstrumentation.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Previous Instrumentation</string>
+   </property>
+   <property name="iconText">
+    <string>Previous Instrumentation</string>
+   </property>
+   <property name="statusTip">
+    <string>Previous Instrumentation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+I</string>
+   </property>
+  </action>
+  <action name="previousModuleAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/previousModule.svg</normaloff>:/images/previousModule.svg</iconset>
+   </property>
+   <property name="iconText">
+    <string>Previous Source</string>
+   </property>
+   <property name="statusTip">
+    <string>Previous Source</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F</string>
+   </property>
+  </action>
+  <action name="nextModuleAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/nextModule.svg</normaloff>:/images/nextModule.svg</iconset>
+   </property>
+   <property name="iconText">
+    <string>Next Source</string>
+   </property>
+   <property name="statusTip">
+    <string>Next Source</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="Options">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/options.svg</normaloff>:/images/options.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Preferences...</string>
+   </property>
+  </action>
+  <action name="clearCommentAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/no_comments.svg</normaloff>:/images/no_comments.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Clear C&amp;omment</string>
+   </property>
+   <property name="iconText">
+    <string>Clear Comment</string>
+   </property>
+   <property name="statusTip">
+    <string>Clear Comment</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+K</string>
+   </property>
+  </action>
+  <action name="setCommentAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/comments.svg</normaloff>:/images/comments.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Add/Set C&amp;omment...</string>
+   </property>
+   <property name="iconText">
+    <string>Add/Set Comment</string>
+   </property>
+   <property name="statusTip">
+    <string>Add/Set Comment</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K</string>
+   </property>
+  </action>
+  <action name="setManuallyValidatedAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/validation.svg</normaloff>:/images/validation.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Mark as &amp;validated...</string>
+   </property>
+   <property name="iconText">
+    <string>Mark as validated</string>
+   </property>
+   <property name="statusTip">
+    <string>Mark as validated</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+W</string>
+   </property>
+  </action>
+  <action name="clearManuallyValidatedAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/no_validation.svg</normaloff>:/images/no_validation.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Clear V&amp;alidation Flag</string>
+   </property>
+   <property name="iconText">
+    <string>Clear Validation Flag</string>
+   </property>
+   <property name="statusTip">
+    <string>Clear Validation Flag</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+W</string>
+   </property>
+  </action>
+  <action name="preprocessorViewAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/preprocessorview.svg</normaloff>:/images/preprocessorview.svg</iconset>
+   </property>
+   <property name="iconText">
+    <string>Preprocessor View</string>
+   </property>
+   <property name="statusTip">
+    <string>Preprocessor View</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+J</string>
+   </property>
+  </action>
+  <action name="coverageLevelAction">
+   <property name="text">
+    <string>Level:1</string>
+   </property>
+   <property name="iconText">
+    <string>Level:1</string>
+   </property>
+   <property name="toolTip">
+    <string>Coverage Level: The level is corresponding of the number of code/test coverage count necessary to consider that an instrumented code is executed.&lt;BR&gt;&lt;I&gt;Example:&lt;/I&gt; Setting the level to 10, will made necessary to execute 10 times the each line of the source code if compiled with code coverage count. If compiled with code coverage hit, 10 execution runs need to execute each lines of the source code.</string>
+   </property>
+   <property name="statusTip">
+    <string>Code Coverage Level or Test Coverage Level</string>
+   </property>
+  </action>
+  <action name="actionTestCocoon_Website">
+   <property name="text">
+    <string>TestCocoon Website</string>
+   </property>
+  </action>
+  <action name="executionBenefitAnalysisAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/testPerformance.svg</normaloff>:/images/testPerformance.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Execution Benefit Analysis</string>
+   </property>
+   <property name="toolTip">
+    <string>Test Benefit Analysis Mode&lt;BR&gt; In this mode, &lt;I&gt;CoverageBrowser&lt;/I&gt; does not display the coverage of a set of tests but the lines covered by an execution which are not covered by a set of reference executions.  In other words, &lt;I&gt;CoverageBrowser&lt;/I&gt; shows what an execution is covering more than a set of other executions.
+</string>
+   </property>
+   <property name="statusTip">
+    <string>Execution Benefit Analysis</string>
+   </property>
+  </action>
+  <action name="actionTest_Coverage_Count">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/testCountMode.svg</normaloff>:/images/testCountMode.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Test Coverage Count</string>
+   </property>
+   <property name="toolTip">
+    <string>Test Coverage Analysis Mode&lt;BR&gt;Permits to switch between code coverage count and test coverage count analysis. This simulates the behaviour of the compilation with code coverage hit support when the project is compiled with code coverage count support.
+</string>
+   </property>
+   <property name="statusTip">
+    <string>Test Coverage Count</string>
+   </property>
+  </action>
+  <action name="fileMergeCSMesAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/mergeDatabse.svg</normaloff>:/images/mergeDatabse.svg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Merge with...</string>
+   </property>
+   <property name="iconText">
+    <string>Merge</string>
+   </property>
+   <property name="toolTip">
+    <string>Merge with an other instrumentation database</string>
+   </property>
+  </action>
+  <action name="filter_help_p">
+   <property name="text">
+    <string>Filter Expression Help</string>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="exportStatisticEMMAAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/statisticsEMMA.svg</normaloff>:/images/statisticsEMMA.svg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Export Statistics in EMMA-XML format...</string>
+   </property>
+  </action>
+  <action name="exportStatisticFunctionAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/statisticsExportFunction.svg</normaloff>:/images/statisticsExportFunction.svg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Export Statistics per Method...</string>
+   </property>
+  </action>
+  <action name="actionCloseWindow">
+   <property name="text">
+    <string>&amp;Close</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionCloseAllWindow">
+   <property name="text">
+    <string>Close &amp;All</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+W</string>
+   </property>
+  </action>
+  <action name="actionTileWindow">
+   <property name="text">
+    <string>&amp;Tile</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+T</string>
+   </property>
+  </action>
+  <action name="actionCascadeWindow">
+   <property name="text">
+    <string>Ca&amp;scade</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+C</string>
+   </property>
+  </action>
+  <action name="actionNextWindow">
+   <property name="text">
+    <string>&amp;Next</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc, N</string>
+   </property>
+  </action>
+  <action name="actionPreviousWindow">
+   <property name="text">
+    <string>&amp;Previous</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc, P</string>
+   </property>
+  </action>
+  <action name="actionCondition_and_Branch">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Decision, Condition and Branch</string>
+   </property>
+  </action>
+  <action name="actionBranch_only">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Branch only</string>
+   </property>
+  </action>
+  <action name="generateHtmlReportAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/htmlreport.svg</normaloff>:/images/htmlreport.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Generate &amp;Report...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+H</string>
+   </property>
+  </action>
+  <action name="saveBlackBoxConfigurationAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/saveblackbox.svg</normaloff>:/images/saveblackbox.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Generate Black-Box Configuration...</string>
+   </property>
+  </action>
+  <action name="actionCompareCSMes">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/compareDatabase.svg</normaloff>:/images/compareDatabase.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Compare with...</string>
+   </property>
+  </action>
+  <action name="actionOptimizedExecutionOrder">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/optimizedexecutionorder.svg</normaloff>:/images/optimizedexecutionorder.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Optimized Execution Order...</string>
+   </property>
+  </action>
+  <action name="actionStopComparingCSMes">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/stopCompareDatabase.svg</normaloff>:/images/stopCompareDatabase.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Stop Comparing</string>
+   </property>
+  </action>
+  <action name="actionSwitchCSMesFiles">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/switchDatabase.svg</normaloff>:/images/switchDatabase.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Switch Databases</string>
+   </property>
+  </action>
+  <action name="actionRegressionAnalysis">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/regressionMode.svg</normaloff>:/images/regressionMode.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Analysis on Identical Methods</string>
+   </property>
+   <property name="statusTip">
+    <string>Limit the code coverage analysis to unmodified functions</string>
+   </property>
+  </action>
+  <action name="actionNewCodeAnalysis">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/newFeatureMode.svg</normaloff>:/images/newFeatureMode.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Analysis on Modified Methods</string>
+   </property>
+   <property name="statusTip">
+    <string>Limit the code coverage analysis to modified functions</string>
+   </property>
+  </action>
+  <action name="actionBlackBoxTestingMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/blackboxmode.svg</normaloff>:/images/blackboxmode.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Black-Box Testing Mode</string>
+   </property>
+  </action>
+  <action name="findTextAction">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/edit-find.svg</normaloff>:/images/edit-find.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Find</string>
+   </property>
+  </action>
+  <action name="actionImportUnitTests">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/importUnitTest.svg</normaloff>:/images/importUnitTest.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Import Unit &amp;Tests...</string>
+   </property>
+  </action>
+  <action name="actionExecutionTextDump">
+   <property name="icon">
+    <iconset resource="../coveragebrowser/coveragebrowser.qrc">
+     <normaloff>:/images/textreport.svg</normaloff>:/images/textreport.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Generate Text Report...</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="0" margin="0"/>
+ <pixmapfunction>QPixmap</pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>WStatistic</class>
+   <extends>QWidget</extends>
+   <header>WStatistic.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>WExplanation</class>
+   <extends>QWidget</extends>
+   <header>WExplanation.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>WModuleList</class>
+   <extends>QWidget</extends>
+   <header>WModuleList.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>WFunctionList</class>
+   <extends>QWidget</extends>
+   <header>WFunctionList.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>WExecutionList</class>
+   <extends>QWidget</extends>
+   <header>WExecutionList.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>WCommentWidget</class>
+   <extends>QWidget</extends>
+   <header>WCommentWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <includes>
+  <include location="global">qworkspace.h</include>
+  <include location="global">qlayout.h</include>
+  <include location="global">QVBoxLayout</include>
+  <include location="local">signalmultiplexer.h</include>
+  <include location="local">csmes.h</include>
+  <include location="local">coveragebrowserpdef.h</include>
+  <include location="local">WExplanation.h</include>
+  <include location="local">instrumentation.h</include>
+  <include location="local">WSourceView.h</include>
+ </includes>
+ <resources>
+  <include location="../coveragebrowser/coveragebrowser.qrc"/>
+ </resources>
+ <connections/>
+</ui>
+

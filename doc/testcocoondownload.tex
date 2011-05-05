@@ -1,0 +1,259 @@
+\section{Known Issues}
+\begin{description}
+\item{\TestCocoon\ installer:}
+\newline 
+On \MicrosoftWindows\ the installer can wipe the \verb$PATH$ variable.
+This is an issue on the NSIS installer. 
+You can contribute to this issue through the forum: \url{http://testcocoon.org/forum/viewtopic.php?f=3&t=8}.
+
+\newline 
+\Workaround see \ahref{faq.html#windows-path-issue}{FAQ}.
+\end{description}
+
+
+\section{Software Packages}
+
+
+\begin{TestCocoonDownload}
+\begin{TestCocoonDownloadLink}
+\TestCocoonLinuxSetup{1}{6}{9}
+\TestCocoonWindowsSetup{1}{6}{9}
+\TestCocoonMacosSetup{1}{6}{9}
+\TestCocoonSrc{1}{6}{9}
+\end{TestCocoonDownloadLink}
+\begin{ReleaseNote}{TestCocoon-v1.6}{\TestCocoon\ v1.6}
+Full installation of \TestCocoon.\\
+Changes between \TestCocoon\ v1.5 and v1.6:
+\begin{description}
+\item[\CoverageScanner]
+  \begin{itemize}
+    \item \NewFeature Do not instrument dead code after a return/goto/break statement.
+    \item \BugFix Under some circumstances, functions are places in a wrong name space.
+    \item \BugFix The response file name includes now the PID. This should fix some issues when using a parallel build.
+    \item \BugFix Using more than one response file is now working.
+    \item \BugFix Linker includes instrumentation of libraries specified through a relative path.
+    \item \BugFix For Windows CE: removing \verb$windows.h$ include in the \CoverageScanner\ library.
+    \item \BugFix For \VisualStudio\ compiler: Generation of the instrumentation to the static library associated to a DLL event if no \verb$/IMPLIB$ option is used.
+    \item \BugFix On Windows, export all \CoverageScanner\ symbols of the instrumentation library in a DLL.
+    \item \BugFix C++ operator \verb$<<=$ and \verb$>>=$ supported.
+    \item \BugFix Character sequence \verb$<::$ is now equivalent to \verb$< ::$ and no more \verb$<: :$.
+    \item \BugFix For \VisualStudio\ compiler: using response file for the compiler and linker.
+    \item \BugFix Instrumentation of \verb$for$ statement in the form: \verb$for (.....;void *p=....;....)$
+    \item \BugFix \CMDoption{qt4} does no more instrument:
+                  \begin{itemize}
+                    \item \verb$Q_EXPORT_PLUGIN$
+                    \item \verb$Q_DECLARE_METATYPE$
+                  \end{itemize}
+  \end{itemize}
+\item[\CoverageBrowser]
+  \begin{itemize}
+    \item \BugFix     Under some circumstances headers are not displayed into the source view.
+    \item \BugFix     Under some circumstances the instrumentation of some headers are missing in the reports.
+    \item \NewFeature Exporting the execution report as simple text log.
+    \item \NewFeature Verbose error reporting when merging execution database fails.
+    \item \BugFix     Do not merge execution database with different instrumentations for the same file.
+    \item \Profiling  Performance improvements when use a database which use list of source files.
+  \end{itemize}
+\item[\cmreport]
+  \begin{itemize}
+    \item \NewFeature Exporting the execution report as simple text log.
+  \end{itemize}
+\item[\cmmerge]
+  \begin{itemize}
+    \item \NewFeature Verbose error reporting.
+    \item \NewFeature Possibility to merge in an existing instrumentation database (command line option \verb$-a$)
+    \item \BugFix     Do not merge execution database with different instrumentations for the same file.
+  \end{itemize}
+\end{description}
+\end{ReleaseNote}
+\end{TestCocoonDownload}
+
+
+
+\begin{TestCocoonDownload}
+\begin{TestCocoonDownloadLink}
+\TestCocoonLinuxSetup{1}{5}{0}
+\TestCocoonWindowsSetup{1}{5}{0}
+\TestCocoonMacosSetup{1}{5}{0}
+\TestCocoonSrc{1}{5}{0}
+\end{TestCocoonDownloadLink}
+\begin{ReleaseNote}{TestCocoon-v1.5}{\TestCocoon\ v1.5}
+Full installation of \TestCocoon.\\
+Changes between \TestCocoon\ v1.4 and v1.5:
+\begin{description}
+\item[\CoverageScanner]
+  \begin{itemize}
+    \item \BugFix \verb$--cs-lock-csexe$ is no more broken for \VisualStudio\ compilers.
+  \end{itemize}
+\item[\CoverageBrowser]
+  \begin{itemize}
+    \item \NewFeature Importing unit tests instrumentation database (\seechapref{unit-test}).
+    \item \NewFeature Speed improvement of the optimized execution order algorithm.
+    \item \BugFix Headers are no more present twice in EMMA XML.
+  \end{itemize}
+\item[\cmreport]
+  \begin{itemize}
+    \item \BugFix Headers are no more present twice in EMMA XML.
+  \end{itemize}
+\item[\cmmerge]
+  \begin{itemize}
+    \item \NewFeature Importing unit tests instrumentation database (\seechapref{unit-test}).
+    \item Command line syntax changed to be similar to \cmreport\ and \cmcsexeimport.
+  \end{itemize}
+\end{description}
+\end{ReleaseNote}
+\end{TestCocoonDownload}
+
+
+\begin{TestCocoonDownload}
+\begin{TestCocoonDownloadLink}
+\TestCocoonLinuxSetup{1}{4}{0}
+\TestCocoonWindowsSetup{1}{4}{0}
+\TestCocoonMacosSetup{1}{4}{0}
+\TestCocoonSrc{1}{4}{0}
+\end{TestCocoonDownloadLink}
+\begin{ReleaseNote}{TestCocoon-v1.4}{\TestCocoon\ v1.4}
+Full installation of \TestCocoon.\\
+Changes between \TestCocoon\ v1.3 and v1.4:
+\begin{description}
+\item[\CoverageScanner]
+  \begin{itemize}
+    \item \BugFix \verb$#pragma$ does not more produce incorrect line information.
+    \item \NewFeature \verb$__pragma$ and \verb$_Pragma$ can be used to enable/disable the coverage analysis.
+    \item \BugFix \verb$.cc$ extension for C++ file are now supported.
+    \item \NewFeature \CoverageScanner\ library does no more refer to the C library when \verb$CUSTOM_SETUP$ is set to \verb$NONE$.
+  \end{itemize}
+\item[\CoverageBrowser]
+  \begin{itemize}
+    \item \NewFeature Memory usage minimization during the import of \verb$.csexe$ files (disabling Undo/Redo and revert possibility).
+    \item \NewFeature Explanation is computed in background.
+  \end{itemize}
+\item[\cmcsexeimport]
+  \begin{itemize}
+    \item \NewFeature Memory usage minimization during the import of \verb$.csexe$ files.
+  \end{itemize}
+
+\end{description}
+\end{ReleaseNote}
+\end{TestCocoonDownload}
+
+\begin{TestCocoonDownload}
+\begin{TestCocoonDownloadLink}
+\TestCocoonLinuxSetup{1}{3}{0}
+\TestCocoonWindowsSetup{1}{3}{0}
+\TestCocoonMacosSetup{1}{3}{0}
+\TestCocoonSrc{1}{3}{0}
+\end{TestCocoonDownloadLink}
+\begin{ReleaseNote}{TestCocoon-v1.3}{\TestCocoon\ v1.3}
+Full installation of \TestCocoon.\\
+Changes between \TestCocoon\ v1.2 and v1.3:
+\begin{description}
+%\item[\VisualStudioVsAddIn]
+  %\begin{itemize}
+    %\item 
+  %\end{itemize}
+\item[\CoverageScanner]
+  \begin{itemize}
+    \item \NewFeature Instrumenting compounds literals in inline assembly of the GCC compiler.
+    \item \BugFix instrumentation at decision and condition level of expressions similar to \lstinline$if ( (a && b) == true ) ...$
+    \item \BugFix cast operator supported before not operator. Example:\lstinline$if ( (int)!a ) ...$
+  \end{itemize}
+\item[\CoverageBrowser]
+  \begin{itemize}
+    \item \NewFeature EMMA XML report generation (experimental)
+  \end{itemize}
+\item[\cmreport]
+  \begin{itemize}
+    \item \NewFeature EMMA XML report generation (experimental)
+  \end{itemize}
+\item[\toolselector]
+  \begin{itemize}
+    \item \BugFix \toolselector\ creates now the console environment correctly.
+  \end{itemize}
+%\item[\cmcsexeimport]
+  %\begin{itemize}
+  %\end{itemize}
+%
+
+\end{description}
+\end{ReleaseNote}
+\end{TestCocoonDownload}
+
+\begin{TestCocoonDownload}
+\begin{TestCocoonDownloadLink}
+\TestCocoonLinuxSetup{1}{2}{0}
+\TestCocoonWindowsSetup{1}{2}{0}
+\TestCocoonMacosSetup{1}{2}{0}
+\TestCocoonSrc{1}{2}{0}
+\end{TestCocoonDownloadLink}
+\begin{ReleaseNote}{TestCocoon-v1.2}{\TestCocoon\ v1.2}
+Full installation of \TestCocoon.\\
+Changes between \TestCocoon\ v1.1 and v1.2:
+\begin{description}
+%\item[\VisualStudioVsAddIn]
+  %\begin{itemize}
+    %\item 
+  %\end{itemize}
+\item[\CoverageScanner]
+  \begin{itemize}
+    \item \BugFix Regression about \verb$\pragma CoverageScanner(pop)$ corrected.
+    \item \NewFeature Wildcard expression supported on \MicrosoftWindows.
+    \item \BugFix Support of \VisualStudio\ \verb$__try$, \verb$__expect$ and \verb$__finally$ language extension.
+    \item \NewFeature Instrumentation of boolean expressions in assignments.
+  \end{itemize}
+\item[\CoverageBrowser]
+  \begin{itemize}
+    \item \NewFeature Displaying the coverage statistic in form of a fraction ($\frac{number of executed instrumentations}{total number of instrumentations}$)
+  \end{itemize}
+%\item[\cmcsexeimport]
+  %\begin{itemize}
+  %\end{itemize}
+%
+
+\end{description}
+\end{ReleaseNote}
+\end{TestCocoonDownload}
+
+
+\begin{TestCocoonDownload}
+\begin{TestCocoonDownloadLink}
+\TestCocoonLinuxSetup{1}{1}{0}
+\TestCocoonWindowsSetup{1}{1}{0}
+\TestCocoonMacosSetup{1}{1}{0}
+\TestCocoonSrc{1}{1}{0}
+\end{TestCocoonDownloadLink}
+\begin{ReleaseNote}{TestCocoon-v1.1}{\TestCocoon\ v1.1}
+Full installation of \TestCocoon.\\
+Changes between \TestCocoon\ v1.0 and v1.1:
+\begin{description}
+%\item[\VisualStudioVsAddIn]
+  %\begin{itemize}
+    %\item 
+  %\end{itemize}
+\item[\CoverageScanner]
+  \begin{itemize}
+    \item \NewFeature All temprorary files are now generated in the system TEMP folder (\verb$%TEMP%$ on Windows and \verb$/tmp$ on Unix).
+    \item \NewFeature \CMake\ support. \seechapref{cmake}
+    \item \Changes No \verb$.csmes$ file are generated if an object does not contain instrumentations.
+  \end{itemize}
+\item[\CoverageBrowser]
+  \begin{itemize}
+    \item \Internal SVG icons used.
+  \end{itemize}
+%\item[\cmcsexeimport]
+  %\begin{itemize}
+  %\end{itemize}
+%
+
+\end{description}
+\end{ReleaseNote}
+\end{TestCocoonDownload}
+
+
+\begin{TestCocoonDownload}
+\begin{TestCocoonDownloadLink}
+\end{TestCocoonDownloadLink}
+\begin{ReleaseNote}{TestCocoon-v1.0}{\TestCocoon\ v1.0}
+Full installation of \TestCocoon.
+\end{ReleaseNote}
+\end{TestCocoonDownload}

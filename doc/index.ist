@@ -1,0 +1,11 @@
+preamble "\\nonumchapter\\clearpage\\begin{theindex}\n\\thispagestyle{fancy}\\addcontentsline{toc}{part}{\\protect Index}\n"
+headings_flag 1 
+heading_prefix "\n \\item \\textbf{" 
+heading_suffix "}" 
+symhead_positive "Symboles"
+symhead_negative "symboles"
+numhead_positive "Nombres"
+numhead_negative "nombres"
+delim_0 " \\dotfill\\ "
+delim_1 " \\dotfill\\ "
+delim_2 " \\dotfill\\ "

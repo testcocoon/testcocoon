@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="735.29999"
+   height="376.69998"
+   viewBox="0 0 648 432"
+   id="svg2914"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="coveragebrowser_rename_regex_fig.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.0">
+  <metadata
+     id="metadata2979">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     inkscape:window-height="960"
+     inkscape:window-width="1266"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     guidetolerance="10.0"
+     gridtolerance="10.0"
+     objecttolerance="10.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base"
+     showgrid="false"
+     inkscape:zoom="1"
+     inkscape:cx="405"
+     inkscape:cy="271.1759"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:current-layer="svg2914"
+     showguides="true"
+     inkscape:guide-bbox="true" />
+  <title
+     id="title2916">coveragebrowser_rename_regex_fig.fig</title>
+  <desc
+     id="desc2918">Converted by fig2vect, see http://fig2vect.sourceforge.net</desc>
+  <defs
+     id="defs2920">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 270 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="810 : 270 : 1"
+       inkscape:persp3d-origin="405 : 180 : 1"
+       id="perspective2981" />
+    <style
+       type="text/css"
+       id="style2922">
+.cA {
+fill: none;
+stroke: #000000;
+stroke-width: 2.7;
+stroke-linecap: round;
+stroke-linejoin: round;
+}
+.cB {
+fill: #000000;
+stroke: #000000;
+stroke-width: 2.7;
+}
+.cC {
+font-family: &quot;Helvetica&quot;, sans-serif;
+font-style: normal;
+font-weight: normal;
+font-size: 14.4;
+text-anchor: start;
+fill: #000000;
+}
+</style>
+  </defs>
+<!-- line 175, layer 58 --><!-- line 159, layer 50 --><!-- line 162, layer 50 --><!-- line 166, layer 50 --><!-- line 169, layer 50 --><!-- line 172, layer 50 --><!-- line 178, layer 50 --><!-- line 180, layer 50 --><!-- line 182, layer 50 --><!-- line 184, layer 50 --><!-- line 187, layer 50 --><!-- line 164, layer 50 --><!-- line 189, layer 50 --><!-- line 191, layer 50 --><!-- line 192, layer 50 --><!-- line 193, layer 50 --><!-- line 194, layer 50 -->  <image
+     x="252.15291"
+     y="50.115204"
+     width="493.12451"
+     height="381.8848"
+     xlink:href="coveragebrowser_rename_regex.png"
+     id="image2924" />
+  <g
+     id="g2926"
+     transform="matrix(1.4335015,0,0,-1.4335015,-104.4736,915.41968)">
+    <polyline
+       class="cA"
+       points="202.42,362.62 221.33,362.62 249.78,371.38"
+       id="polyline2928"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="240.22,364.2 251.93,372.04 237.84,371.94 242.26,369.07 240.22,364.2 "
+       id="polygon2930"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <rect
+     x="-25.587999"
+     y="371.49194"
+     width="209.00452"
+     height="54.186356"
+     rx="9.0310593"
+     ry="9.0310593"
+     class="cA"
+     id="rect2932"
+     style="fill:#ececec;stroke:#000000;stroke-width:3.87045407;stroke-linecap:round;stroke-linejoin:round" />
+  <g
+     transform="matrix(1.4335015,0,0,1.4335015,-103.3268,-6.9811656)"
+     id="g2934">
+    <polyline
+       class="cA"
+       points="224.03,119.62 269.92,119.62 352.19,104.67"
+       id="polyline2936"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="340.4,102.7 354.4,104.27 341.84,110.67 344.44,106.08 340.4,102.7 "
+       id="polygon2938"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <g
+     transform="matrix(1.4335015,0,0,1.4335015,-103.3268,-6.9811656)"
+     id="g2940">
+    <polyline
+       class="cA"
+       points="202.42,22.42 334.72,22.42 417.88,72.82"
+       id="polyline2942"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="410.36,63.53 419.81,73.99 406.16,70.46 411.15,68.74 410.36,63.53 "
+       id="polygon2944"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <g
+     id="g2946"
+     transform="matrix(1.4335015,0,0,-1.4335015,-103.3268,650.42263)">
+    <polyline
+       class="cA"
+       points="126.83,230.32 278.03,230.32 395.32,243.07"
+       id="polyline2948"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="384.57,237.83 397.55,243.32 383.7,245.88 387.49,242.22 384.57,237.83 "
+       id="polygon2950"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <rect
+     x="-95.686234"
+     y="1.9352112"
+     width="282.54315"
+     height="104.50226"
+     rx="9.0310593"
+     ry="9.0310593"
+     class="cA"
+     id="rect2952"
+     style="fill:#ececec;stroke:#000000;stroke-width:3.87045407;stroke-linecap:round;stroke-linejoin:round" />
+  <rect
+     x="-84.074875"
+     y="145.14201"
+     width="301.89542"
+     height="58.056812"
+     rx="9.0310593"
+     ry="9.0310593"
+     class="cA"
+     id="rect2954"
+     style="fill:#ececec;stroke:#000000;stroke-width:3.87045407;stroke-linecap:round;stroke-linejoin:round" />
+  <rect
+     x="-23.657793"
+     y="300.31354"
+     width="100.2118"
+     height="43.588501"
+     rx="8.9933672"
+     ry="5.9827356"
+     class="cA"
+     id="rect2956"
+     style="fill:#ececec;stroke:#000000;stroke-width:3.14365077;stroke-linecap:round;stroke-linejoin:round" />
+  <g
+     transform="matrix(1.4335015,0,0,1.4335015,-103.3268,-6.9811656)"
+     id="g2958">
+    <polyline
+       class="cA"
+       points="145.73,176.32 218.62,176.32 266.29,154.88"
+       id="polyline2960"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="254.37,155.8 268.34,153.95 257.69,163.19 259.11,158.11 254.37,155.8 "
+       id="polygon2962"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <rect
+     x="-26.018053"
+     y="222.55107"
+     width="131.59544"
+     height="54.186356"
+     rx="9.0310593"
+     ry="9.0310593"
+     class="cA"
+     id="rect2964"
+     style="fill:#ececec;stroke:#000000;stroke-width:3.87045407;stroke-linecap:round;stroke-linejoin:round" />
+  <text
+     x="-10.106188"
+     y="406.32599"
+     class="cC"
+     id="text2966"
+     style="font-size:20.64242172px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Error Message</text>
+  <text
+     x="-3.9421563"
+     y="329.4903"
+     class="cC"
+     id="text2968"
+     style="font-size:20.64242172px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Error</text>
+  <text
+     x="-49.240803"
+     y="40.639755"
+     class="cC"
+     id="text2970"
+     style="font-size:20.64242172px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Regular Expression</text>
+  <text
+     x="-84.074875"
+     y="83.214737"
+     class="cC"
+     id="text2972"
+     style="font-size:20.64242172px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Executions to Rename</text>
+  <text
+     x="-64.72261"
+     y="183.84654"
+     class="cC"
+     id="text2974"
+     style="font-size:20.64242172px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">New Execution Name</text>
+  <text
+     x="-11.683031"
+     y="257.38516"
+     class="cC"
+     id="text2976"
+     style="font-size:20.64242172px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Preview</text>
+</svg>

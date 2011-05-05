@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WExecutionListUI</class>
+ <widget class="QWidget" name="WExecutionListUI">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>380</width>
+    <height>444</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>1</number>
+   </property>
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QStackedWidget" name="pages_p">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="treeview">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="margin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="ExecutionListView" name="executionsView_p"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="options">
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <property name="margin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QScrollArea" name="more_area_p">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>157</width>
+            <height>250</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QGroupBox" name="filter_state_p">
+             <property name="title">
+              <string>State</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <widget class="QCheckBox" name="unknown_p">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>&amp;Unknown</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>unknown_p</cstring>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <item>
+                 <widget class="QCheckBox" name="check_manually_p">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>&lt;font color=&quot;orange&quot;&gt;To &amp;check manually&lt;/font&gt;</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>check_manually_p</cstring>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <item>
+                 <widget class="QCheckBox" name="passed_p">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_3">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>&lt;font color=&quot;green&quot;&gt;&amp;Passed&lt;/font&gt;</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>passed_p</cstring>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_6">
+                <item>
+                 <widget class="QCheckBox" name="failed_p">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_4">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>&lt;font color=&quot;red&quot;&gt;&amp;Failed&lt;/font&gt;</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>failed_p</cstring>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="with_comment_p_2">
+             <property name="title">
+              <string>Comment</string>
+             </property>
+             <property name="flat">
+              <bool>false</bool>
+             </property>
+             <property name="checkable">
+              <bool>false</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <item>
+               <widget class="QRadioButton" name="with_comment_p">
+                <property name="text">
+                 <string>&amp;With comments</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="without_comment_p">
+                <property name="text">
+                 <string>With&amp;out comments</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="all_comment_p">
+                <property name="text">
+                 <string>&amp;Both</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <item>
+      <widget class="QPushButton" name="filter_type_p">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>25</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Switch between regular expression and wildcard expression</string>
+       </property>
+       <property name="statusTip">
+        <string>Switch between regular expression and wildcard expression</string>
+       </property>
+       <property name="icon">
+        <iconset resource="coveragebrowser.qrc">
+         <normaloff>:/images/filterwildcard.svg</normaloff>:/images/filterwildcard.svg</iconset>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="filter_p">
+       <property name="toolTip">
+        <string>see &lt;TT&gt;Help-&gt;Filter Expression Help&lt;/TT&gt; for more information about the syntax.&lt;BR&gt;&lt;I&gt;Filter:&lt;/I&gt; complete execution name  (ex: &quot;&lt;TT&gt;Group/Test Item&lt;/TT&gt;&quot;)</string>
+       </property>
+       <property name="statusTip">
+        <string>Filter using wildcard/regular expression</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="spacing">
+        <number>12</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="select_p">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Select</string>
+         </property>
+         <property name="statusTip">
+          <string>Selection using wildcard/regular expressions</string>
+         </property>
+         <property name="icon">
+          <iconset resource="coveragebrowser.qrc">
+           <normaloff>:/images/select.svg</normaloff>:/images/select.svg</iconset>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="deselect_p">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Deselect</string>
+         </property>
+         <property name="statusTip">
+          <string>Deselection using wildcard/regular expressions</string>
+         </property>
+         <property name="icon">
+          <iconset resource="coveragebrowser.qrc">
+           <normaloff>:/images/deselect.svg</normaloff>:/images/deselect.svg</iconset>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="more_p">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>More options...</string>
+         </property>
+         <property name="statusTip">
+          <string>More options...</string>
+         </property>
+         <property name="whatsThis">
+          <string>More options...</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="0" margin="0"/>
+ <customwidgets>
+  <customwidget>
+   <class>ExecutionListView</class>
+   <extends>QTreeView</extends>
+   <header>ExecutionListView.h</header>
+  </customwidget>
+ </customwidgets>
+ <includes>
+  <include location="local">coveragebrowserpdef.h</include>
+ </includes>
+ <resources>
+  <include location="coveragebrowser.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>filter_p</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>WExecutionListUI</receiver>
+   <slot>applyFilters()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>83</x>
+     <y>431</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>2</x>
+     <y>411</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>unknown_p</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>WExecutionListUI</receiver>
+   <slot>applyFilters()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>28</x>
+     <y>44</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-3</x>
+     <y>74</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>check_manually_p</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>WExecutionListUI</receiver>
+   <slot>applyFilters()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>23</x>
+     <y>91</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-4</x>
+     <y>109</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>passed_p</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>WExecutionListUI</receiver>
+   <slot>applyFilters()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>21</x>
+     <y>132</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-2</x>
+     <y>142</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>failed_p</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>WExecutionListUI</receiver>
+   <slot>applyFilters()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>25</x>
+     <y>177</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-6</x>
+     <y>194</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>with_comment_p</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>WExecutionListUI</receiver>
+   <slot>applyFilters()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>28</x>
+     <y>271</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-5</x>
+     <y>279</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>without_comment_p</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>WExecutionListUI</receiver>
+   <slot>applyFilters()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>21</x>
+     <y>318</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-8</x>
+     <y>332</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>all_comment_p</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>WExecutionListUI</receiver>
+   <slot>applyFilters()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>18</x>
+     <y>369</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-4</x>
+     <y>376</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>applyFilters()</slot>
+ </slots>
+</ui>

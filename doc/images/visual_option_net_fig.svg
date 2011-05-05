@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="965.22504"
+   height="375"
+   viewBox="0 0 819 324"
+   id="svg3226"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="visual_option_net_fig.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.0">
+  <metadata
+     id="metadata3257">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     inkscape:window-height="960"
+     inkscape:window-width="1266"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     guidetolerance="10.0"
+     gridtolerance="10.0"
+     objecttolerance="10.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base"
+     showgrid="false"
+     inkscape:zoom="1"
+     inkscape:cx="512.09998"
+     inkscape:cy="202.5"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:current-layer="svg3226" />
+  <title
+     id="title3228">visual_option_net_fig.fig</title>
+  <desc
+     id="desc3230">Converted by fig2vect, see http://fig2vect.sourceforge.net</desc>
+  <defs
+     id="defs3232">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 202.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="1024.2 : 202.5 : 1"
+       inkscape:persp3d-origin="512.09998 : 135 : 1"
+       id="perspective3259" />
+    <style
+       type="text/css"
+       id="style3234">
+.cA {
+fill: none;
+stroke: #000000;
+stroke-width: 2.7;
+}
+.cB {
+fill: #000000;
+stroke: #000000;
+stroke-width: 2.7;
+}
+.cC {
+font-family: &quot;Times&quot;, serif;
+font-style: italic;
+font-weight: normal;
+font-size: 14.4;
+text-anchor: start;
+fill: #000000;
+}
+.cD {
+font-family: &quot;Helvetica&quot;, sans-serif;
+font-style: normal;
+font-weight: normal;
+font-size: 10.4;
+text-anchor: start;
+fill: #000000;
+}
+.cE {
+font-family: &quot;Helvetica&quot;, sans-serif;
+font-style: normal;
+font-weight: normal;
+font-size: 14.4;
+text-anchor: start;
+fill: #000000;
+}
+</style>
+  </defs>
+<!-- line 15, layer 51 --><!-- line 10, layer 50 --><!-- line 13, layer 50 --><!-- line 19, layer 50 --><!-- line 20, layer 50 --><!-- line 21, layer 50 --><!-- line 22, layer 50 --><!-- line 23, layer 50 -->  <image
+     x="308.7468"
+     y="4.9072264e-07"
+     width="517.53601"
+     height="324"
+     xlink:href="visual_option_net.png"
+     id="image3236" />
+  <g
+     id="g3238"
+     transform="matrix(1.08,0,0,1.08,-14.022016,-24.526815)">
+    <polyline
+       style="fill:none;stroke:#000000;stroke-width:2.70000005"
+       class="cA"
+       points="282.81,74.19 431.31,74.19 479.46,122.34"
+       id="polyline3240" />
+    <polygon
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005"
+       class="cB"
+       points="469.92,105.16 481.37,124.25 462.28,112.8 469.92,112.8 469.92,105.16 "
+       id="polygon3242" />
+  </g>
+  <rect
+     x="-6.0192161"
+     y="23.522387"
+     width="297.43201"
+     height="142.884"
+     rx="6.8040004"
+     ry="6.8040004"
+     class="cA"
+     id="rect3244"
+     style="fill:#ececec;stroke:#000000;stroke-width:2.91600013" />
+  <text
+     style="font-size:15.55200005px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'"
+     x="-0.18721555"
+     y="46.85038"
+     class="cE"
+     id="text3246">Add the path of TestCocoon</text>
+  <text
+     style="font-size:15.55200005px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'"
+     x="-0.18721555"
+     y="73.094383"
+     class="cE"
+     id="text3248">toolchain for Visual Studio</text>
+  <text
+     style="font-size:15.55200005px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'"
+     x="-0.18721555"
+     y="96.422386"
+     class="cE"
+     id="text3250">to the first position</text>
+  <text
+     style="font-size:15.55200005px;font-style:italic;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Times&quot;, serif'"
+     x="2.7287843"
+     y="140.16238"
+     class="cC"
+     id="text3252">Example:</text>
+  <text
+     style="font-size:11.2319994px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'"
+     x="5.644783"
+     y="157.65839"
+     class="cD"
+     id="text3254">$(TESTCOCOON)\VisualStudio</text>
+</svg>

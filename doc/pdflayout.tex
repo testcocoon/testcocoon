@@ -1,0 +1,566 @@
+\usepackage{a4wide,ifpdf}
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+\pdffalse % we are not running PDFLaTeX
+\else
+\pdfoutput=1 % we are running PDFLaTeX
+\pdftrue
+\fi
+
+\ifpdf 
+    \usepackage[pdftex]{graphicx} 
+    \usepackage[pdftex]{hyperref}
+    \pdfcompresslevel=9
+\else 
+    \usepackage[dvips]{graphicx}  
+    \usepackage[colorlinks]{hyperref}
+\fi
+%BEGIN LATEX
+\usepackage{multicol}
+%END LATEX
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[american]{babel}          
+\usepackage{epsfig}          
+\usepackage[font=small,labelfont=bf,up,textfont=it,up]{caption}
+\usepackage{thumbpdf}          
+\usepackage{amsmath}          
+\usepackage{marvosym}          
+\usepackage{latexsym}          
+\usepackage{textcomp}          
+\usepackage{calc}          
+\usepackage{soul}          
+\usepackage{ifthen}          
+\usepackage{float}
+\usepackage{color}
+%HEVEA \usepackage{hevea}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{supertabular}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{moreverb}
+\usepackage{listings}
+\usepackage{fancyhdr,lastpage}
+\usepackage{epstopdf}
+\usepackage{comment}
+\usepackage{nopageno}
+\usepackage{mathpazo}
+\usepackage{newcent}
+\usepackage{bookman}
+\usepackage{alltt}
+\usepackage{makeidx}
+%BEGIN LATEX
+\usepackage{epic}
+\geometry{lmargin=2cm, rmargin=2cm, tmargin=2cm, bmargin=2cm }
+%END LATEX
+
+\ifpdf 
+  \graphicspath{{../coveragebrowser/images/},{./pdffiles/}} 
+  \DeclareGraphicsExtensions{.png,.pdf} 
+\else 
+  \graphicspath{{./},{../epsfiles/},{epsfiles/}} 
+  \DeclareGraphicsExtensions{.eps} 
+\fi
+\newcommand{\thisyear}{\the\year}
+
+\newenvironment{changemargin}[2]
+{
+  \begin{list}{}
+  {
+    \setlength{\topsep}{0pt}%
+    \setlength{\leftmargin}{0pt}%
+    \setlength{\rightmargin}{0pt}%
+    \setlength{\listparindent}{\parindent}%
+    \setlength{\itemindent}{\parindent}%
+    \setlength{\parsep}{0pt plus 1pt}%
+    \addtolength{\leftmargin}{#1}%
+    \addtolength{\rightmargin}{#2}%
+  }\item 
+}
+{\end{list} }
+
+\definecolor{Gray}{rgb}{0.50,0.50,0.50}
+\definecolor{Graydark}{rgb}{0.25,0.25,0.25}
+\definecolor{Graylight}{rgb}{0.75,0.75,0.75}
+\definecolor{Graylightlight}{rgb}{0.87,0.87,0.87}
+\definecolor{purple}{rgb}{0.3,0,0.6}
+\definecolor{magenta}{rgb}{1,0,1}
+\definecolor{red}{rgb}{1,0,0}
+\definecolor{darkred}{rgb}{0.5,0,0}
+\definecolor{orange}{rgb}{1,0.5,0}
+\definecolor{green}{rgb}{0,0.75,0}
+\definecolor{white}{rgb}{1,1,1}
+\definecolor{blue}{rgb}{0,0,1}
+\definecolor{darkblue}{rgb}{0,0,0.5}
+\definecolor{deapdarkblue}{rgb}{0,0,0.25}
+\newcommand{\cmmerge} {\textit{cmmerge}}
+\newcommand{\cmcsexeimport} {\textit{cmcsexeimport}}
+\newcommand{\cmreport} {\textit{cmreport}}
+\newcommand{\toolselector} {\textit{Tool~Selector}}
+\newcommand{\NewFeature} {\textcolor{blue}{\textit{New~Feature}}:~}
+\newcommand{\Profiling} {\textcolor{blue}{\textit{Profiling}}:~}
+\newcommand{\Workaround} {\textcolor{orange}{\textit{Workaround}}:~}
+\newcommand{\BugFix} {\textit{Bug~Fix}:~}
+\newcommand{\Internal} {\textcolor{Graydark}{\textit{Internal}}:~}
+\newcommand{\Change} {\textcolor{darkblue}{\textit{Change}}:~}
+\newcommand{\CoverageBrowser} {\textit{CoverageBrowser}}
+\newcommand{\CoverageBrowserAPI} {\textit{CoverageBrowser~API}}
+\newcommand{\CoverageScanner} {\textit{CoverageScanner}}
+\newcommand{\TestCocoon} {\textit{TestCocoon}}
+%%% store graphics in a box
+\pagestyle{fancy}
+\bibliographystyle{plain}
+%\author{\TestCocoonCorp}
+\newcommand{\seechapref}[1] {(see chap.~\ref{#1}, page~\pageref{#1})}
+\newcommand{\seefigref}[1] {(see figure~\ref{#1}, page~\pageref{#1})}
+\newcommand{\seetableref}[1] {(see table~\ref{#1}, page~\pageref{#1})}
+\newcommand{\seeref}[1] {\ref{#1}}
+\newcommand{\hvanewline}
+{
+%BEGIN LATEX
+  \newline
+%END LATEX
+%HEVEA  \begin{rawhtml} <BR> \end{rawhtml}
+}
+\newcommand{\hvahline}
+{
+%BEGIN LATEX
+  \hline
+%END LATEX
+}
+\makeindex
+\newcommand{\insertpicturealt}[3][]{%
+\includegraphics[#1]{#2}%
+}
+
+\newcommand{\insertpicture}[2][]{\insertpicturealt[#1]{#2}{#2}}
+
+\newcommand{\insertpicturealtnothumb}[3][]{%
+\includegraphics[#1]{#2}%
+}
+
+\newcommand{\insertpicturenothumb}[2][]{ \insertpicturealtnothumb[#1]{#2}{#2} }
+
+\newenvironment{vcenterpage}
+{
+%BEGIN LATEX
+\newpage\vspace*{\fill}
+%END LATEX
+}
+{
+%BEGIN LATEX
+\vspace*{\fill}\par\pagebreak
+%END LATEX
+}
+
+ 
+%HEVEA \renewcommand{\cuttingunit}{part}
+%HEVEA \setcounter{cuttingdepth}{7}
+
+\newenvironment{EXAMPLE}
+   {\begin{flushleft} {\itshape Example:~}
+%BEGIN LATEX
+      %\marginpar{\Large\Writinghand}
+%END LATEX
+   }
+   { \end{flushleft}}
+
+
+\newenvironment{CITE}
+   { \begin{minipage}{\textwidth}\begin{itshape}\begin{quotation} }
+   { \end{quotation}\end{itshape}\end{minipage} \bigskip }
+\newcommand{\CITEFrom}[1] {
+\begin{flushright}
+{\scriptsize\textit{#1}}
+\end{flushright}}
+
+\newcommand{\INFO}[1] {%
+\begin{flushleft}
+\parbox{2cm}{\textbf{Info}}
+\vspace{0.5cm}
+\textcolor{darkred}{
+\textcolor{black}{\parbox{\linewidth-3cm}{#1}}
+}
+\end{flushleft}
+}
+
+\newcommand{\NEW}[1] {%
+\begin{flushleft}
+\parbox{2cm}{\textbf{New}}
+\vspace{0.5cm}
+\textcolor{darkred}{
+\textcolor{black}{\parbox{\linewidth-3cm}{#1}}
+}
+\end{flushleft}
+}
+
+\newcommand{\NOTE}[1] {%
+%BEGIN LATEX
+\begin{flushleft}
+\parbox{1cm}{\textcolor{deapdarkblue}{\LARGE \Info}}
+\vspace{0.5cm}
+\parbox{\linewidth-2cm}{#1 }
+\end{flushleft}
+%END LATEX
+%HEVEA \@open{DIV}{class="note"}#1\@close{DIV}
+}
+\newcommand{\WARNING}[1] {%
+%BEGIN LATEX
+\begin{flushleft}
+\parbox{1cm}{\textcolor{darkred}{\Huge \Stopsign}}
+\vspace{0.5cm}
+\textcolor{darkred}{\fbox{
+\textcolor{black}{\parbox{\linewidth-2cm}{\itshape #1 }}
+}}
+\end{flushleft}
+%END LATEX
+%HEVEA \@open{DIV}{class="warning"}#1\@close{DIV}
+}
+\setlength{\parskip}{0in}
+\setlength{\parindent}{0in}
+%BEGIN LATEX
+\setlongtables
+%END LATEX
+
+
+\title{TestCocoon}
+%BEGIN LATEX
+\newcommand\email[1]{\Email~{\itshape\texttt{#1}}}
+\newcommand\mail[1]{\Letter~{\itshape\texttt{#1}}}
+\newcommand\nbsp{~}
+%END LATEX
+
+% headers
+%BEGIN LATEX
+\fancyhf{}
+\fancyhead[RO,LE]{\TestCocoon }
+\fancyhead[LO,RE]{\rightmark}
+\fancyfoot[RO,LE]{\scriptsize\textrm{page~\thepage}}
+\fancyfoot[LO,RE]{\scriptsize\email{info@testcocoon.org}}
+\fancyfoot[CO,CE]{\scriptsize\copyright \thisyear\ (see AUTHORS file from the source distribution) }
+\renewcommand\headrule{}
+\addtocontents{toc}{\protect\thispagestyle{fancy}}
+\addtocontents{lof}{\protect\thispagestyle{fancy}}
+\addtocontents{lot}{\protect\thispagestyle{fancy}}
+%END LATEX
+
+
+%BEGIN LATEX
+\setcounter{tocdepth}{5}
+% part formats
+\usepackage{titlesec}
+\newcommand\partformat[1]{%
+\protect\thispagestyle{fancy}
+\begin{center}
+  \parbox[c]{.3\textwidth}{\filleft\Huge Part \fontsize{60}{60}\selectfont \textcolor{Gray}{\thepart}}
+  \hspace{0.5cm}
+  \parbox[c]{.5\textwidth}{\filright\Huge\bfseries #1}%
+\end{center}
+}
+\titleformat{\part}[block]
+  {\filleft\normalfont\sffamily}{}{0pt}{\partformat}
+\titlespacing*{\part}{0pt}{7cm}{0pt}[0pt]
+
+% chapter formats
+\newcommand\chapterformat[1]{%
+\protect\thispagestyle{fancy}
+\begin{center}
+  \parbox[c]{3cm}{\filcenter\LARGE \chaptertitlename \newline \fontsize{30}{30}\selectfont \textcolor{Gray}{\thechapter}}
+  \hfill
+  \fcolorbox{Graylight}{Graylightlight}{\parbox[c]{\linewidth-3.5cm}{\filright\Large\bfseries #1}}
+\end{center}
+}
+\newcommand\nonumchapterformat[1]{%
+\protect\thispagestyle{fancy}
+\begin{center}
+  \fcolorbox{Graylight}{Graylightlight}{\parbox[c]{\linewidth}{\Large\bfseries #1}}
+\end{center}
+}
+
+\newcommand\numchapter{
+\titleformat{\chapter}[block]
+  {\normalfont\sffamily}{}{0pt}{\chapterformat}
+\titlespacing*{\chapter}{0pt}{2cm}{2cm}[0pt]
+}
+\newcommand\nonumchapter{
+\titleformat{\chapter}[block]
+  {\normalfont\sffamily}{}{0pt}{\nonumchapterformat}
+\titlespacing*{\chapter}{0pt}{0cm}{1cm}[0pt]
+}
+\numchapter
+% section formats
+\newcommand\sectionformat[1]{%
+  \parbox[c]{3cm}{\filleft\large\textcolor{Gray}{\thesection}}
+  \hfill
+  \fcolorbox{Graylight}{Graylightlight}{\parbox[c]{\linewidth-3.5cm}{\filright\large\bfseries #1}}
+}
+\titleformat{\section}[block]
+  {\normalfont\sffamily}{}{0pt}{\sectionformat}
+\titlespacing*{\section}{0pt}{1.5cm}{0.75cm}[0pt]
+
+% subsection formats
+\newcommand\subsectionformat[1]{%
+  \parbox[c]{3cm}{\filleft\large\textcolor{Gray}{\thesubsection}}
+  \hfill
+  \fcolorbox{Graylight}{Graylightlight}{\parbox[c]{\linewidth-3.5cm}{\filright\large\bfseries #1}}
+}
+\titleformat{\subsection}[block]
+  {\normalfont\sffamily}{}{0pt}{\subsectionformat}
+\titlespacing*{\subsection}{0pt}{1cm}{0.5cm}[0pt]
+
+% subsubsection formats
+\newcommand\subsubsectionformat[1]{%
+  \parbox[c]{3cm}{\filleft\large\textcolor{Gray}{\thesubsubsection}}
+  \hfill
+  \fcolorbox{Graylight}{Graylightlight}{\parbox[c]{\linewidth-3.5cm}{\filright\large\bfseries #1}}
+}
+\titleformat{\subsubsection}[block]
+  {\normalfont\sffamily}{}{0pt}{\subsubsectionformat}
+\titlespacing*{\subsubsection}{0pt}{0.5cm}{0.25cm}[0pt]
+
+% click icon
+\newcommand{\GUIicon}[1]{\insertpicture[height=1em-2pt]{#1}\index{Icons!\insertpicture[height=1em-2pt]{#1}}}
+
+
+
+% definition of Description environment as before
+\renewenvironment{description}
+   {
+      \begin{list}{}{\let\makelabel\Descriptionlabel
+      \setlength\labelwidth{3cm}%
+      \setlength\leftmargin{\labelwidth+\labelsep}
+      \setlength\rightmargin{0.5cm}
+      \setlength\itemsep{0.4cm}
+      \setlength\parskip{0.3cm}
+      \setlength\parsep{0.3cm}
+      }
+      \sloppy
+   }%
+   {\end{list}
+   }
+
+\newcommand*\Descriptionlabel[1] {\hspace{0.25cm}\textsf{#1:}\hfill}
+
+\newcommand\cutname[1]{}
+
+\addtocounter{secnumdepth}{1}
+%END LATEX
+
+\newcommand{\arrow}[0] {\texttt{->}}
+\newcommand{\forExample}{{\itshape Example}:~}
+\newcommand{\GUIwindow}[1]{"{\tt #1}"}
+\newcommand{\GUImenu}[1]{"{\tt #1}"}
+\newcommand{\GUIButton}[1]{"{\tt #1}"}
+\newcommand{\GUIContextMenu}[1]{"{\tt #1}"\index{CoverageBrowser Menu!Context Menu!#1}}
+\newcommand{\GUIContextMenuTwo}[2]{"{\tt #1\arrow #2}"\index{CoverageBrowser Menu!Context Menu!#1!#2}}
+\newcommand{\GUIMenuTwo}[2]{"{\tt #1\arrow #2}"\index{CoverageBrowser Menu!#1!#2}}
+\newcommand{\GUIMenuTree}[3]{"{\tt #1\arrow #2\arrow #3}"\index{CoverageBrowser Menu!#1!#2!#3}}
+\newcommand{\GUIitem}[1]{"{\tt #1}"}
+\newcommand\registered{$^{\text{\fontsize{5}{5}{\textregistered}}}$}
+\newcommand\trademark{$^{\text{\fontsize{5}{5}{\texttrademark}}}$}
+\newcommand\Grayldots{\textcolor{Gray}{\ldots}}
+
+%HEVEA \htmlhead{ \TestCocoonHead }
+%HEVEA \htmlfoot{ \TestCocoonFoot }
+%BEGIN LATEX
+\newcommand{\ahref}[2] {#2}
+%END LATEX
+
+
+\newenvironment{ImageNoCaption}{}{}
+\newenvironment{CompactList}
+{\begin{list}{}{
+  \setlength{\leftmargin}{0.5cm}
+  \setlength{\itemsep}{0pt}
+  \setlength{\parsep}{0pt}
+  \setlength{\topsep}{0pt}
+  \renewcommand{\makelabel}{\hfill}}}
+{\end{list}}
+\newenvironment{CompactItemize}
+{
+  \begin{itemize}
+  \setlength{\itemsep}{-3pt}
+  \setlength{\parsep}{0pt}
+  \setlength{\topsep}{0pt}
+  \setlength{\partopsep}{0pt}
+}
+{\end{itemize}}
+\newcommand{\entrylabel}[1]{
+   {\parbox[b]{\labelwidth-4pt}{\makebox[0pt][l]{\textbf{#1}}\vspace{1.5\baselineskip}}}}
+\newenvironment{Desc}
+{\begin{description}
+}
+{\end{description}}
+
+\newenvironment{TestCocoonDownload}{}{}
+
+\newenvironment{TestCocoonDownloadLink}{}{}
+
+\newenvironment{ReleaseNote}[2] {\subsection{\label{#1}#2}} {}
+
+\newcommand{\CoverageScannerRegion}[1]
+{%
+\texttt{\#region~CoverageScanner(#1)}%
+\index{\#region!CoverageScanner(#1)}%
+}
+ 
+\newcommand{\CoverageScannerPragma}[1]
+{%
+\texttt{\#pragma~CoverageScanner(#1)}%
+\index{\#pragma!CoverageScanner(#1)}%
+}
+ 
+\newcommand{\minusminus}{---}
+\newcommand{\CMDoption}[1]
+{%
+\texttt{\minusminus cs-#1}%
+\index{Command Line Option!--cs-#1}%
+}
+
+\newcommand{\DEFINEoption}[1]%
+{%
+\texttt{#1}%
+\index{CoverageScanner define!#1}%
+}
+
+\newcommand{\DownloadLink}[2]
+{
+%HEVEA ~\@open{SPAN}{class="downloadlinkitem"}\ahref{binaries/#1}{\imgsrc[border="0"]{/pictures/#2}$_{download}$}~{\@fontsize{1}{\ahref{binaries/#1.md5}{$_{[md5]}$}}}\@close{SPAN}~
+}
+ 
+\newcommand{\TestCocoonLinuxTAR}[3]{\DownloadLink{TestCocoonSetup\_#1.#2.#3.tar.bz2}{linux.gif}}
+\newcommand{\TestCocoonWindowsSetup}[3]{\DownloadLink{TestCocoonSetup\_#1\_#2\_#3\_x86.exe}{windows.gif}}
+\newcommand{\TestCocoonMacosSetup}[3]{\DownloadLink{TestCocoonSetupMacOs\_#1.#2.#3.pkg.tbz2}{macosx.gif}}
+\newcommand{\TestCocoonLinuxSetup}[3]{\DownloadLink{TestCocoonSetup\_#1.#2.#3.run}{linux.gif}}
+\newcommand{\TestCocoonSrc}[3]{\DownloadLink{testcocoon-src-#1.#2.#3.tar.bz2}{src_tbz2.gif}}
+
+
+\newcommand{\FlashDemonstration}[5]{}
+
+\newcommand{\PrintSource}[1]
+{%
+  \lstinputlisting{#1}
+  \begin{flushright}
+
+\tiny\itshape To~download:~\texttt{http://www.testcocoon.org/#1}
+  \end{flushright}
+}
+
+\newcommand{\PrintLongSource}[1]
+{%
+\lstinputlisting{#1}
+\begin{flushright}
+\tiny\itshape To~download:~\texttt{http://www.testcocoon.org/#1}
+\end{flushright}
+}
+
+\newcommand{\CorCPlusPlus}[0]{\C/\CPlusPlus}
+\newcommand{\CSharp}[0]{C\#\index{Language C\#}}
+\newcommand{\C}[0]{C\index{Language C}}
+\newcommand{\CSV}[0]{\texttt{CSV}\index{CSV}}
+\newcommand{\HTML}[0]{\texttt{HTML}\index{HTML}}
+\newcommand{\XML}[0]{\texttt{XML}\index{XML}}
+\newcommand{\EMMA}[0]{\texttt{EMMA}\index{EMMA}}
+\newcommand{\CPlusPlus}[0]{C++\index{Language C++}}
+\newcommand{\paypal}[0]{\textit{PayPal}}
+\newcommand{\shareit}[0]{\textit{Share*It}}
+\newcommand{\Linux}[0]{Linux\trademark\index{Linux}}
+\newcommand{\Apple}[0]{Apple\registered}
+\newcommand{\Xcode}[0]{Xcode}
+\newcommand{\Eclipse}[0]{Eclipse\trademark\index{Eclipse}}
+\newcommand{\EclipseCDT}[0]{\Eclipse\ IDE for \CorCPlusPlus}
+\newcommand{\Nokia}[0]{Nokia}
+\newcommand{\Kitware}[0]{Kitware}
+\newcommand{\qmake}[0]{\texttt{qmake}\index{qmake}}
+\newcommand{\CMake}[0]{\texttt{CMake}\index{CMake}}
+\newcommand{\moc}[0]{Meta-Object Compiler (MOC)\index{MOC}\index{Meta-Object Compiler}}
+\newcommand{\QtLibrary}[0]{\ahref{http://www.qtsoftware.com}{Qt}\nbsp Library\index{Qt Library}}
+\newcommand{\AppleXcode}[0]{\Apple\ \Xcode\index{Apple Xcode}}
+\newcommand{\VisualDSP}[0]{VisualDSP\registered\index{VisualDSP}}
+\newcommand{\MacOSX}[0]{\Apple\ Mac\nbsp OS\nbsp X\index{Apple Mac OS X}}
+\newcommand{\Microsoft}[0]{Microsoft\registered}
+\newcommand{\MicrosoftWindows}[0]{\Microsoft\ Windows\index{Microsoft Windows}}
+\newcommand{\MicrosoftWindowsCE}[0]{\Microsoft\ Windows~CE\index{Microsoft Windows CE}}
+\newcommand{\VisualStudio}[0]{\Microsoft\ Visual Studio\registered\index{Microsoft Visual Studio}}
+\newcommand{\VisualStudioVsAddIn}[0]{\Microsoft\ Visual Studio\registered~2005~\&~2008~Add-In\index{Microsoft Visual Studio Add-In}}
+\newcommand{\VisualStudioNET}[0]{\VisualStudio~.NET\index{Microsoft Visual Studio .NET}}
+\newcommand{\CMakeLists}[0]{\texttt{CMakeLists.txt}\index{CMakeLists.txt}}
+\newcommand{\VisualExpress}[0]{\Microsoft\ Visual Express\registered\index{Microsoft Visual Studio Express}}
+\newcommand{\Mono}[0]{Mono\nbsp C\#\index{Mono C\#}}
+%HEVEA \lstavoidwhitepre
+\newcommand{\NotForBlackBoxTesting}{\NOTE{This feature is not available for black box testing.}}
+\newcounter{eurocounter}
+\newcounter{dollarcounter}
+\newcommand\EuroToDollar[1]{\setcounter{eurocounter}{#1}\setcounter{dollarcounter}{\value{eurocounter} * 125}\setcounter{dollarcounter}{\value{dollarcounter} / 100}\thedollarcounter}
+\newcommand\ProductPrice[1]{#1\Euro\ {\scriptsize(\approxSym~\EuroToDollar{#1}\Dollar)}}
+\newcommand{\GUITextButton}[1]{"\texttt{#1}"\index{CoverageBrowser Icons!#1}}
+
+%BEGIN LATEX
+\newcommand{\strike}[1]{\st{#1}}
+\newcommand{\chapterHTMLnonu}[1]{\chapter{#1}}
+\newcommand{\partHTMLnonu}[1]{\part{#1}}
+\newcommand{\sectionHTMLnonu}[1]{\section{#1}}
+\newcommand{\subsectionHTMLnonu}[1]{\subsection{#1}}
+\newcommand{\subsubsectionHTMLnonu}[1]{\subsubsection{#1}}
+%END LATEX
+\newcommand\TestCocoonLinuxPrice{249}
+\newcommand\TestCocoonWindowsPrice{249}
+\newcommand\TestCocoonBlackBoxPrice{39}
+\newcommand{\InsertPictureDescription}[2]
+{
+ \begin{figure}[H]
+   \begin{center}
+   \insertpicture[scale=0.5]{#1}
+   \caption{#2}
+   \label{fig:#1}
+   \end{center}
+ \end{figure}
+}
+\newenvironment{tableenv}
+{
+\begin{table}[htbp]
+}
+{
+\end{table}
+}
+\newenvironment{figureenv}
+{
+  \begin{figure}[H]
+}
+{
+  \end{figure}
+}
+
+\newcommand{\CountryInfo}{}
+
+\newcommand{\TitlePage}{
+\begin{titlepage}
+\begin{vcenterpage}
+\begin{center}
+%BEGIN LATEX
+  \vfill
+  \vspace{3cm}
+  \Huge \textbf{\TestCocoon} 
+  \smallskip\par
+  \large\textit{Code Coverage Measurement for \CorCPlusPlus\  or \CSharp}
+  \vspace{2cm}
+  \par
+  \insertpicture[width=5cm]{testcocoon_logo}
+  \par
+  \vspace{7cm}
+  \vfill
+{ \scriptsize
+  Copyright \copyright \thisyear\ (see AUTHORS file from the source distribution)\\
+}
+%END LATEX
+%HEVEA \large\textbf{\underline{Documentation}} \vspace{1cm}
+\end{center}
+\end{vcenterpage}
+\end{titlepage}
+}
+\newcommand{\ProfileOption}[1]{\texttt{#1}\index{Profile!#1}}
+\newcommand{\Shortcut}[1]{\texttt{#1}\index{Shortcut!#1}}
+\newcommand{\CppLibraryFunction}[1]{\texttt{\_\_coveragescanner\_#1}\index{\_\_coveragescanner\_#1}}
+\newcommand{\CsLibraryFunction}[1]{\texttt{CoverageScanner.\_\_coveragescanner\_#1}\index{CoverageScanner.\_\_coveragescanner\_#1}}
+\excludecomment{remotecontrolapi}

@@ -1,0 +1,41 @@
+<ui version="4.0" >
+ <class>WCommentUI</class>
+ <widget class="QDialog" name="WCommentUI" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>417</width>
+    <height>243</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Comment</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset resource="coveragebrowser.qrc" >:/images/testcocoon.svg</iconset>
+  </property>
+  <property name="sizeGripEnabled" >
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" >
+   <item>
+    <widget class="WCommentWidget" native="1" name="comment_p" />
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction>QPixmap</pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>WCommentWidget</class>
+   <extends>QWidget</extends>
+   <header>WCommentWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="coveragebrowser.qrc" />
+ </resources>
+ <connections/>
+</ui>

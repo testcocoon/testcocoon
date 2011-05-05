@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="856.90601"
+   height="257.67139"
+   viewBox="0 0 621 171"
+   id="svg3060"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="coveragebrowser_srclst_fig.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.0">
+  <metadata
+     id="metadata3109">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     inkscape:window-height="960"
+     inkscape:window-width="1266"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     guidetolerance="10.0"
+     gridtolerance="10.0"
+     objecttolerance="10.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base"
+     showgrid="false"
+     inkscape:zoom="1"
+     inkscape:cx="387.89999"
+     inkscape:cy="107.10001"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:current-layer="svg3060" />
+  <title
+     id="title3062">coveragebrowser_srclst_fig.fig</title>
+  <desc
+     id="desc3064">Converted by fig2vect, see http://fig2vect.sourceforge.net</desc>
+  <defs
+     id="defs3066">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 107.10001 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="775.79999 : 107.10001 : 1"
+       inkscape:persp3d-origin="387.89999 : 71.400004 : 1"
+       id="perspective3111" />
+    <style
+       type="text/css"
+       id="style3068">
+.cA {
+fill: none;
+stroke: #000000;
+stroke-width: 2.7;
+stroke-linecap: round;
+stroke-linejoin: round;
+}
+.cB {
+fill: #000000;
+stroke: #000000;
+stroke-width: 2.7;
+}
+.cC {
+font-family: &quot;Helvetica&quot;, sans-serif;
+font-style: normal;
+font-weight: normal;
+font-size: 14.4;
+text-anchor: start;
+fill: #000000;
+}
+</style>
+  </defs>
+<!-- line 180, layer 58 --><!-- line 160, layer 50 --><!-- line 165, layer 50 --><!-- line 169, layer 50 --><!-- line 172, layer 50 --><!-- line 175, layer 50 --><!-- line 178, layer 50 --><!-- line 162, layer 50 --><!-- line 163, layer 50 --><!-- line 167, layer 50 --><!-- line 183, layer 50 --><!-- line 184, layer 50 --><!-- line 185, layer 50 -->  <image
+     x="177.55156"
+     y="-7.3807015"
+     width="336.26089"
+     height="176.10216"
+     xlink:href="coveragebrowser_sourcelist.png"
+     id="image3070" />
+  <rect
+     x="529.33325"
+     y="116.53391"
+     width="90.444473"
+     height="61.111134"
+     rx="5.7037058"
+     ry="5.7037058"
+     class="cA"
+     id="rect3072"
+     style="fill:#ececec;stroke:#000000;stroke-width:2.44444537;stroke-linecap:round;stroke-linejoin:round" />
+  <rect
+     x="-94.111137"
+     y="10.405025"
+     width="92.888916"
+     height="41.555573"
+     rx="5.7037058"
+     ry="5.7037058"
+     class="cA"
+     id="rect3074"
+     style="fill:#ececec;stroke:#000000;stroke-width:2.44444537;stroke-linecap:round;stroke-linejoin:round"
+     transform="scale(-1,1)" />
+  <g
+     id="g3076"
+     transform="matrix(-0.9053501,0,0,0.9053501,554.88913,2.7186052)">
+    <polyline
+       class="cA"
+       points="506.25,19.29 390.15,19.29 333.99,53.48"
+       id="polyline3078"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="345.7,51.09 332.06,54.65 341.49,44.17 340.71,49.38 345.7,51.09 "
+       id="polygon3080"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <g
+     transform="matrix(0.9053501,0,0,0.9053501,-4.4553429,18.662008)"
+     id="g3082">
+    <polyline
+       class="cA"
+       points="176.85,100.29 230.85,100.29 289.14,78.43"
+       id="polyline3084"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="277.19,78.59 291.25,77.64 280.03,86.17 281.77,81.19 277.19,78.59 "
+       id="polygon3086"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <g
+     id="g3088"
+     transform="matrix(0.9053501,0,0,0.9053501,63.666477,40.403016)">
+    <polyline
+       class="cA"
+       points="511.65,113.79 479.25,113.79 428.33,79.84"
+       id="polyline3090"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="435.45,89.45 426.46,78.6 439.94,82.71 434.88,84.21 435.45,89.45 "
+       id="polygon3092"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <rect
+     x="1.6557707"
+     y="72.792892"
+     width="154.00006"
+     height="70.888916"
+     rx="5.7037058"
+     ry="5.7037058"
+     class="cA"
+     id="rect3094"
+     style="fill:#ececec;stroke:#000000;stroke-width:2.44444537;stroke-linecap:round;stroke-linejoin:round" />
+  <text
+     x="539.11102"
+     y="143.42281"
+     class="cC"
+     id="text3096"
+     style="font-size:13.03704071px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Statistics</text>
+  <text
+     x="539.11102"
+     y="167.86725"
+     class="cC"
+     id="text3098"
+     style="font-size:13.03704071px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">per File</text>
+  <text
+     x="11.998406"
+     y="36.569225"
+     class="cC"
+     id="text3100"
+     style="font-size:13.03704071px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Source</text>
+  <text
+     x="16.322443"
+     y="94.792892"
+     class="cC"
+     id="text3102"
+     style="font-size:13.03704071px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Header and</text>
+  <text
+     x="16.322443"
+     y="114.34846"
+     class="cC"
+     id="text3104"
+     style="font-size:13.03704071px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Source Files</text>
+  <text
+     x="16.322443"
+     y="133.90402"
+     class="cC"
+     id="text3106"
+     style="font-size:13.03704071px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Compiled</text>
+</svg>

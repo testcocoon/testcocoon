@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="886.67938"
+   height="279.88486"
+   viewBox="0 0 837 360"
+   id="svg2728"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="coveragebrowser_method_list.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.0">
+  <metadata
+     id="metadata2783">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     inkscape:window-height="960"
+     inkscape:window-width="1266"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     guidetolerance="10.0"
+     gridtolerance="10.0"
+     objecttolerance="10.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base"
+     showgrid="false"
+     inkscape:zoom="1"
+     inkscape:cx="522.90002"
+     inkscape:cy="225"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:current-layer="svg2728" />
+  <title
+     id="title2730">coveragebrowser_method_list.fig</title>
+  <desc
+     id="desc2732">Converted by fig2vect, see http://fig2vect.sourceforge.net</desc>
+  <defs
+     id="defs2734">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 225 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="1045.8 : 225 : 1"
+       inkscape:persp3d-origin="522.90002 : 150 : 1"
+       id="perspective2785" />
+    <style
+       type="text/css"
+       id="style2736">
+.cA {
+fill: none;
+stroke: #000000;
+stroke-width: 2.7;
+stroke-linecap: round;
+stroke-linejoin: round;
+}
+.cB {
+fill: #000000;
+stroke: #000000;
+stroke-width: 2.7;
+}
+.cC {
+font-family: &quot;Helvetica&quot;, sans-serif;
+font-style: normal;
+font-weight: normal;
+font-size: 14.4;
+text-anchor: start;
+fill: #000000;
+}
+</style>
+  </defs>
+<!-- line 161, layer 58 --><!-- line 158, layer 50 --><!-- line 164, layer 50 --><!-- line 166, layer 50 --><!-- line 169, layer 50 --><!-- line 172, layer 50 --><!-- line 174, layer 50 --><!-- line 176, layer 50 --><!-- line 179, layer 50 --><!-- line 181, layer 50 --><!-- line 182, layer 50 --><!-- line 183, layer 50 --><!-- line 184, layer 50 --><!-- line 185, layer 50 -->  <image
+     x="177.5356"
+     y="30.721771"
+     width="569.80573"
+     height="329.27823"
+     xlink:href="coveragebrowser_method.png"
+     id="image2738" />
+  <g
+     transform="matrix(1.6071125,0,0,1.6071125,-158.25148,-10.836367)"
+     id="g2740">
+    <polyline
+       class="cA"
+       points="135,100.5 189,100.5 247.39,76.17"
+       id="polyline2742"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="235.44,76.76 249.46,75.31 238.56,84.24 240.12,79.2 235.44,76.76 "
+       id="polygon2744"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <rect
+     x="821.68335"
+     y="2.1696281"
+     width="164.88974"
+     height="73.766464"
+     rx="10.124809"
+     ry="10.124809"
+     class="cA"
+     id="rect2746"
+     style="fill:#ececec;stroke:#000000;stroke-width:4.33920383;stroke-linecap:round;stroke-linejoin:round" />
+  <g
+     id="g2748"
+     transform="matrix(1.6071125,0,0,1.6071125,-349.90173,-37.847474)">
+    <polyline
+       class="cA"
+       points="729,41.1 650.7,41.1 538.23,92.22"
+       id="polyline2750"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="550.14,91.26 536.18,93.16 546.79,83.88 545.39,88.97 550.14,91.26 "
+       id="polygon2752"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <g
+     id="g2754"
+     transform="matrix(1.6071125,0,0,1.6071125,-365.33665,-201.20036)">
+    <polyline
+       class="cA"
+       points="726.3,284.1 710.1,284.1 648.86,254.71"
+       id="polyline2756"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="657.25,263.23 646.84,253.73 660.76,255.92 655.96,258.11 657.25,263.23 "
+       id="polygon2758"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <rect
+     x="806.24841"
+     y="220.66666"
+     width="160.55054"
+     height="69.427261"
+     rx="10.124809"
+     ry="10.124809"
+     class="cA"
+     id="rect2760"
+     style="fill:#ececec;stroke:#000000;stroke-width:4.33920383;stroke-linecap:round;stroke-linejoin:round" />
+  <rect
+     x="-145.23387"
+     y="85.590385"
+     width="203.94258"
+     height="95.462486"
+     rx="10.124809"
+     ry="10.124809"
+     class="cA"
+     id="rect2762"
+     style="fill:#ececec;stroke:#000000;stroke-width:4.33920383;stroke-linecap:round;stroke-linejoin:round" />
+  <g
+     transform="matrix(1.6071125,0,0,1.6071125,-158.25148,-10.836367)"
+     id="g2764">
+    <polyline
+       class="cA"
+       points="135,170.7 189,170.7 245.51,128.93"
+       id="polyline2766"
+       style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+       class="cB"
+       points="234.06,132.36 247.32,127.59 238.87,138.87 239.18,133.61 234.06,132.36 "
+       id="polygon2768"
+       style="fill:#000000;stroke:#000000;stroke-width:2.70000005" />
+  </g>
+  <rect
+     x="-149.57307"
+     y="241.8017"
+     width="208.28178"
+     height="52.070446"
+     rx="10.124809"
+     ry="10.124809"
+     class="cA"
+     id="rect2770"
+     style="fill:#ececec;stroke:#000000;stroke-width:4.33920383;stroke-linecap:round;stroke-linejoin:round" />
+  <text
+     x="839.0401"
+     y="45.561668"
+     class="cC"
+     id="text2772"
+     style="font-size:23.14241982px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Prototype</text>
+  <text
+     x="823.60522"
+     y="268.39792"
+     class="cC"
+     id="text2774"
+     style="font-size:23.14241982px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Statistics</text>
+  <text
+     x="-132.21626"
+     y="124.64323"
+     class="cC"
+     id="text2776"
+     style="font-size:23.14241982px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Namespace</text>
+  <text
+     x="-132.21626"
+     y="163.69606"
+     class="cC"
+     id="text2778"
+     style="font-size:23.14241982px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">or Class</text>
+  <text
+     x="-132.21626"
+     y="280.85455"
+     class="cC"
+     id="text2780"
+     style="font-size:23.14241982px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Method</text>
+</svg>

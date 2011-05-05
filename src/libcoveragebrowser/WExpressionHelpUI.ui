@@ -1,0 +1,246 @@
+<ui version="4.0" >
+ <class>WExpressionHelpUI</class>
+ <widget class="QDialog" name="WExpressionHelpUI" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>627</width>
+    <height>469</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Filter Expression Help</string>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="leftMargin" >
+    <number>9</number>
+   </property>
+   <property name="topMargin" >
+    <number>9</number>
+   </property>
+   <property name="rightMargin" >
+    <number>9</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>9</number>
+   </property>
+   <property name="horizontalSpacing" >
+    <number>6</number>
+   </property>
+   <property name="verticalSpacing" >
+    <number>6</number>
+   </property>
+   <item row="0" column="0" >
+    <widget class="QTextEdit" name="textEdit" >
+     <property name="html" >
+      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Helvetica'; font-size:14pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-size:18pt; font-weight:600; text-decoration: underline;">Filter using wildcard expression or regular expressions.&lt;/span>&lt;span style=" font-size:13pt; font-weight:600;">&lt;br />&lt;/span>&lt;/p>
+&lt;h1>Wildcard Expression&lt;/h1>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8pt;">      &lt;/p>
+&lt;table border="1" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;" cellspacing="0" cellpadding="5">&lt;thead>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt; font-weight:600;">Element&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt; font-weight:600;">Meaning&lt;/p>&lt;/td>&lt;/tr>&lt;/thead>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">*&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">any characters (0 or more)&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">?&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">any character&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">[...]&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">set of character&lt;/p>&lt;/td>&lt;/tr>&lt;/table>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;br />&lt;span style=" font-style:italic;">example:&lt;/span> &lt;span style=" font-family:'Courier New,courier';">foo*bar&lt;/span> match any tests containing the string &lt;span style=" font-family:'Courier New,courier';">foo&lt;/span> followed by &lt;span style=" font-family:'Courier New,courier';">bar&lt;/span> &lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;br />&lt;/p>
+&lt;h1>Regular Expression&lt;/h1>
+&lt;h2>Pattern matching&lt;/h2>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8pt;">      &lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">The first character must be '&lt;span style=" font-family:'Courier New,courier';">=&lt;/span>' to activate the regular expressions. &lt;/p>
+&lt;table border="1" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;" cellspacing="0" cellpadding="5">&lt;thead>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt; font-weight:600;">Element&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt; font-weight:600;">Meaning&lt;/p>&lt;/td>&lt;/tr>&lt;/thead>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">c&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Any character represents itself unless it has a special regexp meaning. Thus &lt;span style=" font-family:'Courier New,courier';">c&lt;/span> matches the character &lt;span style=" font-style:italic;">c&lt;/span>.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\c&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">A character that follows a backslash matches the character itself except where mentioned below. For example if you wished to match a literal caret at the beginning of a string you would write &lt;span style=" font-family:'Courier New,courier';">^&lt;/span>.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\a&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This matches the ASCII bell character (BEL, 0x07).&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\f&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This matches the ASCII form feed character (FF, 0x0C).&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\n&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This matches the ASCII line feed character (LF, 0x0A, Unix newline).&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\r&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This matches the ASCII carriage return character (CR, 0x0D).&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\t&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This matches the ASCII horizontal tab character (HT, 0x09).&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\v&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This matches the ASCII vertical tab character (VT, 0x0B).&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\x&lt;/span>&lt;span style=" font-family:'Courier New,courier'; font-style:italic;">hhhh&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This matches the Unicode character corresponding to the hexadecimal number &lt;span style=" font-style:italic;">hhhh&lt;/span> (between 0x0000 and 0xFFFF).&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\0&lt;/span>&lt;span style=" font-family:'Courier New,courier'; font-style:italic;">ooo&lt;/span> (i.e., \zero &lt;span style=" font-style:italic;">ooo&lt;/span>)&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">matches the ASCII/Latin1 character corresponding to the octal number &lt;span style=" font-style:italic;">ooo&lt;/span> (between 0 and 0377).&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">. (dot)&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This matches any character (including newline).&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\d&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This matches a digit.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\D&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This matches a non-digit.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\s&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This matches a whitespace.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\S&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This matches a non-whitespace.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\w&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This matches a word character.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">\W&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">This matches a non-word character.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">^&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">The caret negates the character set if it occurs as the first character, i.e. immediately after the opening square bracket. For example, &lt;span style=" font-family:'Courier New,courier';">[abc]&lt;/span> matches 'a' or 'b' or 'c', but &lt;span style=" font-family:'Courier New,courier';">[^abc]&lt;/span> matches anything &lt;span style=" font-style:italic;">except&lt;/span> 'a' or 'b' or 'c'.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">-&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">The dash is used to indicate a range of characters, for example &lt;span style=" font-family:'Courier New,courier';">[W-Z]&lt;/span> matches 'W' or 'X' or 'Y' or 'Z'.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier'; font-style:italic;">E&lt;/span>&lt;span style=" font-family:'Courier New,courier';">?&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Matches zero or one occurrence of &lt;span style=" font-style:italic;">E&lt;/span>. This quantifier means "the previous expression is optional" since it will match whether or not the expression occurs in the string. It is the same as &lt;span style=" font-family:'Courier New,courier'; font-style:italic;">E&lt;/span>&lt;span style=" font-family:'Courier New,courier';">{0,1}&lt;/span>. For example &lt;span style=" font-family:'Courier New,courier';">dents?&lt;/span> will match 'dent' and 'dents'.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier'; font-style:italic;">E&lt;/span>&lt;span style=" font-family:'Courier New,courier';">+&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Matches one or more occurrences of &lt;span style=" font-style:italic;">E&lt;/span>. This is the same as &lt;span style=" font-family:'Courier New,courier'; font-style:italic;">E&lt;/span>&lt;span style=" font-family:'Courier New,courier';">{1,}&lt;/span>. For example, &lt;span style=" font-family:'Courier New,courier';">0+&lt;/span> will match '0', '00', '000', etc.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier'; font-style:italic;">E&lt;/span>&lt;span style=" font-family:'Courier New,courier';">*&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Matches zero or more occurrences of &lt;span style=" font-style:italic;">E&lt;/span>. This is the same as &lt;span style=" font-family:'Courier New,courier'; font-style:italic;">E&lt;/span>&lt;span style=" font-family:'Courier New,courier';">{0,}&lt;/span>. The &lt;span style=" font-family:'Courier New,courier';">*&lt;/span> quantifier is often used by a mistake. Since it matches &lt;span style=" font-style:italic;">zero&lt;/span> or more occurrences it will match no occurrences at all. For example if we want to match strings that end in whitespace and use the regexp &lt;span style=" font-family:'Courier New,courier';">\s*$&lt;/span> we would get a match on every string. This is because we have said find zero or more whitespace followed by the end of string, so even strings that don't end in whitespace will match. The regexp we want in this case is &lt;span style=" font-family:'Courier New,courier';">\s+$&lt;/span> to match strings that have at least one whitespace at the end.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier'; font-style:italic;">E&lt;/span>&lt;span style=" font-family:'Courier New,courier';">{n}&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Matches exactly &lt;span style=" font-style:italic;">n&lt;/span> occurrences of the expression. This is the same as repeating the expression &lt;span style=" font-style:italic;">n&lt;/span> times. For example, &lt;span style=" font-family:'Courier New,courier';">x{5}&lt;/span> is the same as &lt;span style=" font-family:'Courier New,courier';">xxxxx&lt;/span>. It is also the same as &lt;span style=" font-family:'Courier New,courier'; font-style:italic;">E&lt;/span>&lt;span style=" font-family:'Courier New,courier';">{n,n}&lt;/span>, e.g. &lt;span style=" font-family:'Courier New,courier';">x{5,5}&lt;/span>.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier'; font-style:italic;">E&lt;/span>&lt;span style=" font-family:'Courier New,courier';">{n,}&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Matches at least &lt;span style=" font-style:italic;">n&lt;/span> occurrences of the expression.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier'; font-style:italic;">E&lt;/span>&lt;span style=" font-family:'Courier New,courier';">{,m}&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Matches at most &lt;span style=" font-style:italic;">m&lt;/span> occurrences of the expression. This is the same as &lt;span style=" font-family:'Courier New,courier'; font-style:italic;">E&lt;/span>&lt;span style=" font-family:'Courier New,courier';">{0,m}&lt;/span>.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier'; font-style:italic;">E&lt;/span>&lt;span style=" font-family:'Courier New,courier';">{n,m}&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Matches at least &lt;span style=" font-style:italic;">n&lt;/span> occurrences of the expression and at most &lt;span style=" font-style:italic;">m&lt;/span> occurrences of the expression.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier';">()&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Permits to group expressions into sub-expressions.&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;span style=" font-family:'Courier New,courier'; font-style:italic;">|&lt;/span>&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Alternative. &lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Example: &lt;span style=" font-family:'Courier New,courier';">aaa|bbb&lt;/span> matches the string &lt;span style=" font-family:'Courier New,courier';">aaa&lt;/span> or &lt;span style=" font-family:'Courier New,courier';">bbb.&lt;/span>&lt;/p>&lt;/td>&lt;/tr>&lt;/table>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;"> &lt;/p>
+&lt;h2>String substitution&lt;/h2>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&lt;/p>
+&lt;table border="1" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;" cellspacing="0" cellpadding="5">&lt;thead>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt; font-weight:600;">Element&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt; font-weight:600;">Meaning&lt;/p>&lt;/td>&lt;/tr>&lt;/thead>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">&amp;amp;&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Matched expression&lt;/p>&lt;/td>&lt;/tr>
+&lt;tr>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">\n&lt;/p>&lt;/td>
+&lt;td>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">sub-expression number n.&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">Example: the regular expression is "&lt;span style=" font-family:'Courier New,courier';">(.*):([0-9]*)&lt;/span>" matches the string "&lt;span style=" font-family:'Courier New,courier';">joe:18&lt;/span>."&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;">The replacement string "&lt;span style=" font-family:'Courier New,courier';">\1 is \2&lt;/span>" will produce the result: "&lt;span style=" font-family:'Courier New,courier';">joe is 18&lt;/span>"&lt;/p>&lt;/td>&lt;/tr>
+&lt;/table>&lt;/body>&lt;/html></string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

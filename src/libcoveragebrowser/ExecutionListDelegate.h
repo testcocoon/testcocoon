@@ -1,0 +1,41 @@
+/****************************************************************************
+ **
+ ** Copyright (C) see AUTHORS included in the packaging of this file.
+ **                ---   All rights reserved ---
+ **
+ ** This file may be distributed and/or modified under the terms of the
+ ** GNU General Public License version 2 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.TXT included in the
+ ** packaging of this file.
+ **
+ ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+ ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** Contact info@testcocoon.org if any conditions of this licensing are
+ ** not clear to you.
+ **
+ ****************************************************************************/
+
+#ifndef EXECUTION_LIST_EDIT_STATE_H
+#define EXECUTION_LIST_EDIT_STATE_H
+#include <QItemDelegate>
+
+class ExecutionListDelegate : public QItemDelegate
+{
+  Q_OBJECT
+
+  public:
+    ExecutionListDelegate(QObject *parent = 0);
+
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
+        const QModelIndex &index) const;
+
+    void setEditorData(QWidget *editor, const QModelIndex &index) const;
+    void setModelData(QWidget *editor, QAbstractItemModel *model,
+        const QModelIndex &index) const;
+
+    void updateEditorGeometry(QWidget *editor,
+        const QStyleOptionViewItem &option, const QModelIndex &index) const;
+};
+
+#endif

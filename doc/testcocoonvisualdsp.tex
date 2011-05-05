@@ -1,0 +1,73 @@
+\section{Installation of \TestCocoon\ with \VisualDSP\ support}
+
+Download and install the version 5.2.6 of \TestCocoon\ from \url{http://www.testcocoon.org/download.html}.
+Verify that the installation program \TestCocoon\ is detecting the presence of \VisualDSP. (cf. picture)
+
+\InsertPictureDescription{visualdsp_install_fig}{\VisualDSP\ installation}
+
+\section{Instrumenting an application}
+\subsection{Using \CoverageScanner\ library}
+
+4 Functions of \CoverageScanner\ library are used in the sample:
+\begin{itemize}
+\item \verb$__coveragescanner_save()$: this function saves the execution report (file extension \verb$.csmes$).
+           This function should be called after each test execution.
+\item \verb$__coveragescanner_clear()$: clears coverage information into the RAM. Should be called before running a test.
+\item \verb$__coveragescanner_filename()$: Set the location of the report file.
+\item \verb$__coveragescanner_set_custom_io()$: permits to specify I/O functions which are used to generate the report file.
+           Only 3 functions needs to be defined: 
+      \begin{itemize}
+           \item \verb$fopenappend$: open the report file in append mode. \\
+                                     \forExample: to use a RS232 interface instead of a file: this function can be used to setup the communication link.
+           \item \verb$fputs$: write a string into the report file. \\
+                                     \forExample: to use a RS232 interface instead of a file: this function can be used to write bytes to the interface.
+           \item \verb$fclose$: close the communication link. \\
+                                     \forExample: to use a RS232 interface instead of a file: this function can be used to release the resource of the communication link.
+      \end{itemize}
+\end{itemize}
+
+\subsection{Building an application}
+
+To compile a project with code coverage support, set the environment variable \verb$COVERAGESCANNER_ARGS$
+to the list of \CoverageScanner\ command line switches. \\
+
+Example:
+\begin{itemize}
+\item \verb$COVERAGESCANNER_ARGS=--cs-on$: to activate the code coverage analysis with code coverage hit.
+\item \verb$COVERAGESCANNER_ARGS=--cs-on --cs-count$: to activate the code coverage analysis with code coverage count.
+\item \ldots
+\end{itemize}
+
+Open \VisualDSP\ IDE and rebuild the complete project. A \verb$.csmes$ file called {\itshape appname.dxe.csmes} should be created after the build process.
+
+\bigskip\par
+The following batch script can be used as example:\\
+\begin{verbatim}
+set COVERAGESCANNER_ARGS="--cs-on"
+
+call "%ProgramFiles%\Analog Devices\VisualDSP 5.0\VDSP.bat"
+"%ProgramFiles%\Analog Devices\VisualDSP 5.0\System\Idde.exe"
+\end{verbatim}
+
+\section{Example}
+
+\subsection{Sample provided}
+The sample provided is a simple example working with \VisualDSP\ simulator. \\
+
+Proceed as follows:
+\begin{enumerate}
+\item Click on \verb$DSP.bat$, \VisualDSP\ should start.
+\item Open the \verb$test$ sample, and recompile it.
+\item A file \verb$test.dxe.csmes$ should be recreated.
+\item Open \CoverageBrowser\ and open the file \verb$test.dxe.csmes$.
+\item The source code should be visible, and the instrumented lines should be gray (unknown state).
+\item Execute in the application, a file \verb$cov.csexe$ should be created.
+\item Using \CoverageBrowser\ click on \GUImenu{Load execution report}, enter a execution title and select
+      the execution report \verb$cov.csexe$. Click on "Import".
+\item The execution report should be imported and the code parts executed should be marks as green.
+
+\end{enumerate}
+
+
+\subsection{Sample of source code}
+\PrintLongSource{visualdsp.c}

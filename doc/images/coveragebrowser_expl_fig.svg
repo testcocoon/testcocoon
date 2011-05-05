@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="739.76953"
+   height="470.71936"
+   viewBox="0 0 684 225"
+   id="svg2588"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="coveragebrowser_expl_fig.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.0">
+  <metadata
+     id="metadata2643">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     inkscape:window-height="960"
+     inkscape:window-width="1266"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     guidetolerance="10.0"
+     gridtolerance="10.0"
+     objecttolerance="10.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base"
+     showgrid="false"
+     inkscape:zoom="1"
+     inkscape:cx="427.5"
+     inkscape:cy="140.39999"
+     inkscape:window-x="1280"
+     inkscape:window-y="0"
+     inkscape:current-layer="svg2588" />
+  <title
+     id="title2590">coveragebrowser_expl_fig.fig</title>
+  <desc
+     id="desc2592">Converted by fig2vect, see http://fig2vect.sourceforge.net</desc>
+  <defs
+     id="defs2594">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 140.39999 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="855 : 140.39999 : 1"
+       inkscape:persp3d-origin="427.5 : 93.599996 : 1"
+       id="perspective2645" />
+    <style
+       type="text/css"
+       id="style2596">
+.cA {
+fill: none;
+stroke: #000000;
+stroke-width: 2.7;
+stroke-linecap: round;
+stroke-linejoin: round;
+}
+.cB {
+fill: #000000;
+stroke: #000000;
+stroke-width: 2.7;
+}
+.cC {
+font-family: &quot;Helvetica&quot;, sans-serif;
+font-style: normal;
+font-weight: normal;
+font-size: 14.4;
+text-anchor: start;
+fill: #000000;
+}
+</style>
+  </defs>
+<!-- line 183, layer 58 --><!-- line 159, layer 50 --><!-- line 161, layer 50 --><!-- line 167, layer 50 --><!-- line 170, layer 50 --><!-- line 173, layer 50 --><!-- line 176, layer 50 --><!-- line 179, layer 50 --><!-- line 181, layer 50 --><!-- line 163, layer 50 --><!-- line 164, layer 50 --><!-- line 165, layer 50 --><!-- line 186, layer 50 --><!-- line 187, layer 50 -->  <image
+     x="148.86258"
+     y="-104.45126"
+     xlink:href="coveragebrowser_explanation.png"
+     id="image2598"
+     width="344.88034"
+     height="434.56772" />
+  <rect
+     x="523.54797"
+     y="94.087372"
+     width="158.89423"
+     height="81.004898"
+     rx="7.269671"
+     ry="7.269671"
+     class="cA"
+     id="rect2600"
+     style="fill:#ececec;stroke:#000000;stroke-width:3.11557317;stroke-linecap:round;stroke-linejoin:round" />
+  <rect
+     x="511.86975"
+     y="278.7095"
+     width="124.62292"
+     height="49.849171"
+     rx="7.269671"
+     ry="7.269671"
+     class="cA"
+     id="rect2602"
+     style="fill:#ececec;stroke:#000000;stroke-width:3.11557317;stroke-linecap:round;stroke-linejoin:round" />
+  <polyline
+     style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round"
+     id="polyline2606"
+     points="541.8,72.87 425.7,72.87 397.82,40.35"
+     class="cA"
+     transform="matrix(1.153916,0,0,1.153916,-101.64373,41.157251)" />
+  <polygon
+     style="fill:#000000;stroke:#000000;stroke-width:2.70000005"
+     id="polygon2608"
+     points="402.07,51.52 396.36,38.64 408.22,46.25 402.95,46.32 402.07,51.52 "
+     class="cB"
+     transform="matrix(1.153916,0,0,1.153916,-101.64373,41.157251)" />
+  <polyline
+     style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round"
+     id="polyline2612"
+     points="112.5,72.87 161.1,72.87 201.48,41.99"
+     class="cA"
+     transform="matrix(1.153916,0,0,1.153916,-11.031732,78.141735)" />
+  <polygon
+     style="fill:#000000;stroke:#000000;stroke-width:2.70000005"
+     id="polygon2614"
+     points="190.08,45.61 203.27,40.62 195,52.04 195.23,46.77 190.08,45.61 "
+     class="cB"
+     transform="matrix(1.153916,0,0,1.153916,-11.031732,78.141735)" />
+  <polyline
+     style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round"
+     id="polyline2618"
+     points="117.9,164.67 147.6,164.67 202.98,86.64"
+     class="cA"
+     transform="matrix(1.153916,0,0,1.153916,-3.634835,-113.253)" />
+  <polygon
+     style="fill:#000000;stroke:#000000;stroke-width:2.70000005"
+     id="polygon2620"
+     points="193.17,93.47 204.28,84.8 199.77,98.15 198.42,93.06 193.17,93.47 "
+     class="cB"
+     transform="matrix(1.153916,0,0,1.153916,-3.634835,-113.253)" />
+  <polyline
+     style="fill:none;stroke:#000000;stroke-width:2.70000005;stroke-linecap:round;stroke-linejoin:round"
+     id="polyline2624"
+     points="544.5,159.27 471.6,159.27 433.96,131.04"
+     class="cA"
+     transform="matrix(1.153916,0,0,1.153916,-116.43753,110.50316)" />
+  <polygon
+     style="fill:#000000;stroke:#000000;stroke-width:2.70000005"
+     id="polygon2626"
+     points="440.53,141.03 432.16,129.69 445.39,134.55 440.26,135.76 440.53,141.03 "
+     class="cB"
+     transform="matrix(1.153916,0,0,1.153916,-116.43753,110.50316)" />
+  <rect
+     x="1.5577871"
+     y="48.722187"
+     width="130.85408"
+     height="52.964745"
+     rx="7.269671"
+     ry="7.269671"
+     class="cA"
+     id="rect2628"
+     style="fill:#ececec;stroke:#000000;stroke-width:3.11557317;stroke-linecap:round;stroke-linejoin:round" />
+  <rect
+     x="31.547771"
+     y="131.07185"
+     width="84.120476"
+     height="52.964745"
+     rx="7.269671"
+     ry="7.269671"
+     class="cA"
+     id="rect2630"
+     style="fill:#ececec;stroke:#000000;stroke-width:3.11557317;stroke-linecap:round;stroke-linejoin:round" />
+  <text
+     x="542.24139"
+     y="128.35867"
+     class="cC"
+     id="text2632"
+     style="font-size:16.61639023px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Preprocessed</text>
+  <text
+     x="542.24139"
+     y="159.51442"
+     class="cC"
+     id="text2634"
+     style="font-size:16.61639023px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Source</text>
+  <text
+     x="524.33203"
+     y="312.98077"
+     class="cC"
+     id="text2636"
+     style="font-size:16.61639023px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Comment</text>
+  <text
+     x="10.90451"
+     y="82.993507"
+     class="cC"
+     id="text2638"
+     style="font-size:16.61639023px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">Truth-Table</text>
+  <text
+     x="47.125633"
+     y="165.34317"
+     class="cC"
+     id="text2640"
+     style="font-size:16.61639023px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:'&quot;Helvetica&quot;, sans-serif'">State</text>
+</svg>

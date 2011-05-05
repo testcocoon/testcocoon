@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCocoonVs2008AddIn", "TestCocoonVs2005AddIn\TestCocoonVs2008AddIn.csproj", "{2E4FF36E-7B0E-4409-9CF6-EE1AC9D2B92C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E4FF36E-7B0E-4409-9CF6-EE1AC9D2B92C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E4FF36E-7B0E-4409-9CF6-EE1AC9D2B92C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E4FF36E-7B0E-4409-9CF6-EE1AC9D2B92C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E4FF36E-7B0E-4409-9CF6-EE1AC9D2B92C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA53E1B8-4ED9-4AB4-980A-7E4694854606}.Debug|Any CPU.ActiveCfg = Debug
+		{AA53E1B8-4ED9-4AB4-980A-7E4694854606}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

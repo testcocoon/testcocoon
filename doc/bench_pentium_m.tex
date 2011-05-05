@@ -1,0 +1,54 @@
+\begin{tabularx}{\linewidth}{|l|X|X|X|}
+ \hline 
+\textbf{Compiler} &  
+\textbf{Normal Execution} \hvanewline (time) &  
+\textbf{Execution with Instrumentation} \hvanewline (time)  & 
+\textbf{Difference} \hvanewline (\%) \\ 
+ \hline 
+ \hline 
+GCC without optimization
+ & 
+	100
+ & 
+	119.6
+ & 
+	19.6
+ \\ 
+ \hline 
+GCC with optimization -Os
+ & 
+	51.4
+ & 
+	76.2
+ & 
+	48.1
+ \\ 
+ \hline 
+GCC with optimization -O1
+ & 
+	49.4
+ & 
+	76.4
+ & 
+	54.6
+ \\ 
+ \hline 
+GCC with optimization -O2
+ & 
+	48
+ & 
+	74
+ & 
+	54
+ \\ 
+ \hline 
+GCC with optimization -O3
+ & 
+	48
+ & 
+	74.3
+ & 
+	54.8
+ \\ 
+ \hline 
+\end{tabularx}

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WFunctionListUI</class>
+ <widget class="QWidget" name="WFunctionListUI">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>415</width>
+    <height>383</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>1</number>
+   </property>
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QStackedWidget" name="pages_p">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="treeview">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="margin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="FunctionListView" name="functionsView_p">
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="options">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QScrollArea" name="more_area_p">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>219</width>
+            <height>167</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QGroupBox" name="modifications_p">
+             <property name="title">
+              <string>Modifications</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_3">
+              <item>
+               <widget class="QCheckBox" name="same_p">
+                <property name="text">
+                 <string>Same</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="different_indentation_p">
+                <property name="text">
+                 <string>Different indentation</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="different_comment_p">
+                <property name="text">
+                 <string>Different C/C++ comments</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="different_p">
+                <property name="text">
+                 <string>Different</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="not_existing_p">
+                <property name="text">
+                 <string>Not existing</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="new_p">
+                <property name="text">
+                 <string>New</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="filter_type_p">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>25</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Switch between regular expression and wildcard expression</string>
+       </property>
+       <property name="statusTip">
+        <string>Switch between regular expression and wildcard expression</string>
+       </property>
+       <property name="icon">
+        <iconset resource="coveragebrowser.qrc">
+         <normaloff>:/images/filterwildcard.svg</normaloff>:/images/filterwildcard.svg</iconset>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="filter_p">
+       <property name="toolTip">
+        <string>see &lt;TT&gt;Help-&gt;Filter Expression Help&lt;/TT&gt; for more information about the syntax.&lt;BR&gt;&lt;I&gt;Filter:&lt;/I&gt; symbol name including scope (ex: &quot;&lt;TT&gt;Class::Member&lt;/TT&gt;&quot;)</string>
+       </property>
+       <property name="statusTip">
+        <string>Filter using wildcard/regular expression</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="more_p">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>25</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>More options...</string>
+       </property>
+       <property name="statusTip">
+        <string>More options...</string>
+       </property>
+       <property name="whatsThis">
+        <string>More options...</string>
+       </property>
+       <property name="text">
+        <string>...</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FunctionListView</class>
+   <extends>QTreeView</extends>
+   <header>FunctionListView.h</header>
+  </customwidget>
+ </customwidgets>
+ <includes>
+  <include location="local">coveragebrowserpdef.h</include>
+ </includes>
+ <resources>
+  <include location="coveragebrowser.qrc"/>
+ </resources>
+ <connections/>
+</ui>

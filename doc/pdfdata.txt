@@ -1,0 +1,10 @@
+InfoKey: Title
+InfoValue: notitle
+InfoKey: Producer
+InfoValue: nobody
+InfoKey: ModDate
+InfoValue: D:20071109093146+01'00'
+InfoKey: CreationDate
+InfoValue: D:20071109093146+01'00'
+PdfID0: e2fe773d3ead22d44e1ea790828fb234
+PdfID1: e2fe773d3ead22d44e1ea790828fb234

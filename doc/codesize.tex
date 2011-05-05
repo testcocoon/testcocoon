@@ -1,0 +1,99 @@
+\begin{tabularx}{\linewidth}{|cl|X|X|X|}
+ \hline 
+\multicolumn{2}{|c|}{\textbf{Compiler} } & 
+\textbf{Without Instrumentation}  \hvanewline (bytes) & 
+\textbf{With Instrumentation} \hvanewline (bytes) & 
+\textbf{Difference} \hvanewline (bytes)  \\ 
+ \hline 
+ \hline 
+GCC without optimization
+ & ~data 
+ & 
+20
+ & 
+256
+ & 
+	236
+ \\ 
+ & ~code 
+ & 
+1200
+ & 
+2304
+ & 
+	1104
+ \\ 
+ \hline 
+GCC with optimization -Os
+ & ~data 
+ & 
+20
+ & 
+256
+ & 
+	236
+ \\ 
+ & ~code 
+ & 
+800
+ & 
+1840
+ & 
+	1040
+ \\ 
+ \hline 
+GCC with optimization -O1
+ & ~data 
+ & 
+20
+ & 
+256
+ & 
+	236
+ \\ 
+ & ~code 
+ & 
+896
+ & 
+1936
+ & 
+	1040
+ \\ 
+ \hline 
+GCC with optimization -O2
+ & ~data 
+ & 
+20
+ & 
+256
+ & 
+	236
+ \\ 
+ & ~code 
+ & 
+976
+ & 
+1968
+ & 
+	992
+ \\ 
+ \hline 
+GCC with optimization -O3
+ & ~data 
+ & 
+20
+ & 
+256
+ & 
+	236
+ \\ 
+ & ~code 
+ & 
+976
+ & 
+1968
+ & 
+	992
+ \\ 
+ \hline 
+\end{tabularx}

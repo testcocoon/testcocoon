@@ -1,0 +1,88 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: cppunit - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+
+
+
+<h3>Results</h3>
+cppunit.lib - 0 error(s), 0 warning(s)
+<h3>
+--------------------Configuration: cppunit - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+
+
+
+<h3>Results</h3>
+cppunitd.lib - 0 error(s), 0 warning(s)
+<h3>
+--------------------Configuration: cppunit - Win32 CodeCoverage--------------------
+</h3>
+<h3>Command Lines</h3>
+
+
+
+<h3>Results</h3>
+cppunitd.lib - 0 error(s), 0 warning(s)
+<h3>
+--------------------Configuration: money - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+
+
+
+<h3>Results</h3>
+money.exe - 0 error(s), 0 warning(s)
+<h3>
+--------------------Configuration: money - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+
+
+
+<h3>Results</h3>
+moneyd.exe - 0 error(s), 0 warning(s)
+<h3>
+--------------------Configuration: money - Win32 CodeCoverage--------------------
+</h3>
+<h3>Command Lines</h3>
+
+
+
+<h3>Results</h3>
+moneyd.exe - 0 error(s), 0 warning(s)
+<h3>
+--------------------Configuration: simple - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+
+
+
+<h3>Results</h3>
+simple.exe - 0 error(s), 0 warning(s)
+<h3>
+--------------------Configuration: simple - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+
+
+
+<h3>Results</h3>
+simple.exe - 0 error(s), 0 warning(s)
+<h3>
+--------------------Configuration: simple - Win32 CodeCoverage--------------------
+</h3>
+<h3>Command Lines</h3>
+
+
+
+<h3>Results</h3>
+simple.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

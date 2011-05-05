@@ -1,0 +1,116 @@
+\section{\TestCocoon~-~Code Coverage Tool for \CorCPlusPlus\ and \CSharp}\cutname{index.html}
+\TestCocoon\ is a complete \ahref{codecoverage.html}{code coverage} tool chain for \CorCPlusPlus\ and \CSharp\ programs available under \MacOSX, \Linux\  or \MicrosoftWindows. 
+It analyzes the performance of a software validation 
+and permits to measure the performance and optimizes the testing process of a \CorCPlusPlus\ or \CSharp\ applications:
+
+\begin{itemize}
+  \item Finding untested code sections.
+  \item Reducing the amount of tests by finding redundant tests. \newline
+        With \TestCocoon\ it is possible to find which portion 
+        of the source code is covered only by one execution of a test, and
+        to detect if a new test does not cover more source code line than existing tests.
+  \item Finding dead code trough displaying the 
+        code parts which are never executed.
+  \item Specially useful for manual testing: \newline 
+        \TestCocoon\ is able to calculate
+        the optimal execution order of  tests which maximize  the overall coverage after each run.
+  \item Also, \TestCocoon\ is able to perform its analysis on a difference of two applications.\newline
+        This permits to find which tests are impacted by a source code modification and permits to measure the test quality of a patch or a hot fix.
+\end{itemize}
+
+\TestCocoon\ can be uses for every
+\ahref{codecoverage.html#test-strategy}{testing steps and methodologies}
+(\ahref{codecoverage.html#test-stategy-unit-tests}{unit tests},
+ \ahref{codecoverage.html#test-stategy-automatic-tests}{automatic tests},
+ \ahref{codecoverage.html#test-stategy-white-box-tests}{manual white box tests},
+ \ahref{codecoverage.html#test-stategy-black-box-tests}{black box tests}, etc\ldots),
+  and permits to collect and merge the execution reports together.
+
+It is composed of 3 tools:
+\begin{enumerate}
+ \item \ahref{coveragescanner.html}{\CoverageScanner}, which analyzes, instruments and generates the \CorCPlusPlus\ or \CSharp\ application.
+ \item \ahref{coveragebrowser.html}{\CoverageBrowser}, which displays and manages the results of the coverage analysis.
+       black box interactive tests.
+ \item An optional \ahref{coveragescanner.html#visualstudioaddin}{\VisualStudioVsAddIn} which permits to generate code coverage configurations from every \CorCPlusPlus\ projects created by \VisualStudio.
+\end{enumerate}
+
+   \InsertPictureDescription{testcocoon_overview}{Code Coverage Toolchain for \CorCPlusPlus\ or \CSharp\ Overview}
+
+\section{\CoverageScanner~-~Instrumentation during the Generation}
+
+   \CoverageScanner\ instruments your source code during the compilation and
+   generates an instrumented program,
+   \ahref{coveragescanner.html#code-coverage-shared-library}{shared library}
+   or \ahref{coveragescanner.html#code-coverage-plugin}{plugin}. 
+   The instrumented program keeps track of the code instructions that were
+   executed while the program was running (\ahref{codecoverage.html#hitcount}{execution count or hit only}
+   are supported) and produces an execution report (csexe file)
+   upon program termination. In order to get the best quality of code coverage
+   metrics, \CoverageScanner\ instruments not only on the function and
+   statement level but also on the decision and condition level. Optionally, it
+   is possible to 
+   \ahref{coveragescanner.html#test-suite-adaptation}{insert in this report the test name and
+   its execution status} (passed or failed) using a batch script or directly in the application itself. 
+   This permits to integrate in a test framework (\ahref{coveragescanner.html#cppunit}{CppUnit}, \ahref{coveragescanner.html#cxxtest}{CxxTest}, 
+       %\Nokia\ \ahref{coveragescanner.html#qtestlib}{QTestLib},
+       \ldots) the generation of the code coverage information for each test item. 
+
+
+   \par\bigskip
+
+   \CoverageScanner\ is a command line tool which substitutes the compiler. 
+   Principally, it inserts instrumentation instructions into the preprocessed
+   source code and calls up the native compiler. 
+   (\ahref{coveragescanner.html#gcc-compiler}{GNU gcc or g++}, \ahref{coveragescanner.html#visual-studio-compiler}{Microsoft\registered\ Visuali Studio\registered} \ahref{coveragescanner.html#visualstudio6}{6.0}, \ahref{coveragescanner.html#visualstudiodotnet}{.NET}, \ahref{coveragescanner.html#visualexpress}{Express} or \ahref{coveragescanner.html#embeddedcpp}{Embedded C++} compiler, \ahref{coveragescanner.html#intel-compiler}{Intel\registered\ C++ compiler}, \ldots, \ahref{coveragescanner.html#tool-suite-adaptation}{or any other tool suite}) 
+   A database (.csmes file), which contains the list of instrumentations and a 
+   copy of the instrumented source code, is generated at the same time.
+   \CoverageScanner\ is configurable via a profile and can be 
+   adapted to most compilers present on the market.
+
+   \par\bigskip
+   After the generation, the program can be run as usual 
+   and produces an execution report on exit. (.csexe file)
+
+  \INFO{ \CoverageScanner\ has a special support \ahref{coveragescanner.html#qt}{\Nokia\ \QtLibrary} which permits to skip the instrument of code generated by the \moc. }
+
+\section{\CoverageBrowser~-~View, Analysis and Management of Code Coverage Result}
+
+   The execution report can be analyzed and managed using \CoverageBrowser.\par
+   It is a graphical interface which enables the user to browse 
+   and manage the execution reports.
+   It therefore enables the user to find untested code portions, 
+   dead code and inefficient tests.
+   \par
+   Overview of features:
+   \begin{itemize}
+     \item \ahref{coveragebrowser.html#commenting-code}{Commenting instrumented} source code lines.
+     \item Displaying list of executions in a \ahref{coveragebrowser.html#executions-list}{tree view}.
+     \item Managing a portion of code which can not be tested by setting it as "Manually Validated".
+     \item Browsing through instrumented code.
+     \item Switching between code coverage condition and code coverage branch analysis.
+     \item Displaying a
+           \ahref{coveragebrowser.html#code-coverage-explanation}{detailed
+             explanation} of the state of the instrumentation. Including:
+             \begin{itemize}
+             \item User comments.
+             \item The state (executed, not executed, partially executed).
+             \item The code coverage count.
+             \item The list of tests executing the instrumentation.
+             \end{itemize}
+     \item Retrieving the execution status from an \ahref{coveragescanner.html#test-suite-adaptation}{automated test suite}.
+     \item Code coverage analysis of \ahref{coveragescanner.html#unit-test}{unit tests}.
+     \item \ahref{coveragebrowser.html#export-statistics}{Exporting statistics} to to spreadsheets.
+     \item A \ahref{coveragebrowser.html#test-benefit}{test benefit analysis} mode which permits 
+           to analyse the code coverage gain of a set of tests.
+     \item An API which permits to control 
+           \CoverageBrowser\ using an external \CorCPlusPlus\ application.
+     \item A \ahref{coveragebrowser.html#source-browser}{source code} 
+           and a \ahref{coveragebrowser.html#method-browser}{method} browser which
+           displays code coverage statistics per files, classes, namespaces and \CorCPlusPlus\ or \CSharp\ functions.
+     \item Generation of a report in HTML format, which include statistics per source file, methods, executions and 
+           a list of unexecuted code parts. %HEVEA Click \ahref{report_cppunit.html}{here} to see an example.
+     \item \CoverageBrowser\ supports \ahref{coveragebrowser.html#coveragebrowser-black-box}{black box} testing. 
+     \item \NewFeature: \CoverageBrowser\ supports \ahref{coveragebrowser.html#comparing-releases}{compararing coverage data of software releases}. 
+     \item \ldots
+   \end{itemize}
+   \InsertPictureDescription{coveragebrowser_overview}{\CoverageBrowser: Code Coverage Screenshot}
