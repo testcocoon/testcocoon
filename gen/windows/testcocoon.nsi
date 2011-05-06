@@ -47,7 +47,7 @@ SetDatablockOptimize on ;
 SetCompress off
 !define PREFIX "_${VS_MODE}_${BUILD_ARCH}"
 !endif
-OutFile "..\..\binaries\TestCocoonSetup_${EXE_VERSION}${PREFIX}.exe"
+OutFile "..\..\..\binaries\TestCocoonSetup_${EXE_VERSION}${PREFIX}.exe"
 Caption "TestCocoon Setup - Version ${MUI_VERSION}"
 
 CRCCheck on ; 
