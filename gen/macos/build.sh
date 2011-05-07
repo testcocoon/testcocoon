@@ -1,6 +1,7 @@
 #!/bin/bash +xv
 QT=4.6.3
 WORKINGDIR=$PWD
+BINARYDIR=$WORKINGDIR/../../../binaries 
 SNAPSHOTDIR=$PWD/TestCocoon
 DISTRIB_DIR=$PWD/../../build_distrib/
 DISTRIB_RELEASE_DIR=$DISTRIB_DIR/release
@@ -128,7 +129,8 @@ function create_snapshot()
 
 function create_tbz2()
 {
-    cd $WORKINGDIR/../../binaries || exit -1
+    [ -e $BINARYDIR ]  || mkdir -p $BINARYDIR
+    cd $BINARYDIR || exit -1
     source $WORKINGDIR/../../src/commoncode/version.sh || exit -1
     TBZ=TestCocoonSetupMacOs_$VERSION.pkg.tbz2 
     rm -f "$TBZ"
