@@ -3,7 +3,9 @@ QTVERSION=4.6.3
 
 PROCESSORS=$(cat /proc/cpuinfo | grep processor | wc -l)
 HERE=$(dirname "$0")
-HERE=$(realpath "$HERE")
+pushd $HERE
+HERE=$PWD
+popd
 #DISTRIB_DIR=$HERE/../../build_distrib
 DISTRIB_DIR=$(mktemp -d /tmp/testcocoon_build_XXXXX)
 SOURCE_DIR=$HERE/../..
