@@ -16,3 +16,4 @@ set BUILDOP=/rebuild
 call "%HERE%\batches\vsaddin.bat"
 cmd /C "%HERE%\batches\build_x86.bat"
 REM cmd /C "%HERE%\batches\build_x64.bat"
+exit /B 0
