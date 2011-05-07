@@ -5,6 +5,7 @@ PROCESSORS=$(cat /proc/cpuinfo | grep processor | wc -l)
 #DISTRIB_DIR=$PWD/../../build_distrib
 DISTRIB_DIR=$(mktemp -d /tmp/testcocoon_build_XXXXX)
 SOURCE_DIR=$PWD/../..
+BINARYDIR=$SOURCE_DIR/../binaries/ 
 GEN_DIR=$PWD
 #rm -rf $DISTRIB_DIR
 DISTRIB_LOG_DIR=$DISTRIB_DIR/log
@@ -143,6 +144,7 @@ fakeroot tar cvfj TestCocoonInstall_$VERSION.tar.bz2 TestCocoonInstall_$VERSION 
 fakeroot makeself --bzip2  TestCocoonInstall_$VERSION  TestCocoonSetup_$VERSION.run  "TestCocoon $VERSION" ./setupMenu.sh || exit
 popd
 #cp /tmp/TestCocoonInstall_$VERSION.tar.bz2 ../binaries/
-mkdir -p $SOURCE_DIR/binaries/ 
-cp /tmp/TestCocoonSetup_$VERSION.run $SOURCE_DIR/binaries/ || exit
+mkdir -p $BINARYDIR 
+cp /tmp/TestCocoonSetup_$VERSION.run $BINARYDIR/ || exit -1
 echo "Finished!"
+exit 0
