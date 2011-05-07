@@ -55,7 +55,7 @@ function build_package()
   sed -i -e 's/VERSION/'$VERSION'/g' TestCocoon_tmp.packproj || exit -1
   sed -i -e 's#MACOSPATH#'$WORKINGDIR'#g' TestCocoon_tmp.packproj || exit -1
   $FREEZE -v TestCocoon_tmp.packproj  || exit -1
-  mv $WORKINGDIR/../../binaries/TestCocoon.pkg $WORKINGDIR/../../binaries/TestCocoonSetup_$VERSION.pkg  || exit -1
+  mv $BINARYDIR/TestCocoon.pkg $BINARYDIR/TestCocoonSetup_$VERSION.pkg  || exit -1
 }
 
 function patch_qt_executable()
