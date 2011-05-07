@@ -1,12 +1,16 @@
 #!/bin/bash +xv
 QT=4.6.3
-WORKINGDIR=$PWD
+HERE=$(dirname "$0")
+pushd $HERE
+HERE=$PWD
+popd
+WORKINGDIR=$HERE
 BINARYDIR=$WORKINGDIR/../../../binaries 
-SNAPSHOTDIR=$PWD/TestCocoon
-DISTRIB_DIR=$PWD/../../build_distrib/
+SNAPSHOTDIR=$WORKINGDIR/TestCocoon
+DISTRIB_DIR=$WORKINGDIR/../../build_distrib/
 DISTRIB_RELEASE_DIR=$DISTRIB_DIR/release
 DISTRIB_LOG_DIR=$DISTRIB_DIR/log
-COVERAGEBROWSER=$PWD/../../coveragebrowser/coveragebrowser.app
+COVERAGEBROWSER=$WORKINGDIR/../../coveragebrowser/coveragebrowser.app
 QTDIR=/usr/local/Trolltech/Qt-$QT
 QTLIB=$QTDIR/lib
 QTLIBRELOC=$QTDIR/lib
