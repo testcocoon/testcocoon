@@ -2,11 +2,13 @@
 QTVERSION=4.6.3
 
 PROCESSORS=$(cat /proc/cpuinfo | grep processor | wc -l)
-#DISTRIB_DIR=$PWD/../../build_distrib
+HERE=$(dirname "$0")
+HERE=$(realpath "$HERE")
+#DISTRIB_DIR=$HERE/../../build_distrib
 DISTRIB_DIR=$(mktemp -d /tmp/testcocoon_build_XXXXX)
-SOURCE_DIR=$PWD/../..
+SOURCE_DIR=$HERE/../..
 BINARYDIR=$SOURCE_DIR/../binaries/ 
-GEN_DIR=$PWD
+GEN_DIR=$HERE
 #rm -rf $DISTRIB_DIR
 DISTRIB_LOG_DIR=$DISTRIB_DIR/log
 DISTRIB_RELEASE_DIR=$DISTRIB_DIR/release
@@ -71,6 +73,7 @@ function build_testcocoon()
   make pdf || exit -1
 }
 
+cd $HERE
 build_testcocoon
 source $SOURCE_DIR/src/commoncode/version.sh || exit -1
 BUILDROOT=/tmp/testcocoon$VERSION
