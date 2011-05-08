@@ -1,52 +1,55 @@
 #!/bin/bash -xv
+cd $(dirname "$0")
 HERE=$PWD
-cd ../..
+
 export GCC_VERSION=
+export TESTCOCOON_SOURCE_DIR=../..
+export TESTCOCOON_BUILD_DIR=$HERE/../../../build
 
 
-mkdir -p build/xcode
-pushd build/xcode 
-cmake -C /dev/null -DCMAKE_C_COMPILER=$(which gcc$GCC_VERSION) -DCMAKE_CXX_COMPILER=$(which g++$GCC_VERSION) -G "Xcode" ../.. 
+mkdir -p $TESTCOCOON_BUILD_DIR/xcode
+pushd $TESTCOCOON_BUILD_DIR/xcode 
+cmake -C /dev/null -DCMAKE_C_COMPILER=$(which gcc$GCC_VERSION) -DCMAKE_CXX_COMPILER=$(which g++$GCC_VERSION) -G "Xcode" $TESTCOCOON_SOURCE_DIR 
 popd
 
-mkdir -p build/debug
-pushd build/debug 
-cmake -C /dev/null -DCMAKE_C_COMPILER=$(which gcc$GCC_VERSION) -DCMAKE_CXX_COMPILER=$(which g++$GCC_VERSION) -DCMAKE_BUILD_TYPE=debug ../.. 
+mkdir -p $TESTCOCOON_BUILD_DIR/debug
+pushd $TESTCOCOON_BUILD_DIR/debug 
+cmake -C /dev/null -DCMAKE_C_COMPILER=$(which gcc$GCC_VERSION) -DCMAKE_CXX_COMPILER=$(which g++$GCC_VERSION) -DCMAKE_BUILD_TYPE=debug $TESTCOCOON_SOURCE_DIR 
 make coveragescanner
 popd
 
-mkdir -p build/release
-pushd build/release 
-export COVERAGESCANNER_PATH="${PWD}/src/coveragescanner" 
-cmake -C /dev/null -DCMAKE_C_COMPILER=$(which gcc$GCC_VERSION) -DCMAKE_CXX_COMPILER=$(which g++$GCC_VERSION) -DCMAKE_BUILD_TYPE=release ../.. 
+mkdir -p $TESTCOCOON_BUILD_DIR/release
+pushd $TESTCOCOON_BUILD_DIR/release 
+export COVERAGESCANNER_PATH="${PWD}/testcocoon/src/coveragescanner" 
+cmake -C /dev/null -DCMAKE_C_COMPILER=$(which gcc$GCC_VERSION) -DCMAKE_CXX_COMPILER=$(which g++$GCC_VERSION) -DCMAKE_BUILD_TYPE=release $TESTCOCOON_SOURCE_DIR 
 make coveragescanner
 popd
 
-mkdir -p build/log
-pushd build/log 
-cmake -C /dev/null -DCMAKE_C_COMPILER=$(which gcc$GCC_VERSION) -DCMAKE_CXX_COMPILER=$(which g++$GCC_VERSION) -DCMAKE_BUILD_TYPE=log ../.. 
+mkdir -p $TESTCOCOON_BUILD_DIR/log
+pushd $TESTCOCOON_BUILD_DIR/log 
+cmake -C /dev/null -DCMAKE_C_COMPILER=$(which gcc$GCC_VERSION) -DCMAKE_CXX_COMPILER=$(which g++$GCC_VERSION) -DCMAKE_BUILD_TYPE=log $TESTCOCOON_SOURCE_DIR 
 make coveragescanner
 popd
 
-mkdir -p build/coverage
-pushd build/coverage 
+mkdir -p $TESTCOCOON_BUILD_DIR/coverage
+pushd $TESTCOCOON_BUILD_DIR/coverage 
 cmake -DCMAKE_TOOLCHAIN_FILE=$HERE/toolchain.cmake -DCMAKE_BUILD_TYPE=coverage -G "Unix Makefiles" ../..  || exit -1
 popd
 
 
-pushd build/debug 
+pushd $TESTCOCOON_BUILD_DIR/debug 
 make
 popd
 
-pushd build/release 
+pushd $TESTCOCOON_BUILD_DIR/release 
 make
 popd
 
-pushd build/log 
+pushd $TESTCOCOON_BUILD_DIR/log 
 make
 popd
 
-pushd build/coverage 
+pushd $TESTCOCOON_BUILD_DIR/coverage 
 make
 popd
 
