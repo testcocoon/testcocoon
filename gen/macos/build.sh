@@ -5,7 +5,7 @@ pushd $HERE
 HERE=$PWD
 popd
 WORKINGDIR=$HERE
-BINARYDIR=$WORKINGDIR/../../../binaries 
+BINARYDIR=$WORKINGDIR/../../binaries 
 SNAPSHOTDIR=$WORKINGDIR/TestCocoon
 DISTRIB_DIR=$WORKINGDIR/../../build_distrib/
 DISTRIB_RELEASE_DIR=$DISTRIB_DIR/release
@@ -50,7 +50,7 @@ function build_package()
   source $WORKINGDIR/../../src/commoncode/version.sh || exit -1
   FREEZE=/usr/local/bin/freeze
   cd $WORKINGDIR || exit -1
-  rm -rf $WORKINGDIR/../../binaries/TestCocoonSetup_$VERSION.pkg  || exit -1
+  rm -rf $BINARYDIR/TestCocoonSetup_$VERSION.pkg  || exit -1
   cp TestCocoon.packproj  TestCocoon_tmp.packproj || exit -1
   sed -i -e 's/VERSION/'$VERSION'/g' TestCocoon_tmp.packproj || exit -1
   sed -i -e 's#MACOSPATH#'$WORKINGDIR'#g' TestCocoon_tmp.packproj || exit -1

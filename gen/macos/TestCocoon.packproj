@@ -549,7 +549,7 @@
 		<key>10.1 Compatibility</key>
 		<true/>
 		<key>Build Path</key>
-    <string>../../../binaries/</string>
+    <string>../../binaries/</string>
 		<key>Build Path Type</key>
 		<integer>2</integer>
 		<key>Comment</key>
