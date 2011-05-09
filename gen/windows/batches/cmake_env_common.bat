@@ -41,8 +41,20 @@ cmake.exe -DCMAKE_BUILD_TYPE=coverage -DCMAKE_TOOLCHAIN_FILE=%HERE%\toolchain.cm
 popd
 
 
-mkdir vs
-pushd vs 
+mkdir vs10x64
+pushd vs10x64
 cmake.exe -DCMAKE_CONFIGURATION_TYPES="debug;release;log" -G "Visual Studio 10 Win64" %TESTCOCOON_TOP_SOURCE% 
+popd
+
+
+mkdir vs10x86
+pushd vs10x86
+cmake.exe -DCMAKE_CONFIGURATION_TYPES="debug;release;log" -G "Visual Studio 10" %TESTCOCOON_TOP_SOURCE% 
+popd
+
+
+mkdir vs8x86
+pushd vs8x86
+cmake.exe -DCMAKE_CONFIGURATION_TYPES="debug;release;log" -G "Visual Studio 8" %TESTCOCOON_TOP_SOURCE% 
 popd
 
