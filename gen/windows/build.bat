@@ -7,6 +7,7 @@ set DEVENV2010="%VS100COMNTOOLS%\..\IDE\devenv.exe"
 pushd ..\..
 del /Q /S /F build_distrib
 md build_distrib
+md binaries
 popd 
 
 set VS_MODE=Release
