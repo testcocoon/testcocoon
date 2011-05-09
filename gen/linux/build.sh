@@ -9,7 +9,7 @@ popd
 #DISTRIB_DIR=$HERE/../../build_distrib
 DISTRIB_DIR=$(mktemp -d /tmp/testcocoon_build_XXXXX)
 SOURCE_DIR=$HERE/../..
-BINARYDIR=$SOURCE_DIR/../binaries/ 
+BINARYDIR=$SOURCE_DIR/binaries/ 
 GEN_DIR=$HERE
 #rm -rf $DISTRIB_DIR
 DISTRIB_LOG_DIR=$DISTRIB_DIR/log
