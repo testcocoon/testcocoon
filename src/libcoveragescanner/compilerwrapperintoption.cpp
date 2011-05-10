@@ -55,9 +55,7 @@ std::list<std::string> CompilerWrapperIntOption::profileValues() const
   std::list<std::string> ret;
   if (!defined())
     return ret;
-  char tmp[50];
-  snprintf(tmp,sizeof(tmp),"%i",value());
-  std::string s=std::string(tmp);
+  std::string s=std::string(_description);
   ret.push_back(s);
   return ret;
 }
