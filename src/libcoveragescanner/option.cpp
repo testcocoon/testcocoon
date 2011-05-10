@@ -63,6 +63,7 @@ Option::Option (int argc,const char *const*argv)
   coverage_mdcs=false;
   force_active_innactive=false;
   coverage_hit=true;
+  setResponseFileUsed(false);
 
   if (argc==0)
   {
@@ -125,6 +126,7 @@ Option::Option (int argc,const char *const*argv)
       int arg_index_max;
       while ((rsp_file=compiler_p->responseFile(i,arg_index_min,arg_index_max)))
       {
+        setResponseFileUsed(true);
         Argv resp_args_orig;
         if (compiler_p->responseFileToArgumentList (rsp_file,resp_args_orig))
         {

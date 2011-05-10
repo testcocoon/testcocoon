@@ -24,9 +24,13 @@
 #include "filterfunctions.h"
 #include "expression.h"
 #include "argv.h"
+class TestResponseFile;
+class TestWrapper;
 
 class Option
 {
+  friend class TestResponseFile;
+  friend class TestWrapper;
   public:
     const std::string & applicationPath() const { return appli_path; }
     Option(int argc,const char *const *argv);
@@ -63,8 +67,10 @@ class Option
     const char *getArchitectureOption() const { return architecture_option; }
     const char *stdinScript() const { return stdin_script; }
     const Argv& param_args_mri() const { return args_mri; }
+    bool responseFileUsed() const { return _response_file_used; }
   private:
     bool parseArgOptionWithParam(const char *arg,const char *pattern,std::string &param);
+    void setResponseFileUsed(bool b) { _response_file_used=b; }
     Argv args_mri;
     void setCoverageBranch()
     {
@@ -119,6 +125,7 @@ class Option
     bool preprocess_in_background;
     char *stdin_script;
     bool force_active_innactive;
+    bool _response_file_used;
     bool _verbose;
 };
 void print_usage();

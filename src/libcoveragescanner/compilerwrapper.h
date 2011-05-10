@@ -78,8 +78,7 @@ class CompilerWrapper:public CompilerInterface
     bool setupMSCE() const;
     bool setupGNU() const;
     bool unixLibraryName() const;
-    bool useResponseFile() const { return use_response_file->value()==CompilerWrapperEnumOption::OPT_YES; }
-    void setUseResponseFile(bool b) { use_response_file->setValue(b?CompilerWrapperEnumOption::OPT_YES:CompilerWrapperEnumOption::OPT_NO); }
+    bool useResponseFile() const ;
     void display_temporary_files() const;
     virtual bool deactivateCoverageScanner(const Argv& args) const;
     virtual bool generateCoverageScannerLibrary() const ;
@@ -243,6 +242,7 @@ class CompilerWrapper:public CompilerInterface
     bool  compiler_option_sbr_pdb(std::list<std::string> &commands, int &i, const CompilerWrapperListOption &option_table,const CompilerWrapperEnumOption &option_append,bool append_name,const char *ext) const;
     static void suppressExtension(char *s,char *&e);
     static void suppressExtension(std::string &s,std::string &e);
+    void setUseResponseFile(bool b) { use_response_file->setValue(b?CompilerWrapperEnumOption::OPT_YES:CompilerWrapperEnumOption::OPT_NO); }
   public:
 	std::string preprocessor_temp_filename(const std::string &) const;
     bool preprocessor_use_temp_filename() const;

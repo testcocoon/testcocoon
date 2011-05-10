@@ -1978,3 +1978,8 @@ int CompilerWrapper::callNativeTool()
   DEBUG2("Executing native tool:%s\n",file.c_str());
   return System::exec(command.c_str(),NULL);
 }
+
+bool CompilerWrapper::useResponseFile() const 
+{
+  return (use_response_file->value()==CompilerWrapperEnumOption::OPT_YES) && option.responseFileUsed();
+}
