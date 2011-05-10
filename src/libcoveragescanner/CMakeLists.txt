@@ -15,6 +15,7 @@ SET(SRCS
   compilerinterface.cpp
   compilerwrapper.cpp
   compilerwrapperenumoption.cpp
+  compilerwrapperintoption.cpp
   compilerwrapperlanguageoption.cpp
   compilerwrapperlistoption.cpp
   compilerwrapperoption.cpp

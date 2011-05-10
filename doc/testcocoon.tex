@@ -3273,6 +3273,9 @@ A profile file can contain:
                   Pack all compiler/linker command line option into a response file. 
                   This is generally necessary on \MicrosoftWindows\ due to the command line limitation length.
                   \\ \hline
+        \ProfileOption{MINIMUM\_COMMAND\_LINE\_SIZE\_FOR\_RESPONSE\_FILE} & integer & 
+                  If the command line arguments are lower that the specified size, no response file is used.
+                  \\ \hline
         \ProfileOption{RESPONSE\_FILE\_EXT} & string & 
                   List of file extensions for the response file. \\ \hline
         \ProfileOption{RESPONSE\_FILE\_OPTION} & string & 

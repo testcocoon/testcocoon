@@ -97,6 +97,7 @@ CompilerWrapper::CompilerWrapper(const Option &t) : CompilerInterface(t), option
   preprocessor_keep_option_1_arg_append              = new CompilerWrapperEnumOption ( pool,"PREPROCESSOR_KEEP_OPTION_ONE_ARG_APPEND");
   response_file_append                               = new CompilerWrapperEnumOption ( pool,"RESPONSE_FILE_OPTION_APPEND");
   use_response_file                                  = new CompilerWrapperEnumOption ( pool,"USE_RESPONSE_FILE");
+  minimum_command_line_size_for_response_file        = new CompilerWrapperIntOption ( pool,"MINIMUM_COMMAND_LINE_SIZE_FOR_RESPONSE_FILE");
   response_file_str                                  = new CompilerWrapperTextOption ( pool, "RESPONSE_FILE_OPTION");
   sbr_output_option_append                           = new CompilerWrapperEnumOption ( pool,"SBR_OUTPUT_OPTION_APPEND");
   table_c_ext                                        = new CompilerWrapperListOption ( pool,"C_EXT" );
@@ -269,6 +270,7 @@ CompilerWrapper::~CompilerWrapper()
   delete     preprocessor_keep_option_1_arg_append              ;
   delete     response_file_append                               ;
   delete     use_response_file                                  ;
+  delete     minimum_command_line_size_for_response_file        ;
   delete     response_file_str                                  ;
   delete     sbr_output_option_append                           ;
   delete     table_c_ext                                        ;
@@ -1981,5 +1983,11 @@ int CompilerWrapper::callNativeTool()
 
 bool CompilerWrapper::useResponseFile() const 
 {
-  return (use_response_file->value()==CompilerWrapperEnumOption::OPT_YES) && option.responseFileUsed();
+  if ( ! (use_response_file->value()==CompilerWrapperEnumOption::OPT_YES && option.responseFileUsed()) )
+    return false;
+
+  int lg=option.param_args().argc()-1;
+  for (int i=0;i<option.param_args().argc();i++)
+    lg+=strlen(option.param_args()[i]);
+  return lg>minimum_command_line_size_for_response_file->value();
 }

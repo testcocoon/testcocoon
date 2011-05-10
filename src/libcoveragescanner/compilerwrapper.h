@@ -23,6 +23,7 @@
 #include "compilerwrapperlanguageoption.h"
 #include "compilerwrapperlistoption.h"
 #include "compilerwrapperenumoption.h"
+#include "compilerwrapperintoption.h"
 #include "compilerwrapperoptionpool.h"
 #include "compilerwrapperregexpoption.h"
 #include "argv.h"
@@ -184,6 +185,7 @@ class CompilerWrapper:public CompilerInterface
     CompilerWrapperEnumOption *preprocessor_hide_option_1_arg_append;
     CompilerWrapperEnumOption *preprocessor_keep_option_1_arg_append;
     CompilerWrapperEnumOption *use_response_file;
+    CompilerWrapperIntOption *minimum_command_line_size_for_response_file;
     CompilerWrapperEnumOption *response_file_append; //!< command is appended to the filename
     CompilerWrapperTextOption *response_file_str;   //!< option file command
     CompilerWrapperEnumOption *sbr_output_option_append;
@@ -243,6 +245,7 @@ class CompilerWrapper:public CompilerInterface
     static void suppressExtension(char *s,char *&e);
     static void suppressExtension(std::string &s,std::string &e);
     void setUseResponseFile(bool b) { use_response_file->setValue(b?CompilerWrapperEnumOption::OPT_YES:CompilerWrapperEnumOption::OPT_NO); }
+    void setMinimumCommandLineSizeForResponseFile(int v) { minimum_command_line_size_for_response_file->setValue(v); }
   public:
 	std::string preprocessor_temp_filename(const std::string &) const;
     bool preprocessor_use_temp_filename() const;
