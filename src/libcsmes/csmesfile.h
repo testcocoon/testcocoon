@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include <list>
 #include <string>
 #include "libcsmespdef.h"
 #if _MSC_VER == 1200
@@ -281,6 +282,8 @@ class LIBCSMES_API CSMESFile
     bool merge_internal(CSMESFile &csmes,unsigned long fl_merge,merge_policy_t policy, std::string &err);
     void merge_instrumentation_list(int section_id,std::vector<instrumentation_t> &instrumentation,long &instrumentation_startindex);
     mutable std::string error_msg;
+    std::list<std::string>  source_list(const char *module) const;
+    std::string  merge_precheck_source_list(const char *module,const char *increment) const;
 };
 
 #endif

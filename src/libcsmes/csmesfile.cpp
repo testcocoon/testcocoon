@@ -900,6 +900,35 @@ void CSMESFile::merge_instrumentation_list(int section_id,std::vector<instrument
    }
 }
 
+std::list<std::string>  CSMESFile::source_list(const char *module) const
+{
+  std::list<std::string> lst;
+  int nb_sec=nbSections();
+  for (int i=0;i<nb_sec;i++)
+  {
+    if (strcmp(sectionModule(i),module)==0)
+      lst.push_back(std::string(sectionName(i)));
+  }
+  lst.sort();
+  lst.unique();
+  return lst;
+}
+
+std::string  CSMESFile::merge_precheck_source_list(const char *module,const char *increment) const
+{
+  std::list<std::string> lst=source_list(module);
+  std::string msg=std::string(increment);
+  msg+="Source file instrumented during the compilation of '"+std::string(module)+"' in the instrumentatio database '"+fileName()+"'\n";
+  for (std::list<std::string>::const_iterator it=lst.begin();it!=lst.end();++it)
+  {
+    msg+=increment;
+    msg+="  ";
+    msg+=*it;
+    msg+='\n';
+  }
+  return msg;
+}
+
 bool CSMESFile::merge_precheck(CSMESFile &csmes,unsigned long fl_merge,merge_policy_t policy,std::string &errmsg) 
 {
   FUNCTION_TRACE;
@@ -935,7 +964,17 @@ bool CSMESFile::merge_precheck(CSMESFile &csmes,unsigned long fl_merge,merge_pol
         merge_instrumentation_list(section_id,instrumentation,instrumentation_startindex);
 
         if (instrumentation.size()!=csmes_instrumentation.size() || instrumentation_startindex!=csmes_instrumentation_startindex )
-          msgs.push_back("Compilation of '"+std::string(csmes.sectionModule(i))+"': Instrumentation of source file '"+std::string(csmes.sectionName(i))+"' is different");
+        {
+          std::string msg=("Compilation of '"+std::string(csmes.sectionModule(i))+"': Instrumentation of source file '"+std::string(csmes.sectionName(i))+"' is different");
+          if (source_list(csmes.sectionModule(i))!=csmes.source_list(csmes.sectionModule(i)))
+          {
+            msg+='\n';
+            msg+="  Hint: a --cs-include-path command line option is certainly missing for the compilation of one of the objects\n";
+            msg+=merge_precheck_source_list(csmes.sectionModule(i),"    ");
+            msg+=csmes.merge_precheck_source_list(csmes.sectionModule(i),"    ");
+          }
+          msgs.push_back(msg);
+        }
         else
         {
           int nb_inst=instrumentation.size();
