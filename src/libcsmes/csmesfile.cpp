@@ -60,7 +60,7 @@ CSMESFile::CSMESFile()
   nb_allocated=0;
   buffer_size=0;
   buffer=NULL;
-  filename=NULL;
+  _filename=NULL;
   f=NULL;
   nb_section_tab=0;
   section_tab=NULL;
@@ -73,9 +73,9 @@ bool CSMESFile::open(const char *file_name,access_t a)
 {
   FUNCTION_TRACE;
   f=NULL;
-  if (filename)
-    FREE(filename);
-  filename=STRDUP(file_name);
+  if (_filename)
+    FREE(_filename);
+  _filename=STRDUP(file_name);
   section_modifyed=false;
   clearLastSection();
   current_section=-1;
@@ -89,7 +89,7 @@ bool CSMESFile::open(const char *file_name,access_t a)
   switch (access)
   {
     case RO:
-      f=fopen(filename,"r"BINARY_FORMAT );
+      f=fopen(fileName(),"r"BINARY_FORMAT );
       if (f==NULL)
       {
         error_msg="File nor existing";
@@ -101,7 +101,7 @@ bool CSMESFile::open(const char *file_name,access_t a)
       return ret;
       break;
     case APPEND_RW:
-       f=fopen(filename,"r+"BINARY_FORMAT );
+       f=fopen(fileName(),"r+"BINARY_FORMAT );
        if (f==NULL)
        {
           error_msg="File nor existing";
@@ -113,7 +113,7 @@ bool CSMESFile::open(const char *file_name,access_t a)
        return ret;
       break;
     case NEW_RW:
-      f=fopen(filename,"w+"BINARY_FORMAT );
+      f=fopen(fileName(),"w+"BINARY_FORMAT );
       if (f==NULL)
       {
         error_msg="File nor existing";
@@ -128,7 +128,7 @@ CSMESFile::~CSMESFile()
 {
   FUNCTION_TRACE;
   close();
-  FREE(filename);
+  FREE(_filename);
   assoc_clear(name_assoc);
   assoc_clear(module_assoc);
 }

@@ -95,7 +95,8 @@ class LIBCSMES_API CSMESFile
     enum access_t { RO,NEW_RW,APPEND_RW};
     CSMESFile();
     bool open( const char *filename, access_t );
-    bool reopen( access_t a) { return open(filename,a); }
+    bool reopen( access_t a) { return open(fileName(),a); }
+    const char *fileName() const { return _filename; }
     void close();
     virtual ~CSMESFile();
     bool openSection(const char *module,const char *module_rel,const char *name,const char *name_rel,const char *info,type_t type,unsigned long signature,access_t,unsigned long flag);
@@ -237,7 +238,7 @@ class LIBCSMES_API CSMESFile
     static inline void longlong2char(_I64,char *);
     static inline void char2long(const char *,long &);
     static inline void long2char(long,char *);
-    char *filename;
+    char *_filename;
     static bool section_pos_eq(const section_t &,const section_t &);
     static bool section_pos_gt(const section_t &,const section_t &);
   private:
