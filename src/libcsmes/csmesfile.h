@@ -280,7 +280,12 @@ class LIBCSMES_API CSMESFile
     inline void create_section_link (int section_id,const char *module,const char *module_rel,const char *name,const char *name_rel,const char *info,type_t type,unsigned long signature,unsigned long flag);
     bool merge_precheck(CSMESFile &csmes,unsigned long fl_merge,merge_policy_t policy, std::string &err) ;
     bool merge_internal(CSMESFile &csmes,unsigned long fl_merge,merge_policy_t policy, std::string &err);
-    void merge_instrumentation_list(int section_id,std::vector<instrumentation_t> &instrumentation,long &instrumentation_startindex);
+    struct merge_precheck_info_t
+    {
+      instrumentation_t instrumentation;
+      long              line;
+    };
+    void merge_instrumentation_list(int section_id,std::vector<merge_precheck_info_t> &instrumentation,long &instrumentation_startindex);
     mutable std::string error_msg;
     std::list<std::string>  source_list(const char *module) const;
     std::string  merge_precheck_source_list(const char *module,const char *increment) const;

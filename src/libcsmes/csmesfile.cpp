@@ -837,67 +837,70 @@ bool CSMESFile::merge(CSMESFile &csmes,unsigned long fl_merge,merge_policy_t pol
   return  merge_internal(csmes,fl_merge,policy,errmsg);
 }
 
-void CSMESFile::merge_instrumentation_list(int section_id,std::vector<instrumentation_t> &instrumentation,long &instrumentation_startindex)
+void CSMESFile::merge_instrumentation_list(int section_id,std::vector<merge_precheck_info_t> &instrumentation,long &instrumentation_startindex)
 {
-   instrumentation.clear();
-   instrumentation_startindex=0x7FFFFFFF;
-   long instrumentation_size=0;
-   if (openSectionID(section_id))
-   {
-      _I64 idd;
-      CSMESFile::instrumentation_t instrumentationType                    ;
-      std::vector<CSMESFile::instrumentation_part_t> instrumentation_part ;
-      CSMESFile::instrumentation_childrens_t childrens                    ;
-      long index                                                          ;
-      long nb_index                                                       ;
-      long startLineOrg                                                   ;
-      long startLinePre                                                   ;
-      long startColumnPre                                                 ;
-      long startColumnOrg                                                 ;
-      long endLineOrg                                                     ;
-      long endLinePre                                                     ;
-      long endColumnOrg                                                   ;
-      long endColumnPre                                                   ;
+  instrumentation.clear();
+  instrumentation_startindex=0x7FFFFFFF;
+  long instrumentation_size=0;
+  if (openSectionID(section_id))
+  {
+    _I64 idd;
+    CSMESFile::instrumentation_t instrumentationType                    ;
+    std::vector<CSMESFile::instrumentation_part_t> instrumentation_part ;
+    CSMESFile::instrumentation_childrens_t childrens                    ;
+    long index                                                          ;
+    long nb_index                                                       ;
+    long startLineOrg                                                   ;
+    long startLinePre                                                   ;
+    long startColumnPre                                                 ;
+    long startColumnOrg                                                 ;
+    long endLineOrg                                                     ;
+    long endLinePre                                                     ;
+    long endColumnOrg                                                   ;
+    long endColumnPre                                                   ;
 
-      while (readInstrumentation(idd,index,nb_index, instrumentationType, startLineOrg, startColumnOrg, startLinePre, startColumnPre, endLineOrg, endColumnOrg, endLinePre, endColumnPre, instrumentation_part,childrens))
+    while (readInstrumentation(idd,index,nb_index, instrumentationType, startLineOrg, startColumnOrg, startLinePre, startColumnPre, endLineOrg, endColumnOrg, endLinePre, endColumnPre, instrumentation_part,childrens))
+    {
+      if (index<instrumentation_startindex)
+        instrumentation_startindex=index;
+
+      int new_size=index+nb_index;
+      if (new_size>instrumentation_size)
+        instrumentation_size=new_size;
+    }
+    closeSection();
+  }
+  else
+    return;
+
+  instrumentation.resize(instrumentation_size-instrumentation_startindex);
+  if (openSectionID(section_id))
+  {
+    _I64 idd;
+    CSMESFile::instrumentation_t instrumentationType                    ;
+    std::vector<CSMESFile::instrumentation_part_t> instrumentation_part ;
+    CSMESFile::instrumentation_childrens_t childrens                    ;
+    long index                                                          ;
+    long nb_index                                                       ;
+    long startLineOrg                                                   ;
+    long startLinePre                                                   ;
+    long startColumnPre                                                 ;
+    long startColumnOrg                                                 ;
+    long endLineOrg                                                     ;
+    long endLinePre                                                     ;
+    long endColumnOrg                                                   ;
+    long endColumnPre                                                   ;
+
+    while (readInstrumentation(idd,index,nb_index, instrumentationType, startLineOrg, startColumnOrg, startLinePre, startColumnPre, endLineOrg, endColumnOrg, endLinePre, endColumnPre, instrumentation_part,childrens))
+    {
+      for (int i_inst=0;i_inst<nb_index;i_inst++)
       {
-         if (index<instrumentation_startindex)
-            instrumentation_startindex=index;
-
-         int new_size=index+nb_index;
-         if (new_size>instrumentation_size)
-            instrumentation_size=new_size;
+        instrumentation[i_inst+index-instrumentation_startindex].instrumentation=instrumentationType;
+        instrumentation[i_inst+index-instrumentation_startindex].line=startLineOrg;
       }
-      closeSection();
-   }
-   else
-      return;
-
-   instrumentation.resize(instrumentation_size-instrumentation_startindex);
-   if (openSectionID(section_id))
-   {
-      _I64 idd;
-      CSMESFile::instrumentation_t instrumentationType                    ;
-      std::vector<CSMESFile::instrumentation_part_t> instrumentation_part ;
-      CSMESFile::instrumentation_childrens_t childrens                    ;
-      long index                                                          ;
-      long nb_index                                                       ;
-      long startLineOrg                                                   ;
-      long startLinePre                                                   ;
-      long startColumnPre                                                 ;
-      long startColumnOrg                                                 ;
-      long endLineOrg                                                     ;
-      long endLinePre                                                     ;
-      long endColumnOrg                                                   ;
-      long endColumnPre                                                   ;
-
-      while (readInstrumentation(idd,index,nb_index, instrumentationType, startLineOrg, startColumnOrg, startLinePre, startColumnPre, endLineOrg, endColumnOrg, endLinePre, endColumnPre, instrumentation_part,childrens))
-      {
-         for (int i_inst=0;i_inst<nb_index;i_inst++)
-            instrumentation[i_inst+index-instrumentation_startindex]=instrumentationType;
-      }
-      closeSection();
-   }
+    }
+    closeSection();
+  }
 }
 
 std::list<std::string>  CSMESFile::source_list(const char *module) const
@@ -955,11 +958,11 @@ bool CSMESFile::merge_precheck(CSMESFile &csmes,unsigned long fl_merge,merge_pol
 #endif
       else if ( ( (csmes.size(i)!=size(section_id)) || (csmes.checksum(i)!=checksum(section_id)) ) && ((csmes.section_tab[i].type==_INSTRUMENTATION_V1) || (csmes.section_tab[i].type==_INSTRUMENTATION_V2))  )
       {
-        std::vector<instrumentation_t> csmes_instrumentation;
+        std::vector<merge_precheck_info_t> csmes_instrumentation;
         long csmes_instrumentation_startindex;
         csmes.merge_instrumentation_list(i,csmes_instrumentation,csmes_instrumentation_startindex);
 
-        std::vector<instrumentation_t> instrumentation;
+        std::vector<merge_precheck_info_t> instrumentation;
         long instrumentation_startindex;
         merge_instrumentation_list(section_id,instrumentation,instrumentation_startindex);
 
@@ -980,15 +983,23 @@ bool CSMESFile::merge_precheck(CSMESFile &csmes,unsigned long fl_merge,merge_pol
           int nb_inst=instrumentation.size();
           for (int i_inst=0;i_inst<nb_inst;i_inst++)
           {
-            instrumentation_t csmes_inst=csmes_instrumentation[i_inst];
-            if (csmes_inst==_INSTRUMENTATION_NOP)
+            merge_precheck_info_t csmes_inst=csmes_instrumentation[i_inst];
+            if (csmes_inst.instrumentation==_INSTRUMENTATION_NOP)
               continue;
-            instrumentation_t inst=instrumentation[i_inst];
-            if (inst==_INSTRUMENTATION_NOP)
+            merge_precheck_info_t inst=instrumentation[i_inst];
+            if (inst.instrumentation==_INSTRUMENTATION_NOP)
               continue;
-            if (inst!=csmes_inst)
+            if (inst.instrumentation!=csmes_inst.instrumentation)
             {
-              msgs.push_back("Compilation of '"+std::string(csmes.sectionModule(i))+"': Instrumentation of source file '"+std::string(csmes.sectionName(i))+"' is different");
+              std::ostringstream msg;
+              msg << "Compilation of '";
+              msg << std::string(csmes.sectionModule(i));
+              msg << "': Instrumentation of source file '";
+              msg << std::string(csmes.sectionName(i));
+              msg << "' (line ";
+              msg << csmes_inst.line;
+              msg << ") is different";
+              msgs.push_back(msg.str());
               break;
             }
           }
