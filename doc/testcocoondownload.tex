@@ -27,6 +27,7 @@ Changes between \TestCocoon\ v1.5 and v1.6:
 \begin{description}
 \item[\CoverageScanner]
   \begin{itemize}
+    \item         Use response file only if the command line contains more than 30000 bytes.
     \item \NewFeature Do not instrument dead code after a return/goto/break statement.
     \item \BugFix Under some circumstances, functions are places in a wrong name space.
     \item \BugFix The response file name includes now the PID. This should fix some issues when using a parallel build.
