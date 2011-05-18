@@ -126,7 +126,8 @@ bool Functions::containsExpression(const std::list<Function>&functions, const Ex
 void Functions::append(Function &f) 
 {
   FUNCTION_TRACE;
-  f.setToExclude (filter_functions_p->isExclude(f.getScopedName()));
+  std::string expression_match;
+  f.setToExclude (filter_functions_p->isExclude(f.getScopedName(),expression_match));
   if (f.getToExclude())
     exclude_list.push_back(f);
   list.push_back(f) ; 

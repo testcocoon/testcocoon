@@ -177,6 +177,7 @@ void yyprint_token(FILE *f,const char  *); /*!< used to print a token from the b
 void pushCurrentScope(const Scope *);
 void popCurrentScope();
 void clearCurrentScope();
+void initExcludeIncludeWarning();
 const Scope &currentScope();
 instrumentation_option_t instrumentation_option(int line);
 void init_instrumentation_option(const instrumentation_option_t &);

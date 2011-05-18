@@ -42,8 +42,11 @@
 #include "parseroption.h"
 #include <string.h>
 #include <list>
+#include <set>
 #define FIRST_COLUMN_ID 1
 
+std::set<std::string> _excluded_files;
+std::set<std::string> _included_files;
 const CompilerInterface *parser_compiler_p=NULL;
 const Option *parser_option_p=NULL;
 Source *parser_source_p=NULL;
@@ -1072,21 +1075,32 @@ void extract_name_preprocessor_line(const char *yytext,int yyleng,void * /*yylva
 
   Source::removeEscape(name);
 
-  exclude_file= parser_option_p->getFilterFile().isExclude(name);
-  if (exclude_file && parser_option_p->isVerbose())
-  {
-    INFO2("File Excluded:%s\n",name);
-  }
-#if LOG
+  std::string expression_match;
+  exclude_file= parser_option_p->getFilterFile().isExclude(name,expression_match);
   if (exclude_file)
   {
-    DEBUG2("File Ignored:%s\n",name);
+    if (parser_option_p->isVerbose())
+    {
+      if (_excluded_files.find(std::string(name))==_excluded_files.end())
+      {
+        INFO3("File Excluded:%s (Expression:%s)\n",name,expression_match.c_str());
+        _excluded_files.insert(std::string(name));
+      }
+    }
+    DEBUG3("File Ignored:%s (Expression:%s)\n",name,expression_match.c_str());
   }
   else
   {
-    DEBUG2("File Included:%s\n",name);
+    if (parser_option_p->isVerbose())
+    {
+      if (_included_files.find(std::string(name))==_included_files.end())
+      {
+        INFO3("File Included:%s (Expression:%s)\n",name,expression_match.c_str());
+        _included_files.insert(std::string(name));
+      }
+    }
+    DEBUG3("File Included:%s (Expression:%s)\n",name,expression_match.c_str());
   }
-#endif
 
   line=cLin-1;
   adjust_position (yytext,false);
@@ -1307,6 +1321,12 @@ const Scope &currentScope()
 {
   FUNCTION_TRACE;
   return current_scope;
+}
+
+void initExcludeIncludeWarning()
+{
+  _excluded_files.clear();
+  _included_files.clear();
 }
 
 /// Display parser error message using the correct error format

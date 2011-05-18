@@ -30,13 +30,13 @@ class Filter
   protected:
     Filter(bool default_be) : default_behaviour(default_be) { }
     virtual ~Filter();
-    enum type_t { FUNCTION_WILDCARD,FUNCTION_REGULAR_EXPRESSION , FILENAME,PATH,FILE_WILDCARD,FILE_REGULAR_EXPRESSION } ;
+    enum type_t { FUNCTION_WILDCARD, FUNCTION_REGULAR_EXPRESSION , FILENAME, PATH, FILE_WILDCARD, FILE_REGULAR_EXPRESSION,  FILE_WILDCARD_ABS, FILE_REGULAR_EXPRESSION_ABS} ;
     std::string append(bool ignore_flag,type_t type,const char *expression);
     std::string appendDefault(bool ignore_flag,type_t type,const char *expression);
   public:
     void clear();
-    bool isInclude(const char *file) const ;
-    bool isExclude(const char *file) const {return !isInclude(file); }
+    bool isInclude(const char *file,std::string &expression_match) const ;
+    bool isExclude(const char *file,std::string &expression_match) const {return !isInclude(file,expression_match); }
 #if LOG
     void PDEBUG() const;
 #endif

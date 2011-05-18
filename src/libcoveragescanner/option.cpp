@@ -603,6 +603,38 @@ bool Option::processArgs (const Argv &args,Argv &processed_args,const CompilerIn
       suppress_arg(processed_args,i);
       modifyed=true;
     }
+    else if ( parseArgOptionWithParam(&arg[arg_pos],"cs-include-file-abs-regex=",param) )
+    {
+      std::string errmsg=filterFile.append(false,FilterSource::FILE_REGULAR_EXPRESSION_ABS,param.c_str());
+      if (!errmsg.empty())
+        FATAL3("Error in command line argument (%s):%s\n",arg,errmsg.c_str());
+      suppress_arg(processed_args,i);
+      modifyed=true;
+    }
+    else if ( parseArgOptionWithParam(&arg[arg_pos],"cs-exclude-file-abs-regex=",param) )
+    {
+      std::string errmsg=filterFile.append(true,FilterSource::FILE_REGULAR_EXPRESSION_ABS,param.c_str());
+      if (!errmsg.empty())
+        FATAL3("Error in command line argument (%s):%s\n",arg,errmsg.c_str());
+      suppress_arg(processed_args,i);
+      modifyed=true;
+    }
+    else if ( parseArgOptionWithParam(&arg[arg_pos],"cs-include-file-abs-wildcard=",param) )
+    {
+      std::string errmsg=filterFile.append(false,FilterSource::FILE_WILDCARD_ABS,param.c_str());
+      if (!errmsg.empty())
+        FATAL3("Error in command line argument (%s):%s\n",arg,errmsg.c_str());
+      suppress_arg(processed_args,i);
+      modifyed=true;
+    }
+    else if ( parseArgOptionWithParam(&arg[arg_pos],"cs-exclude-file-abs-wildcard=",param) )
+    {
+      std::string errmsg=filterFile.append(true,FilterSource::FILE_WILDCARD_ABS,param.c_str());
+      if (!errmsg.empty())
+        FATAL3("Error in command line argument (%s):%s\n",arg,errmsg.c_str());
+      suppress_arg(processed_args,i);
+      modifyed=true;
+    }
     else if ( parseArgOptionWithParam(&arg[arg_pos],"cs-include-file-regex=",param) )
     {
       std::string errmsg=filterFile.append(false,FilterSource::FILE_REGULAR_EXPRESSION,param.c_str());
@@ -685,10 +717,14 @@ void print_usage()
   printf("--cs-exclude-function-regex=<string>: exclude function using regular expression\n");
   printf("--cs-include-file-regex=<string>: include file using regular expression\n");
   printf("--cs-exclude-file-regex=<string>: exclude file using regular expression\n");
+  printf("--cs-include-file-abs-regex=<string>: include file using regular expression on the absolute path\n");
+  printf("--cs-exclude-file-abs-regex=<string>: exclude file using regular expression on the absolute path\n");
   printf("--cs-include-function-wildcard=<string>: include function using wildcards\n");
   printf("--cs-exclude-function-wildcard=<string>: exclude function using wildcards\n");
   printf("--cs-include-file-wildcard=<string>: include files using wildcards\n");
   printf("--cs-exclude-file-wildcard=<string>: exclude files using wildcards\n");
+  printf("--cs-include-file-abs-wildcard=<string>: include files using wildcards on the absolute file path\n");
+  printf("--cs-exclude-file-abs-wildcard=<string>: exclude files using wildcards on the absolute file path\n");
   printf("--cs-include-path=<string>: include files in a specific path\n");
   printf("--cs-exclude-path=<string>: exclude files in a specific path\n");
   printf("--cs-output=<string>: name of the .csexe file\n");

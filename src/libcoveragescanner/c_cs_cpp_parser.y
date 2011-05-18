@@ -2112,6 +2112,7 @@ long c_cs_cpp_analyse(const char*filename_orig,const char *finput,Expressions &e
   parser_line_pos_p    = &l;
 
   clearCurrentScope();
+  initExcludeIncludeWarning();
   init_c_cs_cpp_parserlex(parse_language,yy_input_func,filename_orig);
 #if YYDEBUG
   yydebug=1;

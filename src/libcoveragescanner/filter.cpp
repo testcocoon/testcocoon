@@ -26,7 +26,7 @@
 #include <windows.h>
 #include <process.h>
 #endif
-
+#include <stdio.h>
 
 Filter::~Filter()
 {
@@ -63,7 +63,9 @@ std::string Filter::setInternal(filter_t &filter,bool ignore_flag,type_t type,co
       break;
     case FUNCTION_REGULAR_EXPRESSION:
     case FILE_REGULAR_EXPRESSION:
+    case FILE_REGULAR_EXPRESSION_ABS:
       filter.expression=STRDUP(expression);
+      filter.expression_abs=STRDUP(expression);
       {
         int ret;
         if ((ret=re_comp(&filter.regexpr,filter.expression)!=0))
@@ -75,6 +77,7 @@ std::string Filter::setInternal(filter_t &filter,bool ignore_flag,type_t type,co
       }
       break;
     case FILE_WILDCARD:
+    case FILE_WILDCARD_ABS:
     case PATH:
     case FILENAME:
       {
@@ -122,9 +125,10 @@ std::string Filter::append(bool ignore_flag,type_t type,const char *expression)
 }
 
 
-bool Filter::isInclude(const char *file_in) const 
+bool Filter::isInclude(const char *file_in,std::string &expression_match) const 
 {
   FUNCTION_TRACE;
+  expression_match.clear();
   int file_lg=strlen(file_in);
   char *path=(char*)MALLOC(file_lg+1); path[0]='\0';
   char *name=(char*)MALLOC(file_lg+1); name[0]='\0';
@@ -138,40 +142,47 @@ bool Filter::isInclude(const char *file_in) const
 
   for (std::list<filter_t>::const_iterator it=filter.begin();it!=filter.end();++it)
   {
-    bool match=false;
     const filter_t f=*it;
     switch (f.type)
     {
       case FILENAME:
         if (f.expression_abs && strcmp(f.expression_abs,fileabs)==0)
-          match=true;
+          expression_match=std::string(f.expression_abs);
         if (strcmp(f.expression,file)==0)
-          match=true;
+          expression_match=std::string(f.expression);
         break;
       case PATH:
         if (strcmp(f.expression,path)==0)
-          match=true;
+          expression_match=std::string(f.expression);
         if (f.expression_abs && strcmp(f.expression_abs,pathabs)==0)
-          match=true;
+          expression_match=std::string(f.expression_abs);
+        break;
+      case FILE_WILDCARD_ABS:
+        if (wildmatch(f.expression_abs,fileabs))
+          expression_match=std::string(f.expression_abs);
         break;
       case FILE_WILDCARD:
         if (wildmatch(f.expression,file))
-          match=true;
+          expression_match=std::string(f.expression);
+        break;
+      case FILE_REGULAR_EXPRESSION_ABS: 
+        if (re_exec (f.regexpr,fileabs, 0,NULL)!=0)
+          expression_match=std::string(f.expression);
         break;
       case FILE_REGULAR_EXPRESSION: 
         if (re_exec (f.regexpr,file, 0,NULL)!=0)
-          match=true;
+          expression_match=std::string(f.expression);
         break;
       case FUNCTION_WILDCARD:
         if (wildmatch(f.expression,file_in))
-          match=true;
+          expression_match=std::string(f.expression);
         break;
       case FUNCTION_REGULAR_EXPRESSION:
         if (re_exec (f.regexpr,file_in, 0,NULL)!=0)
-          match=true;
+          expression_match=std::string(f.expression);
         break;
     }
-    if (match)
+    if (!expression_match.empty())
     {
 #if LOG
       char tmp[CHAINE_LEN];
@@ -181,12 +192,14 @@ bool Filter::isInclude(const char *file_in) const
        strcpy(tmp,"[INCLUDE]");
       switch(f.type)
       {
-        case PATH: strcat(tmp,"[PATH]"); break;
-        case FILENAME: strcat(tmp,"[FILENAME]"); break;
-        case FILE_REGULAR_EXPRESSION: strcat(tmp,"[REGULAR_EXPRESSION]"); break;
-        case FILE_WILDCARD: strcat(tmp,"[WILDCARD]"); break;
-        case FUNCTION_REGULAR_EXPRESSION: strcat(tmp,"[REGULAR_EXPRESSION]"); break;
-        case FUNCTION_WILDCARD: strcat(tmp,"[WILDCARD]"); break;
+        case PATH                        : strcat(tmp,"[PATH]"); break;
+        case FILENAME                    : strcat(tmp,"[FILENAME]"); break;
+        case FILE_REGULAR_EXPRESSION     : strcat(tmp,"[REGULAR_EXPRESSION]"); break;
+        case FILE_REGULAR_EXPRESSION_ABS : strcat(tmp,"[REGULAR_EXPRESSION_ABS]"); break;
+        case FILE_WILDCARD               : strcat(tmp,"[WILDCARD]"); break;
+        case FILE_WILDCARD_ABS           : strcat(tmp,"[WILDCARD_ABS]"); break;
+        case FUNCTION_REGULAR_EXPRESSION : strcat(tmp,"[REGULAR_EXPRESSION]"); break;
+        case FUNCTION_WILDCARD           : strcat(tmp,"[WILDCARD]"); break;
         default: break;
       }
       if (f.expression_abs)
@@ -207,6 +220,7 @@ bool Filter::isInclude(const char *file_in) const
   FREE (file);
   FREE (path);
   FREE (name);
+  expression_match="<default_behaviour>";
   return default_behaviour; // per default exclude
 }
 
@@ -224,12 +238,14 @@ void Filter::PDEBUG()  const
       strcpy(tmp,"[INCLUDE]");
     switch(f->type)
     {
-      case PATH: strcat(tmp,"[PATH]"); break;
-      case FILENAME: strcat(tmp,"[FILENAME]"); break;
-      case FILE_REGULAR_EXPRESSION: strcat(tmp,"[FILE_REGULAR_EXPRESSION]"); break;
-      case FILE_WILDCARD: strcat(tmp,"[FILE_WILDCARD]"); break;
-      case FUNCTION_REGULAR_EXPRESSION: strcat(tmp,"[FUNCTION_REGULAR_EXPRESSION]"); break;
-      case FUNCTION_WILDCARD: strcat(tmp,"[FUNCTION_WILDCARD]"); break;
+      case PATH                        : strcat(tmp,"[PATH]"); break;
+      case FILENAME                    : strcat(tmp,"[FILENAME]"); break;
+      case FILE_REGULAR_EXPRESSION     : strcat(tmp,"[FILE_REGULAR_EXPRESSION]"); break;
+      case FILE_REGULAR_EXPRESSION_ABS : strcat(tmp,"[FILE_REGULAR_EXPRESSION_ABS]"); break;
+      case FILE_WILDCARD               : strcat(tmp,"[FILE_WILDCARD]"); break;
+      case FILE_WILDCARD_ABS           : strcat(tmp,"[FILE_WILDCARD_ABS]"); break;
+      case FUNCTION_REGULAR_EXPRESSION : strcat(tmp,"[FUNCTION_REGULAR_EXPRESSION]"); break;
+      case FUNCTION_WILDCARD           : strcat(tmp,"[FUNCTION_WILDCARD]"); break;
     }
     if (f->expression_abs)
     {

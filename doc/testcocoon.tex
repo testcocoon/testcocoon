@@ -1985,6 +1985,10 @@ open /Developer/Applications/Xcode.app
   & {\tt[\CMDoption{verbose}]} & \\ 
   & {\tt[\CMDoption{include-path}=\textit{<STRING>}]} &  \\
   & {\tt[\CMDoption{exclude-path}=\textit{<STRING>}]} &  \\
+  & {\tt[\CMDoption{include-file-abs-regex}=\textit{<STRING>}]} &  \\
+  & {\tt[\CMDoption{exclude-file-abs-regex}=\textit{<STRING>}]} &  \\
+  & {\tt[\CMDoption{include-file-abs-wildcard}=\textit{<STRING>}]} &  \\
+  & {\tt[\CMDoption{exclude-file-abs-wildcard}=\textit{<STRING>}]} &  \\
 
   & {\tt[\CMDoption{exclude-function-regex}=\textit{<STRING>}]} & \\
   & {\tt[\CMDoption{include-function-regex}=\textit{<STRING>}]}  & \\
@@ -2026,6 +2030,11 @@ Where:
     \\
     \forExample \CMDoption{exclude-file-wildcard}\verb'=*.h' excludes all header file names
              with the extension \texttt{.h}.
+
+  \item[\CMDoption{exclude-file-abs-wildcard}=\textit{<STRING>}]\label{exclude-abs-wildcard}\hfill \\
+	         Same as \CMDoption{exclude-file-wildcard} but on the absolute file path.
+  \item[\CMDoption{include-file-abs-wildcard}=\textit{<STRING>}]\label{include-abs-wildcard}\hfill \\
+	         Same as \CMDoption{include-file-wildcard} but on the absolute file path.
   \item[\CMDoption{include-file-regex}=\textit{<STRING>}] \hfill \\
     This command line option enables the user to include a file in the 
     coverage analysis. The file name is specified using a regular expression.
@@ -2040,6 +2049,10 @@ Where:
     \\
     \forExample \CMDoption{exclude-file-regex}\verb'=^.*\.h$' excludes all header file names
              with the extension \texttt{.h}.
+  \item[\CMDoption{exclude-file-abs-regex}=\textit{<STRING>}]\label{exclude-abs-regex}\hfill \\
+	         Same as \CMDoption{exclude-file-regex} but on the absolute file path.
+  \item[\CMDoption{include-file-abs-regex}=\textit{<STRING>}]\label{include-abs-regex}\hfill \\
+	         Same as \CMDoption{include-file-regex} but on the absolute file path.
   \item[\CMDoption{exclude-path}=\textit{<STRING>}] \hfill \\
     This command line option enables the user to exclude 
     the files located in a specific path from the code coverage analysis. 

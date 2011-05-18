@@ -30,11 +30,15 @@ class FilterSource : public Filter
 {
   public:
     FilterSource() : Filter(false) {}
-    enum type_t { 
+    enum type_t 
+    { 
       FILENAME=Filter::FILENAME,
       PATH=Filter::PATH,
       FILE_WILDCARD=Filter::FILE_WILDCARD,
-      FILE_REGULAR_EXPRESSION=Filter::FILE_REGULAR_EXPRESSION } ;
+      FILE_WILDCARD_ABS=Filter::FILE_WILDCARD_ABS,
+      FILE_REGULAR_EXPRESSION=Filter::FILE_REGULAR_EXPRESSION,
+      FILE_REGULAR_EXPRESSION_ABS=Filter::FILE_REGULAR_EXPRESSION_ABS
+    } ;
     std::string append(bool ignore_flag,type_t type,const char *expression);
     std::string appendDefault(bool ignore_flag,type_t type,const char *expression);
   private:
