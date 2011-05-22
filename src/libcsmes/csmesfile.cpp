@@ -921,7 +921,7 @@ std::string  CSMESFile::merge_precheck_source_list(const char *module,const char
 {
   std::list<std::string> lst=source_list(module);
   std::string msg=std::string(increment);
-  msg+="Source file instrumented during the compilation of '"+std::string(module)+"' in the instrumentatio database '"+fileName()+"'\n";
+  msg+="Source file instrumented during the compilation of '"+std::string(module)+"' in the instrumentation database '"+fileName()+"'\n";
   for (std::list<std::string>::const_iterator it=lst.begin();it!=lst.end();++it)
   {
     msg+=increment;
