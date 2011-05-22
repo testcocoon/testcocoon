@@ -92,7 +92,7 @@ bool CSMESFile::open(const char *file_name,access_t a)
       f=fopen(fileName(),"r"BINARY_FORMAT );
       if (f==NULL)
       {
-        error_msg="File nor existing";
+        error_msg="File not existing";
         return false;
       }
       ret = readSectionIndex();
@@ -104,7 +104,7 @@ bool CSMESFile::open(const char *file_name,access_t a)
        f=fopen(fileName(),"r+"BINARY_FORMAT );
        if (f==NULL)
        {
-          error_msg="File nor existing";
+          error_msg="File not existing";
           return false;
        }
        ret = readSectionIndex();
@@ -116,7 +116,7 @@ bool CSMESFile::open(const char *file_name,access_t a)
       f=fopen(fileName(),"w+"BINARY_FORMAT );
       if (f==NULL)
       {
-        error_msg="File nor existing";
+        error_msg="File not existing";
         return false;
       }
       break;
@@ -976,6 +976,36 @@ bool CSMESFile::merge_precheck(CSMESFile &csmes,unsigned long fl_merge,merge_pol
             msg+=merge_precheck_source_list(csmes.sectionModule(i),"    ");
             msg+=csmes.merge_precheck_source_list(csmes.sectionModule(i),"    ");
           }
+          else if ( instrumentation.size()!=csmes_instrumentation.size() )
+          {
+            long err_line=-1;
+            int nb_inst=instrumentation.size();
+            if (nb_inst>csmes_instrumentation.size())
+              nb_inst=csmes_instrumentation.size();
+            for (int i_inst=0;i_inst<nb_inst;i_inst++)
+            {
+              merge_precheck_info_t csmes_inst=csmes_instrumentation[i_inst];
+              if (csmes_inst.instrumentation==_INSTRUMENTATION_NOP)
+                continue;
+              merge_precheck_info_t inst=instrumentation[i_inst];
+              if (inst.instrumentation==_INSTRUMENTATION_NOP)
+                continue;
+              if (inst.instrumentation!=csmes_inst.instrumentation)
+              {
+                err_line=csmes_inst.line;
+                break;
+              }
+            }
+            if (err_line>0)
+            {
+              std::ostringstream smsg;
+              msg+='\n';
+              smsg << "  Source line ";
+              smsg << err_line << " of file '"+std::string(csmes.sectionName(i))+"'";
+              smsg << " is differently instrumented";
+              msg+=smsg.str();
+            }
+          }
           msgs.push_back(msg);
         }
         else
@@ -996,9 +1026,14 @@ bool CSMESFile::merge_precheck(CSMESFile &csmes,unsigned long fl_merge,merge_pol
               msg << std::string(csmes.sectionModule(i));
               msg << "': Instrumentation of source file '";
               msg << std::string(csmes.sectionName(i));
-              msg << "' (line ";
-              msg << csmes_inst.line;
-              msg << ") is different";
+              msg << "'";
+              if (csmes_inst.line>0)
+              {
+                msg << "' (line ";
+                msg << csmes_inst.line;
+                msg << ")";
+              }
+              msg << " is different";
               msgs.push_back(msg.str());
               break;
             }
