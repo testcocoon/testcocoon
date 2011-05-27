@@ -115,36 +115,6 @@ void extract_string(char *s,long s_lg,const long *line_index, long nb_line_index
         else
           c++;
     }
-#ifndef NO_DEBUG
-    long _size=0;
-    long _pos=-1;
-    long _i;
-    int _l=1;
-    int _c=1;
-
-    for (_i=0;_i<s_lg;_i++)
-    {
-        if (s[_i]=='\0')
-            continue;
-        if (inIntervalRange(_l,_c,start_line,start_column,end_line,end_column))
-        {
-          if (_pos<0) _pos=_i;
-          _size++;
-        }
-        if (s[_i]=='\n')
-        {
-            _l++;
-            _c=1;
-        }
-        else
-          _c++;
-    }
-
-    if(_size!=size)
-      FATAL1("Incoherent size");
-    if(_pos!=pos)
-      FATAL1("Incoherent position");
-#endif
 
     if (pos==-1) 
     {
