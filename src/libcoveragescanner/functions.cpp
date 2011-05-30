@@ -58,20 +58,6 @@ void Functions::save(const char *module_name,const FileName *filenames_p,const E
     realPath(file,file_abs);
     DEBUG3("Begin saving function list, file='%s' absolute path='%s'\n",file,file_abs);
 
-#ifndef NO_DEBUG
-    // verify if the file is already treated
-    bool exists=false;
-    for (int j=0;j<file_id && !exists;j++)
-    {
-      if (strcmp(file,filenames_p->at(j))==0)
-        exists=true;
-    }
-    if (exists)
-    {
-      FATAL1("Internal error");
-    }
-#endif
-
     if (expressions_p->instrument_exists(file))
     {
       DEBUG3("Begin recording function information, module=abs='%s', file_abs='%s'\n",module_abs,file_abs);

@@ -361,9 +361,7 @@ QString WOption::language() const
 static QString formatCacheStatistics(int cache_hit,int cache_miss,int max_cost,int cost) 
 {
    QString text;
-#ifndef NO_DEBUG
    text+=QObject::tr("Cache Size")+": "+QString::number(max_cost)+"\n";
-#endif
    text+=QObject::tr("Actual Size")+": "+QString::number(cost)+"\n";
    text+=QObject::tr("Cache Hit")+": "+QString::number(cache_hit)+"\n";
    text+=QObject::tr("Cache Miss")+": "+QString::number(cache_miss);

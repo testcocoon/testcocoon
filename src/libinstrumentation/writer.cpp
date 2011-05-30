@@ -28,9 +28,6 @@ Writer::Writer (QIODevice *)
 
 void Writer::begin(section_type_t s)
 {
-#ifndef NO_DEBUG
-  sections.push(s);
-#endif
   bool ignore=ignoreOutput();
   if (tags_to_ignore_contain.contains(s))
     ignore_count++;
@@ -42,10 +39,6 @@ void Writer::begin(section_type_t s)
 
 void Writer::end(section_type_t s)
 {
-#ifndef NO_DEBUG
-  ASSERT(!sections.isEmpty());
-  ASSERT( s == sections.pop()) ;
-#endif
   if (tags_to_ignore_contain.contains(s))
     ignore_count--;
   bool ignore=ignoreOutput();

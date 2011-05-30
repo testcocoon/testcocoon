@@ -796,7 +796,7 @@ void pop_instrumentation_option(int line)
 }
 
 static int YYSTYPE_size = 0;
-#ifndef NO_DEBUG
+#ifdef LOG
 static void printScope(const Scope *scope)
 {
   FUNCTION_TRACE;
@@ -1292,7 +1292,7 @@ void popCurrentScope()
 void pushCurrentScope(const Scope *p)
 {
   FUNCTION_TRACE;
-#ifndef NO_DEBUG 
+#ifdef LOG
   DEBUG1("pushCurrentScope:");
   printScope(p);
   DEBUG1("\n");

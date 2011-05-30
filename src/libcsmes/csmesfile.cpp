@@ -42,11 +42,6 @@
 #else
 #error "unsupported platform"
 #endif
-#ifndef NO_DEBUG
-#define PREALLOCATE_BUFFER_SIZE 0
-#else
-#define PREALLOCATE_BUFFER_SIZE 4096
-#endif
 #define BINARY_FORMAT "b"
 
 
@@ -681,31 +676,6 @@ int CSMESFile::findSectionID(const char *module,const char *name,const char *inf
       }
     }
   }
-#ifndef NO_DEBUG
-  int verify_found=-1;
-  for (int i=0;i<nb_section_tab;i++)
-  {
-    if ( (type==section_tab[i].type)
-        && (module_id==section_tab[i].module_id)
-        && (name_id==section_tab[i].name_id) )
-    {
-      if (info)
-      {
-        if (strcmp(info,section_tab[i].info)==0)
-        {
-          verify_found= i;
-          break;
-        }
-      }
-      else
-      {
-        verify_found= i;
-        break;
-      }
-    }
-  }
-  ASSERT(verify_found==found);
-#endif
   return found;
 }
 
@@ -1125,21 +1095,6 @@ bool CSMESFile::merge_internal(CSMESFile &csmes,unsigned long fl_merge,merge_pol
             }
           }
         }
-#ifndef NO_DEBUG
-        int verify_equivalent_index=-1;
-        for (int j=0;j<nbSections();j++)
-        {
-          if ((  csmes.section_tab[i].type==section_tab[j].type
-                && csmes.section_tab[i].size==section_tab[j].size
-                && csmes.section_tab[i].checksum==section_tab[j].checksum
-                && strcmp(csmes.sectionName(i),sectionName(j))==0))
-          {
-            verify_equivalent_index=j;
-            break;
-          }
-        }
-        ASSERT(verify_equivalent_index==equivalent_index);
-#endif
       }
     }
     if (equivalent_index>=0)
@@ -1841,18 +1796,6 @@ _I64 CSMESFile::nbExecution() const
   FUNCTION_TRACE;
   const long record_size=4;
   OFFSET sz=size()-4;
-#ifndef NO_DEBUG
-  if (sz<0)
-  {
-    error_msg="Wrong length for the instrumentation";
-    return -1;
-  }
-  if ((sz%record_size)!=0)
-  {
-    error_msg="Wrong length for the instrumentation";
-    return -1;
-  }
-#endif
   return (sz/record_size);
 }
 

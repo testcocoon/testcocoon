@@ -194,9 +194,6 @@ class Writer
     void setCssFile(const QString &s) { css_file=s; }
     void setDisplayFooter(bool b) { display_footer=b; }
   private:
-#ifndef NO_DEBUG
-    QStack<section_type_t> sections;
-#endif
     QSet<section_type_t> tags_to_ignore_contain;
     QString title,icon_file,css_file;
     bool display_footer;

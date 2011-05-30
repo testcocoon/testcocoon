@@ -21,11 +21,7 @@
 #include <stdlib.h>
 #include <algorithm>
 
-#ifndef NO_DEBUG
-#define PREALLOC_SIZE 1
-#else
 #define PREALLOC_SIZE 1024
-#endif
 
 
 Expressions::Expressions()
