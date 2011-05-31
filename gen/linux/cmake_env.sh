@@ -31,6 +31,18 @@ cmake -C /dev/null -DCMAKE_C_COMPILER=$(which gcc) -DCMAKE_CXX_COMPILER=$(which 
 make -j$PROCESSORS coveragescanner
 popd
 
+mkdir -p $TESTCOCOON_TOP_OUTPUT/duma
+pushd $TESTCOCOON_TOP_OUTPUT/duma  || exit -1
+cmake -C /dev/null -DCMAKE_C_COMPILER=$(which gcc) -DCMAKE_CXX_COMPILER=$(which g++) -DCMAKE_BUILD_TYPE=duma $TESTCOCOON_TOP_SOURCE 
+make -j$PROCESSORS coveragescanner
+popd
+
+mkdir -p $TESTCOCOON_TOP_OUTPUT/efence
+pushd $TESTCOCOON_TOP_OUTPUT/efence  || exit -1
+cmake -C /dev/null -DCMAKE_C_COMPILER=$(which gcc) -DCMAKE_CXX_COMPILER=$(which g++) -DCMAKE_BUILD_TYPE=efence $TESTCOCOON_TOP_SOURCE 
+make -j$PROCESSORS coveragescanner
+popd
+
 mkdir -p $TESTCOCOON_TOP_OUTPUT/coverage
 pushd $TESTCOCOON_TOP_OUTPUT/coverage  || exit -1
 export COVERAGESCANNER_PATH=$(realpath "$TESTCOCOON_TOP_OUTPUT/release/testcocoon/src/coveragescanner")

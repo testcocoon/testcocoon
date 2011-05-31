@@ -186,6 +186,68 @@ MARK_AS_ADVANCED(
     COMPILE_DEFINITIONS_PROFILER
 )
 
+# EFENCE build mode
+SET(EFENCE_FLAGS "")
+
+SET( CMAKE_CXX_FLAGS_EFENCE "${CMAKE_C_FLAGS_DEBUG} ${EFENCE_FLAGS}" CACHE STRING
+    "Flags used by the C++ compiler during efence builds."
+    FORCE )
+SET( CMAKE_C_FLAGS_EFENCE "${CMAKE_CXX_FLAGS_DEBUG} ${EFENCE_FLAGS}" CACHE STRING
+    "Flags used by the C compiler during efence builds."
+    FORCE )
+SET( CMAKE_EXE_LINKER_FLAGS_EFENCE
+    "${CMAKE_EXE_LINKER_FLAGS_DEBUG} ${EFENCE_FLAGS} -lefence" CACHE STRING
+    "Flags used for linking binaries during efence builds."
+    FORCE )
+SET( CMAKE_SHARED_LINKER_FLAGS_EFENCE
+    "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} ${EFENCE_FLAGS}" CACHE STRING
+    "Flags used by the shared libraries linker during efence builds."
+    FORCE )
+SET( CMAKE_STATIC_LINKER_FLAGS_EFENCE
+    "${CMAKE_STATIC_LINKER_FLAGS_DEBUG} ${EFENCE_FLAGS}" CACHE STRING
+    "Flags used by the static libraries linker during efence builds."
+    FORCE )
+MARK_AS_ADVANCED(
+    CMAKE_CXX_FLAGS_EFENCE
+    CMAKE_C_FLAGS_EFENCE
+    CMAKE_EXE_LINKER_FLAGS_EFENCE
+    CMAKE_SHARED_LINKER_FLAGS_EFENCE 
+    CMAKE_STATIC_LINKER_FLAGS_EFENCE 
+    COMPILE_DEFINITIONS_EFENCE
+)
+
+
+# DUMA build mode
+SET(DUMA_FLAGS "")
+
+SET( CMAKE_CXX_FLAGS_DUMA "${CMAKE_C_FLAGS_DEBUG} ${DUMA_FLAGS}" CACHE STRING
+    "Flags used by the C++ compiler during duma builds."
+    FORCE )
+SET( CMAKE_C_FLAGS_DUMA "${CMAKE_CXX_FLAGS_DEBUG} ${DUMA_FLAGS}" CACHE STRING
+    "Flags used by the C compiler during duma builds."
+    FORCE )
+SET( CMAKE_EXE_LINKER_FLAGS_DUMA
+    "${CMAKE_EXE_LINKER_FLAGS_DEBUG} ${DUMA_FLAGS} -lduma" CACHE STRING
+    "Flags used for linking binaries during duma builds."
+    FORCE )
+SET( CMAKE_SHARED_LINKER_FLAGS_DUMA
+    "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} ${DUMA_FLAGS}" CACHE STRING
+    "Flags used by the shared libraries linker during duma builds."
+    FORCE )
+SET( CMAKE_STATIC_LINKER_FLAGS_DUMA
+    "${CMAKE_STATIC_LINKER_FLAGS_DEBUG} ${DUMA_FLAGS}" CACHE STRING
+    "Flags used by the static libraries linker during duma builds."
+    FORCE )
+MARK_AS_ADVANCED(
+    CMAKE_CXX_FLAGS_DUMA
+    CMAKE_C_FLAGS_DUMA
+    CMAKE_EXE_LINKER_FLAGS_DUMA
+    CMAKE_SHARED_LINKER_FLAGS_DUMA 
+    CMAKE_STATIC_LINKER_FLAGS_DUMA 
+    COMPILE_DEFINITIONS_DUMA
+)
+
+
 
 
 IF("${CMAKE_SYSTEM}" MATCHES "Linux")
