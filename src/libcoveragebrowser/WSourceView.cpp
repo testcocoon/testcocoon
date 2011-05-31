@@ -78,8 +78,8 @@ WSourceView::WSourceView( QWidget *parent ) : WTextSourceViewer( parent )
   connect (saveAsAction,SIGNAL(triggered()),this,SLOT(saveAs()));
 
   number_of_lines=0;
-  module=QString::null;
-  source=QString::null;
+  module.clear();
+  source.clear();
   updateselection_timer.setSingleShot(true);
   connect(&updateselection_timer,SIGNAL(timeout()),this,SLOT(selectionChanged_received()));
   emitPossibilities();
@@ -129,10 +129,10 @@ void WSourceView::updateView()
     setUpdatesEnabled(false);
     int display_offset=getDisplayOffset();
     QString txt;
-    QString mod;
-    QString src;
-    QString mod_ref;
-    QString src_ref;
+    ModuleFile mod;
+    SourceFile src;
+    ModuleFile mod_ref;
+    SourceFile src_ref;
     csmes_p->equivalentModulesReference(module,source,mod,src,mod_ref,src_ref) ;
     csmes_p->toPLAIN(mod,src,source_type,txt);
     _line_mode=lineMode();
@@ -849,7 +849,7 @@ void WSourceView::zoomOut()
   }
 }
 
-void WSourceView::differenceWithReference(const QString &module,const QString &source,QTextDocument &doc) const
+void WSourceView::differenceWithReference(const ModuleFile &module,const SourceFile &source,QTextDocument &doc) const
 {
   if (csmes_p->hasReference())
   {
@@ -876,7 +876,8 @@ void WSourceView::differenceWithReference(const QString &module,const QString &s
        break;
     case CSMes::NOT_EXISTING:
        {
-         QString mod,mod_ref,src,src_ref;
+         ModuleFile mod,mod_ref;
+         SourceFile src,src_ref;
          csmes_p->equivalentModulesReference(module,source,mod,src,mod_ref,src_ref);
          QString reference;
          csmes_p->toPLAINReference(mod_ref,src_ref,source_type,reference);

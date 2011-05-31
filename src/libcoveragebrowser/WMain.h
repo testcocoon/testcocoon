@@ -71,7 +71,7 @@ public:
     bool getSourceCode(const QString &filename,bool preprocessed,QString &code) const ;
     bool getExecutionState(const QString &execution,Executions::execution_status_t &status) const;
     bool setExecutionState(const QString &execution,Executions::execution_status_t status) ;
-    QStringList sourceList() const;
+    SourceFiles sourceList() const;
     QString openCSMesFile( const QString &filename );
     QString openCSMesRefenceFile( const QString &filename );
     QString closeCSMesRefenceFile( );
@@ -83,7 +83,7 @@ public:
     bool deleteExecution(const QString &name);
     bool saveCSMesFile(const QString &filename=QString());
     void closeCSMesFile();
-    QString selectSource(const QString &name);
+    QString selectSource(const SourceFile &name);
     bool isCSMesModified() const ;
     void loadCSExeFile(const QString &filename,const QString &prefix,CSMesUndoRedoFramework::csexe_import_policy_t,bool delete_after,Executions::execution_status_t default_execution_status,bool minimize_memory_usage);
     void loadCSExeCommand(const QString &command,const QStringList &arguments,const QString &prefix,CSMesUndoRedoFramework::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,bool minimize_memory_usage);
@@ -113,7 +113,7 @@ public slots:
     void on_fileMergeCSMesAction_triggered();
     void on_actionImportUnitTests_triggered();
     void on_Options_triggered();
-    void showSource(const QString &module,const QString &source,CSMesUndoRedoFramework::source_type_t t,int start_line,int start_column,int end_line,int end_column);
+    void showSource(const ModuleFile &module,const SourceFile &source,CSMesUndoRedoFramework::source_type_t t,int start_line,int start_column,int end_line,int end_column);
     void on_nextInstrumentationAction_triggered();
     void on_previousInstrumentationAction_triggered();
     void on_nextInstrumentationTestedAction_triggered();

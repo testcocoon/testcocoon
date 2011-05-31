@@ -149,7 +149,7 @@ QString CSMesEmma::exportEMMAStatistic(const QString &filename,int coverage_leve
 
     QHash<QString,int> nb_tested_source_list;
     QHash<QString,int> nb_untested_source_list;
-    const QStringList sources= Sources(NON_EMPTY);
+    const SourceFiles sources= Sources(NON_EMPTY);
     int nb_sources=sources.count();
     statisticSourcesExecution(sources,executions,coverage_level,method,nb_tested_source_list,nb_untested_source_list,_instrumentations) ;
 
@@ -216,7 +216,7 @@ QString CSMesEmma::exportEMMAStatistic(const QString &filename,int coverage_leve
     stream.writeStartElement("packages");
     stream.writeAttribute("name",getFilename());
 
-    for (QStringList::const_iterator itSrc=sources.begin();itSrc!=sources.end();++itSrc)
+    for (SourceFiles::const_iterator itSrc=sources.begin();itSrc!=sources.end();++itSrc)
     {
       stream.writeStartElement("srcfile");
       stream.writeAttribute("name",*itSrc);

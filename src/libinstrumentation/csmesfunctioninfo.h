@@ -30,7 +30,7 @@ class CSMesFunctionInfo : public CSMesInstrumentation
     {
       public:
         FunctionInfo method;
-        QString source;
+        SourceFile source;
         bool operator== ( const functionskey_t & x ) const
         {
           return method==x.method
@@ -41,9 +41,9 @@ class CSMesFunctionInfo : public CSMesInstrumentation
   protected:
     QList<functionskey_t> Functions() const ;
 
-    QVector<FunctionInfo> FunctionInfoSource( QString module, QString source) const;
+    QVector<FunctionInfo> FunctionInfoSource( ModuleFile module, SourceFile source) const;
     const FunctionInfo * FindFunction(const QString &source,const FunctionInfo &k) const ;
-    bool instrumentationListFunctionPre(QString module,QString source,long start_line,long start_column,long end_line,long end_column,QList<int> &instrumentation_list) const;
+    bool instrumentationListFunctionPre(ModuleFile module,SourceFile source,long start_line,long start_column,long end_line,long end_column,QList<int> &instrumentation_list) const;
 
 };
 

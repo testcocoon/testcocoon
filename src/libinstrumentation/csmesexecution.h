@@ -69,7 +69,7 @@ class CSMesExecution : public CSMesFunctionInfo
       return selectExecutionsComparaison(instrumentations,ms,comparaison,test_coverage_mode,method,abort_operation);
     }
     void mergeInExecution(const QString &name1,const Executions::modules_executions_t &exec2) ;
-    QStringList executedBy(QString module,QString source,int index,bool selected_executions_only) const;
+    QStringList executedBy(ModuleFile module,SourceFile source,int index,bool selected_executions_only) const;
     static bool executionNameValid(const QString &name,QString &explanation);
     static QColor executionStatusColor(Executions::execution_status_t v);
   protected:

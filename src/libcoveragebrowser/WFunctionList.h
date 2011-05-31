@@ -44,7 +44,7 @@ public:
     void setStatusColorLevelClass(double low, double medium);
 signals:
     void updateGUI();
-    void selectedSource(const QString &module,const QString &source,CSMesUndoRedoFramework::source_type_t,int start_line,int start_column,int end_line,int end_column);
+    void selectedSource(const ModuleFile &module,const SourceFile &source,CSMesUndoRedoFramework::source_type_t,int start_line,int start_column,int end_line,int end_column);
 private:
     double class_low_level, class_medium_level, function_low_level, function_medium_level;
     MatchExpr filter;

@@ -183,7 +183,7 @@ void WModuleList::on_filter_p_textChanged (const QString &pattern)
   modulesSortModel_p->setFilterRegExp(filter);
 }
 
-void WModuleList::selectSource (const QString &module,const QString &source)
+void WModuleList::selectSource (const ModuleFile &module,const SourceFile &source)
 {
   if (modulesSortModel_p==NULL)
     return ;

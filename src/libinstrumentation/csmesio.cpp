@@ -788,7 +788,7 @@ bool CSMesIO::loadCSMes(const QString &s)
           {
             CSMesInstrumentations::Module v;
             v.signature=csmes.signature(sec_id);
-            v.module_relative_name=csmes.sectionModuleRelative(sec_id);
+            v.module_relative_name=ModuleFile(csmes.sectionModuleRelative(sec_id));
             v.nb_measurements_items=0;
             instrumentations.modules[mod]=v;
           }
@@ -1207,7 +1207,7 @@ bool CSMesIO::isBlackBoxConfiguration() const
   return csmes.isBlackBox();
 }
 
-bool CSMesIO::isSourceExisting(QString module,QString source, CSMESFile::type_t t) const
+bool CSMesIO::isSourceExisting(ModuleFile module,SourceFile source, CSMESFile::type_t t) const
 {
   if (!findSourceModule(module,source))
     return false;

@@ -29,15 +29,15 @@ class CSMesComment : public CSMesExecution
     CSMesComment();
   protected:
     void clear();
-    bool setComment(QString module,QString source,int instrument_index,const QString &comment);
-    QString getComment(QString module,QString source,int instrument_index) const;
+    bool setComment(ModuleFile module,SourceFile source,int instrument_index,const QString &comment);
+    QString getComment(ModuleFile module,SourceFile source,int instrument_index) const;
   protected:
     typedef QHash<int,QString> comments_t;
     typedef QHash<QString,comments_t> sources_comments_t;
     typedef QHash<QString,sources_comments_t> modules_comments_t;
     modules_comments_t comments;
   protected:
-    QList<int> commentedIndexes(QString mod,QString src) const;
+    QList<int> commentedIndexes(ModuleFile mod,SourceFile src) const;
 };
 
 #endif

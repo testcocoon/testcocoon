@@ -245,8 +245,8 @@ WMain::WMain(QWidget* parent, Qt::WindowFlags fl): QMainWindow ( parent, fl )
   functions_browser_p->setCSMes(csmes_file_p);
   functions_browser_p->setStatusColorLevelFunction(Options::get_opt_double(QString(),"FUNCTION_LOW_COLOR_LEVEL",DEF_FUNCTION_LOW_COLOR_LEVEL),Options::get_opt_double(QString(),"FUNCTION_MEDIUM_COLOR_LEVEL",DEF_FUNCTION_MEDIUM_COLOR_LEVEL));
   functions_browser_p->setStatusColorLevelClass(Options::get_opt_double(QString(),"CLASS_LOW_COLOR_LEVEL",DEF_CLASS_LOW_COLOR_LEVEL),Options::get_opt_double(QString(),"CLASS_MEDIUM_COLOR_LEVEL",DEF_CLASS_MEDIUM_COLOR_LEVEL));
-  connect( functions_browser_p,SIGNAL( selectedSource(const QString &,const QString &,CSMesUndoRedoFramework::source_type_t,int,int,int,int)),
-           this ,SLOT( showSource(const QString &,const QString &,CSMesUndoRedoFramework::source_type_t,int,int,int,int) ) ) ;
+  connect( functions_browser_p,SIGNAL( selectedSource(const ModuleFile &,const SourceFile &,CSMesUndoRedoFramework::source_type_t,int,int,int,int)),
+           this ,SLOT( showSource(const ModuleFile &,const SourceFile &,CSMesUndoRedoFramework::source_type_t,int,int,int,int) ) ) ;
   functions_browser_p->setEnabled(false);
 
   // Source browser
@@ -254,8 +254,8 @@ WMain::WMain(QWidget* parent, Qt::WindowFlags fl): QMainWindow ( parent, fl )
   modules_browser_p->setStatusColorLevel(Options::get_opt_double(QString(),"MODULE_LOW_COLOR_LEVEL",DEF_MODULE_LOW_COLOR_LEVEL),Options::get_opt_double(QString(),"MODULE_MEDIUM_COLOR_LEVEL",DEF_MODULE_MEDIUM_COLOR_LEVEL));
   modules_browser_p->setCSMes(csmes_file_p);
 
-  connect( modules_browser_p,SIGNAL( selectedSource(const QString &,const QString &,CSMesUndoRedoFramework::source_type_t,int,int,int,int)),
-           this ,SLOT( showSource(const QString &,const QString &,CSMesUndoRedoFramework::source_type_t,int,int,int,int) ) ) ;
+  connect( modules_browser_p,SIGNAL( selectedSource(const ModuleFile &,const SourceFile &,CSMesUndoRedoFramework::source_type_t,int,int,int,int)),
+           this ,SLOT( showSource(const ModuleFile &,const SourceFile &,CSMesUndoRedoFramework::source_type_t,int,int,int,int) ) ) ;
   modules_browser_p->setEnabled(false);
 
   multiplexer.connect (SIGNAL(updateViewType(CSMesUndoRedoFramework::source_type_t)),this,SLOT(setViewType(CSMesUndoRedoFramework::source_type_t)));
@@ -1027,7 +1027,7 @@ void WMain::closeEvent( QCloseEvent *e )
   }
 }
 
-void WMain::showSource(const QString &module,const QString &source,CSMesUndoRedoFramework::source_type_t t,int start_line,int start_column,int end_line,int end_column)
+void WMain::showSource(const ModuleFile &module,const SourceFile &source,CSMesUndoRedoFramework::source_type_t t,int start_line,int start_column,int end_line,int end_column)
 {
   setViewType(t);
   if (workspace_p->isHidden())
@@ -1179,9 +1179,9 @@ void WMain::on_previousInstrumentationManuallyValidatedAction_triggered()
 
 void WMain::on_nextModuleAction_triggered()
 {
-  const QStringList &sources=csmes_file_p->Sources(CSMes::NON_EMPTY);
+  const SourceFiles &sources=csmes_file_p->Sources(CSMes::NON_EMPTY);
 
-  QStringList::const_iterator cur=qBinaryFind(sources.begin(), sources.end(),cur_source);
+  SourceFiles::const_iterator cur=qBinaryFind(sources.begin(), sources.end(),cur_source);
 
   if (cur!=sources.end())
     ++cur;
@@ -1195,9 +1195,9 @@ void WMain::on_nextModuleAction_triggered()
 
 void WMain::on_previousModuleAction_triggered()
 {
-  const QStringList &sources=csmes_file_p->Sources(CSMes::NON_EMPTY);
+  const SourceFiles &sources=csmes_file_p->Sources(CSMes::NON_EMPTY);
 
-  QStringList::const_iterator cur=qBinaryFind(sources.begin(), sources.end(),cur_source);
+  SourceFiles::const_iterator cur=qBinaryFind(sources.begin(), sources.end(),cur_source);
 
   if (cur!=sources.end() && cur!=sources.begin())
     --cur;
@@ -1212,9 +1212,9 @@ void WMain::on_previousModuleAction_triggered()
 
 void WMain::requestNextModule(Instrumentation::filter_t t)
 {
-  const QStringList &sources=csmes_file_p->Sources(CSMes::NON_EMPTY);
+  const SourceFiles &sources=csmes_file_p->Sources(CSMes::NON_EMPTY);
 
-  QStringList::const_iterator cur=qBinaryFind(sources.begin(), sources.end(),cur_source);
+  SourceFiles::const_iterator cur=qBinaryFind(sources.begin(), sources.end(),cur_source);
 
   bool found=false;
   while (!found)
@@ -1237,9 +1237,9 @@ void WMain::requestNextModule(Instrumentation::filter_t t)
 
 void WMain::requestPreviousModule(Instrumentation::filter_t t)
 {
-  const QStringList &sources=csmes_file_p->Sources(CSMes::NON_EMPTY);
+  const SourceFiles &sources=csmes_file_p->Sources(CSMes::NON_EMPTY);
 
-  QStringList::const_iterator cur=qBinaryFind(sources.begin(), sources.end(),cur_source);
+  SourceFiles::const_iterator cur=qBinaryFind(sources.begin(), sources.end(),cur_source);
 
   bool found=false;
   while (!found)
@@ -1382,7 +1382,7 @@ void WMain::setViewType(CSMesUndoRedoFramework::source_type_t t)
    }
 }
 
-QStringList WMain::sourceList() const
+SourceFiles WMain::sourceList() const
 {
   return csmes_file_p->Sources(CSMes::NON_EMPTY);
 }
@@ -1452,10 +1452,10 @@ void WMain::closeCSMesFile()
   csmes_file_p->closeCSMes();
 }
 
-QString WMain::selectSource(const QString &name)
+QString WMain::selectSource(const SourceFile &name)
 {
-  const QStringList &sources=csmes_file_p->Sources(CSMes::NON_EMPTY);
-  QStringList::const_iterator cur=qBinaryFind(sources.begin(), sources.end(),name);
+  const SourceFiles &sources=csmes_file_p->Sources(CSMes::NON_EMPTY);
+  SourceFiles::const_iterator cur=qBinaryFind(sources.begin(), sources.end(),name);
   if (cur!=sources.end())
   {
     cur_source=name;
@@ -2420,22 +2420,22 @@ void WMain::on_actionBlackBoxTestingMode_toggled(bool b)
 
 void WMain::requestFindTextModule( const QString & exp, QTextDocument::FindFlags options  )
 {
-   const QStringList &src=csmes_file_p->Sources(CSMes::NON_EMPTY);
-   QStringList _sources;
+   const SourceFiles &src=csmes_file_p->Sources(CSMes::NON_EMPTY);
    bool forward= (QTextDocument::FindBackward&options) == 0 ;
-   QStringList sources;
+   SourceFiles sources;
    if (forward)
       sources=src;
    else
    {
-      for (QStringList::const_iterator it=src.begin();it!=src.end();++it)
+      for (SourceFiles::const_iterator it=src.begin();it!=src.end();++it)
          sources.prepend(*it);
    }
-   QStringList::const_iterator cur_start=qFind(sources.begin(), sources.end(),cur_source);
+   SourceFiles::const_iterator cur_start=qFind(sources.begin(), sources.end(),cur_source);
    if (cur_start==sources.end())
       return ;
 
-   QStringList::const_iterator cur;
+   SourceFiles _sources;
+   SourceFiles::const_iterator cur;
    for (cur=cur_start;cur!=sources.end();++cur)
    {
       if (cur!=cur_start)

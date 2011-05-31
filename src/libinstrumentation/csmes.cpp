@@ -45,13 +45,13 @@ QList<CSMesFunctionInfo::functionskey_t> CSMes::FunctionsReference() const
   return CSMesAnalysis::FunctionsReference();
 }
 
-QVector<FunctionInfo> CSMes::FunctionInfoSourceReference( const QString &module, const QString &source) const
+QVector<FunctionInfo> CSMes::FunctionInfoSourceReference( const ModuleFile &module, const SourceFile &source) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesAnalysis::FunctionInfoSourceReference(module,source);
 }
 
-const QStringList& CSMes::ModulesReference() const
+const ModuleFiles& CSMes::ModulesReference() const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesAnalysis::ModulesReference();
@@ -63,55 +63,55 @@ QString CSMes::relativeSourceNameReference(const QString &src) const
   return CSMesAnalysis::relativeSourceNameReference(src);
 }
 
-QStringList CSMes::SourcesReference(const QString &s) const
+SourceFiles CSMes::SourcesReference(const SourceFile &s) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesAnalysis::SourcesReference(s);
 }
 
-const QStringList& CSMes::HeadersReference() const
+const SourceFiles& CSMes::HeadersReference() const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesAnalysis::HeadersReference();
 }
 
-const QStringList& CSMes::SourcesReference(source_filter_t f) const
+const SourceFiles& CSMes::SourcesReference(source_filter_t f) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesAnalysis::SourcesReference(f);
 }
 
-QString  CSMes::explanation (const QString &module,const QString &source,const QList<int> &indexs,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const
+QString  CSMes::explanation (const ModuleFile &module,const SourceFile &source,const QList<int> &indexs,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const
 {
   AccessLockerRead lock(csmes_locker);
   return  CSMesAnalysis::explanation (module,source,indexs,source_type,coverage_level,method,executed_by_limit) ;
 }
 
-const QStringList& CSMes::Modules() const
+const ModuleFiles& CSMes::Modules() const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesInstrumentation::Modules();
 }
 
-QStringList CSMes::Sources(const QString &s) const
+SourceFiles CSMes::Sources(const SourceFile &s) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesInstrumentation::Sources(s);
 }
 
-const QStringList& CSMes::Headers() const
+const SourceFiles& CSMes::Headers() const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesInstrumentation::Headers();
 }
 
-const QStringList& CSMes::Sources(source_filter_t f) const
+const SourceFiles& CSMes::Sources(source_filter_t f) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesInstrumentation::Sources(f);
 }
 
-bool CSMes::moduleExists(const QString &m) const
+bool CSMes::moduleExists(const ModuleFile &m) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesInstrumentation::moduleExists(m);
@@ -123,7 +123,7 @@ bool CSMes::modificationFlag() const
   return CSMesInstrumentation::modificationFlag();
 }
 
-QList<DiffItem> CSMes::differencesWithReference(const QString &module,const QString &source,source_type_t type) const
+QList<DiffItem> CSMes::differencesWithReference(const ModuleFile &module,const SourceFile &source,source_type_t type) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesAnalysis::differencesWithReference(module,source,type) ;
@@ -147,25 +147,25 @@ QString CSMes::relativeSourceName(const QString &src) const
   return CSMesInstrumentation::relativeSourceName(src);
 }
 
-QList<int> CSMes::instrumentedLinesPre(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,const QString &mod,const QString &src) const
+QList<int> CSMes::instrumentedLinesPre(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,const ModuleFile &mod,const SourceFile &src) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesAnalysis::instrumentedLinesPre(level,method,filter,mod,src) ;
 }
 
-QList<int> CSMes::instrumentedLinesOrg(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,const QString &mod,const QString &src) const
+QList<int> CSMes::instrumentedLinesOrg(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,const ModuleFile &mod,const SourceFile &src) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesAnalysis::instrumentedLinesOrg(level,method,filter,mod,src) ;
 }
 
-QList<int> CSMes::commentedLinesPre(const QString &mod,const QString &src) const
+QList<int> CSMes::commentedLinesPre(const ModuleFile &mod,const SourceFile &src) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesAnalysis::commentedLinesPre(mod,src) ;
 }
 
-QList<int> CSMes::commentedLinesOrg(const QString &mod,const QString &src) const
+QList<int> CSMes::commentedLinesOrg(const ModuleFile &mod,const SourceFile &src) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesAnalysis::commentedLinesOrg(mod,src) ;
@@ -178,14 +178,14 @@ bool CSMes::statisticFunctionsExecution(const QStringList &ms,int coverage_level
   return CSMesStatistic::statisticFunctionsExecution(ms,coverage_level,method,nb_tested,nb_untested) ;
 }
 
-bool CSMes::statisticSourcesExecution(const QStringList &sources,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<QString,int> &nb_tested,QHash<QString,int> &nb_untested) const
+bool CSMes::statisticSourcesExecution(const SourceFiles &sources,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<QString,int> &nb_tested,QHash<QString,int> &nb_untested) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesStatistic::statisticSourcesExecution(sources,ms,coverage_level,method,nb_tested,nb_untested) ;
 }
 
 
-bool CSMes::statistic(const QString &mod,const QString &src,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const
+bool CSMes::statistic(const ModuleFile &mod,const SourceFile &src,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesStatistic::statistic(mod,src,coverage_level,method,nb_tested,nb_untested) ;
@@ -203,13 +203,13 @@ bool CSMes::statisticExecution(const QStringList &mes,const QStringList &cmp,boo
   return CSMesAnalysis::statisticExecution(mes,cmp,execution_analysis,coverage_level,method,comparaison,nb_tested,nb_untested,abort_operation) ;
 }
 
-bool CSMes::statisticModuleExecution(QString module,QString source,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const
+bool CSMes::statisticModuleExecution(ModuleFile module,SourceFile source,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesStatistic::statisticModuleExecution(module,source,ms,coverage_level,method,nb_tested,nb_untested) ;
 }
 
-bool CSMes::statisticFunctionPre(QString module,QString source,long start_line,long start_column,long end_line,long end_column,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const
+bool CSMes::statisticFunctionPre(ModuleFile module,SourceFile source,long start_line,long start_column,long end_line,long end_column,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesStatistic::statisticFunctionPre(module,source,start_line,start_column,end_line,end_column,coverage_level,method,nb_tested,nb_untested) ;
@@ -542,7 +542,7 @@ void CSMes::getExplanationFromLineOrg (Writer &stream,const QString &module,cons
   CSMesRTF::explanationFromLineOrg (stream,module,source,line,coverage_level,t,executed_by_limit);
 }
 
-void CSMes::toPLAINReference(const QString &module,const QString &source,source_type_t type,QString &out) const
+void CSMes::toPLAINReference(const ModuleFile &module,const SourceFile &source,source_type_t type,QString &out) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesAnalysis::toPLAINReference(module,source,type,out);
@@ -671,7 +671,7 @@ CSMesAnalysis::modifications_t CSMes::compareCSMesFunction(const CSMesFunctionIn
   return CSMesAnalysis::compareCSMesFunction(func,func_ref) ;
 }
 
-CSMes::modifications_t CSMes::compareCSMesSource(const QString &module,const QString &source) const
+CSMes::modifications_t CSMes::compareCSMesSource(const ModuleFile &module,const SourceFile &source) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesAnalysis::compareCSMesSource(module,source);
@@ -683,7 +683,7 @@ bool  CSMes::hasReference() const
   return CSMesAnalysis::hasReference();
 }
 
-void CSMes::equivalentModulesReference(const QString &module,const QString &source,QString &mod,QString &src,QString &mod_ref,QString &src_ref) const
+void CSMes::equivalentModulesReference(const ModuleFile &module,const SourceFile &source,ModuleFile &mod,SourceFile &src,ModuleFile &mod_ref,SourceFile &src_ref) const
 {
   AccessLockerRead lock(csmes_locker);
   CSMesAnalysis::equivalentModulesReference(module,source,mod,src,mod_ref,src_ref);

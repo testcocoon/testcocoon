@@ -30,11 +30,11 @@ class LIBINSTRUMENTATION_API CSMes : public CSMesAnalysis
     virtual ~CSMes();
 
     /* CSMesInstrumentation */
-    const QStringList& Modules() const ;
-    QStringList Sources(const QString &s) const ;
-    const QStringList& Headers() const ;
-    const QStringList& Sources(source_filter_t f) const ;
-    bool moduleExists(const QString &m) const;
+    const ModuleFiles& Modules() const ;
+    SourceFiles Sources(const SourceFile &s) const ;
+    const SourceFiles& Headers() const ;
+    const SourceFiles& Sources(source_filter_t f) const ;
+    bool moduleExists(const ModuleFile &m) const;
     bool modificationFlag() const ;
     bool getManuallyValidated(const QString &mod,const QString &src,int index) const;
     void setManuallyValidated(const QString &mod,const QString &src,int index,bool b);
@@ -42,37 +42,37 @@ class LIBINSTRUMENTATION_API CSMes : public CSMesAnalysis
 
     /* CSMesAnalysis */
     QString relativeSourceNameReference(const QString &src) const;
-    void equivalentModulesReference(const QString &module,const QString &source,QString &mod,QString &src,QString &mod_ref,QString &src_ref) const ;
-    QList<DiffItem> differencesWithReference(const QString &module,const QString &source,source_type_t type) const ;
-    modifications_t compareCSMesSource(const QString &module,const QString &source) const ;
-    QList<int> instrumentedLinesPre(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,const QString &mod,const QString &src) const;
-    QList<int> instrumentedLinesOrg(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,const QString &mod,const QString &src) const;
-    QList<int> commentedLinesOrg(const QString &mod,const QString &src) const;
-    QList<int> commentedLinesPre(const QString &mod,const QString &src) const;
+    void equivalentModulesReference(const ModuleFile &module,const SourceFile &source,ModuleFile &mod,SourceFile &src,ModuleFile &mod_ref,SourceFile &src_ref) const ;
+    QList<DiffItem> differencesWithReference(const ModuleFile &module,const SourceFile &source,source_type_t type) const ;
+    modifications_t compareCSMesSource(const ModuleFile &module,const SourceFile &source) const ;
+    QList<int> instrumentedLinesPre(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,const ModuleFile &mod,const SourceFile &src) const;
+    QList<int> instrumentedLinesOrg(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,const ModuleFile &mod,const SourceFile &src) const;
+    QList<int> commentedLinesOrg(const ModuleFile &mod,const SourceFile &src) const;
+    QList<int> commentedLinesPre(const ModuleFile &mod,const SourceFile &src) const;
     QString  getFilenameReference() const ;
-    const QStringList& ModulesReference() const ;
+    const ModuleFiles& ModulesReference() const ;
     bool  hasReference() const ;
-    QStringList SourcesReference(const QString &s) const ;
-    const QStringList& HeadersReference() const ;
-    const QStringList& SourcesReference(source_filter_t) const ;
+    SourceFiles SourcesReference(const SourceFile &s) const ;
+    const SourceFiles& HeadersReference() const ;
+    const SourceFiles& SourcesReference(source_filter_t) const ;
     QList<functionskey_t> FunctionsReference() const ;
 
-    QVector<FunctionInfo> FunctionInfoSourceReference( const QString &module, const QString &source) const;
-    void toPLAINReference(const QString &module,const QString &source,source_type_t type,QString &out) const;
+    QVector<FunctionInfo> FunctionInfoSourceReference( const ModuleFile &module, const SourceFile &source) const;
+    void toPLAINReference(const ModuleFile &module,const SourceFile &source,source_type_t type,QString &out) const;
     modifications_t compareCSMesFunction(const CSMesFunctionInfo::functionskey_t &func,const CSMesFunctionInfo::functionskey_t &func_ref) const;
-    QString  explanation (const QString &module,const QString &source,const QList<int> &indexs,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const ;
+    QString  explanation (const ModuleFile &module,const SourceFile &source,const QList<int> &indexs,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const ;
 
     /* CSMesStatistic */
     bool statisticFunctionsExecution(const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_tested,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_untested) const ;
-    bool statistic(const QString &mod,const QString &src,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const ;
+    bool statistic(const ModuleFile &mod,const SourceFile &src,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const ;
     bool statistic(int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const ;
-    bool statisticSourcesExecution(const QStringList &sources,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<QString,int> &nb_tested,QHash<QString,int> &nb_untested) const;
+    bool statisticSourcesExecution(const SourceFiles &sources,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<QString,int> &nb_tested,QHash<QString,int> &nb_untested) const;
     
     static QString printStat(double v) { return CSMesStatistic::printStat(v) ; }
     static QString printStat(int nb_tested,int nb_untested) { return CSMesStatistic::printStat(nb_tested,nb_untested) ; }
     bool statisticExecution(const QStringList &mes,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,CSMes::comparaison_mode_t m,int &nb_tested,int &nb_untested,const bool &abort_operation) const ;
-    bool statisticModuleExecution(QString module,QString source,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const ;
-    bool statisticFunctionPre(QString module,QString source,long start_line,long start_column,long end_line,long end_column,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const ;
+    bool statisticModuleExecution(ModuleFile module,SourceFile source,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const ;
+    bool statisticFunctionPre(ModuleFile module,SourceFile source,long start_line,long start_column,long end_line,long end_column,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const ;
 
     /* CSMesExecution */
     void restoreExecution(const QString &name,const Executions::modules_executions_private_t &exec);
@@ -196,8 +196,8 @@ bool exportHtmlReport(
     bool setComment(QString module,QString source,int instrument_index,const QString &comment);
     QString getComment(QString module,QString source,int instrument_index) const;
   private:
-    QStringList Sources(bool) const ;
-    QStringList SourcesReference(bool) const ;
+    SourceFiles Sources(bool) const ;
+    SourceFiles SourcesReference(bool) const ;
     AccessLocker *csmes_locker;
 } ;
 #endif

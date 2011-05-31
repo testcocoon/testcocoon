@@ -49,7 +49,7 @@ class CSMesIO : public CSMesComment
     bool flushCSMes();
     void closeCSMes();
     void clear();
-    bool isSourceExisting(QString module,QString source, CSMESFile::type_t t) const;
+    bool isSourceExisting(ModuleFile module,SourceFile source, CSMESFile::type_t t) const;
     bool saveBlackBoxConfiguration(const QString &s) ;
     bool isBlackBoxConfiguration() const;
     bool isCoverageBranchOnly() ;
