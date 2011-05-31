@@ -242,7 +242,7 @@ QString CSMesReport::exportStatisticSources(CSMesReport::table_t &table,int cove
     return QObject::tr("No executions selected");
 
   QStringList::const_iterator it_fct;
-  const QStringList sources= Sources(NON_EMPTY);
+  const SourceFiles sources= Sources(NON_EMPTY);
   int nb_sources=sources.count();
   int max_levels= (coverage_level>max_number_of_levels)?max_number_of_levels:coverage_level;
   float level_step= static_cast<float>(coverage_level)/static_cast<float>(max_number_of_levels);
@@ -740,15 +740,15 @@ QString CSMesReport::exportHtmlStatisticExecutions(Writer &stream,int coverage_l
 
 QString CSMesReport::exportHtmlCodeFragments(Writer &stream,int level,Instrumentation::coverage_method_t method,code_fragment_type_t code_fragment_type) const
 {
-  QStringList sources=Sources(NON_EMPTY);
+  SourceFiles sources=Sources(NON_EMPTY);
   bool empty_output=true;
   {
     WriterSection code_fragments(stream,Writer::CodeFragment);
-    for (QStringList::const_iterator itsrc=sources.begin();itsrc!=sources.end();++itsrc)
+    for (SourceFiles::const_iterator itsrc=sources.begin();itsrc!=sources.end();++itsrc)
     {
       bool found=false;
-      QString source=*itsrc;
-      QString module="";
+      SourceFile source=*itsrc;
+      ModuleFile module("");
       if (findSourceModule(module,source))
       {
         int nb_found=0;

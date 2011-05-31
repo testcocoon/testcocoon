@@ -92,9 +92,9 @@ QVariant ModuleListModel::data(const QModelIndex &index, int role) const
         if (parent_p==rootItem)
         {
           if (item_p->childCount()>0)
-            csmes_p->statistic(item_p->data(ITEM_NAME_ABSOLUTE).toString(),"",CoverageSettings::object().getCoverageLevel(),CoverageSettings::object().getCoverageMethod(),nb_tested,nb_untested);
+            csmes_p->statistic(ModuleFile(item_p->data(ITEM_NAME_ABSOLUTE).toString()),SourceFile(""),CoverageSettings::object().getCoverageLevel(),CoverageSettings::object().getCoverageMethod(),nb_tested,nb_untested);
           else
-            csmes_p->statistic("",item_p->data(ITEM_NAME_ABSOLUTE).toString(),CoverageSettings::object().getCoverageLevel(),CoverageSettings::object().getCoverageMethod(),nb_tested,nb_untested);
+            csmes_p->statistic(ModuleFile(""),SourceFile(item_p->data(ITEM_NAME_ABSOLUTE).toString()),CoverageSettings::object().getCoverageLevel(),CoverageSettings::object().getCoverageMethod(),nb_tested,nb_untested);
         }
         else
           csmes_p->statistic(parent_p->data(ITEM_NAME_ABSOLUTE).toString(),item_p->data(ITEM_NAME_ABSOLUTE).toString(),CoverageSettings::object().getCoverageLevel(),CoverageSettings::object().getCoverageMethod(),nb_tested,nb_untested);
@@ -356,13 +356,13 @@ void ModuleListModel::setupModelData()
     QStringList all_reference;
     if (flat_view)
     {
-      all=csmes_p->Sources(CSMes::NON_EMPTY);
-      all_reference =csmes_p->SourcesReference(CSMes::NON_EMPTY);
+      all=csmes_p->Sources(CSMes::NON_EMPTY).toQStringList();
+      all_reference =csmes_p->SourcesReference(CSMes::NON_EMPTY).toQStringList();
     }
     else
     {
-      all=csmes_p->Modules();
-      all_reference =csmes_p->ModulesReference();
+      all=csmes_p->Modules().toQStringList();
+      all_reference =csmes_p->ModulesReference().toQStringList();
     }
 
     QStringList::const_iterator itmod;
@@ -374,7 +374,7 @@ void ModuleListModel::setupModelData()
 
       if (!flat_view)
       {
-        QStringList sources=csmes_p->Sources(*itmod);
+        QStringList sources=csmes_p->Sources(*itmod).toQStringList();
         QStringList::const_iterator itsrc;
         for (itsrc=sources.begin();itsrc!=sources.end();++itsrc)
         {
@@ -389,11 +389,12 @@ void ModuleListModel::setupModelData()
       QList<int> index_module;
       QList<TreeList*> items;
       const QString module(*itmod);
-      QStringList sources_reference=csmes_p->SourcesReference(*itmod);
+      QStringList sources_reference=csmes_p->SourcesReference(*itmod).toQStringList();
       if (sources_reference.isEmpty())
       {
-        QString mod,mod_ref,src,src_ref;
-        csmes_p->equivalentModulesReference(QString(),module,mod,src,mod_ref,src_ref);
+        ModuleFile mod,mod_ref;
+        SourceFile src,src_ref;
+        csmes_p->equivalentModulesReference(ModuleFile(),SourceFile(module),mod,src,mod_ref,src_ref);
         if (src.isEmpty())
         {
           rootItem->find(src_ref,ITEM_NAME_ABSOLUTE_REF,1,index_module,items);
@@ -416,7 +417,8 @@ void ModuleListModel::setupModelData()
       else
       {
         TreeList *module_p =NULL;
-        QString mod,mod_ref,src,src_ref;
+        ModuleFile mod,mod_ref;
+        SourceFile src,src_ref;
         QStringList::const_iterator itsrc;
         for (itsrc=sources_reference.begin();itsrc!=sources_reference.end();++itsrc)
         {
@@ -427,8 +429,10 @@ void ModuleListModel::setupModelData()
             ASSERT(items.count()<=1);
             if (items.isEmpty() || mod_ref.isEmpty())
             {
-              QString mod_tmp,src_tmp;
-              QString mod_ref_tmp,src_ref_tmp;
+              ModuleFile mod_tmp;
+              SourceFile src_tmp;
+              ModuleFile mod_ref_tmp;
+              SourceFile src_ref_tmp;
               csmes_p->equivalentModulesReference(mod_ref,src_ref,mod_tmp,src_tmp,mod_ref_tmp,src_ref_tmp);
               if (mod_tmp.isEmpty())
               {

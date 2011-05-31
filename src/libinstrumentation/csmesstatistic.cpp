@@ -33,11 +33,11 @@ bool CSMesStatistic::statistic(int coverage_level,Instrumentation::coverage_meth
 {
   nb_tested=0;
   nb_untested=0;
-  const QStringList sources=Sources(ALL);
-  for (QStringList::const_iterator source_it=sources.begin();source_it!=sources.end();++source_it)
+  const SourceFiles sources=Sources(ALL);
+  for (SourceFiles::const_iterator source_it=sources.begin();source_it!=sources.end();++source_it)
   {
-    QString source=*source_it;
-    QString module=QString::null;
+    SourceFile source=*source_it;
+    ModuleFile module(QString::null);
     int nb_tested_src=-1;
     int nb_untested_src=-1;
     if (!statistic(module,source,coverage_level,method,nb_tested_src,nb_untested_src,_instrumentations))
@@ -58,7 +58,7 @@ bool CSMesStatistic::statistic(int coverage_level,Instrumentation::coverage_meth
   return true;
 }
 
-bool CSMesStatistic::statisticFunctionPre(QString module,QString source,long start_line,long start_column,long end_line,long end_column,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const
+bool CSMesStatistic::statisticFunctionPre(ModuleFile module,SourceFile source,long start_line,long start_column,long end_line,long end_column,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const
 {
   if (!findSourceModule(module,source))
   {
@@ -106,7 +106,7 @@ bool CSMesStatistic::statisticFunctionPre(QString module,QString source,long sta
   return true;
 }
 
-bool CSMesStatistic::statisticModule(const QString &module,const QString &source,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const
+bool CSMesStatistic::statisticModule(const ModuleFile &module,const SourceFile &source,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const
 {
   nb_tested=0;
   nb_untested=0;
@@ -135,13 +135,13 @@ bool CSMesStatistic::statisticModule(const QString &module,const QString &source
   return true;
 }
 
-bool CSMesStatistic::statistic(const QString &module_in,const QString &source_in,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const
+bool CSMesStatistic::statistic(const ModuleFile &module_in,const SourceFile &source_in,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const
 {
-    QString source=source_in;
-    QString module=module_in;
-    if (!findSourceModule(module,source))
-      return false;
-    return statisticModule(module,source,coverage_level,method,nb_tested,nb_untested,_instrumentations);
+  SourceFile source=source_in;
+  ModuleFile module=module_in;
+  if (!findSourceModule(module,source))
+    return false;
+  return statisticModule(module,source,coverage_level,method,nb_tested,nb_untested,_instrumentations);
 }
 
 bool CSMesStatistic::statisticExecution(const QStringList &ms,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations,const bool &abort_operation) const
@@ -190,9 +190,9 @@ bool CSMesStatistic::statisticFunctionsExecution(const QStringList &ms,int cover
   CSMesInstrumentations __instrumentations ;
   copyInstrumentation(__instrumentations,_instrumentations);
   selectExecutionsComparaison(__instrumentations,ms,QStringList(),is_test_count_mode_selected,method,false);
-  const QStringList sources=Sources(ALL);
+  const SourceFiles sources=Sources(ALL);
 
-  for (QStringList::const_iterator itsrc=sources.begin();itsrc!=sources.end();++itsrc)
+  for (SourceFiles::const_iterator itsrc=sources.begin();itsrc!=sources.end();++itsrc)
   {
 
     QVector<FunctionInfo> FunctionsInfo = FunctionInfoSource(QString(),*itsrc);
@@ -226,7 +226,7 @@ bool CSMesStatistic::statisticFunctionsExecution(const QStringList &ms,int cover
   return true;
 }
 
-bool CSMesStatistic::statisticSourcesExecution(const QStringList &sources,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<QString,int> &nb_tested,QHash<QString,int> &nb_untested,const CSMesInstrumentations &_instrumentations) const
+bool CSMesStatistic::statisticSourcesExecution(const SourceFiles &sources,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<QString,int> &nb_tested,QHash<QString,int> &nb_untested,const CSMesInstrumentations &_instrumentations) const
 {
   bool res=true;
   nb_tested.clear();
@@ -237,10 +237,10 @@ bool CSMesStatistic::statisticSourcesExecution(const QStringList &sources,const 
   CSMesInstrumentations __instrumentations ;
   copyInstrumentation(__instrumentations,_instrumentations);
   selectExecutionsComparaison(__instrumentations,ms,QStringList(),is_test_count_mode_selected,method,false);
-  for(QStringList::const_iterator it=sources.begin();res && it!=sources.end();++it)
+  for(SourceFiles::const_iterator it=sources.begin();res && it!=sources.end();++it)
   {
-    QString source=*it;
-    QString module="";
+    SourceFile source=*it;
+    ModuleFile module("");
     if (!findSourceModule(module,source))
       res=false;
     else
@@ -254,7 +254,7 @@ bool CSMesStatistic::statisticSourcesExecution(const QStringList &sources,const 
   return true;
 }
 
-bool CSMesStatistic::statisticModuleExecution(QString module,QString source,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const
+bool CSMesStatistic::statisticModuleExecution(ModuleFile module,SourceFile source,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const
 {
   if (!findSourceModule(module,source))
     return false;

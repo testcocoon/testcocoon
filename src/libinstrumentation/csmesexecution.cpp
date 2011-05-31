@@ -287,7 +287,7 @@ bool CSMesExecution::mergeExecutions(const QStringList &sources,const QString &d
 
    Executions::modules_executions_t mod_exec;
    executions.setExecution(dest,mod_exec);
-   QStringList modules=Modules();
+   ModuleFiles modules=Modules();
 
    bool first=true;
    for (QStringList::const_iterator execit=sources.begin();
@@ -300,7 +300,7 @@ bool CSMesExecution::mergeExecutions(const QStringList &sources,const QString &d
          executions.setExecutionStatus(dest,combineExecutionStatus(executions.getExecutionStatus(dest),executions.getExecutionStatus(*execit)));
       first=false;
    }
-   for (QStringList::const_iterator modit=modules.begin();
+   for (ModuleFiles::const_iterator modit=modules.begin();
       modit!=modules.end();
       ++modit)
    {
@@ -564,7 +564,7 @@ bool CSMesExecution::findModuleSourceForInstrumentation(QString &mod,QString &sr
   return false;
 }
 
-QStringList CSMesExecution::executedBy(QString module,QString source,int instrument_id,bool selected_executions_only) const
+QStringList CSMesExecution::executedBy(ModuleFile module,SourceFile source,int instrument_id,bool selected_executions_only) const
 {
   findSourceModule(module,source);
   ASSERT(module!="");
@@ -666,15 +666,15 @@ bool CSMesExecution::getExecutionComment(const QString &name, QString &comment) 
 bool CSMesExecution::createEmptyExecution(Executions::modules_executions_t &mts) const
 {
   mts.execution_status=Executions::EXECUTION_STATUS_UNKNOWN;
-  const QList<QString> &modules_list=instrumentations.modules.keys();
-  for (QList<QString>::const_iterator mod=modules_list.begin();mod!=modules_list.end();++mod)
+  const QList<ModuleFile> &modules_list=instrumentations.modules.keys();
+  for (QList<ModuleFile>::const_iterator mod=modules_list.begin();mod!=modules_list.end();++mod)
   {
-    const QString module=*mod;
-    const QList<QString> &sources_list=instrumentations.modules[module].sources.keys();
+    const ModuleFile module=*mod;
+    const QList<SourceFile> &sources_list=instrumentations.modules[module].sources.keys();
     int max_index=0;
-    for (QList<QString>::const_iterator src=sources_list.begin();src!=sources_list.end();++src)
+    for (QList<SourceFile>::const_iterator src=sources_list.begin();src!=sources_list.end();++src)
     {
-      const QString source=*src;
+      const SourceFile source=*src;
       const CSMesInstrumentations::Instrumentations &inst=instrumentations.modules[module].sources[source].instrumentations;
       int sz=inst.count();
       for (int i=0;i<sz;i++)
@@ -689,7 +689,7 @@ bool CSMesExecution::createEmptyExecution(Executions::modules_executions_t &mts)
     mes.resize(max_index);
     for (int i=0;i<max_index;i++)
       mes[i]=Instrumentation::EXECUTION_STATE_NOT_EXECUTED;
-    for (QList<QString>::const_iterator src=sources_list.begin();src!=sources_list.end();++src)
+    for (QList<SourceFile>::const_iterator src=sources_list.begin();src!=sources_list.end();++src)
     {
       const QString source=*src;
       const CSMesInstrumentations::Instrumentations &inst=instrumentations.modules[module].sources[source].instrumentations;

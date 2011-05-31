@@ -19,7 +19,7 @@
 #include "libinstrumentationpdef.h"
 #include "csmesfunctioninfo.h"
 
-QVector<FunctionInfo> CSMesFunctionInfo::FunctionInfoSource( QString module, QString source) const
+QVector<FunctionInfo> CSMesFunctionInfo::FunctionInfoSource( ModuleFile module, SourceFile source) const
 {
    if (!findSourceModule(module,source))
       return QVector<FunctionInfo>();
@@ -28,7 +28,7 @@ QVector<FunctionInfo> CSMesFunctionInfo::FunctionInfoSource( QString module, QSt
 }
 
 
-bool CSMesFunctionInfo::instrumentationListFunctionPre(QString module,QString source,long start_line,long start_column,long end_line,long end_column,QList<int> &instrumentation_list) const
+bool CSMesFunctionInfo::instrumentationListFunctionPre(ModuleFile module,SourceFile source,long start_line,long start_column,long end_line,long end_column,QList<int> &instrumentation_list) const
 {
   instrumentation_list.clear();
   if (!findSourceModule(module,source))
@@ -78,9 +78,9 @@ const FunctionInfo * CSMesFunctionInfo::FindFunction(const QString &source,const
 QList<CSMesFunctionInfo::functionskey_t> CSMesFunctionInfo::Functions() const 
 {
   QList<functionskey_t> functions;
-  const QStringList sources=Sources(ALL);
+  const SourceFiles sources=Sources(ALL);
 
-  for (QStringList::const_iterator itsrc=sources.begin();itsrc!=sources.end();++itsrc)
+  for (SourceFiles::const_iterator itsrc=sources.begin();itsrc!=sources.end();++itsrc)
   {
 
     QVector<FunctionInfo> FunctionsInfo = FunctionInfoSource(QString(),*itsrc);

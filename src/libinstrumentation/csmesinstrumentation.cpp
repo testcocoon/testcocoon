@@ -29,24 +29,24 @@ CSMesInstrumentation::CSMesInstrumentation()
   resetModificationFlag();
 }
 
-const QStringList & CSMesInstrumentation::Modules() const
+const ModuleFiles & CSMesInstrumentation::Modules() const
 {
   return _modules;
 }
 
-QStringList CSMesInstrumentation::Modules_int() const
+ModuleFiles CSMesInstrumentation::Modules_int() const
 {
-  QStringList l=instrumentations.modules.keys();
+  ModuleFiles l=instrumentations.modules.keys();
   qSort(l);
   return l;
 }
 
-bool CSMesInstrumentation::moduleExists(const QString &m) const
+bool CSMesInstrumentation::moduleExists(const ModuleFile &m) const
 {
   return instrumentations.modules.contains(m);
 }
 
-const QStringList & CSMesInstrumentation::Sources(source_filter_t source_filter) const
+const SourceFiles & CSMesInstrumentation::Sources(source_filter_t source_filter) const
 {
   switch (source_filter)
   {
@@ -59,17 +59,17 @@ const QStringList & CSMesInstrumentation::Sources(source_filter_t source_filter)
   }
 }
 
-QStringList CSMesInstrumentation::Sources_int(source_filter_t f) const
+SourceFiles CSMesInstrumentation::Sources_int(source_filter_t f) const
 {
-  QStringList  modules=Modules_int();
-  QStringList  sources;
-  for (QStringList::const_iterator it_mod= modules.begin(); it_mod != modules.end(); ++it_mod )
+  ModuleFiles  modules=Modules_int();
+  SourceFiles  sources;
+  for (ModuleFiles::const_iterator it_mod= modules.begin(); it_mod != modules.end(); ++it_mod )
   {
-    const QString &mod=*it_mod;
-    QStringList  srcs= instrumentations.modules[mod].sources.keys();
-    for (QStringList::const_iterator it_src= srcs.begin(); it_src != srcs.end(); ++it_src )
+    const ModuleFile &mod=*it_mod;
+    SourceFiles  srcs= instrumentations.modules[mod].sources.keys();
+    for (SourceFiles::const_iterator it_src= srcs.begin(); it_src != srcs.end(); ++it_src )
     {
-      const QString &src=*it_src;
+      const SourceFile &src=*it_src;
       if (!sources.contains(src))
       {
         if (f==ALL)
@@ -89,16 +89,16 @@ QStringList CSMesInstrumentation::Sources_int(source_filter_t f) const
   return sources;
 }
 
-const QStringList &CSMesInstrumentation::Headers() const
+const SourceFiles &CSMesInstrumentation::Headers() const
 {
   return _headers;
 }
 
-QStringList CSMesInstrumentation::Headers_int() const
+SourceFiles CSMesInstrumentation::Headers_int() const
 {
-  QStringList headers=Sources_int(ALL);
-  QStringList modules=Modules_int();
-  for (QStringList::const_iterator it_mod= modules.begin(); it_mod != modules.end(); ++it_mod )
+  SourceFiles headers=Sources_int(ALL);
+  ModuleFiles modules=Modules_int();
+  for (ModuleFiles::const_iterator it_mod= modules.begin(); it_mod != modules.end(); ++it_mod )
   {
     if (headers.contains(*it_mod))
       headers.removeAll(*it_mod);
@@ -107,18 +107,18 @@ QStringList CSMesInstrumentation::Headers_int() const
   return headers;
 }
 
-QStringList CSMesInstrumentation::Sources(const QString &m) const
+SourceFiles CSMesInstrumentation::Sources(const ModuleFile &m) const
 {
   if (instrumentations.modules.contains(m))
     return instrumentations.modules[m].sources.keys();
   else
-    return QStringList();
+    return SourceFiles();
 }
 
-QString CSMesInstrumentation::relativeSourceName(const QString &s) const
+QString CSMesInstrumentation::relativeSourceName(const SourceFile &s) const
 {
-  QString src=s;
-  QString mod="";
+  SourceFile src=s;
+  ModuleFile mod("");
   if (!findSourceModule(mod,src))
     return src;
   return instrumentations.modules[mod].source_relative_name[src];
@@ -180,7 +180,7 @@ const QString &CSMesInstrumentation::findSourceForModule(QString &module,int ins
   return null;
 }
 
-bool CSMesInstrumentation::findSourceModule(QString &module,QString &source) const
+bool CSMesInstrumentation::findSourceModule(ModuleFile &module,SourceFile &source) const
 {
   if (source.isEmpty())
   {
@@ -219,7 +219,7 @@ bool CSMesInstrumentation::findSourceModule(QString &module,QString &source) con
 }
 
 
-void CSMesInstrumentation::setManuallyValidated(QString mod,QString src,int index,bool b)
+void CSMesInstrumentation::setManuallyValidated(ModuleFile mod,SourceFile src,int index,bool b)
 {
   findSourceModule(mod,src);
   CSMesInstrumentations::Modules::Iterator it;
@@ -230,13 +230,13 @@ void CSMesInstrumentation::setManuallyValidated(QString mod,QString src,int inde
   }
 }
 
-void CSMesInstrumentation::setManuallyValidated_intern(const QString &mod,const QString &src,int index,bool b)
+void CSMesInstrumentation::setManuallyValidated_intern(const ModuleFile &mod,const SourceFile &src,int index,bool b)
 {
   setModificationFlag();
   instrumentations.modules[mod].sources[src].instrumentations[index].setManuallyValidated(b);
 }
 
-bool CSMesInstrumentation::getManuallyValidated(QString mod,QString src,int index) const
+bool CSMesInstrumentation::getManuallyValidated(ModuleFile mod,SourceFile src,int index) const
 {
   findSourceModule(mod,src);
   CSMesInstrumentations::Modules::const_iterator it;
@@ -248,7 +248,7 @@ bool CSMesInstrumentation::getManuallyValidated(QString mod,QString src,int inde
   return false;
 }
 
-bool CSMesInstrumentation::getManuallyValidated_intern(const QString &mod,const QString &src,int index) const
+bool CSMesInstrumentation::getManuallyValidated_intern(const ModuleFile &mod,const SourceFile &src,int index) const
 {
   return instrumentations.modules[mod].sources[src].instrumentations[index].getManuallyValidated();
 }

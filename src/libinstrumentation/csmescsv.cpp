@@ -82,8 +82,8 @@ QString CSMesCsv::exportCSVStatisticModule(const QString &filename,QChar separat
   QTextStream stream(&f);
   QTime tm;
   tm.start();
-  QStringList::const_iterator it_src;
-  const QStringList sources= Sources(NON_EMPTY);
+  SourceFiles::const_iterator it_src;
+  const SourceFiles sources= Sources(NON_EMPTY);
   float max_elem=(nb_executions+1)*(1+sources.count());
   float count=0;
 

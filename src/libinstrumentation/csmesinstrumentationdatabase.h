@@ -27,10 +27,56 @@
 #include "instrumentation.h"
 #include "FunctionInfo.h"
 
+class SourceFile : public QString
+{
+  public:
+    SourceFile(const QString &s) : QString(s) {}
+    SourceFile() : QString() {}
+    const QString &toQString() const { return *this; }
+};
+
+class ModuleFile : public QString
+{
+  public:
+    ModuleFile(const QString &s) : QString(s) {}
+    ModuleFile() : QString() {}
+    const QString &toQString() const { return *this; }
+};
+
+class SourceFiles : public QList<SourceFile>
+{
+  public:
+    SourceFiles(const QList<SourceFile> &s) : QList<SourceFile>(s) {}
+    SourceFiles(const SourceFiles &s) : QList<SourceFile>(s) {}
+    SourceFiles() : QList<SourceFile>() {}
+    QStringList toQStringList() const 
+    {
+      QStringList l; 
+      for (QList<SourceFile>::const_iterator it=begin();it!=end();++it)
+        l << *it;
+      return l;
+    }
+};
+
+class ModuleFiles : public QList<ModuleFile>
+{
+  public:
+    ModuleFiles(const QList<ModuleFile> &s) : QList<ModuleFile>(s) {}
+    ModuleFiles(const ModuleFiles &s) : QList<ModuleFile>(s) {}
+    ModuleFiles() : QList<ModuleFile>() {}
+    QStringList toQStringList() const 
+    {
+      QStringList l; 
+      for (QList<ModuleFile>::const_iterator it=begin();it!=end();++it)
+        l << *it;
+      return l;
+    }
+};
 
 class CSMesInstrumentations 
 {
   protected:
+
   class Instrumentations : public QVector<Instrumentation> 
   {
     public:
@@ -64,10 +110,10 @@ class CSMesInstrumentations
       Functions        functions;
   } ;
 
-  class Sources : public QHash<QString,Source> 
+  class Sources : public QHash<SourceFile,Source> 
   {
     public:
-      Sources() : QHash<QString,Source>()
+      Sources() : QHash<SourceFile,Source>()
     {
     }
 
@@ -89,13 +135,13 @@ class CSMesInstrumentations
       QHash<QString,QString> source_relative_name;
       unsigned long signature;
       int nb_measurements_items;
-      QString module_relative_name;
+      ModuleFile module_relative_name;
   } ;
 
-  class Modules : public QHash<QString,Module> 
+  class Modules : public QHash<ModuleFile,Module> 
   {
     public:
-      Modules() :  QHash<QString,Module>()
+      Modules() :  QHash<ModuleFile,Module>()
     {
     }
   };

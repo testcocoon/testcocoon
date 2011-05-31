@@ -54,7 +54,7 @@ void CSMesAnalysis::clear()
 }
 
 
-QList<int> CSMesAnalysis::commentedLinesPre(QString mod,QString src) const
+QList<int> CSMesAnalysis::commentedLinesPre(ModuleFile mod,SourceFile src) const
 {
   QList<int> ret;
   if (!findSourceModule(mod,src))
@@ -75,7 +75,7 @@ QList<int> CSMesAnalysis::commentedLinesPre(QString mod,QString src) const
   return ret;
 }
 
-QList<int> CSMesAnalysis::commentedLinesOrg(QString mod,QString src) const
+QList<int> CSMesAnalysis::commentedLinesOrg(ModuleFile mod,SourceFile src) const
 {
   QList<int> ret;
   if (!findSourceModule(mod,src))
@@ -96,7 +96,7 @@ QList<int> CSMesAnalysis::commentedLinesOrg(QString mod,QString src) const
   return ret;
 }
 
-QList<int> CSMesAnalysis::instrumentedLinesOrg(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,QString mod,QString src) const
+QList<int> CSMesAnalysis::instrumentedLinesOrg(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,ModuleFile mod,SourceFile src) const
 {
   QList<int> ret;
   if (!findSourceModule(mod,src))
@@ -151,7 +151,7 @@ QList<int> CSMesAnalysis::instrumentedLinesOrg(int level,Instrumentation::covera
   return ret;
 }
 
-QList<int> CSMesAnalysis::instrumentedLinesPre(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,QString mod,QString src) const
+QList<int> CSMesAnalysis::instrumentedLinesPre(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,ModuleFile mod,SourceFile src) const
 {
   QList<int> ret;
   if (!findSourceModule(mod,src))
@@ -247,10 +247,10 @@ CSMesAnalysis::modifications_t CSMesAnalysis::compareCSMesFunction(const CSMesFu
   if (!csmes_reference_p)
     return NOTHING_TO_COMPARE;
 
-  QString mod;
-  QString src=func.source;
-  QString mod_ref;
-  QString src_ref=func_ref.source;
+  ModuleFile mod;
+  SourceFile src=func.source;
+  ModuleFile mod_ref;
+  SourceFile src_ref=func_ref.source;
   if (src.isEmpty())
     return NOT_EXISTING;
   if (src_ref.isEmpty())
@@ -326,7 +326,7 @@ static inline bool compareFileName(const QString &a,const QString &b)
    return bb==aa;
 }
 
-void CSMesAnalysis::findSourceModuleReference(const QString &module,const QString &source,QString &mod,QString &src,QString &mod_ref,QString &src_ref,QString &mod_rel,QString &src_rel) const 
+void CSMesAnalysis::findSourceModuleReference(const ModuleFile &module,const SourceFile &source,ModuleFile &mod,SourceFile &src,ModuleFile &mod_ref,SourceFile &src_ref,ModuleFile &mod_rel,SourceFile &src_rel) const 
 {
   mod=module;
   mod_ref=module;
@@ -339,7 +339,7 @@ void CSMesAnalysis::findSourceModuleReference(const QString &module,const QStrin
   if (findSourceModule(mod,src))
   {
     mod_rel=instrumentations.modules[mod].module_relative_name;
-    src_rel=instrumentations.modules[mod].source_relative_name[src];
+    src_rel=SourceFile(instrumentations.modules[mod].source_relative_name[src.toQString()]);
     module_found=true;
   }
   else
@@ -445,24 +445,24 @@ void CSMesAnalysis::findSourceModuleReference(const QString &module,const QStrin
   }
 }
 
-void CSMesAnalysis::equivalentModulesReference(const QString &module,const QString &source,QString &mod,QString &src,QString &mod_ref,QString &src_ref) const 
+void CSMesAnalysis::equivalentModulesReference(const ModuleFile &module,const SourceFile &source,ModuleFile &mod,SourceFile &src,ModuleFile &mod_ref,SourceFile &src_ref) const 
 {
-  QString mod_rel;
-  QString src_rel;
+  ModuleFile mod_rel;
+  SourceFile src_rel;
 
   findSourceModuleReference(module,source,mod,src,mod_ref,src_ref,mod_rel,src_rel) ;
 }
 
-CSMesAnalysis::modifications_t CSMesAnalysis::compareCSMesSource(const QString &module,const QString &source) const 
+CSMesAnalysis::modifications_t CSMesAnalysis::compareCSMesSource(const ModuleFile &module,const SourceFile &source) const 
 {
   if (csmes_reference_p)
   {
-    QString mod;
-    QString src;
-    QString mod_rel;
-    QString src_rel;
-    QString mod_ref;
-    QString src_ref;
+    ModuleFile mod;
+    SourceFile src;
+    ModuleFile mod_rel;
+    SourceFile src_rel;
+    ModuleFile mod_ref;
+    SourceFile src_ref;
     findSourceModuleReference(module,source,mod,src,mod_ref,src_ref,mod_rel,src_rel) ;
     if ((src_ref.isEmpty()) && (src.isEmpty()))
       return NOTHING_TO_COMPARE;
@@ -546,35 +546,36 @@ const QString &CSMesAnalysis::getFilenameReference() const
     return null;
 }
 
-const QStringList& CSMesAnalysis::ModulesReference() const 
+const ModuleFiles& CSMesAnalysis::ModulesReference() const 
 {
-  static QStringList null;
+  static ModuleFiles null;
   if (csmes_reference_p)
     return csmes_reference_p->Modules();
   else
     return null;
 }
 
-QStringList CSMesAnalysis::SourcesReference(const QString &s) const 
+SourceFiles CSMesAnalysis::SourcesReference(const SourceFile &s) const 
 {
+  static SourceFiles null;
   if (csmes_reference_p)
     return csmes_reference_p->Sources(s);
   else
-    return QStringList();
+    return null;
 }
 
-const QStringList& CSMesAnalysis::HeadersReference() const 
+const SourceFiles& CSMesAnalysis::HeadersReference() const 
 {
-  static QStringList null;
+  static SourceFiles null;
   if (csmes_reference_p)
     return csmes_reference_p->Headers();
   else
     return null;
 }
 
-const QStringList& CSMesAnalysis::SourcesReference(source_filter_t f) const 
+const SourceFiles& CSMesAnalysis::SourcesReference(source_filter_t f) const 
 {
-  static QStringList null;
+  static SourceFiles null;
   if (csmes_reference_p)
     return csmes_reference_p->Sources(f);
   else
@@ -616,7 +617,8 @@ QList<DiffItem> CSMesAnalysis::differencesWithReference(const QString &module,co
         return module_differences.value(module).value(source).value(type);
     }
   }
-  QString mod,mod_ref,src,src_ref;
+  ModuleFile mod,mod_ref;
+  SourceFile src,src_ref;
   equivalentModulesReference(module,source,mod,src,mod_ref,src_ref);
   QList<DiffItem> diff;
   QString reference,text;
@@ -767,8 +769,8 @@ void CSMesAnalysis::hideInstrumentationsOfFunctions(CSMesInstrumentations &_inst
 {
   for (QList<functionskey_t>::const_iterator itfunc=functions.begin();itfunc!=functions.end();++itfunc)
   {
-    QString source=(*itfunc).source;
-    QString module;
+    SourceFile source=(*itfunc).source;
+    ModuleFile module;
     if (findSourceModule(module,source))
     {
       QList<int> instrumentation_list;
@@ -794,19 +796,20 @@ void CSMesAnalysis::hideInstrumentationsOfFunctions(CSMesInstrumentations &_inst
 
 void CSMesAnalysis::modifiedAndNotModifiedFunctions(QList<functionskey_t> &modifiedFunctions,QList<functionskey_t> &notModifiedFunctions) const
 {
-  const QStringList sources_all= Sources(NON_EMPTY);
-  QStringList sources;
+  const SourceFiles sources_all= Sources(NON_EMPTY);
+  SourceFiles sources;
   modifiedFunctions.clear();
   notModifiedFunctions.clear();
 
 
-  for (QStringList::const_iterator itsrc=sources_all.begin();itsrc!=sources_all.end();++itsrc)
+  for (SourceFiles::const_iterator itsrc=sources_all.begin();itsrc!=sources_all.end();++itsrc)
   {
     if (sources.contains(*itsrc))
       continue;
 
     sources.append(*itsrc);
-    QString mod, src, mod_ref, src_ref;
+    ModuleFile mod, mod_ref;
+    SourceFile src, src_ref;
     equivalentModulesReference(QString(),*itsrc,mod,src,mod_ref,src_ref);
     QVector<FunctionInfo> FunctionsInfo = FunctionInfoSource(QString(),src);
     QVector<FunctionInfo> FunctionsInfoReference = FunctionInfoSourceReference(QString(),src_ref);

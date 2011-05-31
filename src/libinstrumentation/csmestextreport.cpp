@@ -51,14 +51,14 @@ QString CSMesTextReport::exportTextReport(const QString &filename,const QString 
       return QObject::tr("Error opening file '%1'").arg(filename);
     stream.setDevice(&output);
   }
-  QStringList sources=Sources(NON_EMPTY);
+  SourceFiles sources=Sources(NON_EMPTY);
   bool global_print_executed= !format_executed.isEmpty();
   bool global_print_unexecuted= !format_unexecuted.isEmpty();
   {
-    for (QStringList::const_iterator itsrc=sources.begin();itsrc!=sources.end();++itsrc)
+    for (SourceFiles::const_iterator itsrc=sources.begin();itsrc!=sources.end();++itsrc)
     {
-      QString source=*itsrc;
-      QString module="";
+      SourceFile source=*itsrc;
+      ModuleFile module("");
       if (findSourceModule(module,source))
       {
         const QVector<Instrumentation> inst=instrumentationList(module,source);

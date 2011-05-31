@@ -81,7 +81,7 @@ private:
     bool _line_mode;
     bool lineMode() const;
     void insertInstrumentationData(QTextDocument &) const;
-    void differenceWithReference(const QString &module,const QString &source,QTextDocument &) const;
+    void differenceWithReference(const ModuleFile &module,const SourceFile &source,QTextDocument &) const;
     int number_of_lines;
     bool hasComments() const;
     bool hasValidated() const;
@@ -90,7 +90,8 @@ private:
     void emitPossibilities();
     CSMesUndoRedoFramework *csmes_p;
     CSMesUndoRedoFramework::source_type_t source_type;
-    QString module,source;
+    ModuleFile module;
+    SourceFile source;
     void gotoNextInstrumentation(int direction,Instrumentation::filter_t status);
     int findInstrumentation(int line, int column,int direction ,Instrumentation::filter_t filter);
     QList<int> findInstrumentationList(int s_line, int s_column,int e_line, int e_column) const;

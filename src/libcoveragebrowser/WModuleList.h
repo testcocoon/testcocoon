@@ -43,9 +43,9 @@ public:
     QString Source() const;
 public slots:
     void refreshView();
-    void selectSource(const QString &module,const QString &source);
+    void selectSource(const ModuleFile &module,const SourceFile &source);
 signals:
-    void selectedSource(const QString &module,const QString &source,CSMesUndoRedoFramework::source_type_t,int start_line,int start_column,int end_line,int end_column);
+    void selectedSource(const ModuleFile &module,const SourceFile &source,CSMesUndoRedoFramework::source_type_t,int start_line,int start_column,int end_line,int end_column);
 private:
 #if QT_COMPLETOR
     QCompleter *filter_completor_p;

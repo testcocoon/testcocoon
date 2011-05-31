@@ -34,7 +34,7 @@ void CSMesComment::clear()
   CSMesExecution::clear();
 }
 
-bool CSMesComment::setComment(QString module,QString source,int instrument_index,const QString &comment)
+bool CSMesComment::setComment(ModuleFile module,SourceFile source,int instrument_index,const QString &comment)
 {
   if (!findSourceModule(module,source))
     return false;
@@ -60,7 +60,7 @@ bool CSMesComment::setComment(QString module,QString source,int instrument_index
   return true;
 }
 
-QString CSMesComment::getComment(QString module,QString source,int instrument_index) const
+QString CSMesComment::getComment(ModuleFile module,SourceFile source,int instrument_index) const
 {
   if (!findSourceModule(module,source))
     return QString::null;
@@ -73,7 +73,7 @@ QString CSMesComment::getComment(QString module,QString source,int instrument_in
   return comments[module][source][instrument_index];
 }
 
-QList<int> CSMesComment::commentedIndexes(QString mod,QString src) const
+QList<int> CSMesComment::commentedIndexes(ModuleFile mod,SourceFile src) const
 {
   QList<int> ret;
   ret.clear();

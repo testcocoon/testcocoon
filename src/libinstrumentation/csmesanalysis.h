@@ -54,17 +54,17 @@ class CSMesAnalysis : public CSMesEmma
     bool compareCSMes(const QString &file);
     void setManuallyValidated(const QString &mod,const QString &src,int index,bool b);
     QString relativeSourceNameReference(const QString &src) const;
-    void equivalentModulesReference(const QString &module,const QString &source,QString &mod,QString &src,QString &mod_ref,QString &src_ref) const ;
-    modifications_t compareCSMesSource(const QString &module,const QString &source) const ;
+    void equivalentModulesReference(const ModuleFile &module,const SourceFile &source,ModuleFile &mod,SourceFile &src,ModuleFile &mod_ref,SourceFile &src_ref) const ;
+    modifications_t compareCSMesSource(const ModuleFile &module,const SourceFile &source) const ;
     bool statisticExecution(const QStringList &ms,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,comparaison_mode_t, int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations,const bool &abort_operation) const;
     bool statisticExecution(const QStringList &ms,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,comparaison_mode_t comparaison, int &nb_tested,int &nb_untested,const bool &abort_operation) const;
     const QString &getFilenameReference() const ;
-    const QStringList& ModulesReference() const ;
-    QStringList SourcesReference(const QString &s) const ;
+    const ModuleFiles& ModulesReference() const ;
+    SourceFiles SourcesReference(const SourceFile &s) const ;
     bool  hasReference() const { return csmes_reference_p!=NULL; }
     void toPLAINReference(const QString &module,const QString &source,source_type_t type,QString &out) const;
-    const QStringList& HeadersReference() const ;
-    const QStringList& SourcesReference(source_filter_t filter) const ;
+    const SourceFiles& HeadersReference() const ;
+    const SourceFiles& SourcesReference(source_filter_t filter) const ;
     QList<functionskey_t> FunctionsReference() const ;
     QList<DiffItem> differencesWithReference(const QString &module,const QString &source,source_type_t type) const ;
 
@@ -76,16 +76,16 @@ class CSMesAnalysis : public CSMesEmma
     comparaison_mode_t comparaisonMode() const { return comparaison_mode ; }
     QString  explanation (const QString &module,const QString &source,const QList<int> &indexs,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const ;
   protected:
-    QList<int> instrumentedLinesPre(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,QString mod,QString src) const;
-    QList<int> instrumentedLinesOrg(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,QString mod,QString src) const;
-    QList<int> commentedLinesOrg(QString mod,QString src) const;
-    QList<int> commentedLinesPre(QString mod,QString src) const;
+    QList<int> instrumentedLinesPre(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,ModuleFile mod,SourceFile src) const;
+    QList<int> instrumentedLinesOrg(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,ModuleFile mod,SourceFile src) const;
+    QList<int> commentedLinesOrg(ModuleFile mod,SourceFile src) const;
+    QList<int> commentedLinesPre(ModuleFile mod,SourceFile src) const;
 
   private:
     CSMesAnalysis *csmes_reference_p;
     mutable QHash<QString,QHash<QString,modifications_t> > module_modifications;
     mutable QHash<QString,QHash<QString,QHash<source_type_t,QList<DiffItem> > > > module_differences;
-    void findSourceModuleReference(const QString &module,const QString &source,QString &mod,QString &src,QString &mod_ref,QString &src_ref,QString &mod_rel,QString &src_rel) const ;
+    void findSourceModuleReference(const ModuleFile &module,const SourceFile &source,ModuleFile &mod,SourceFile &src,ModuleFile &mod_ref,SourceFile &src_ref,ModuleFile &mod_rel,SourceFile &src_rel) const ;
     void modifiedAndNotModifiedFunctions(QList<functionskey_t> &modifiedFunctions,QList<functionskey_t> &notModifiedFunctions) const;
     void hideInstrumentationsOfFunctions(CSMesInstrumentations &_instrumentations,const QList<functionskey_t> &functions) const;
     comparaison_mode_t comparaison_mode;
@@ -139,6 +139,6 @@ class CSMesAnalysis : public CSMesEmma
     mutable QCache<StatisticExecutionCacheKey,StatisticExecutionCacheValue> _statistic_execution_cache;
    mutable int _statistic_cache_hit;
    mutable int _statistic_cache_miss;
-    QStringList SourcesReference(bool) const ;
+    SourceFiles SourcesReference(bool) const ;
 } ;
 #endif

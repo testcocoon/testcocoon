@@ -425,10 +425,10 @@ void FunctionListModel::setupModelData()
 
   if (csmes_p)
   {
-    const QStringList sources_all= csmes_p->Sources(CSMes::NON_EMPTY) + csmes_p->SourcesReference(CSMes::NON_EMPTY) ;
-    QStringList sources;
+    const SourceFiles sources_all= csmes_p->Sources(CSMes::NON_EMPTY) + csmes_p->SourcesReference(CSMes::NON_EMPTY) ;
+    SourceFiles sources;
 
-    for (QStringList::const_iterator itsrc=sources_all.begin();itsrc!=sources_all.end();++itsrc)
+    for (SourceFiles::const_iterator itsrc=sources_all.begin();itsrc!=sources_all.end();++itsrc)
     {
       if (sources.contains(*itsrc))
         continue;

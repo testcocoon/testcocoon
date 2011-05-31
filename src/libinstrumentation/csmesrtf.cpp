@@ -45,12 +45,12 @@ CSMesRTF::CSMesRTF() : CSMesIO()
 {
 }
 
-void CSMesRTF::toRTF(QString module,QString source,source_type_t type,QString &out) const
+void CSMesRTF::toRTF(ModuleFile module,SourceFile source,source_type_t type,QString &out) const
 {
   toRTFtemplate(module,source,type,false,out);
 }
 
-void CSMesRTF::toPLAIN(QString module,QString source,source_type_t type,QString &out) const
+void CSMesRTF::toPLAIN(ModuleFile module,SourceFile source,source_type_t type,QString &out) const
 {
   out= "";
   if (!findSourceModule(module,source))
@@ -66,7 +66,7 @@ void CSMesRTF::toPLAIN(QString module,QString source,source_type_t type,QString 
   }
 }
 
-void CSMesRTF::toRTFtemplate(QString module,QString source,source_type_t type,bool instrumentation,QString &out) const
+void CSMesRTF::toRTFtemplate(ModuleFile module,SourceFile source,source_type_t type,bool instrumentation,QString &out) const
 {
   out= "";
   if (!findSourceModule(module,source))
@@ -82,7 +82,7 @@ void CSMesRTF::toRTFtemplate(QString module,QString source,source_type_t type,bo
   }
 }
 
-void CSMesRTF::toRTFtemplate(QString module,QString source,source_type_t type,QTextDocument &out) const
+void CSMesRTF::toRTFtemplate(ModuleFile module,SourceFile source,source_type_t type,QTextDocument &out) const
 {
   out.clear();
   if (!findSourceModule(module,source))
@@ -98,7 +98,7 @@ void CSMesRTF::toRTFtemplate(QString module,QString source,source_type_t type,QT
   }
 }
 
-void CSMesRTF::toRTFSyntax(QString module,QString source,Instrumentation::coverage_method_t method,source_type_t t,QString &textcpp) const
+void CSMesRTF::toRTFSyntax(ModuleFile module,SourceFile source,Instrumentation::coverage_method_t method,source_type_t t,QString &textcpp) const
 {
   SourceCacheKey cache_key(module,source,method,t);
   QString *source_text_p=NULL;
@@ -130,7 +130,7 @@ void CSMesRTF::toRTFSyntax(QString module,QString source,Instrumentation::covera
   }
 }
 
-void CSMesRTF::read_source(const QString &module,const QString &source, CSMESFile::type_t t,QString &qbuf) const
+void CSMesRTF::read_source(const ModuleFile &module,const SourceFile &source, CSMESFile::type_t t,QString &qbuf) const
 {
   SourceCacheKey cache_key(module,source,t);
   QString *source_text_p=NULL;
@@ -155,17 +155,17 @@ void CSMesRTF::read_source(const QString &module,const QString &source, CSMESFil
 
 }
 
-void CSMesRTF::toPLAINcsmes(const QString &module,const QString &source,QString &ret) const
+void CSMesRTF::toPLAINcsmes(const ModuleFile &module,const SourceFile &source,QString &ret) const
 {
   read_source(module,source,CSMESFile::PREPROCESSED,ret);
 }
 
-void CSMesRTF::toPLAINoriginal(const QString &module,const QString &source,QString &ret) const
+void CSMesRTF::toPLAINoriginal(const ModuleFile &module,const SourceFile &source,QString &ret) const
 {
   read_source(module,source,CSMESFile::ORIGINAL,ret);
 }
 
-void CSMesRTF::toRTFcsmes(const QString &module,const QString &source,bool instrumentation,QString &ret) const
+void CSMesRTF::toRTFcsmes(const ModuleFile &module,const SourceFile &source,bool instrumentation,QString &ret) const
 {
   QString text_with_tab;
     read_source(module,source,CSMESFile::PREPROCESSED,text_with_tab);
@@ -183,14 +183,14 @@ void CSMesRTF::toRTFcsmes(const QString &module,const QString &source,bool instr
   ret+=" </p></pre>";
 }
 
-void CSMesRTF::toRTFcsmes(const QString &module,const QString &source,QTextDocument &ret) const
+void CSMesRTF::toRTFcsmes(const ModuleFile &module,const SourceFile &source,QTextDocument &ret) const
 {
   QString text_with_tab;
   read_source(module,source,CSMESFile::PREPROCESSED,text_with_tab);
   ret.setPlainText(text_with_tab);
 }
 
-void CSMesRTF::toRTForiginal(const QString &module,const QString &source,bool instrumentation,QString &ret) const
+void CSMesRTF::toRTForiginal(const ModuleFile &module,const SourceFile &source,bool instrumentation,QString &ret) const
 {
   QString text_with_tab;
 
@@ -209,7 +209,7 @@ void CSMesRTF::toRTForiginal(const QString &module,const QString &source,bool in
   ret.squeeze();
 }
 
-void CSMesRTF::toRTForiginal(const QString &module,const QString &source,QTextDocument &ret) const
+void CSMesRTF::toRTForiginal(const ModuleFile &module,const SourceFile &source,QTextDocument &ret) const
 {
   QString text_with_tab;
 
@@ -315,7 +315,7 @@ int CSMesRTF::instrumentationEndIndex(const CSMesInstrumentations::Instrumentati
   return new_index;
 }
 
-void CSMesRTF::linesCoverageCountOrg(QString mod,QString src,QVector<int> &min,QVector<int> &max) const
+void CSMesRTF::linesCoverageCountOrg(ModuleFile mod,SourceFile src,QVector<int> &min,QVector<int> &max) const
 {
   if (!findSourceModule(mod,src))
   {
@@ -327,7 +327,7 @@ void CSMesRTF::linesCoverageCountOrg(QString mod,QString src,QVector<int> &min,Q
   linesCoverageCountOrg(inst,min,max);
 }
 
-void CSMesRTF::linesCoverageCountPre(QString mod,QString src,QVector<int> &min,QVector<int> &max) const
+void CSMesRTF::linesCoverageCountPre(ModuleFile mod,SourceFile src,QVector<int> &min,QVector<int> &max) const
 {
   if (!findSourceModule(mod,src))
   {
@@ -435,7 +435,7 @@ Instrumentation::status_t CSMesRTF::lineStatusPre(const CSMesInstrumentations::I
   return status;
 }
 
-const QVector<Instrumentation>  CSMesRTF::instrumentationList(QString mod,QString src) const
+const QVector<Instrumentation>  CSMesRTF::instrumentationList(ModuleFile mod,SourceFile src) const
 {
   if (!findSourceModule(mod,src))
   {
@@ -513,7 +513,7 @@ QString CSMesRTF::extractText(const QString &text,int line1,int col1,int line2,i
   return text.mid(pos1,pos2-pos1);
 }
 
-QString CSMesRTF::extractPlainTextPreprocessed(QString module,QString source,int line1,int col1,int line2,int col2) const
+QString CSMesRTF::extractPlainTextPreprocessed(ModuleFile module,SourceFile source,int line1,int col1,int line2,int col2) const
 {
   QString qbuf;
   findSourceModule(module,source);
@@ -547,7 +547,7 @@ void CSMesRTF::clearSourceCache()
   source_cache.clear();
 }
 
-void  CSMesRTF::statusLinesOrg(QString mod,QString src,int level,Instrumentation::coverage_method_t method,int number_of_lines,QVector<Instrumentation::status_t> &status) const
+void  CSMesRTF::statusLinesOrg(ModuleFile mod,SourceFile src,int level,Instrumentation::coverage_method_t method,int number_of_lines,QVector<Instrumentation::status_t> &status) const
 {
   status.clear();
   status.resize(number_of_lines);
@@ -580,7 +580,7 @@ void  CSMesRTF::statusLinesOrg(QString mod,QString src,int level,Instrumentation
   }
 }
 
-void  CSMesRTF::statusLinesPre(QString mod,QString src,int level,Instrumentation::coverage_method_t method,int number_of_lines,QVector<Instrumentation::status_t> &status) const
+void  CSMesRTF::statusLinesPre(ModuleFile mod,SourceFile src,int level,Instrumentation::coverage_method_t method,int number_of_lines,QVector<Instrumentation::status_t> &status) const
 {
   status.clear();
   status.resize(number_of_lines);
@@ -613,7 +613,7 @@ void  CSMesRTF::statusLinesPre(QString mod,QString src,int level,Instrumentation
   }
 }
 
-void CSMesRTF::toRTFSyntax(QString module,QString source,int level,Instrumentation::coverage_method_t method,source_type_t t,bool tooltip,int executed_by_limit,QTextDocument &out) const
+void CSMesRTF::toRTFSyntax(ModuleFile module,SourceFile source,int level,Instrumentation::coverage_method_t method,source_type_t t,bool tooltip,int executed_by_limit,QTextDocument &out) const
 {
   if (!findSourceModule(module,source))
   {
@@ -636,7 +636,7 @@ void CSMesRTF::toRTFSyntax(QString module,QString source,int level,Instrumentati
 
 }
 
-void CSMesRTF::colorBackgroundLineOrg(const QString &module,const QString &source,int level,Instrumentation::coverage_method_t method,bool tooltip,int executed_by_limit,QTextDocument &out) const
+void CSMesRTF::colorBackgroundLineOrg(const ModuleFile &module,const SourceFile &source,int level,Instrumentation::coverage_method_t method,bool tooltip,int executed_by_limit,QTextDocument &out) const
 {
   QTextCursor cur(&out);
   cur.movePosition(QTextCursor::End);
@@ -674,7 +674,7 @@ void CSMesRTF::colorBackgroundLineOrg(const QString &module,const QString &sourc
   }
 }
 
-void CSMesRTF::colorBackgroundInstrumentationPre(const QString &module,const QString &source,int level,Instrumentation::coverage_method_t method,bool tooltip,int executed_by_limit,QTextDocument &out) const
+void CSMesRTF::colorBackgroundInstrumentationPre(const ModuleFile &module,const SourceFile &source,int level,Instrumentation::coverage_method_t method,bool tooltip,int executed_by_limit,QTextDocument &out) const
 {
   QTextCursor cur(&out);
   cur.movePosition(QTextCursor::End);
@@ -718,7 +718,7 @@ void CSMesRTF::colorBackgroundInstrumentationPre(const QString &module,const QSt
 }
 
 
-void CSMesRTF::explanationFromLineOrg (Writer &stream,const QString &module,const QString &source,int line,int coverage_level,Instrumentation::coverage_method_t method, int executed_by_limit) const
+void CSMesRTF::explanationFromLineOrg (Writer &stream,const ModuleFile &module,const SourceFile &source,int line,int coverage_level,Instrumentation::coverage_method_t method, int executed_by_limit) const
 {
   stream.beginHeader();
   stream.endHeader();
@@ -745,7 +745,7 @@ void CSMesRTF::explanationFromLineOrg (Writer &stream,const QString &module,cons
   stream.endBody();
 }
 
-void CSMesRTF::explanationFromLinePre (Writer &stream,const QString &module,const QString &source,int line,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const
+void CSMesRTF::explanationFromLinePre (Writer &stream,const ModuleFile &module,const SourceFile &source,int line,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const
 {
   stream.beginHeader();
   stream.endHeader();
@@ -772,7 +772,7 @@ void CSMesRTF::explanationFromLinePre (Writer &stream,const QString &module,cons
   stream.endBody();
 }
 
-void CSMesRTF::explanationFromIndex (Writer& stream,const QString &module,const QString &source,int index,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const
+void CSMesRTF::explanationFromIndex (Writer& stream,const ModuleFile &module,const SourceFile &source,int index,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const
 {
   stream.beginHeader();
   stream.endHeader();
@@ -784,7 +784,7 @@ void CSMesRTF::explanationFromIndex (Writer& stream,const QString &module,const 
   stream.endBody();
 }
 
-QString CSMesRTF::explanationFragmentTextFromIndex (const QString &format, const QString &module,const QString &source,int index,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method) const
+QString CSMesRTF::explanationFragmentTextFromIndex (const QString &format, const ModuleFile &module,const SourceFile &source,int index,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method) const
 {
   const QVector<Instrumentation> &inst=instrumentationList(module,source);
   if (inst.isEmpty())
@@ -805,7 +805,7 @@ QString CSMesRTF::explanationFragmentTextFromIndex (const QString &format, const
   return explanation;
 }
 
-void CSMesRTF::explanationFragmentFromIndex (Writer &stream,const QString &module,const QString &source,int index,source_type_t source_type,int coverage_level, Instrumentation::coverage_method_t method,int executed_by_limit,bool table_fragment) const
+void CSMesRTF::explanationFragmentFromIndex (Writer &stream,const ModuleFile &module,const SourceFile &source,int index,source_type_t source_type,int coverage_level, Instrumentation::coverage_method_t method,int executed_by_limit,bool table_fragment) const
 {
    QStringList executedByExecution[2];
    const QVector<Instrumentation> &inst=instrumentationList(module,source);
