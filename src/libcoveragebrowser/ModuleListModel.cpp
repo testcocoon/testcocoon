@@ -356,13 +356,13 @@ void ModuleListModel::setupModelData()
     QStringList all_reference;
     if (flat_view)
     {
-      all=csmes_p->Sources(CSMes::NON_EMPTY).toStringList();
-      all_reference =csmes_p->SourcesReference(CSMes::NON_EMPTY).toStringList();
+      all=csmes_p->Sources(CSMes::NON_EMPTY).toQStringList();
+      all_reference =csmes_p->SourcesReference(CSMes::NON_EMPTY).toQStringList();
     }
     else
     {
-      all=csmes_p->Modules().toStringList();
-      all_reference =csmes_p->ModulesReference().toStringList();
+      all=csmes_p->Modules().toQStringList();
+      all_reference =csmes_p->ModulesReference().toQStringList();
     }
 
     QStringList::const_iterator itmod;
@@ -374,7 +374,7 @@ void ModuleListModel::setupModelData()
 
       if (!flat_view)
       {
-        QStringList sources=csmes_p->Sources(*itmod).toStringList();
+        QStringList sources=csmes_p->Sources(*itmod).toQStringList();
         QStringList::const_iterator itsrc;
         for (itsrc=sources.begin();itsrc!=sources.end();++itsrc)
         {
@@ -389,7 +389,7 @@ void ModuleListModel::setupModelData()
       QList<int> index_module;
       QList<TreeList*> items;
       const QString module(*itmod);
-      QStringList sources_reference=csmes_p->SourcesReference(*itmod).toStringList();
+      QStringList sources_reference=csmes_p->SourcesReference(*itmod).toQStringList();
       if (sources_reference.isEmpty())
       {
         ModuleFile mod,mod_ref;

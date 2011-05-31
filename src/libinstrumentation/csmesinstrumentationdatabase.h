@@ -49,7 +49,7 @@ class SourceFiles : public QList<SourceFile>
     SourceFiles(const QList<SourceFile> &s) : QList<SourceFile>(s) {}
     SourceFiles(const SourceFiles &s) : QList<SourceFile>(s) {}
     SourceFiles() : QList<SourceFile>() {}
-    QStringList toStringList() const 
+    QStringList toQStringList() const 
     {
       QStringList l; 
       for (QList<SourceFile>::const_iterator it=begin();it!=end();++it)
@@ -64,7 +64,7 @@ class ModuleFiles : public QList<ModuleFile>
     ModuleFiles(const QList<ModuleFile> &s) : QList<ModuleFile>(s) {}
     ModuleFiles(const ModuleFiles &s) : QList<ModuleFile>(s) {}
     ModuleFiles() : QList<ModuleFile>() {}
-    QStringList toStringList() const 
+    QStringList toQStringList() const 
     {
       QStringList l; 
       for (QList<ModuleFile>::const_iterator it=begin();it!=end();++it)
