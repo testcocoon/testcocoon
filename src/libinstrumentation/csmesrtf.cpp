@@ -103,7 +103,8 @@ void CSMesRTF::toRTFSyntax(ModuleFile module,SourceFile source,Instrumentation::
   SourceCacheKey cache_key(module,source,method,t);
   QString *source_text_p=NULL;
 
-  source_text_p=source_cache.object(cache_key);
+  QMutexLocker locker(&_source_cache_mutex);
+  source_text_p=_source_cache.object(cache_key);
   if (source_text_p==NULL)
   { // cache miss
     source_cache_miss++;
@@ -118,7 +119,7 @@ void CSMesRTF::toRTFSyntax(ModuleFile module,SourceFile source,Instrumentation::
     text+="</body>";
     RTF::CPPSyntax(text,textcpp);
     source_text_p=new QString(textcpp);
-    if (!source_cache.insert(cache_key,source_text_p,1))
+    if (!_source_cache.insert(cache_key,source_text_p,1))
     { // item too big
       //delete source_text_p;
     }
@@ -135,14 +136,15 @@ void CSMesRTF::read_source(const ModuleFile &module,const SourceFile &source, CS
   SourceCacheKey cache_key(module,source,t);
   QString *source_text_p=NULL;
 
-  source_text_p=source_cache.object(cache_key);
+  QMutexLocker locker(&_source_cache_mutex);
+  source_text_p=_source_cache.object(cache_key);
   if (source_text_p==NULL)
   { // cache miss
     source_cache_miss++;
     source_text_p=new QString();
     CSMesIO::read_source(module,source, t,*source_text_p);
     qbuf=*source_text_p;
-    if (!source_cache.insert(cache_key,source_text_p,1))
+    if (!_source_cache.insert(cache_key,source_text_p,1))
     { // item too big
       //delete source_text_p;
     }
@@ -523,15 +525,16 @@ QString CSMesRTF::extractPlainTextPreprocessed(ModuleFile module,SourceFile sour
 
 void CSMesRTF::getSourceCacheStatistics(int &cache_hit,int &cache_miss,int &max_cost,int &cost) const
 {
-   cache_hit=source_cache_hit;
-   cache_miss=source_cache_miss;
-   cost=source_cache.totalCost();
-   max_cost=source_cache.maxCost();
+  cache_hit  = source_cache_hit;
+  cache_miss = source_cache_miss;
+  cost       = _source_cache.totalCost();
+  max_cost   = _source_cache.maxCost();
 }
 
 void CSMesRTF::setSourceCacheMaxCost(long value)
 {
-  source_cache.setMaxCost(value);
+  QMutexLocker locker(&_source_cache_mutex);
+  _source_cache.setMaxCost(value);
 }
 
 bool CSMesRTF::loadCSMes(const QString &s)
@@ -544,7 +547,8 @@ void CSMesRTF::clearSourceCache()
 {
   source_cache_miss=0;
   source_cache_hit=0;
-  source_cache.clear();
+  QMutexLocker locker(&_source_cache_mutex);
+  _source_cache.clear();
 }
 
 void  CSMesRTF::statusLinesOrg(ModuleFile mod,SourceFile src,int level,Instrumentation::coverage_method_t method,int number_of_lines,QVector<Instrumentation::status_t> &status) const

@@ -115,7 +115,8 @@ class CSMesRTF : public CSMesIO
     friend inline uint qHash(const CSMesRTF::SourceCacheKey &f) ;
     void clearSourceCache();
 
-    mutable QCache<SourceCacheKey,QString> source_cache ;
+    mutable QMutex _source_cache_mutex;
+    mutable QCache<SourceCacheKey,QString> _source_cache ;
     mutable int source_cache_miss,source_cache_hit;
     inline void colorBackgroundLineOrg(const ModuleFile & module,const SourceFile & source,int level,Instrumentation::coverage_method_t ,bool tooltip,int executed_by_limit,QTextDocument &out) const ;
     inline void colorBackgroundInstrumentationPre(const ModuleFile & module,const SourceFile & source,int level,Instrumentation::coverage_method_t ,bool tooltip,int executed_by_limit,QTextDocument &out) const;

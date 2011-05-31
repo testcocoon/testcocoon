@@ -66,6 +66,7 @@ class CSMesInstrumentation
     ModuleFiles _modules;
     SourceFiles _headers;
     SourceFiles _sources_non_empty_modules;
+    mutable QMutex _findSourceModuleCache_mutex;
     mutable QHash<QString,QString> _findSourceModuleCache;
   protected:
     void resetModificationFlag() { modification_flag=false; }

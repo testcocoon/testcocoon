@@ -23,6 +23,7 @@
 #include <QTextStream>
 #include <QTime>
 #include <QBuffer>
+#include <QMutexLocker>
 #include "Service.h"
 #include "htmlwriter.h"
 
@@ -31,18 +32,18 @@ CSMesAnalysis::CSMesAnalysis() : CSMesEmma()
   comparaison_mode=COMPARAISON_MODE_NONE;
   csmes_reference_p=NULL;
   _statistic_execution_cache.setMaxCost(10000);
-  modified_functions.clear();
-  not_modified_functions.clear();
-  module_modifications.clear();
-  module_differences.clear();
+  _modified_functions.clear();
+  _not_modified_functions.clear();
+  _module_modifications.clear();
+  _module_differences.clear();
 }
 
 CSMesAnalysis::~CSMesAnalysis()
 {
-  module_modifications.clear();
-  module_differences.clear();
-  modified_functions.clear();
-  not_modified_functions.clear();
+  _module_modifications.clear();
+  _module_differences.clear();
+  _modified_functions.clear();
+  _not_modified_functions.clear();
   if (csmes_reference_p)
     delete csmes_reference_p;
 }
@@ -209,10 +210,22 @@ QList<int> CSMesAnalysis::instrumentedLinesPre(int level,Instrumentation::covera
 bool CSMesAnalysis::loadCSMes(const QString &file)
 {
   bool ret = CSMesRTF::loadCSMes(file);
-  module_modifications.clear();
-  module_differences.clear();
-  modified_functions.clear();
-  not_modified_functions.clear();
+  {
+    QMutexLocker locker(&_module_modifications_mutex);
+    _module_modifications.clear();
+  }
+  {
+    QMutexLocker locker(&_module_differences_mutex);
+    _module_differences.clear();
+  }
+  {
+    QMutexLocker locker(&_modified_functions_mutex);
+    _modified_functions.clear();
+  }
+  {
+    QMutexLocker locker(&_not_modified_functions_mutex);
+    _not_modified_functions.clear();
+  }
   clearStatisticExecutionCache();
 
   return ret;
@@ -225,10 +238,22 @@ bool CSMesAnalysis::compareCSMes(const QString &file)
   comparaison_mode=COMPARAISON_MODE_NONE;
   if (csmes_reference_p)
   {
-    module_modifications.clear();
-    module_differences.clear();
-    modified_functions.clear();
-    not_modified_functions.clear();
+    {
+      QMutexLocker locker(&_module_modifications_mutex);
+      _module_modifications.clear();
+    }
+    {
+      QMutexLocker locker(&_module_differences_mutex);
+      _module_differences.clear();
+    }
+    {
+      QMutexLocker locker(&_modified_functions_mutex);
+      _modified_functions.clear();
+    }
+    {
+      QMutexLocker locker(&_not_modified_functions_mutex);
+      _not_modified_functions.clear();
+    }
     delete csmes_reference_p;
     csmes_reference_p = NULL;
   }
@@ -475,10 +500,11 @@ CSMesAnalysis::modifications_t CSMesAnalysis::compareCSMesSource(const ModuleFil
 
     if (csmes_reference_p->checksum(mod_ref,src_ref)!=checksum(mod,src))
     {
-      if (module_modifications.contains(module))
+      QMutexLocker locker(&_module_modifications_mutex);
+      if (_module_modifications.contains(module))
       {
-        if (module_modifications.value(module).contains(source))
-          return module_modifications.value(module).value(source);
+        if (_module_modifications.value(module).contains(source))
+          return _module_modifications.value(module).value(source);
       }
       QString plain_text;
       toPLAIN(mod,src,ORIGINAL,plain_text);
@@ -503,7 +529,7 @@ CSMesAnalysis::modifications_t CSMesAnalysis::compareCSMesSource(const ModuleFil
           modif = DIFFERENT;
           break;
       }
-      module_modifications[module][source]=modif;
+      _module_modifications[module][source]=modif;
       return modif;
     }
 
@@ -591,7 +617,7 @@ QList<CSMesFunctionInfo::functionskey_t> CSMesAnalysis::FunctionsReference() con
       return QList<CSMesFunctionInfo::functionskey_t>();
 }
 
-QVector<FunctionInfo> CSMesAnalysis::FunctionInfoSourceReference( const QString &module, const QString &source) const
+QVector<FunctionInfo> CSMesAnalysis::FunctionInfoSourceReference( const ModuleFile &module, const SourceFile &source) const
 {
    if (csmes_reference_p)
       return csmes_reference_p->FunctionInfoSource( module, source) ;
@@ -599,7 +625,7 @@ QVector<FunctionInfo> CSMesAnalysis::FunctionInfoSourceReference( const QString 
       return QVector<FunctionInfo>();
 }
 
-void CSMesAnalysis::toPLAINReference(const QString &module,const QString &source,source_type_t type,QString &out) const
+void CSMesAnalysis::toPLAINReference(const ModuleFile &module,const SourceFile &source,source_type_t type,QString &out) const
 {
    if (csmes_reference_p)
       return csmes_reference_p->toPLAIN(module,source,type,out);
@@ -607,14 +633,15 @@ void CSMesAnalysis::toPLAINReference(const QString &module,const QString &source
       return out.clear();
 }
 
-QList<DiffItem> CSMesAnalysis::differencesWithReference(const QString &module,const QString &source,source_type_t type) const 
+QList<DiffItem> CSMesAnalysis::differencesWithReference(const ModuleFile &module,const SourceFile &source,source_type_t type) const 
 {
-  if (module_differences.contains(module))
+  QMutexLocker locker(&_module_differences_mutex);
+  if (_module_differences.contains(module))
   {
-    if (module_differences.value(module).contains(source))
+    if (_module_differences.value(module).contains(source))
     {
-      if (module_differences.value(module).value(source).contains(type))
-        return module_differences.value(module).value(source).value(type);
+      if (_module_differences.value(module).value(source).contains(type))
+        return _module_differences.value(module).value(source).value(type);
     }
   }
   ModuleFile mod,mod_ref;
@@ -625,7 +652,7 @@ QList<DiffItem> CSMesAnalysis::differencesWithReference(const QString &module,co
   toPLAINReference(mod_ref,src_ref,type,reference);
   toPLAIN(mod,src,type,text);
   calcDiff(diff,reference,text,DiffWordIgnoreSpacesAndComments);
-  module_differences[module][source][type]=diff;
+  _module_differences[module][source][type]=diff;
   return diff;
 }
 
@@ -749,18 +776,20 @@ void CSMesAnalysis::processComparaisonMode(CSMesInstrumentations &_instrumentati
   if (m==COMPARAISON_MODE_NONE)
     return;
 
-  if (modified_functions.isEmpty() && not_modified_functions.isEmpty())
-    modifiedAndNotModifiedFunctions(modified_functions,not_modified_functions);
+  QMutexLocker locker1(&_modified_functions_mutex);
+  QMutexLocker locker2(&_not_modified_functions_mutex);
+  if (_modified_functions.isEmpty() && _not_modified_functions.isEmpty())
+    modifiedAndNotModifiedFunctions(_modified_functions,_not_modified_functions);
   switch (m)
   {
     default:
     case COMPARAISON_MODE_NONE:
       ASSERT(false);
     case COMPARAISON_MODE_MODIFIED_FUNCTIONS:
-      hideInstrumentationsOfFunctions(_instrumentations,not_modified_functions);
+      hideInstrumentationsOfFunctions(_instrumentations,_not_modified_functions);
       break;
     case COMPARAISON_MODE_NOT_MODIFIED_FUNCTIONS:
-      hideInstrumentationsOfFunctions(_instrumentations,modified_functions);
+      hideInstrumentationsOfFunctions(_instrumentations,_modified_functions);
       break;
   }
 }
@@ -909,6 +938,7 @@ inline uint qHash(const CSMesAnalysis::StatisticExecutionCacheKey &f)
 bool CSMesAnalysis::statisticExecution(const QStringList &mes,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,comparaison_mode_t comparaison, int &nb_tested,int &nb_untested,const bool &abort_operation) const 
 {
   StatisticExecutionCacheKey cache_key(mes,cmp,execution_analysis,coverage_level,method,comparaison);
+  QMutexLocker locker(&_statistic_execution_cache_mutex);
   StatisticExecutionCacheValue *statistics_p=_statistic_execution_cache.object(cache_key);
   if (statistics_p==NULL)
   { // cache miss
@@ -945,11 +975,13 @@ void CSMesAnalysis::getStatisticCacheStatistics(int &cache_hit,int &cache_miss,i
 
 void CSMesAnalysis::setStatisticCacheMaxCost(long value)
 {
+  QMutexLocker locker(&_statistic_execution_cache_mutex);
   _statistic_execution_cache.setMaxCost(value);
 }
 
 void CSMesAnalysis::clearStatisticExecutionCache() 
 {
+  QMutexLocker locker(&_statistic_execution_cache_mutex);
   _statistic_execution_cache.clear();
   _statistic_cache_hit=0;
   _statistic_cache_miss=0;
@@ -961,7 +993,7 @@ void CSMesAnalysis::setManuallyValidated(const QString &mod,const QString &src,i
   clearStatisticExecutionCache();
 }
 
-QString  CSMesAnalysis::explanation(const QString &module,const QString &source,const QList<int> &lines_indexs,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const
+QString  CSMesAnalysis::explanation(const ModuleFile &module,const SourceFile &source,const QList<int> &lines_indexs,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const
 {
   QList<int> indexs;
   const QVector<Instrumentation> &inst=instrumentationList(module,source);

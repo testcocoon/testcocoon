@@ -62,19 +62,19 @@ class CSMesAnalysis : public CSMesEmma
     const ModuleFiles& ModulesReference() const ;
     SourceFiles SourcesReference(const SourceFile &s) const ;
     bool  hasReference() const { return csmes_reference_p!=NULL; }
-    void toPLAINReference(const QString &module,const QString &source,source_type_t type,QString &out) const;
+    void toPLAINReference(const ModuleFile &module,const SourceFile &source,source_type_t type,QString &out) const;
     const SourceFiles& HeadersReference() const ;
     const SourceFiles& SourcesReference(source_filter_t filter) const ;
     QList<functionskey_t> FunctionsReference() const ;
-    QList<DiffItem> differencesWithReference(const QString &module,const QString &source,source_type_t type) const ;
+    QList<DiffItem> differencesWithReference(const ModuleFile &module,const SourceFile &source,source_type_t type) const ;
 
-    QVector<FunctionInfo> FunctionInfoSourceReference( const QString &module, const QString &source) const;
+    QVector<FunctionInfo> FunctionInfoSourceReference( const ModuleFile &module, const SourceFile &source) const;
     modifications_t compareCSMesFunction(const CSMesFunctionInfo::functionskey_t &func,const CSMesFunctionInfo::functionskey_t &func_ref) const;
     bool loadCSMes(const QString &file);
     bool selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t methode, comparaison_mode_t m,const bool &abort_operation) const;
     bool selectExecutionsComparaison(const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t method, comparaison_mode_t m,const bool &abort_operation) ;
     comparaison_mode_t comparaisonMode() const { return comparaison_mode ; }
-    QString  explanation (const QString &module,const QString &source,const QList<int> &indexs,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const ;
+    QString  explanation (const ModuleFile &module,const SourceFile &source,const QList<int> &indexs,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const ;
   protected:
     QList<int> instrumentedLinesPre(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,ModuleFile mod,SourceFile src) const;
     QList<int> instrumentedLinesOrg(int level,Instrumentation::coverage_method_t method,Instrumentation::filter_t filter,ModuleFile mod,SourceFile src) const;
@@ -83,14 +83,18 @@ class CSMesAnalysis : public CSMesEmma
 
   private:
     CSMesAnalysis *csmes_reference_p;
-    mutable QHash<QString,QHash<QString,modifications_t> > module_modifications;
-    mutable QHash<QString,QHash<QString,QHash<source_type_t,QList<DiffItem> > > > module_differences;
+    mutable QHash<ModuleFile,QHash<SourceFile,modifications_t> > _module_modifications;
+    mutable QHash<ModuleFile,QHash<SourceFile,QHash<source_type_t,QList<DiffItem> > > > _module_differences;
+    mutable QMutex _module_modifications_mutex;
+    mutable QMutex _module_differences_mutex;;
     void findSourceModuleReference(const ModuleFile &module,const SourceFile &source,ModuleFile &mod,SourceFile &src,ModuleFile &mod_ref,SourceFile &src_ref,ModuleFile &mod_rel,SourceFile &src_rel) const ;
     void modifiedAndNotModifiedFunctions(QList<functionskey_t> &modifiedFunctions,QList<functionskey_t> &notModifiedFunctions) const;
     void hideInstrumentationsOfFunctions(CSMesInstrumentations &_instrumentations,const QList<functionskey_t> &functions) const;
     comparaison_mode_t comparaison_mode;
-    mutable QList<functionskey_t> modified_functions;
-    mutable QList<functionskey_t> not_modified_functions;
+    mutable QList<functionskey_t> _modified_functions;
+    mutable QList<functionskey_t> _not_modified_functions;
+    mutable QMutex _modified_functions_mutex;
+    mutable QMutex _not_modified_functions_mutex;
     void processComparaisonMode(CSMesInstrumentations &_instrumentations,comparaison_mode_t m) const;
     void clearStatisticExecutionCache() ;
   private:
@@ -137,8 +141,9 @@ class CSMesAnalysis : public CSMesEmma
     };
     friend inline uint qHash(const CSMesAnalysis::StatisticExecutionCacheKey &f) ;
     mutable QCache<StatisticExecutionCacheKey,StatisticExecutionCacheValue> _statistic_execution_cache;
-   mutable int _statistic_cache_hit;
-   mutable int _statistic_cache_miss;
+    mutable QMutex _statistic_execution_cache_mutex;
+    mutable int _statistic_cache_hit;
+    mutable int _statistic_cache_miss;
     SourceFiles SourcesReference(bool) const ;
 } ;
 #endif

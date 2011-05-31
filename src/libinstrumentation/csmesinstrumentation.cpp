@@ -131,6 +131,7 @@ void CSMesInstrumentation::clear()
   _sources_non_empty_modules.clear();
   _modules.clear();
   _headers.clear();
+  QMutexLocker locker(&_findSourceModuleCache_mutex);
   _findSourceModuleCache.clear();
 }
 
@@ -190,6 +191,7 @@ bool CSMesInstrumentation::findSourceModule(ModuleFile &module,SourceFile &sourc
   }
   else if (module.isEmpty())
   {
+	QMutexLocker locker(&_findSourceModuleCache_mutex);
     module=_findSourceModuleCache.value(source);
     if (module.isEmpty())
     {
