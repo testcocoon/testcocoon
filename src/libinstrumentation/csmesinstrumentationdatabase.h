@@ -26,52 +26,8 @@
 #include <QHash>
 #include "instrumentation.h"
 #include "FunctionInfo.h"
-
-class SourceFile : public QString
-{
-  public:
-    SourceFile(const QString &s) : QString(s) {}
-    SourceFile() : QString() {}
-    const QString &toQString() const { return *this; }
-};
-
-class ModuleFile : public QString
-{
-  public:
-    ModuleFile(const QString &s) : QString(s) {}
-    ModuleFile() : QString() {}
-    const QString &toQString() const { return *this; }
-};
-
-class SourceFiles : public QList<SourceFile>
-{
-  public:
-    SourceFiles(const QList<SourceFile> &s) : QList<SourceFile>(s) {}
-    SourceFiles(const SourceFiles &s) : QList<SourceFile>(s) {}
-    SourceFiles() : QList<SourceFile>() {}
-    QStringList toQStringList() const 
-    {
-      QStringList l; 
-      for (QList<SourceFile>::const_iterator it=begin();it!=end();++it)
-        l << *it;
-      return l;
-    }
-};
-
-class ModuleFiles : public QList<ModuleFile>
-{
-  public:
-    ModuleFiles(const QList<ModuleFile> &s) : QList<ModuleFile>(s) {}
-    ModuleFiles(const ModuleFiles &s) : QList<ModuleFile>(s) {}
-    ModuleFiles() : QList<ModuleFile>() {}
-    QStringList toQStringList() const 
-    {
-      QStringList l; 
-      for (QList<ModuleFile>::const_iterator it=begin();it!=end();++it)
-        l << *it;
-      return l;
-    }
-};
+#include "modulefiles.h"
+#include "sourcefiles.h"
 
 class CSMesInstrumentations 
 {

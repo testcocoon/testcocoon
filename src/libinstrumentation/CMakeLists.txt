@@ -10,6 +10,10 @@ set(SRCS
     csmescomment.cpp
     csmes.cpp
     csmesexecution.cpp
+    sourcefile.cpp
+    sourcefiles.cpp
+    modulefile.cpp
+    modulefiles.cpp
     csmesfilethread.cpp
     csmesfunctioninfo.cpp
     csmesinstrumentation.cpp
