@@ -44,26 +44,26 @@ void CMCsExeImport::clear()
   default_execution_status=Executions::EXECUTION_STATUS_UNKNOWN;
 }
 
-int CMCsExeImport::getoption_passed(const char *)
+bool CMCsExeImport::getoption_passed(const char *)
 {
   CMCsExeImport::instance().default_execution_status=Executions::EXECUTION_STATUS_PASSED;
-  return TRUE;
+  return true;
 }
 
-int CMCsExeImport::getoption_failed(const char *)
+bool CMCsExeImport::getoption_failed(const char *)
 {
   CMCsExeImport::instance().default_execution_status=Executions::EXECUTION_STATUS_FAILED;
-  return TRUE;
+  return true;
 }
 
 
-int CMCsExeImport::getoption_check_manually(const char *)
+bool CMCsExeImport::getoption_check_manually(const char *)
 {
   CMCsExeImport::instance().default_execution_status=Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY;
-  return TRUE;
+  return true;
 }
 
-int CMCsExeImport::getoption_csmes_filename(const char *file)
+bool CMCsExeImport::getoption_csmes_filename(const char *file)
 {
   CMCsExeImport::instance().csmes_filename=QString(file);
   bool ret = CMCsExeImport::instance().csmes.loadCSMes(CMCsExeImport::instance().csmes_filename);
@@ -78,13 +78,13 @@ int CMCsExeImport::getoption_csmes_filename(const char *file)
   return ret;
 }
 
-int CMCsExeImport::getoption_title(const char *file)
+bool CMCsExeImport::getoption_title(const char *file)
 {
   CMCsExeImport::instance().title=QString(file);
   return true;
 }
 
-int CMCsExeImport::getoption_csexe_filename(const char *file)
+bool CMCsExeImport::getoption_csexe_filename(const char *file)
 {
   CMCsExeImport::instance().csexe_filename=QString(file);
   return true;
@@ -104,7 +104,7 @@ static CSMes::csexe_import_policy_t StringToPolicy(const QString &str)
     return CSMes::CSEXE_POLICY_INVALID;
 }
 
-int CMCsExeImport::getoption_import_policy(const char *p)
+bool CMCsExeImport::getoption_import_policy(const char *p)
 {
   CMCsExeImport::instance().policy=StringToPolicy(QString(p));
   return CMCsExeImport::instance().policy!=CSMes::CSEXE_POLICY_INVALID;

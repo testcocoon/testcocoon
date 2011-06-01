@@ -26,7 +26,7 @@ static QString csexe_filename=QString();
 static QString csmes_filename=QString();
 static QString error_message=QString();
 
-static int getoption_csmes_filename(const char *file)
+static bool getoption_csmes_filename(const char *file)
 {
   if (!csmes_filename.isEmpty())
   {
@@ -47,27 +47,29 @@ static int getoption_csmes_filename(const char *file)
   return false;
 }
 
-static int getoption_csexe_filename(const char *file)
+static bool getoption_csexe_filename(const char *file)
 {
   csexe_filename=QString(file);
   return true;
 }
 
-getoption_t command_line_arg[] = {
-{ GETOPT_HELP                 , NULL , NULL      , "CoverageBrowser" , NULL }                    , 
-{ GETOPT_OPTION|GETOPT_HASARG , "-m" , "--csmes" , "CSMes file name" , getoption_csmes_filename} , 
-{ GETOPT_OPTION|GETOPT_HASARG , "-e" , "--csexe" , "CSExe file name" , getoption_csexe_filename} , 
-{ GETOPT_ARGUMENT             , NULL , NULL      , "CSMes file name" , getoption_csmes_filename} , 
-{ GETOPT_LAST                 , NULL , NULL      , NULL              , NULL }
-};
-
 QString analyse_coveragebrowser_args(int argc,const char* const* argv)
 {
-  csexe_filename=QString();
-  csmes_filename=QString();
-  error_message=QString();
+  csexe_filename.clear();
+  csmes_filename.clear();
+  error_message.clear();
   QString tmp;
   char error_msg[16000];
+  error_msg[0]='\0';
+
+  static getoption_t command_line_arg[] = {
+    { GETOPT_HELP                 , NULL , NULL      , "CoverageBrowser" , NULL }                    , 
+    { GETOPT_OPTION|GETOPT_HASARG , "-m" , "--csmes" , "CSMes file name" , getoption_csmes_filename} , 
+    { GETOPT_OPTION|GETOPT_HASARG , "-e" , "--csexe" , "CSExe file name" , getoption_csexe_filename} , 
+    { GETOPT_ARGUMENT             , NULL , NULL      , "CSMes file name" , getoption_csmes_filename} , 
+    { GETOPT_LAST                 , NULL , NULL      , NULL              , NULL }
+  };
+
 
   if (!getoption_process(command_line_arg,argc,argv,error_msg,sizeof(error_msg)))
     return QString(error_msg)+"\n"+QString(getoption_help(argv[0],command_line_arg));

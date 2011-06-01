@@ -37,47 +37,47 @@ CMMerge &CMMerge::instance()
 }
 
 
-int CMMerge::getoption_verbose(const char *)
+bool CMMerge::getoption_verbose(const char *)
 {
   CMMerge::instance()._verbose=true;
-  return TRUE;
+  return true;
 }
 
-int CMMerge::getoption_instrumentation_and_execution(const char *filename)
+bool CMMerge::getoption_instrumentation_and_execution(const char *filename)
 {
   if (filename)
   {
      CMMerge::instance()._policy=CSMESFile::ONLY_INSTRUMENTED_SOURCES;
      CMMerge::instance()._reference_csmes=std::string(filename);
-     return TRUE;
+     return true;
   }
-  return FALSE;
+  return false;
 }
 
-int CMMerge::getoption_input(const char *filename)
+bool CMMerge::getoption_input(const char *filename)
 {
   if (filename)
   {
     CMMerge::instance()._input_filenames.push_back(std::string(filename));
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
-int CMMerge::getoption_output(const char *file)
+bool CMMerge::getoption_output(const char *file)
 {
   if (file)
   {
     CMMerge::instance()._output_filename=std::string(file);
-    return TRUE;
+    return true;
   }
-  return TRUE;
+  return true;
 }
 
-int CMMerge::getoption_append(const char *)
+bool CMMerge::getoption_append(const char *)
 {
   CMMerge::instance()._access=CSMESFile::APPEND_RW;
-  return TRUE;
+  return true;
 }
 
 

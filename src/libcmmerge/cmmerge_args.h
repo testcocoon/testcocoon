@@ -49,11 +49,11 @@ class CMMerge
     std::string _output_filename;
     std::list<std::string> _input_filenames;
 
-    static int getoption_verbose(const char *);
-    static int getoption_instrumentation_and_execution(const char *filename);
-    static int getoption_input(const char *filename);
-    static int getoption_output(const char *file);
-    static int getoption_append(const char *);
+    static bool getoption_verbose(const char *);
+    static bool getoption_instrumentation_and_execution(const char *filename);
+    static bool getoption_input(const char *filename);
+    static bool getoption_output(const char *file);
+    static bool getoption_append(const char *);
 };
 
 #endif

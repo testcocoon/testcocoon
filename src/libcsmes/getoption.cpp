@@ -85,7 +85,7 @@ static opt_item_t corresponding_option(const getoption_t option_table[],const ch
   return opt_item;
 }
 
-int getoption_process(const getoption_t option_table[],int argc,const char *const argv[],char *report,int report_lg)
+bool getoption_process(const getoption_t option_table[],int argc,const char *const argv[],char *report,int report_lg)
 {
   int i,j;
   const getoption_t *opt;
@@ -113,7 +113,7 @@ int getoption_process(const getoption_t option_table[],int argc,const char *cons
       sprintf(tmp,"Error: argument '%s' not allowed.\n", argv[i]);
       strncpy(report,tmp,report_lg);
       FREE(opt_item);
-      return FALSE;
+      return false;
     }
     else if (opt_item[i].skip_next_item)
     {
@@ -125,7 +125,7 @@ int getoption_process(const getoption_t option_table[],int argc,const char *cons
             opt_item[i-1].opt->short_option);
         strncpy(report,tmp,report_lg);
         FREE(opt_item);
-        return FALSE;
+        return false;
       }
       else
         memset(&opt_item[i],0,sizeof(opt_item_t));
@@ -144,7 +144,7 @@ int getoption_process(const getoption_t option_table[],int argc,const char *cons
     {
       strncpy(report,"Error: arguments are not allowed in the command line.\n", report_lg);
       FREE(opt_item);
-      return FALSE;
+      return false;
     }
 
     opt_item[nb_option].opt=NULL;
@@ -166,7 +166,7 @@ int getoption_process(const getoption_t option_table[],int argc,const char *cons
           opt_item[i].opt->short_option);
       strncpy(report,tmp,report_lg);
       FREE(opt_item);
-      return FALSE;
+      return false;
     }
   if (nb_option>1 && opt_item[nb_option-1].opt && opt_item[nb_option-1].additional_argument)
   {
@@ -175,7 +175,7 @@ int getoption_process(const getoption_t option_table[],int argc,const char *cons
         opt_item[nb_option-1].opt->short_option);
     strncpy(report,tmp,report_lg);
     FREE(opt_item);
-    return FALSE;
+    return false;
   }
 
   /* finding if single arguments are not used mutiple times */
@@ -196,7 +196,7 @@ int getoption_process(const getoption_t option_table[],int argc,const char *cons
                 opt_item[i].opt->long_option);
           strncpy(report,tmp,report_lg);
           FREE(opt_item);
-          return FALSE;
+          return false;
         }
         if (opt_item[j].additional_argument) j++;
       }
@@ -230,7 +230,7 @@ int getoption_process(const getoption_t option_table[],int argc,const char *cons
           strcpy(tmp,"Error: one argument is mandatory.\n");
         strncpy(report,tmp,report_lg);
         FREE(opt_item);
-        return FALSE;
+        return false;
       }
     }
     opt++;
@@ -256,7 +256,7 @@ int getoption_process(const getoption_t option_table[],int argc,const char *cons
             sprintf(tmp,"Error: Invalid arguments '%s'.\n", argv[i]);
             strncpy(report,tmp,report_lg);
             FREE(opt_item);
-            return FALSE;
+            return false;
           }
         }
         else if (opt_item[i].opt->type&GETOPT_HASARG)
@@ -274,7 +274,7 @@ int getoption_process(const getoption_t option_table[],int argc,const char *cons
                   opt_item[i].opt->short_option,opt_item[i].opt->long_option);
               strncpy(report,tmp,report_lg);
               FREE(opt_item);
-              return FALSE;
+              return false;
             }
             arg++;
           }
@@ -290,7 +290,7 @@ int getoption_process(const getoption_t option_table[],int argc,const char *cons
                   arg,opt_item[i].opt->long_option,opt_item[i].opt->long_option);
             strncpy(report,tmp,report_lg);
             FREE(opt_item);
-            return FALSE;
+            return false;
           }
         }
         else
@@ -307,7 +307,7 @@ int getoption_process(const getoption_t option_table[],int argc,const char *cons
                   opt_item[i].opt->long_option);
             strncpy(report,tmp,report_lg);
             FREE(opt_item);
-            return FALSE;
+            return false;
           }
         }
       }
@@ -315,7 +315,7 @@ int getoption_process(const getoption_t option_table[],int argc,const char *cons
     opt++;
   }
   FREE(opt_item);
-  return TRUE;
+  return true;
 }
 
 

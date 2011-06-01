@@ -145,74 +145,74 @@ static QString DisplayLevelToString(CSMes::DisplayLevelType_t l)
 }
 
 
-int CMReport::getoption_select_execution(const char*exp)
+bool CMReport::getoption_select_execution(const char*exp)
 {
   CMReport::instance().selections.selectRegex(QString(exp));
   return true;
 }
 
-int CMReport::getoption_branch_only(const char*)
+bool CMReport::getoption_branch_only(const char*)
 {
   CMReport::instance().selections.setCoverageMethod(Instrumentation::COVERAGE_BRANCH);
   CMReport::instance().global_coverage.setCoverageMethod(Instrumentation::COVERAGE_BRANCH);
   return true;
 }
 
-int CMReport::getoption_set_test_count_mode(const char*)
+bool CMReport::getoption_set_test_count_mode(const char*)
 {
   CMReport::instance().selections.setTestCountMode(true);
   return true;
 }
 
-int CMReport::getoption_debug(const char*)
+bool CMReport::getoption_debug(const char*)
 {
   CMReport::instance().debug=true;
   return true;
 }
 
-int CMReport::getoption_set_level(const char*exp)
+bool CMReport::getoption_set_level(const char*exp)
 {
   CMReport::instance().global_coverage.setCoverageLevel(atoi(exp));
   return true;
 }
 
-int CMReport::getoption_set_level_method(const char*exp)
+bool CMReport::getoption_set_level_method(const char*exp)
 {
   CMReport::instance().methods_level=atoi(exp);
   return true;
 }
 
-int CMReport::getoption_set_level_execution(const char*exp)
+bool CMReport::getoption_set_level_execution(const char*exp)
 {
   CMReport::instance().executions_level=atoi(exp);
   return true;
 }
 
-int CMReport::getoption_set_sublevels_execution(const char*exp)
+bool CMReport::getoption_set_sublevels_execution(const char*exp)
 {
   CMReport::instance().executions_max_intermediate_levels=atoi(exp);
   return true;
 }
 
-int CMReport::getoption_set_sublevels_method(const char*exp)
+bool CMReport::getoption_set_sublevels_method(const char*exp)
 {
   CMReport::instance().methods_max_intermediate_levels=atoi(exp);
   return true;
 }
 
-int CMReport::getoption_set_sublevels_global(const char*exp)
+bool CMReport::getoption_set_sublevels_global(const char*exp)
 {
   CMReport::instance().global_coverage_max_intermediate_levels=atoi(exp);
   return true;
 }
 
-int CMReport::getoption_set_sublevels_source(const char*exp)
+bool CMReport::getoption_set_sublevels_source(const char*exp)
 {
   CMReport::instance().sources_max_intermediate_levels=atoi(exp);
   return true;
 }
 
-int CMReport::getoption_set_source_filter_max(const char*exp)
+bool CMReport::getoption_set_source_filter_max(const char*exp)
 {
   CMReport::instance().sources_filter_active=true;
   CMReport::instance().sources_filter_max=atof(exp);
@@ -220,7 +220,7 @@ int CMReport::getoption_set_source_filter_max(const char*exp)
 }
 
 
-int CMReport::getoption_set_source_filter_min(const char*exp)
+bool CMReport::getoption_set_source_filter_min(const char*exp)
 {
   CMReport::instance().sources_filter_active=true;
   CMReport::instance().sources_filter_min=atof(exp);
@@ -228,7 +228,7 @@ int CMReport::getoption_set_source_filter_min(const char*exp)
 }
 
 
-int CMReport::getoption_set_execution_filter_max(const char*exp)
+bool CMReport::getoption_set_execution_filter_max(const char*exp)
 {
   CMReport::instance().executions_filter_active=true;
   CMReport::instance().executions_filter_max=atof(exp);
@@ -236,7 +236,7 @@ int CMReport::getoption_set_execution_filter_max(const char*exp)
 }
 
 
-int CMReport::getoption_set_execution_filter_min(const char*exp)
+bool CMReport::getoption_set_execution_filter_min(const char*exp)
 {
   CMReport::instance().executions_filter_active=true;
   CMReport::instance().executions_filter_min=atof(exp);
@@ -244,7 +244,7 @@ int CMReport::getoption_set_execution_filter_min(const char*exp)
 }
 
 
-int CMReport::getoption_set_method_filter_max(const char*exp)
+bool CMReport::getoption_set_method_filter_max(const char*exp)
 {
   CMReport::instance().methods_filter_active=true;
   CMReport::instance().methods_filter_max=atof(exp);
@@ -252,7 +252,7 @@ int CMReport::getoption_set_method_filter_max(const char*exp)
 }
 
 
-int CMReport::getoption_set_method_filter_min(const char*exp)
+bool CMReport::getoption_set_method_filter_min(const char*exp)
 {
   CMReport::instance(). methods_filter_active=true;
   CMReport::instance().methods_filter_min=atof(exp);
@@ -260,139 +260,139 @@ int CMReport::getoption_set_method_filter_min(const char*exp)
 }
 
 
-int CMReport::getoption_set_method_watermark_medium_high(const char*exp)
+bool CMReport::getoption_set_method_watermark_medium_high(const char*exp)
 {
   CMReport::instance().methods_watermark_medium_level=atof(exp);
   return true;
 }
 
-int CMReport::getoption_set_method_watermark_low_medium(const char*exp)
+bool CMReport::getoption_set_method_watermark_low_medium(const char*exp)
 {
   CMReport::instance().methods_watermark_low_level=atof(exp);
   return true;
 }
 
-int CMReport::getoption_set_execution_watermark_medium_high(const char*exp)
+bool CMReport::getoption_set_execution_watermark_medium_high(const char*exp)
 {
   CMReport::instance().executions_watermark_medium_level=atof(exp);
   return true;
 }
 
-int CMReport::getoption_set_execution_watermark_low_medium(const char*exp)
+bool CMReport::getoption_set_execution_watermark_low_medium(const char*exp)
 {
   CMReport::instance().executions_watermark_low_level=atof(exp);
   return true;
 }
 
-int CMReport::getoption_set_global_watermark_medium_high(const char*exp)
+bool CMReport::getoption_set_global_watermark_medium_high(const char*exp)
 {
   CMReport::instance().global_coverage_watermark_medium_level=atof(exp);
   return true;
 }
 
-int CMReport::getoption_set_global_watermark_low_medium(const char*exp)
+bool CMReport::getoption_set_global_watermark_low_medium(const char*exp)
 {
   CMReport::instance().global_coverage_watermark_low_level=atof(exp);
   return true;
 }
 
-int CMReport::getoption_set_source_watermark_medium_high(const char*exp)
+bool CMReport::getoption_set_source_watermark_medium_high(const char*exp)
 {
   CMReport::instance().sources_watermark_medium_level=atof(exp);
   return true;
 }
 
-int CMReport::getoption_set_source_watermark_low_medium(const char*exp)
+bool CMReport::getoption_set_source_watermark_low_medium(const char*exp)
 {
   CMReport::instance().sources_watermark_low_level=atof(exp);
   return true;
 }
 
-int CMReport::getoption_deselect_execution(const char*exp)
+bool CMReport::getoption_deselect_execution(const char*exp)
 {
   CMReport::instance().selections.deselectRegex(QString(exp));
   return true;
 }
 
-int CMReport::getoption_set_executed(const char *)
+bool CMReport::getoption_set_executed(const char *)
 {
   CMReport::instance().code_fragments_executed=true;
   return true;
 }
 
-int CMReport::getoption_set_unexecuted(const char *)
+bool CMReport::getoption_set_unexecuted(const char *)
 {
   CMReport::instance().code_fragments_unexecuted=true;
   return true;
 }
 
-int CMReport::getoption_set_manually_validated(const char *)
+bool CMReport::getoption_set_manually_validated(const char *)
 {
   CMReport::instance().code_fragments_manually_validated=true;
   return true;
 }
 
-int CMReport::getoption_set_bargraph(const char *)
+bool CMReport::getoption_set_bargraph(const char *)
 {
   CMReport::instance().bargraph=true;
   return true;
 }
 
-int CMReport::getoption_set_toc(const char *)
+bool CMReport::getoption_set_toc(const char *)
 {
   CMReport::instance().toc=true;
   return true;
 }
 
-int CMReport::getoption_set_icon(const char *f)
+bool CMReport::getoption_set_icon(const char *f)
 {
   CMReport::instance().icon=QString(f);
   return true;
 }
 
-int CMReport::getoption_set_title(const char *f)
+bool CMReport::getoption_set_title(const char *f)
 {
   CMReport::instance().title=QString(f);
   return true;
 }
 
-int CMReport::getoption_set_global_display_mode(const char *f)
+bool CMReport::getoption_set_global_display_mode(const char *f)
 {
   CMReport::instance().global_coverage_display_mode=StringToDisplayLevel(QString(f));
   return (CMReport::instance().global_coverage_display_mode!=CSMes::DISPLAY_NOTHING);
 }
 
-int CMReport::getoption_set_execution_display_mode(const char *f)
+bool CMReport::getoption_set_execution_display_mode(const char *f)
 {
   CMReport::instance().execution_coverage_display_mode=StringToDisplayLevel(QString(f));
   return (CMReport::instance().execution_coverage_display_mode!=CSMes::DISPLAY_NOTHING);
 }
 
-int CMReport::getoption_set_method_display_mode(const char *f)
+bool CMReport::getoption_set_method_display_mode(const char *f)
 {
   CMReport::instance().method_coverage_display_mode=StringToDisplayLevel(QString(f));
   return (CMReport::instance().method_coverage_display_mode!=CSMes::DISPLAY_NOTHING);
 }
 
-int CMReport::getoption_set_source_display_mode(const char *f)
+bool CMReport::getoption_set_source_display_mode(const char *f)
 {
   CMReport::instance().source_coverage_display_mode=StringToDisplayLevel(QString(f));
   return (CMReport::instance().source_coverage_display_mode!=CSMes::DISPLAY_NOTHING);
 }
 
-int CMReport::getoption_set_execution_sorting_mode(const char *f)
+bool CMReport::getoption_set_execution_sorting_mode(const char *f)
 {
   CMReport::instance().execution_coverage_sorting_mode=StringToDisplaySorting(QString(f));
   return (CMReport::instance().execution_coverage_sorting_mode!=CSMes::SORT_NONE);
 }
 
-int CMReport::getoption_set_method_sorting_mode(const char *f)
+bool CMReport::getoption_set_method_sorting_mode(const char *f)
 {
   CMReport::instance().method_coverage_sorting_mode=StringToDisplaySorting(QString(f));
   return (CMReport::instance().method_coverage_sorting_mode!=CSMes::SORT_NONE);
 }
 
-int CMReport::getoption_set_source_sorting_mode(const char *f)
+bool CMReport::getoption_set_source_sorting_mode(const char *f)
 {
   CMReport::instance().source_coverage_sorting_mode=StringToDisplaySorting(QString(f));
   return (CMReport::instance().source_coverage_sorting_mode!=CSMes::SORT_NONE);
@@ -400,13 +400,13 @@ int CMReport::getoption_set_source_sorting_mode(const char *f)
 
 
 
-int CMReport::getoption_set_css(const char *f)
+bool CMReport::getoption_set_css(const char *f)
 {
   CMReport::instance().css_file=QString(f);
   return true;
 }
 
-int CMReport::getoption_format_unexecuted(const char *f)
+bool CMReport::getoption_format_unexecuted(const char *f)
 {
   if (f)
     CMReport::instance().format_unexecuted=QString(f);
@@ -415,7 +415,7 @@ int CMReport::getoption_format_unexecuted(const char *f)
   return true;
 }
 
-int CMReport::getoption_format_executed(const char *f)
+bool CMReport::getoption_format_executed(const char *f)
 {
   if (f)
     CMReport::instance().format_executed=QString(f);
@@ -424,7 +424,7 @@ int CMReport::getoption_format_executed(const char *f)
   return true;
 }
 
-int CMReport::getoption_set_csv_float_separator(const char *f)
+bool CMReport::getoption_set_csv_float_separator(const char *f)
 {
   if (f)
     CMReport::instance().csv_float_separator=QChar(f[0]);
@@ -433,7 +433,7 @@ int CMReport::getoption_set_csv_float_separator(const char *f)
   return true;
 }
 
-int CMReport::getoption_set_csv_field_separator(const char *f)
+bool CMReport::getoption_set_csv_field_separator(const char *f)
 {
   if (f)
     CMReport::instance().csv_field_separator=QChar(f[0]);
@@ -442,26 +442,26 @@ int CMReport::getoption_set_csv_field_separator(const char *f)
   return true;
 }
 
-int CMReport::getoption_set_csv_module(const char *f)
+bool CMReport::getoption_set_csv_module(const char *f)
 {
   CMReport::instance().csv_module=QString(f);
   return true;
 }
 
-int CMReport::getoption_set_emma(const char *f)
+bool CMReport::getoption_set_emma(const char *f)
 {
   CMReport::instance().emma=QString(f);
   return true;
 }
 
-int CMReport::getoption_set_csv_function(const char *f)
+bool CMReport::getoption_set_csv_function(const char *f)
 {
   CMReport::instance().csv_funtion=QString(f);
   return true;
 }
 
 #if OPEN_OFFICE
-int CMReport::getoption_set_odt_file(const char *f)
+bool CMReport::getoption_set_odt_file(const char *f)
 {
   CMReport::instance().document_type=CSMes::DOCUMENT_OPEN_OFFICE;
   CMReport::instance().output_file=QString(f);
@@ -469,28 +469,28 @@ int CMReport::getoption_set_odt_file(const char *f)
 }
 #endif
 
-int CMReport::getoption_set_text_dump_file(const char *f)
+bool CMReport::getoption_set_text_dump_file(const char *f)
 {
   CMReport::instance().export_txt_dump_file=true;
   CMReport::instance().txt_dump_file=QString(f);
   return true;
 }
 
-int CMReport::getoption_set_xml_file(const char *f)
+bool CMReport::getoption_set_xml_file(const char *f)
 {
   CMReport::instance().document_type=CSMes::DOCUMENT_XML;
   CMReport::instance().output_file=QString(f);
   return true;
 }
 
-int CMReport::getoption_set_html_file(const char *f)
+bool CMReport::getoption_set_html_file(const char *f)
 {
   CMReport::instance().document_type=CSMes::DOCUMENT_HTML;
   CMReport::instance().output_file=QString(f);
   return true;
 }
 
-int CMReport::getoption_csmes_filename(const char *file)
+bool CMReport::getoption_csmes_filename(const char *file)
 {
   CMReport::instance().csmes_filename=QString(file);
   bool ret = CMReport::instance().csmes.loadCSMes(CMReport::instance().csmes_filename);

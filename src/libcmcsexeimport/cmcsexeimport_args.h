@@ -32,13 +32,13 @@ class CMCsExeImport
     void clear() ;
 
   private:
-    static int getoption_passed(const char *);
-    static int getoption_failed(const char *);
-    static int getoption_check_manually(const char *);
-    static int getoption_csmes_filename(const char *file);
-    static int getoption_title(const char *file);
-    static int getoption_csexe_filename(const char *file);
-    static int getoption_import_policy(const char *p);
+    static bool getoption_passed(const char *);
+    static bool getoption_failed(const char *);
+    static bool getoption_check_manually(const char *);
+    static bool getoption_csmes_filename(const char *file);
+    static bool getoption_title(const char *file);
+    static bool getoption_csexe_filename(const char *file);
+    static bool getoption_import_policy(const char *p);
 
     CSMes csmes;
     QString csexe_filename;

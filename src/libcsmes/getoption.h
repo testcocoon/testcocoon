@@ -18,10 +18,6 @@
 
 #include "libcsmespdef.h"
 
-#ifdef __cplusplus
-extern "C" { 
-#endif  
-
 #define  GETOPT_OPTION 0          /*!< then entry is an option */
 #define  GETOPT_HELP 1            /*!< default help for the --help, -h of /? command */
 #define  GETOPT_MULTIPLE (1<<8)   /*!< this option can only occurs several times */
@@ -35,14 +31,11 @@ typedef struct {
   const char *short_option;               /*!< short option. ex:"-d" or "-d arg" (can be NULL) */
   const char *long_option;                /*!< long option. ex:"--degug" or "--debug=arg" */
   const char *help;                       /*!< help string (can be NULL, in this case the option is not apearing into the help */
-  int (*callback)(const char *argument);  /*!< callback */
+  bool (*callback)(const char *argument);  /*!< callback */
 } getoption_t;
 
- LIBCSMES_API int  getoption_process(const getoption_t option_table[],int argc,const char *const argv[],char *report,int report_lg); 
+ LIBCSMES_API bool  getoption_process(const getoption_t option_table[],int argc,const char *const argv[],char *report,int report_lg); 
  LIBCSMES_API const char*  getoption_help(const char*application_name,const getoption_t option_table[]); 
 
 
-#ifdef __cplusplus
-}      
-#endif
 #endif
