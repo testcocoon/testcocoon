@@ -129,13 +129,13 @@ QList<DiffItem> CSMes::differencesWithReference(const ModuleFile &module,const S
   return CSMesAnalysis::differencesWithReference(module,source,type) ;
 }
 
-bool CSMes::getManuallyValidated(const QString &mod,const QString &src,int index) const
+bool CSMes::getManuallyValidated(const ModuleFile &mod,const SourceFile &src,int index) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesInstrumentation::getManuallyValidated(mod,src,index) ;
 }
 
-void CSMes::setManuallyValidated(const QString &mod,const QString &src,int index,bool b)
+void CSMes::setManuallyValidated(const ModuleFile &mod,const SourceFile &src,int index,bool b)
 {
   AccessLockerWrite lock(csmes_locker);
   CSMesAnalysis::setManuallyValidated(mod,src,index,b);
@@ -317,7 +317,7 @@ bool CSMes::selectExecutionsComparaison(const QStringList &ms,const QStringList 
   return ret;
 }
 
-QStringList CSMes::executedBy(QString module,QString source,int index,bool selected_executions_only) const
+QStringList CSMes::executedBy(const ModuleFile& module,const SourceFile & source,int index,bool selected_executions_only) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesExecution::executedBy(module,source,index,selected_executions_only) ;
@@ -458,25 +458,25 @@ QList<CSMes::functionskey_t> CSMes::Functions() const
   return CSMesFunctionInfo::Functions();
 }
 
-QVector<FunctionInfo> CSMes::FunctionInfoSource( QString module, QString source) const
+QVector<FunctionInfo> CSMes::FunctionInfoSource( const ModuleFile& module, const SourceFile& source) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesFunctionInfo::FunctionInfoSource( module, source) ;
 }
 
-bool CSMes::instrumentationListFunctionPre(const QString &module,const QString &source,long start_line,long start_column,long end_line,long end_column,QList<int> &instrumentation_list) const
+bool CSMes::instrumentationListFunctionPre(const ModuleFile &module,const SourceFile &source,long start_line,long start_column,long end_line,long end_column,QList<int> &instrumentation_list) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesFunctionInfo::instrumentationListFunctionPre(module,source,start_line,start_column,end_line,end_column,instrumentation_list) ;
 }
 
-void CSMes::toRTFSyntax(QString module,QString source,int level,Instrumentation::coverage_method_t a,source_type_t b,bool tooltip,int executed_by_limit,QTextDocument &out) const
+void CSMes::toRTFSyntax(const ModuleFile & module,const SourceFile & source,int level,Instrumentation::coverage_method_t a,source_type_t b,bool tooltip,int executed_by_limit,QTextDocument &out) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesRTF::toRTFSyntax(module,source,level,a,b,tooltip,executed_by_limit,out);
 }
 
-void CSMes::toRTFSyntax(QString module,QString source,Instrumentation::coverage_method_t a,source_type_t b,QString &out) const
+void CSMes::toRTFSyntax(const ModuleFile & module,const SourceFile & source,Instrumentation::coverage_method_t a,source_type_t b,QString &out) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesRTF::toRTFSyntax(module,source,a,b,out) ;
@@ -494,49 +494,49 @@ QString CSMes::getFilename() const
   return CSMesAnalysis::getFilename();
 }
 
-const QVector<Instrumentation> CSMes::instrumentationList(const QString &mod,const QString &src) const
+const QVector<Instrumentation> CSMes::instrumentationList(const ModuleFile &mod,const SourceFile &src) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesRTF::instrumentationList(mod,src) ;
 }
 
-QString CSMes::extractPlainTextPreprocessed(QString module,QString source,int line1,int col1,int line2,int col2) const
+QString CSMes::extractPlainTextPreprocessed(const ModuleFile & module,const SourceFile & source,int line1,int col1,int line2,int col2) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesRTF::extractPlainTextPreprocessed(module,source,line1,col1,line2,col2) ;
 }
 
-void  CSMes::statusLinesPre(const QString &mod,const QString &src,int level,Instrumentation::coverage_method_t t,int number_of_lines,QVector<Instrumentation::status_t> &lines) const
+void  CSMes::statusLinesPre(const ModuleFile &mod,const SourceFile &src,int level,Instrumentation::coverage_method_t t,int number_of_lines,QVector<Instrumentation::status_t> &lines) const
 {
   AccessLockerRead lock(csmes_locker);
   return  CSMesRTF::statusLinesPre(mod,src,level,t ,number_of_lines,lines);
 }
 
-void  CSMes::statusLinesOrg(const QString &mod,const QString &src,int level,Instrumentation::coverage_method_t t,int number_of_lines,QVector<Instrumentation::status_t> &lines) const
+void  CSMes::statusLinesOrg(const ModuleFile &mod,const SourceFile &src,int level,Instrumentation::coverage_method_t t,int number_of_lines,QVector<Instrumentation::status_t> &lines) const
 {
   AccessLockerRead lock(csmes_locker);
   return  CSMesRTF::statusLinesOrg(mod,src,level,t ,number_of_lines,lines);
 }
 
-void CSMes::getExplanationFromIndex (Writer &stream,const QString &module,const QString &source,int index,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t t,int executed_by_limit) const
+void CSMes::getExplanationFromIndex (Writer &stream,const ModuleFile &module,const SourceFile &source,int index,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t t,int executed_by_limit) const
 {
   AccessLockerRead lock(csmes_locker);
   CSMesRTF::explanationFromIndex (stream,module,source,index,source_type,coverage_level,t,executed_by_limit) ;
 }
 
-void  CSMes::getExplanationFragmentFromIndex (Writer &stream,const QString &module,const QString &source,int index,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t v,int executed_by_limit, bool table_fragment) const
+void  CSMes::getExplanationFragmentFromIndex (Writer &stream,const ModuleFile &module,const SourceFile &source,int index,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t v,int executed_by_limit, bool table_fragment) const
 {
   AccessLockerRead lock(csmes_locker);
   CSMesRTF::explanationFragmentFromIndex (stream,module,source,index,source_type,coverage_level,v,executed_by_limit, table_fragment) ;
 }
 
-void CSMes::getExplanationFromLinePre (Writer &stream,const QString &module,const QString &source,int line,int coverage_level,Instrumentation::coverage_method_t t,int executed_by_limit) const
+void CSMes::getExplanationFromLinePre (Writer &stream,const ModuleFile &module,const SourceFile &source,int line,int coverage_level,Instrumentation::coverage_method_t t,int executed_by_limit) const
 {
   AccessLockerRead lock(csmes_locker);
   CSMesRTF::explanationFromLinePre (stream,module,source,line,coverage_level,t,executed_by_limit);
 }
 
-void CSMes::getExplanationFromLineOrg (Writer &stream,const QString &module,const QString &source,int line,int coverage_level,Instrumentation::coverage_method_t t,int executed_by_limit) const
+void CSMes::getExplanationFromLineOrg (Writer &stream,const ModuleFile &module,const SourceFile &source,int line,int coverage_level,Instrumentation::coverage_method_t t,int executed_by_limit) const
 {
   AccessLockerRead lock(csmes_locker);
   CSMesRTF::explanationFromLineOrg (stream,module,source,line,coverage_level,t,executed_by_limit);
@@ -548,19 +548,19 @@ void CSMes::toPLAINReference(const ModuleFile &module,const SourceFile &source,s
   return CSMesAnalysis::toPLAINReference(module,source,type,out);
 }
 
-void CSMes::toPLAIN(QString module,QString source,source_type_t type,QString &out) const
+void CSMes::toPLAIN(const ModuleFile & module,const SourceFile & source,source_type_t type,QString &out) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesRTF::toPLAIN(module,source,type,out);
 }
 
-void CSMes::linesCoverageCountPre(const QString &mod,const QString &src,QVector<int> &min,QVector<int> &max) const
+void CSMes::linesCoverageCountPre(const ModuleFile &mod,const SourceFile &src,QVector<int> &min,QVector<int> &max) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesRTF::linesCoverageCountPre(mod,src,min,max);
 }
 
-void CSMes::linesCoverageCountOrg(const QString &mod,const QString &src,QVector<int> &min,QVector<int> &max) const
+void CSMes::linesCoverageCountOrg(const ModuleFile &mod,const SourceFile &src,QVector<int> &min,QVector<int> &max) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesRTF::linesCoverageCountOrg(mod,src,min,max);
@@ -621,14 +621,14 @@ void CSMes::clear()
   CSMesAnalysis::clear();
 }
 
-bool CSMes::setComment(QString module,QString source,int instrument_index,const QString &comment)
+bool CSMes::setComment(const ModuleFile & module,const SourceFile & source,int instrument_index,const QString &comment)
 {
   AccessLockerWrite lock(csmes_locker);
   bool ret = CSMesComment::setComment(module,source,instrument_index,comment);
   return ret;
 }
 
-QString CSMes::getComment(QString module,QString source,int instrument_index) const
+QString CSMes::getComment(const ModuleFile & module,const SourceFile & source,int instrument_index) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesComment::getComment(module,source,instrument_index) ;
@@ -659,7 +659,7 @@ bool CSMes::isBlackBoxConfiguration() const
   return CSMesAnalysis::isBlackBoxConfiguration();
 }
 
-bool CSMes::isSourceExisting(const QString &module,const QString &source, CSMes::source_type_t t) const
+bool CSMes::isSourceExisting(const ModuleFile &module,const SourceFile &source, CSMes::source_type_t t) const
 {
   AccessLockerRead lock(csmes_locker);
   return  CSMesAnalysis::isSourceExisting(module,source, t==CSMES?CSMESFile::PREPROCESSED:CSMESFile::ORIGINAL ) ;

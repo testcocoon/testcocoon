@@ -1655,17 +1655,6 @@ QString WMain::relativeSourceName(const QString &abs_filename)
     return abs_filename;
 }
 
-bool WMain::getSourceCode(const QString &filename,bool preprocessed,QString &code) const
-{
-  if (csmes_file_p)
-  {
-    csmes_file_p->toPLAIN("",filename,preprocessed?CSMesRTF::CSMES:CSMesRTF::ORIGINAL,code);
-    return true;
-  }
-  else
-    return false;
-}
-
 void WMain::setCoverageLevel(int l)
 {
   selectExecutions(selectedExecutions(),selectedExecutionsComparaison(),getTestCoverageMode(),getCoverageMethod(),getExecutionAnalysisMode(),getReleaseComparaisonMode(),l);

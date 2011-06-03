@@ -36,8 +36,8 @@ class LIBINSTRUMENTATION_API CSMes : public CSMesAnalysis
     const SourceFiles& Sources(source_filter_t f) const ;
     bool moduleExists(const ModuleFile &m) const;
     bool modificationFlag() const ;
-    bool getManuallyValidated(const QString &mod,const QString &src,int index) const;
-    void setManuallyValidated(const QString &mod,const QString &src,int index,bool b);
+    bool getManuallyValidated(const ModuleFile &mod,const SourceFile &src,int index) const;
+    void setManuallyValidated(const ModuleFile &mod,const SourceFile &src,int index,bool b);
     QString relativeSourceName(const QString &src) const;
 
     /* CSMesAnalysis */
@@ -92,7 +92,7 @@ class LIBINSTRUMENTATION_API CSMes : public CSMesAnalysis
     void setExecutionStatusStr(const QString &name,const QString &execution_status) ; 
     bool selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t methode, comparaison_mode_t m) const;
     bool selectExecutionsComparaison(const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t method, comparaison_mode_t m) ;
-    QStringList executedBy(QString module,QString source,int index,bool selected_executions_only) const;
+    QStringList executedBy(const ModuleFile& module,const SourceFile & source,int index,bool selected_executions_only) const;
     static bool executionNameValid(const QString &name,QString &explanation) { return CSMesExecution::executionNameValid(name,explanation); }
     static QColor executionStatusColor(Executions::execution_status_t v) { return CSMesExecution::executionStatusColor(v);}
 
@@ -158,24 +158,24 @@ bool exportHtmlReport(
     /* CSMesFunctionInfo */
     QList<functionskey_t> Functions() const ;
 
-    QVector<FunctionInfo> FunctionInfoSource( QString module, QString source) const;
-    bool instrumentationListFunctionPre(const QString &module,const QString &source,long start_line,long start_column,long end_line,long end_column,QList<int> &instrumentation_list) const;
+    QVector<FunctionInfo> FunctionInfoSource( const ModuleFile &module, const SourceFile &source) const;
+    bool instrumentationListFunctionPre(const ModuleFile &module,const SourceFile &source,long start_line,long start_column,long end_line,long end_column,QList<int> &instrumentation_list) const;
 
     /* CSMesRTF */
-    void toRTFSyntax(QString module,QString source,int level,Instrumentation::coverage_method_t ,source_type_t,bool tooltip,int executed_by_limit,QTextDocument &out) const;
-    void toRTFSyntax(QString module,QString source,Instrumentation::coverage_method_t ,source_type_t,QString &out) const;
+    void toRTFSyntax(const ModuleFile & module,const SourceFile & source,int level,Instrumentation::coverage_method_t ,source_type_t,bool tooltip,int executed_by_limit,QTextDocument &out) const;
+    void toRTFSyntax(const ModuleFile &module,const SourceFile &source,Instrumentation::coverage_method_t ,source_type_t,QString &out) const;
     const QString &error() const ;
-    const QVector<Instrumentation> instrumentationList(const QString &mod,const QString &src) const;
-    QString extractPlainTextPreprocessed(QString module,QString source,int line1,int col1,int line2,int col2) const;
-    void  statusLinesPre(const QString &mod,const QString &src,int level,Instrumentation::coverage_method_t ,int number_of_lines,QVector<Instrumentation::status_t> &lines) const;
-    void  statusLinesOrg(const QString &mod,const QString &src,int level,Instrumentation::coverage_method_t ,int number_of_lines,QVector<Instrumentation::status_t> &lines) const;
-    void getExplanationFromIndex (Writer &stream,const QString &module,const QString &source,int index,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t,int executed_by_limit) const;
-    void getExplanationFragmentFromIndex (Writer &stream,const QString &module,const QString &source,int index,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t, int executed_by_limit, bool table_fragment) const;
-    void getExplanationFromLinePre (Writer &stream,const QString &module,const QString &source,int line,int coverage_level,Instrumentation::coverage_method_t,int executed_by_limit) const;
-    void getExplanationFromLineOrg (Writer &stream,const QString &module,const QString &source,int line,int coverage_level,Instrumentation::coverage_method_t,int executed_by_limit) const;
-    void toPLAIN(QString module,QString source,source_type_t type,QString &out) const;
-    void linesCoverageCountPre(const QString &mod,const QString &src,QVector<int> &min,QVector<int> &max) const;
-    void linesCoverageCountOrg(const QString &mod,const QString &src,QVector<int> &min,QVector<int> &max) const;
+    const QVector<Instrumentation> instrumentationList(const ModuleFile &mod,const SourceFile &src) const;
+    QString extractPlainTextPreprocessed(const ModuleFile &module,const SourceFile &source,int line1,int col1,int line2,int col2) const;
+    void  statusLinesPre(const ModuleFile &mod,const SourceFile &src,int level,Instrumentation::coverage_method_t ,int number_of_lines,QVector<Instrumentation::status_t> &lines) const;
+    void  statusLinesOrg(const ModuleFile &mod,const SourceFile &src,int level,Instrumentation::coverage_method_t ,int number_of_lines,QVector<Instrumentation::status_t> &lines) const;
+    void getExplanationFromIndex (Writer &stream,const ModuleFile &module,const SourceFile &source,int index,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t,int executed_by_limit) const;
+    void getExplanationFragmentFromIndex (Writer &stream,const ModuleFile &module,const SourceFile &source,int index,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t, int executed_by_limit, bool table_fragment) const;
+    void getExplanationFromLinePre (Writer &stream,const ModuleFile &module,const SourceFile &source,int line,int coverage_level,Instrumentation::coverage_method_t,int executed_by_limit) const;
+    void getExplanationFromLineOrg (Writer &stream,const ModuleFile &module,const SourceFile &source,int line,int coverage_level,Instrumentation::coverage_method_t,int executed_by_limit) const;
+    void toPLAIN(const ModuleFile &module,const SourceFile &source,source_type_t type,QString &out) const;
+    void linesCoverageCountPre(const ModuleFile &mod,const SourceFile &src,QVector<int> &min,QVector<int> &max) const;
+    void linesCoverageCountOrg(const ModuleFile &mod,const SourceFile &src,QVector<int> &min,QVector<int> &max) const;
 
     /* CSMesIO */
     bool compareCSMes(const QString &file);
@@ -189,12 +189,12 @@ bool exportHtmlReport(
     bool flushCSMes();
     void closeCSMes();
     void clear();
-    bool isSourceExisting(const QString &module,const QString &source, CSMes::source_type_t t) const;
+    bool isSourceExisting(const ModuleFile &module,const SourceFile &source, CSMes::source_type_t t) const;
     QString  getFilename() const ;
 
     /* CSMesComment */
-    bool setComment(QString module,QString source,int instrument_index,const QString &comment);
-    QString getComment(QString module,QString source,int instrument_index) const;
+    bool setComment(const ModuleFile &module,const SourceFile &source,int instrument_index,const QString &comment);
+    QString getComment(const ModuleFile &module,const SourceFile &source,int instrument_index) const;
   private:
     SourceFiles Sources(bool) const ;
     SourceFiles SourcesReference(bool) const ;

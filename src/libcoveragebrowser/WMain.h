@@ -68,7 +68,6 @@ public:
     virtual QString exportCSVStatisticModule(const QString &filename,QChar separator,QChar floatSep) const;
     virtual QString exportCSVStatisticFunction(const QString &filename,QChar separator,QChar floatSep) const;
     QString exportEMMAStatistic(const QString &filename) const;
-    bool getSourceCode(const QString &filename,bool preprocessed,QString &code) const ;
     bool getExecutionState(const QString &execution,Executions::execution_status_t &status) const;
     bool setExecutionState(const QString &execution,Executions::execution_status_t status) ;
     SourceFiles sourceList() const;
