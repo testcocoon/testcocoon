@@ -18,6 +18,7 @@
 %BEGIN LATEX
 \usepackage{multicol}
 %END LATEX
+\usepackage{float}
 \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[american]{babel}          
@@ -25,13 +26,13 @@
 \usepackage[font=small,labelfont=bf,up,textfont=it,up]{caption}
 \usepackage{thumbpdf}          
 \usepackage{amsmath}          
+\usepackage{varioref}          
 \usepackage{marvosym}          
 \usepackage{latexsym}          
 \usepackage{textcomp}          
 \usepackage{calc}          
 \usepackage{soul}          
 \usepackage{ifthen}          
-\usepackage{float}
 \usepackage{color}
 %HEVEA \usepackage{hevea}
 \usepackage{multicol}
@@ -563,4 +564,13 @@
 \newcommand{\Shortcut}[1]{\texttt{#1}\index{Shortcut!#1}}
 \newcommand{\CppLibraryFunction}[1]{\texttt{\_\_coveragescanner\_#1}\index{\_\_coveragescanner\_#1}}
 \newcommand{\CsLibraryFunction}[1]{\texttt{CoverageScanner.\_\_coveragescanner\_#1}\index{CoverageScanner.\_\_coveragescanner\_#1}}
-\excludecomment{remotecontrolapi}
+\newcommand{\superscript}[1]{\ensuremath{^{\textrm{#1}}}}
+\newcommand{\subscript}[1]{\ensuremath{_{\textrm{#1}}}}
+
+%BEGIN LATEX
+\floatstyle{boxed}
+\newfloat{listings}{thp}{lst}
+\floatname{listings}{Listing}
+%END LATEX
+\newcommand{\listingsname}{Listing}
+
