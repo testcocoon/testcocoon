@@ -326,7 +326,7 @@ void WExecutionList::on_more_p_toggled(bool b)
     pages_p->setCurrentIndex(0);
 }
 
-void WExecutionList::selectComparaison( const QStringList& selection_list, const QStringList &cmp_items,bool test_coverage_mode,Instrumentation::coverage_method_t method, bool execution_comparaison_mode, CSMes::comparaison_mode_t csmes_comparaison_mode, int coverage_level)
+void WExecutionList::selectComparaison( const ExecutionNames& selection_list, const ExecutionNames &cmp_items,bool test_coverage_mode,Instrumentation::coverage_method_t method, bool execution_comparaison_mode, CSMes::comparaison_mode_t csmes_comparaison_mode, int coverage_level)
 {
   if (executionsModel_p)
     executionsModel_p->selectComparaison(selection_list, cmp_items,test_coverage_mode,method, execution_comparaison_mode, csmes_comparaison_mode, coverage_level);

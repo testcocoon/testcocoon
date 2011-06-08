@@ -126,7 +126,7 @@ void Instrumentation::setExecution(execution_state_t executed)
     setExecution(i,executed);
 }
 
-static void executedByHTML(Writer &stream,const QStringList &executedBy,int executed_by_limit)
+static void executedByHTML(Writer &stream,const ExecutionNames &executedBy,int executed_by_limit)
 {
   if (!executedBy.isEmpty() && executed_by_limit!=0)
   {
@@ -137,7 +137,7 @@ static void executedByHTML(Writer &stream,const QStringList &executedBy,int exec
     }
     {
       WriterSection sec(stream,Writer::HtmlExecutedByList);
-      for (QStringList::const_iterator exeit=executedBy.begin();
+      for (ExecutionNames::const_iterator exeit=executedBy.begin();
           exeit!=executedBy.end();
           ++exeit)
       {
@@ -326,7 +326,7 @@ QString Instrumentation::explanationPlainText(const QString &source_code,int lev
   return message;
 }
 
-void Instrumentation::explanation(Writer &stream,const QString &source_code,const QString &comment,const QStringList executedBy[2],int level,coverage_method_t method,int executed_by_limit) const
+void Instrumentation::explanation(Writer &stream,const QString &source_code,const QString &comment,const ExecutionNames executedBy[2],int level,coverage_method_t method,int executed_by_limit) const
 {
   if (getType()==NOP)
     return ;

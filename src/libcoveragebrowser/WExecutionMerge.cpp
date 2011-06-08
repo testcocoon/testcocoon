@@ -30,7 +30,7 @@ WExecutionMerge::~WExecutionMerge()
 {
 }
 
-QString WExecutionMerge::destinationExecution() const
+ExecutionName WExecutionMerge::destinationExecution() const
 {
    return destinationList().at(0);
 }

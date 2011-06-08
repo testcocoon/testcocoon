@@ -59,7 +59,7 @@ public:
     WMain(QWidget* parent = 0, Qt::WindowFlags fl = Qt::Window);
     virtual ~WMain();
 
-    virtual QMdiSubWindow * newSourceWindow( const QString & module, const QString & source );
+    virtual QMdiSubWindow * newSourceWindow( const ModuleFile & module, const SourceFile & source );
     virtual CSMesUndoRedoFramework::source_type_t getViewType() const;
     virtual int getCoverageLevel() const;
 
@@ -68,30 +68,30 @@ public:
     virtual QString exportCSVStatisticModule(const QString &filename,QChar separator,QChar floatSep) const;
     virtual QString exportCSVStatisticFunction(const QString &filename,QChar separator,QChar floatSep) const;
     QString exportEMMAStatistic(const QString &filename) const;
-    bool getExecutionState(const QString &execution,Executions::execution_status_t &status) const;
-    bool setExecutionState(const QString &execution,Executions::execution_status_t status) ;
+    bool getExecutionState(const ExecutionName &execution,Executions::execution_status_t &status) const;
+    bool setExecutionState(const ExecutionName &execution,Executions::execution_status_t status) ;
     SourceFiles sourceList() const;
     QString openCSMesFile( const QString &filename );
     QString openCSMesRefenceFile( const QString &filename );
     QString closeCSMesRefenceFile( );
-    QStringList executionsList() const;
-    bool statisticExecutions(const QStringList &l,int &nb_tested,int &nb_untested) const;
-    bool selectExecutions( const QStringList& selection_list, const QStringList &cmp_items,bool test_coverage_mode,Instrumentation::coverage_method_t method, bool execution_comparaison_mode, CSMes::comparaison_mode_t csmes_comparaison_mode,int coverage_level);
-    QStringList selectedExecutions() const ;
-    bool renameExecution(const QString &old_name,const QString & new_name);
-    bool deleteExecution(const QString &name);
+    ExecutionNames executionsList() const;
+    bool statisticExecutions(const ExecutionNames &l,int &nb_tested,int &nb_untested) const;
+    bool selectExecutions( const ExecutionNames& selection_list, const ExecutionNames &cmp_items,bool test_coverage_mode,Instrumentation::coverage_method_t method, bool execution_comparaison_mode, CSMes::comparaison_mode_t csmes_comparaison_mode,int coverage_level);
+    ExecutionNames selectedExecutions() const ;
+    bool renameExecution(const ExecutionName &old_name,const ExecutionName & new_name);
+    bool deleteExecution(const ExecutionName &name);
     bool saveCSMesFile(const QString &filename=QString());
     void closeCSMesFile();
     QString selectSource(const SourceFile &name);
     bool isCSMesModified() const ;
-    void loadCSExeFile(const QString &filename,const QString &prefix,CSMesUndoRedoFramework::csexe_import_policy_t,bool delete_after,Executions::execution_status_t default_execution_status,bool minimize_memory_usage);
-    void loadCSExeCommand(const QString &command,const QStringList &arguments,const QString &prefix,CSMesUndoRedoFramework::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,bool minimize_memory_usage);
+    void loadCSExeFile(const QString &filename,const ExecutionName &prefix,CSMesUndoRedoFramework::csexe_import_policy_t,bool delete_after,Executions::execution_status_t default_execution_status,bool minimize_memory_usage);
+    void loadCSExeCommand(const QString &command,const QStringList &arguments,const ExecutionName &prefix,CSMesUndoRedoFramework::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,bool minimize_memory_usage);
     QString relativeSourceName(const QString &abs_filename);
     QtToolBarManager *toolBarManager() { return toolbar_manager_p; }
     void selectBranchOnly(bool);
     void selectTestCountMode(bool);
     void selectCoverageLevel(int);
-    QStringList selectedExecutionsComparaison() const ;
+    ExecutionNames selectedExecutionsComparaison() const ;
     void setReleaseComparaisonMode(CSMes::comparaison_mode_t m) ;
 
 public slots:
@@ -162,7 +162,7 @@ protected slots:
     void compareWithRecentlyOpen_triggered();
     void updateWindowMenu();
     void setActiveSubWindow(QWidget *window);
-    void _setExecutionComment(const QString &name,const QString &comment);
+    void _setExecutionComment(const ExecutionName &name,const QString &comment);
     void _saveExecutionComment();
     void on_saveBlackBoxConfigurationAction_triggered();
     void importAutomaticallyEvent();

@@ -27,7 +27,7 @@ class CSMes ;
 class UndoCmdExecutionSettings : public QUndoCommand
 {
   public:
-    UndoCmdExecutionSettings (CSMes *csmes_p,const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t m, bool execution_analysis_mode,QUndoCommand *parent) ;
+    UndoCmdExecutionSettings (CSMes *csmes_p,const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t m, bool execution_analysis_mode,QUndoCommand *parent) ;
     virtual ~UndoCmdExecutionSettings ();
     virtual void redo();
     virtual void undo();

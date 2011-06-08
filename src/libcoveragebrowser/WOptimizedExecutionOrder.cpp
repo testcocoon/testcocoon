@@ -34,7 +34,7 @@
 #include "options.h"
 #include <QMap>
 
-WOptimizedExecutionOrder::WOptimizedExecutionOrder(const QStringList &execution_list,Instrumentation::coverage_method_t method, QWidget* parent, Qt::WindowFlags fl) : QDialog(parent, fl)
+WOptimizedExecutionOrder::WOptimizedExecutionOrder(const ExecutionNames &execution_list,Instrumentation::coverage_method_t method, QWidget* parent, Qt::WindowFlags fl) : QDialog(parent, fl)
 {
   setupUi(this);
 
@@ -51,9 +51,9 @@ WOptimizedExecutionOrder::WOptimizedExecutionOrder(const QStringList &execution_
   button_p->button(QDialogButtonBox::Save)->setEnabled(false);
   button_p->button(QDialogButtonBox::Cancel)->setEnabled(true);
   connect( & CSMesBackgroundComputations::GetObject(),
-     SIGNAL(statisticExecution(const QStringList &,const QStringList&,bool,int ,Instrumentation::coverage_method_t,CSMes::comparaison_mode_t,int ,int )),
+     SIGNAL(statisticExecution(const ExecutionNames &,const ExecutionNames&,bool,int ,Instrumentation::coverage_method_t,CSMes::comparaison_mode_t,int ,int )),
      this,
-     SLOT(statisticExecution(const QStringList &,const QStringList&,bool,int ,Instrumentation::coverage_method_t,CSMes::comparaison_mode_t,int ,int )));
+     SLOT(statisticExecution(const ExecutionNames &,const ExecutionNames&,bool,int ,Instrumentation::coverage_method_t,CSMes::comparaison_mode_t,int ,int )));
   connect (button_p->button(QDialogButtonBox::Save),SIGNAL(clicked()),
       this,SLOT(save()));
   connect (button_p->button(QDialogButtonBox::Cancel),SIGNAL(clicked()),
@@ -79,8 +79,8 @@ void WOptimizedExecutionOrder::continueCalculateStatistics()
 {
   _finished=true;
   _under_process.clear();
-  QMap<int,QStringList> prio_list;
-  for (QStringList::const_iterator it=_execution_list.begin();it!=_execution_list.end();++it)
+  QMap<int,ExecutionNames> prio_list;
+  for (ExecutionNames::const_iterator it=_execution_list.begin();it!=_execution_list.end();++it)
   {
     if (!_optimized_execution_list.contains(*it))
     {
@@ -94,12 +94,12 @@ void WOptimizedExecutionOrder::continueCalculateStatistics()
   }
 
 
-  for (QMap<int,QStringList>::const_iterator itProcessPrio=prio_list.begin();itProcessPrio!=prio_list.end();++itProcessPrio)
-  for (QStringList::const_iterator itProcess=itProcessPrio.value().begin();itProcess!=itProcessPrio.value().end();++itProcess)
+  for (QMap<int,ExecutionNames>::const_iterator itProcessPrio=prio_list.begin();itProcessPrio!=prio_list.end();++itProcessPrio)
+  for (ExecutionNames::const_iterator itProcess=itProcessPrio.value().begin();itProcess!=itProcessPrio.value().end();++itProcess)
   {
-    QStringList list=_optimized_execution_list;
+    ExecutionNames list=_optimized_execution_list;
     list+=*itProcess;
-    CSMesBackgroundComputations::GetObject().calculateStatisticExecution(list,QStringList(),false,1,_method,CSMes::COMPARAISON_MODE_NONE);
+    CSMesBackgroundComputations::GetObject().calculateStatisticExecution(list,ExecutionNames(),false,1,_method,CSMes::COMPARAISON_MODE_NONE);
   }
 }
 
@@ -178,7 +178,7 @@ void WOptimizedExecutionOrder::save()
   }
 }
 
-void WOptimizedExecutionOrder::statisticExecution(const QStringList &mes,const QStringList &comparaisons,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,CSMes::comparaison_mode_t comparaison_mode,int nb_tested,int nb_untested)
+void WOptimizedExecutionOrder::statisticExecution(const ExecutionNames &mes,const ExecutionNames &comparaisons,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,CSMes::comparaison_mode_t comparaison_mode,int nb_tested,int nb_untested)
 {
   if (_method!=method)
     return ;
@@ -190,11 +190,11 @@ void WOptimizedExecutionOrder::statisticExecution(const QStringList &mes,const Q
     return;
   if (!comparaisons.isEmpty())
     return;
-  QStringList executions;
+  ExecutionNames executions;
 
   if (mes.count()!=_optimized_execution_list.count()+1)
     return;
-  for (QStringList::const_iterator it=mes.begin();it!=mes.end();++it)
+  for (ExecutionNames::const_iterator it=mes.begin();it!=mes.end();++it)
   {
     if (!_execution_list.contains(*it))
       return;
@@ -203,7 +203,7 @@ void WOptimizedExecutionOrder::statisticExecution(const QStringList &mes,const Q
   }
   if (executions.count()!=1)
     return;
-  QString current_execution=executions.at(0);
+  ExecutionName current_execution=executions.at(0);
 
   if ( (nb_tested>_best_nb_tested)
         ||
@@ -280,11 +280,11 @@ void WOptimizedExecutionOrder::cancelRequestNbTestedBelow(int n)
       const int nb_tested_diff=it.value();
       if (nb_tested_diff<v)
       {
-         QStringList list=_optimized_execution_list;
+         ExecutionNames list=_optimized_execution_list;
          list+=it.key();
          int remove_count=_under_process.removeAll(it.key());
          if (remove_count>0)
-            CSMesBackgroundComputations::GetObject().cancelStatisticExecution(list,QStringList(),false,1,_method,CSMes::COMPARAISON_MODE_NONE);
+            CSMesBackgroundComputations::GetObject().cancelStatisticExecution(list,ExecutionNames(),false,1,_method,CSMes::COMPARAISON_MODE_NONE);
       }
    }
 }

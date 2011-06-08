@@ -16,30 +16,33 @@
  **
  ****************************************************************************/
 
-#ifndef UNDO_COMMENT_H
-#define UNDO_COMMENT_H
-#include <QUndoCommand>
+#ifndef EXECUTION_NAMES_H
+#define EXECUTION_NAMES_H
 #include <QString>
-#include "modulefiles.h"
-#include "sourcefiles.h"
-class CSMes ;
+#include <QStringList>
+#include <QList>
+#include "executionname.h"
 
-
-class UndoCmdComment : public QUndoCommand
+class ExecutionNames : public QList<ExecutionName>
 {
   public:
-    UndoCmdComment (CSMes *csmes_p,const ModuleFile &module,const SourceFile &source,int index,const QString &old_comment,const QString &new_comment, QUndoCommand *parent);
-    virtual void redo();
-    virtual void undo();
-
-
-  private:
-
-    CSMes *m_csmes_p;
-    ModuleFile m_module;
-    SourceFile m_source;
-    int m_index;
-    QString m_old_comment;
-    QString m_new_comment;
+    ExecutionNames(const QList<ExecutionName> &s) : QList<ExecutionName>(s) {}
+    ExecutionNames(const ExecutionNames &s) : QList<ExecutionName>(s) {}
+    ExecutionNames() : QList<ExecutionName>() {}
+    QStringList toQStringList() const 
+    {
+      QStringList l; 
+      for (QList<ExecutionName>::const_iterator it=begin();it!=end();++it)
+        l << *it;
+      return l;
+    }
+	static ExecutionNames fromQStringList(const QStringList &s)
+	{
+	  ExecutionNames n;
+      for (QStringList::const_iterator it=s.begin();it!=s.end();++it)
+        n << ExecutionName(*it);
+	  return n;
+	}
 };
+
 #endif

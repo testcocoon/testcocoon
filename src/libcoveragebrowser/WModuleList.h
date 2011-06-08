@@ -39,8 +39,8 @@ public:
     virtual ~WModuleList();
     void setStatusColorLevel(double low, double medium);
     void setCSMes(const CSMesUndoRedoFramework *);
-    QString Module() const ;
-    QString Source() const;
+    ModuleFile Module() const ;
+    SourceFile Source() const;
 public slots:
     void refreshView();
     void selectSource(const ModuleFile &module,const SourceFile &source);

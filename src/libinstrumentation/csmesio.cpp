@@ -119,11 +119,9 @@ bool CSMesIO::unlock_csexe(QIODevice &file)
   return true;
 }
 
-bool CSMesIO::isCSExeDirectory(const QString &s) const
+bool CSMesIO::isCSExeDirectory(const ExecutionName &s) const
 {
-  if (s==QString::null)
-    return true;
-  if (s=="")
+  if (s.isEmpty())
     return true;
   if (s.right(1)=="/")
     return true;
@@ -131,9 +129,9 @@ bool CSMesIO::isCSExeDirectory(const QString &s) const
   return false;
 }
 
-QString CSMesIO::executionName(const QString &default_name,const QString &execution_name,csexe_import_policy_t policy) const
+ExecutionName CSMesIO::executionName(const ExecutionName &default_name,const ExecutionName &execution_name,csexe_import_policy_t policy) const
 {
-  QString name;
+  ExecutionName name;
   if (execution_name.isEmpty())
     name=default_name;
   else
@@ -158,9 +156,9 @@ QString CSMesIO::executionName(const QString &default_name,const QString &execut
         if (isCSExeDirectory(basename))
           basename+=QObject::tr("Unnamed");
         const int basename_lg=basename.length();
-        QStringList execs=executions.getExecutionList();
+        ExecutionNames execs=executions.getExecutionList();
         int count=0;
-        for (QStringList::const_iterator it=execs.begin();it!=execs.end();++it)
+        for (ExecutionNames::const_iterator it=execs.begin();it!=execs.end();++it)
         {
           const QString &item=*it;
           if ( item.startsWith(basename) )
@@ -234,7 +232,7 @@ static inline unsigned int hex2uint(const char *s)
 }
 
 
-bool CSMesIO::load_csexe_one(Executions::modules_executions_t &mts, QString &name,QString &err,QIODevice &file,QString &line,int &line_nr,const QString &name_orig,csexe_import_policy_t policy,Executions::execution_status_t default_execution_status) const
+bool CSMesIO::load_csexe_one(Executions::modules_executions_t &mts, ExecutionName &name,QString &err,QIODevice &file,QString &line,int &line_nr,const ExecutionName &name_orig,csexe_import_policy_t policy,Executions::execution_status_t default_execution_status) const
 {
   err.clear();
   bool import_error=false;
@@ -446,7 +444,7 @@ bool CSMesIO::load_csexe_one(Executions::modules_executions_t &mts, QString &nam
   return !import_error;
 }
 
-bool CSMesIO::loadCSExe(QIODevice &file,QString name_orig,csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,QStringList &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<QString,Executions::modules_executions_private_t> *undo_backup_p,progress_function_t progress_p)
+bool CSMesIO::loadCSExe(QIODevice &file,ExecutionName name_orig,csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,progress_function_t progress_p)
 {
   QTime timeWatch;
   errmsgs.clear();
@@ -455,7 +453,7 @@ bool CSMesIO::loadCSExe(QIODevice &file,QString name_orig,csexe_import_policy_t 
     undo_backup_p->clear();
   bool use_progress= (!file.isSequential()) && (progress_p!=NULL);
   float max_file_size=file.size();
-  QStringList mes_new,mes_modif;
+  ExecutionNames mes_new,mes_modif;
   QRegExp module_rx("^/(\\d*):(\\d*):(.*)$");
   int nb_mes_duplicates=0;
   int nb_mes_invalid=0;
@@ -483,7 +481,7 @@ bool CSMesIO::loadCSExe(QIODevice &file,QString name_orig,csexe_import_policy_t 
         break;
       execution_nr++;
       Executions::modules_executions_t mts;
-      QString name;
+      ExecutionName name;
       QString errmsg;
       detailled_info+="<TR>";
       detailled_info+="<TD>"+QString::number(execution_nr)+"</TD>";
@@ -503,13 +501,13 @@ bool CSMesIO::loadCSExe(QIODevice &file,QString name_orig,csexe_import_policy_t 
         detailled_info+="<TD><TT>"+Qt::escape(name)+"</TT></TD>";
         detailled_info+="<TD bgcolor=\""+executionStatusColor(mts.execution_status).name()+"\">"+executionsStatusStr()[mts.execution_status]+"</TD>";
         bool duplicate=false;
-        QString duplicate_execution;
+        ExecutionName duplicate_execution;
         bool empty_execution=false;
         if (policy!=CSEXE_POLICY_IMPORT_DUPLICATES_AND_EMPTY)
             empty_execution=emptyExecution(mts);
         if (policy==CSEXE_POLICY_IGNORE_DUPLICATES && !empty_execution)
         {
-          duplicate_execution=duplicateExecution(mts,QStringList());
+          duplicate_execution=duplicateExecution(mts,ExecutionNames());
           duplicate = ! duplicate_execution.isEmpty();
         }
 
@@ -625,7 +623,7 @@ bool CSMesIO::loadCSExe(QIODevice &file,QString name_orig,csexe_import_policy_t 
   }
 
   info=QString::null;
-  QStringList::Iterator it;
+  ExecutionNames::Iterator it;
   if ( (!mes_new.isEmpty()) || (!mes_modif.isEmpty()))
     setModificationFlag();
 
@@ -1241,7 +1239,7 @@ void CSMesIO::read_source(const QString &module,const QString &source, CSMESFile
     qbuf.clear();
 }
 
-unsigned long CSMesIO::checksum(const QString &module,const QString &source) const
+unsigned long CSMesIO::checksum(const ModuleFile &module,const SourceFile &source) const
 {
    QByteArray mod= module.toAscii();
    QByteArray src= source.toAscii();

@@ -63,37 +63,37 @@ class LIBINSTRUMENTATION_API CSMes : public CSMesAnalysis
     QString  explanation (const ModuleFile &module,const SourceFile &source,const QList<int> &indexs,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const ;
 
     /* CSMesStatistic */
-    bool statisticFunctionsExecution(const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_tested,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_untested) const ;
+    bool statisticFunctionsExecution(const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_tested,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_untested) const ;
     bool statistic(const ModuleFile &mod,const SourceFile &src,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const ;
     bool statistic(int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const ;
-    bool statisticSourcesExecution(const SourceFiles &sources,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<QString,int> &nb_tested,QHash<QString,int> &nb_untested) const;
+    bool statisticSourcesExecution(const SourceFiles &sources,const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<ExecutionName,int> &nb_tested,QHash<ExecutionName,int> &nb_untested) const;
     
     static QString printStat(double v) { return CSMesStatistic::printStat(v) ; }
     static QString printStat(int nb_tested,int nb_untested) { return CSMesStatistic::printStat(nb_tested,nb_untested) ; }
-    bool statisticExecution(const QStringList &mes,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,CSMes::comparaison_mode_t m,int &nb_tested,int &nb_untested,const bool &abort_operation) const ;
-    bool statisticModuleExecution(ModuleFile module,SourceFile source,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const ;
+    bool statisticExecution(const ExecutionNames &mes,const ExecutionNames &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,CSMes::comparaison_mode_t m,int &nb_tested,int &nb_untested,const bool &abort_operation) const ;
+    bool statisticModuleExecution(ModuleFile module,SourceFile source,const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const ;
     bool statisticFunctionPre(ModuleFile module,SourceFile source,long start_line,long start_column,long end_line,long end_column,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const ;
 
     /* CSMesExecution */
-    void restoreExecution(const QString &name,const Executions::modules_executions_private_t &exec);
-    bool backupExecution(const QString &execution_name,Executions::modules_executions_private_t &execution) const;
-    QStringList executionList() const;
-    bool setExecutionComment(const QString &name, const QString &comment) ;
-    bool getExecutionComment(const QString &name, QString &comment) const ;
-    bool deleteExecution(const QString &) ;
-    bool renameExecution(const QString &old_name,const QString &new_name) ;
-    bool mergeExecutions(const QStringList &sources,const QString &dest);
-    bool executionExists(const QString &m) const ; 
-    bool executionPathExists(const QString &m) const ;
-    void setExecutionStatus(const QString &name,Executions::execution_status_t); 
-    Executions::execution_status_t getExecutionStatus(const QString &name) const; 
+    void restoreExecution(const ExecutionName &name,const Executions::modules_executions_private_t &exec);
+    bool backupExecution(const ExecutionName &execution_name,Executions::modules_executions_private_t &execution) const;
+    ExecutionNames executionList() const;
+    bool setExecutionComment(const ExecutionName &name, const QString &comment) ;
+    bool getExecutionComment(const ExecutionName &name, QString &comment) const ;
+    bool deleteExecution(const ExecutionName &) ;
+    bool renameExecution(const ExecutionName &old_name,const ExecutionName &new_name) ;
+    bool mergeExecutions(const ExecutionNames &sources,const ExecutionName &dest);
+    bool executionExists(const ExecutionName &m) const ; 
+    bool executionPathExists(const ExecutionName &m) const ;
+    void setExecutionStatus(const ExecutionName &name,Executions::execution_status_t); 
+    Executions::execution_status_t getExecutionStatus(const ExecutionName &name) const; 
     static QStringList executionsStatusStr() { return CSMesExecution::executionsStatusStr(); }
-    QString getExecutionStatusStr(const QString &name) const; 
-    void setExecutionStatusStr(const QString &name,const QString &execution_status) ; 
-    bool selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t methode, comparaison_mode_t m) const;
-    bool selectExecutionsComparaison(const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t method, comparaison_mode_t m) ;
-    QStringList executedBy(const ModuleFile& module,const SourceFile & source,int index,bool selected_executions_only) const;
-    static bool executionNameValid(const QString &name,QString &explanation) { return CSMesExecution::executionNameValid(name,explanation); }
+    QString getExecutionStatusStr(const ExecutionName &name) const; 
+    void setExecutionStatusStr(const ExecutionName &name,const QString &execution_status) ; 
+    bool selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t methode, comparaison_mode_t m) const;
+    bool selectExecutionsComparaison(const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t method, comparaison_mode_t m) ;
+    ExecutionNames executedBy(const ModuleFile& module,const SourceFile & source,int index,bool selected_executions_only) const;
+    static bool executionNameValid(const ExecutionName &name,QString &explanation) { return CSMesExecution::executionNameValid(name,explanation); }
     static QColor executionStatusColor(Executions::execution_status_t v) { return CSMesExecution::executionStatusColor(v);}
 
 
@@ -180,7 +180,7 @@ bool exportHtmlReport(
     /* CSMesIO */
     bool compareCSMes(const QString &file);
     bool loadCSMes(const QString &file);
-    bool loadCSExe(QIODevice &data,QString name,csexe_import_policy_t,Executions::execution_status_t default_execution_status,QStringList &new_executions,QString &info,QString &short_status,QString &errmgs,QHash<QString,Executions::modules_executions_private_t> *undo_backup_p,progress_function_t progress);
+    bool loadCSExe(QIODevice &data,ExecutionName name,csexe_import_policy_t,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,progress_function_t progress);
     bool mergeCSMes(const QString &s,CSMESFile::merge_policy_t policy);
     bool saveBlackBoxConfiguration(const QString &s) ;
     bool isBlackBoxConfiguration() const ;

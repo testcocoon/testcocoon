@@ -25,7 +25,7 @@ class WExecutionMerge : public WExecutionManipulation
   public:
     WExecutionMerge(const CSMesUndoRedoFramework *,QWidget* parent = 0,  Qt::WindowFlags fl = 0);
     virtual ~WExecutionMerge();
-    QString destinationExecution() const;
+    ExecutionName destinationExecution() const;
   protected:
 } ;
 

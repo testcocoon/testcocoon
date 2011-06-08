@@ -38,8 +38,6 @@ public:
     WFunctionList(QWidget* parent = 0,  Qt::WindowFlags fl = 0);
     virtual ~WFunctionList();
     void setCSMes(CSMesUndoRedoFramework *);
-    QString Module() const ;
-    QString Source() const;
     void setStatusColorLevelFunction(double low, double medium);
     void setStatusColorLevelClass(double low, double medium);
 signals:

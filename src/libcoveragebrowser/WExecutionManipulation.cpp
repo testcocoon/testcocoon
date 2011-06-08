@@ -44,7 +44,7 @@ WExecutionManipulation::WExecutionManipulation(const CSMesUndoRedoFramework *c_p
   source_p->setCompleter( source_completor_p );
 
   lru=Options::get_opt_strlst(QString(),"EXECUTION_MANIPULATION_DESTINATION_COMPLETION");
-  QStringList namelist=c_p->executionList() ;
+  QStringList namelist=c_p->executionList().toQStringList() ;
   lru=appendLRUatEnd(namelist,lru);
   destination_completor_p = new QCompleter(destination_p);
   destination_completor_model_p=new QStringListModel(lru,destination_completor_p);
@@ -131,12 +131,12 @@ void WExecutionManipulation::on_destination_p_textChanged( const QString & )
   checkInput();
 }
 
-QString WExecutionManipulation::source() const
+ExecutionName WExecutionManipulation::source() const
 {
   return source_p->text();
 }
 
-QString WExecutionManipulation::destination() const
+ExecutionName WExecutionManipulation::destination() const
 {
   return destination_p->text();
 }
@@ -169,12 +169,12 @@ void WExecutionManipulation::setDestinationName(const QString &n)
 }
 
 
-QStringList WExecutionManipulation::sourceList() const
+ExecutionNames WExecutionManipulation::sourceList() const
 {
   return _sourceList;
 }
 
-QStringList WExecutionManipulation::destinationList() const
+ExecutionNames WExecutionManipulation::destinationList() const
 {
   return _destinationList;
 }
@@ -182,107 +182,107 @@ QStringList WExecutionManipulation::destinationList() const
 void WExecutionManipulation::updatePreview() 
 {
   CSMesBackgroundComputations::Pauser statistic_pauser;
-  QStringList executions=csmes_p->executionList();
-   message_p->setText(QString());
-   preview_p->clear();
-   if ((!_destination.isEmpty()) && (!unique_execution_output))
-   {
-      preview_p->setColumnCount(2);
-      QTableWidgetItem *__colItem = new QTableWidgetItem();
-      __colItem->setText(_destination);
-      preview_p->setHorizontalHeaderItem(1, __colItem);
-   }
-   else
-   {
-      preview_p->setColumnCount(1);
-   }
-   QTableWidgetItem *__colItem = new QTableWidgetItem();
-   __colItem->setText(_source);
-   preview_p->setHorizontalHeaderItem(0, __colItem);
+  ExecutionNames executions=csmes_p->executionList();
+  message_p->setText(QString());
+  preview_p->clear();
+  if ((!_destination.isEmpty()) && (!unique_execution_output))
+  {
+    preview_p->setColumnCount(2);
+    QTableWidgetItem *__colItem = new QTableWidgetItem();
+    __colItem->setText(_destination);
+    preview_p->setHorizontalHeaderItem(1, __colItem);
+  }
+  else
+  {
+    preview_p->setColumnCount(1);
+  }
+  QTableWidgetItem *__colItem = new QTableWidgetItem();
+  __colItem->setText(_source);
+  preview_p->setHorizontalHeaderItem(0, __colItem);
 
-   int count=_sourceList.count();
-   preview_p->setRowCount(count);
-   for (int i=0;i<count;i++)
-   {
-      QTableWidgetItem *item_p = new QTableWidgetItem();
-      item_p->setText(_sourceList.at(i));
-      preview_p->setItem(i,0,item_p);
-   }
-   if (unique_execution_output)
-   {
-      bool errors=false;
+  int count=_sourceList.count();
+  preview_p->setRowCount(count);
+  for (int i=0;i<count;i++)
+  {
+    QTableWidgetItem *item_p = new QTableWidgetItem();
+    item_p->setText(_sourceList.at(i));
+    preview_p->setItem(i,0,item_p);
+  }
+  if (unique_execution_output)
+  {
+    bool errors=false;
+    QString explanation;
+    if (executions.contains(_destinationList.at(0)))
+    {
+      QString msg=tr("'%1' is already existing. Overwriting is not possible.").arg(_destinationList.at(0));
+      message_p->setText(msg);
+      errors=true;
+    }
+    else if (!CSMesUndoRedoFramework::executionNameValid(_destinationList.at(0),explanation))
+    {
+      QString msg=tr("'%1' is not a valid execution name.").arg(_destinationList.at(0));
+      message_p->setText(msg+" ["+explanation+"]");
+      errors=true;
+    }
+
+    buttons_p->button(QDialogButtonBox::Ok)->setEnabled(!errors);
+  }
+  else if (!_destination.isEmpty())
+  {
+    bool errors=false;
+    for (int i=0;i<count;i++)
+    {
       QString explanation;
-      if (executions.contains(_destinationList.at(0)))
+      QTableWidgetItem *item_p = new QTableWidgetItem();
+      item_p->setText(_destinationList.at(i));
+      if (_destinationList.count(_destinationList.at(i))>1)
       {
-         QString msg=tr("'%1' is already existing. Overwriting is not possible.").arg(_destinationList.at(0));
-         message_p->setText(msg);
-         errors=true;
+        item_p->setForeground(COL_RED);
+        QFont f=item_p->font();
+        f.setBold(true);
+        item_p->setFont(f);
+        QString msg=tr("Error, line %1: '%2' is not unique").arg(i+1).arg(_destinationList.at(i));
+        item_p->setToolTip(msg);
+        if (!errors)
+          message_p->setText(msg);
+        errors=true;
       }
-      else if (!CSMesUndoRedoFramework::executionNameValid(_destinationList.at(0),explanation))
+      else if (executions.contains(_destinationList.at(i)))
       {
-         QString msg=tr("'%1' is not a valid execution name.").arg(_destinationList.at(0));
-         message_p->setText(msg+" ["+explanation+"]");
-         errors=true;
+        item_p->setForeground(COL_RED);
+        QFont f=item_p->font();
+        f.setBold(true);
+        item_p->setFont(f);
+        QString msg=tr("Error, line %1: '%2' is already existing. Overwriting is not possible.").arg(i+1).arg(_destinationList.at(i));
+        item_p->setToolTip(msg);
+        if (!errors)
+          message_p->setText(msg);
+        errors=true;
       }
-      
-      buttons_p->button(QDialogButtonBox::Ok)->setEnabled(!errors);
-   }
-   else if (!_destination.isEmpty())
-   {
-     bool errors=false;
-      for (int i=0;i<count;i++)
+      else if (!CSMesUndoRedoFramework::executionNameValid(_destinationList.at(i),explanation))
       {
-         QString explanation;
-         QTableWidgetItem *item_p = new QTableWidgetItem();
-         item_p->setText(_destinationList.at(i));
-         if (_destinationList.count(_destinationList.at(i))>1)
-         {
-            item_p->setForeground(COL_RED);
-            QFont f=item_p->font();
-            f.setBold(true);
-            item_p->setFont(f);
-            QString msg=tr("Error, line %1: '%2' is not unique").arg(i+1).arg(_destinationList.at(i));
-            item_p->setToolTip(msg);
-            if (!errors)
-              message_p->setText(msg);
-           errors=true;
-         }
-         else if (executions.contains(_destinationList.at(i)))
-         {
-            item_p->setForeground(COL_RED);
-            QFont f=item_p->font();
-            f.setBold(true);
-            item_p->setFont(f);
-            QString msg=tr("Error, line %1: '%2' is already existing. Overwriting is not possible.").arg(i+1).arg(_destinationList.at(i));
-            item_p->setToolTip(msg);
-            if (!errors)
-              message_p->setText(msg);
-           errors=true;
-         }
-         else if (!CSMesUndoRedoFramework::executionNameValid(_destinationList.at(i),explanation))
-         {
-            item_p->setForeground(COL_RED);
-            QFont f=item_p->font();
-            f.setBold(true);
-            item_p->setFont(f);
-            QString msg=tr("Error, line %1: '%2' is not a valid execution name.").arg(i+1).arg(_destinationList.at(i));
-            item_p->setToolTip(msg+" ["+explanation+"]");
-            if (!errors)
-              message_p->setText(msg+" ["+explanation+"]");
-           errors=true;
-         }
-         if (item_p->text().isEmpty())
-         {
-           item_p->setText(tr("<EMPTY>"));
-           QFont f=item_p->font();
-           f.setItalic(true);
-           item_p->setFont(f);
-         }
-         preview_p->setItem(i,1,item_p);
+        item_p->setForeground(COL_RED);
+        QFont f=item_p->font();
+        f.setBold(true);
+        item_p->setFont(f);
+        QString msg=tr("Error, line %1: '%2' is not a valid execution name.").arg(i+1).arg(_destinationList.at(i));
+        item_p->setToolTip(msg+" ["+explanation+"]");
+        if (!errors)
+          message_p->setText(msg+" ["+explanation+"]");
+        errors=true;
       }
-      buttons_p->button(QDialogButtonBox::Ok)->setEnabled(!errors);
-   }
-   preview_p->resizeColumnsToContents ();
+      if (item_p->text().isEmpty())
+      {
+        item_p->setText(tr("<EMPTY>"));
+        QFont f=item_p->font();
+        f.setItalic(true);
+        item_p->setFont(f);
+      }
+      preview_p->setItem(i,1,item_p);
+    }
+    buttons_p->button(QDialogButtonBox::Ok)->setEnabled(!errors);
+  }
+  preview_p->resizeColumnsToContents ();
 
 }
 
@@ -295,11 +295,11 @@ void WExecutionManipulation::generateSourceDestinationList()
   _sourceList.clear();
   if (csmes_p)
   {
-    QStringList executions=csmes_p->executionList();
+    ExecutionNames executions=csmes_p->executionList();
     MatchExpr expr;
     expr.setPattern(source_p->text());
     
-    for (QStringList::const_iterator it=executions.begin();
+    for (ExecutionNames::const_iterator it=executions.begin();
         it!=executions.end();
         ++it)
     {

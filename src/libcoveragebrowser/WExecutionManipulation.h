@@ -36,10 +36,10 @@ public:
     WExecutionManipulation(const CSMesUndoRedoFramework *,QWidget* parent = 0,  Qt::WindowFlags fl = 0);
     virtual ~WExecutionManipulation();
 
-    QString source() const;
-    QString destination() const;
-    QStringList sourceList() const;
-    QStringList destinationList() const;
+    ExecutionName source() const;
+    ExecutionName destination() const;
+    ExecutionNames sourceList() const;
+    ExecutionNames destinationList() const;
 
 public slots:
     virtual void on_destination_p_textChanged( const QString & );
@@ -63,8 +63,8 @@ private:
     static QStringList appendLRUatEnd(const QStringList &values,QStringList &old_lru);
 #endif
     const CSMesUndoRedoFramework *csmes_p;
-    QString _destination,_source;
-    QStringList _sourceList,_destinationList;
+    ExecutionName  _destination,_source;
+    ExecutionNames _sourceList,_destinationList;
     void generateSourceDestinationList();
     void updatePreview();
     bool unique_execution_output;

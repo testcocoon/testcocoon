@@ -25,14 +25,14 @@ class CSMes ;
 class UndoCmdExecutionInsert : public QUndoCommand
 {
   public:
-    UndoCmdExecutionInsert (CSMes *csmes_p,const QString &execution_name, QUndoCommand *parent);
+    UndoCmdExecutionInsert (CSMes *csmes_p,const ExecutionName &execution_name, QUndoCommand *parent);
     virtual ~UndoCmdExecutionInsert ();
     virtual void redo();
     virtual void undo();
   private:
 
     CSMes *m_csmes_p;
-    QString m_name;
+    ExecutionName m_name;
     Executions::modules_executions_private_t *m_exec;
 };
 #endif

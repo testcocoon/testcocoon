@@ -27,7 +27,7 @@ Executions::Executions():locker(QMutex::Recursive)
 }
 
 
-void Executions::setExecution(const QString &name,const modules_executions_t &exec)
+void Executions::setExecution(const ExecutionName &name,const modules_executions_t &exec)
 {
   AccessLockerWrite lock(&access_locker);
   executions[name].data=exec;
@@ -36,7 +36,7 @@ void Executions::setExecution(const QString &name,const modules_executions_t &ex
 }
 
 
-Executions::modules_executions_t Executions::getExecution(const QString &name) const
+Executions::modules_executions_t Executions::getExecution(const ExecutionName &name) const
 {
    AccessLockerRead lock(&access_locker);
   ASSERT(exists(name));
@@ -81,7 +81,7 @@ void Executions::setCacheMaxCost(long value)
 }
 
 
-bool Executions::isLoadedInRAM(const QString &name) const
+bool Executions::isLoadedInRAM(const ExecutionName &name) const
 {
    AccessLockerRead lock(&access_locker);
   ASSERT(exists(name));
@@ -102,13 +102,13 @@ bool Executions::isLoadedInRAM(const QString &name) const
   return false;
 }
 
-bool Executions::exists(const QString &name) const
+bool Executions::exists(const ExecutionName &name) const
 {
    AccessLockerRead lock(&access_locker);
   return executions.contains(name);
 }
 
-void Executions::remove(const QString &name)
+void Executions::remove(const ExecutionName &name)
 {
    AccessLockerWrite lock(&access_locker);
   ASSERT(exists(name));
@@ -117,7 +117,7 @@ void Executions::remove(const QString &name)
   ASSERT(!executions.contains(name));
 }
 
-bool Executions::moduleExists(const QString &name,const QString &module) const
+bool Executions::moduleExists(const ExecutionName &name,const ModuleFile &module) const
 {
    AccessLockerRead lock(&access_locker);
   ASSERT(exists(name));
@@ -130,7 +130,7 @@ bool Executions::moduleExists(const QString &name,const QString &module) const
   return ret;
 }
 
-void Executions::setExecutionStatus(const QString &name,execution_status_t v)
+void Executions::setExecutionStatus(const ExecutionName &name,execution_status_t v)
 {
    AccessLockerWrite lock(&access_locker);
   ASSERT(exists(name));
@@ -138,7 +138,7 @@ void Executions::setExecutionStatus(const QString &name,execution_status_t v)
   executions[name].data.execution_status=v;
 }
 
-void Executions::setExecutionComment(const QString &name,const QString &comment)
+void Executions::setExecutionComment(const ExecutionName &name,const QString &comment)
 {
    AccessLockerWrite lock(&access_locker);
   ASSERT(exists(name));
@@ -149,29 +149,29 @@ void Executions::setExecutionComment(const QString &name,const QString &comment)
   executions[name].load_state=LOAD_STATE_DIRTY;
 }
 
-void Executions::getExecutionComment(const QString &name,QString &comment) const
+void Executions::getExecutionComment(const ExecutionName &name,QString &comment) const
 {
    AccessLockerRead lock(&access_locker);
   ASSERT(exists(name));
   comment=executions.value(name).data.comment;
 }
 
-QStringList Executions::getExecutionList() const
+ExecutionNames Executions::getExecutionList() const
 {
    AccessLockerRead lock(&access_locker);
   return executions.keys();
 }
 
-QStringList Executions::getModuleList(const QString &name) const
+ModuleFiles Executions::getModuleList(const ExecutionName &name) const
 {
-   AccessLockerRead lock(&access_locker);
+  AccessLockerRead lock(&access_locker);
   ASSERT(exists(name));
   ensureLoaded(name);
-  QStringList ret = executions.value(name).data.executions.keys();
+  ModuleFiles ret = executions.value(name).data.executions.keys();
   return ret;
 }
 
-Executions::execution_status_t Executions::getExecutionStatus(const QString &name) const
+Executions::execution_status_t Executions::getExecutionStatus(const ExecutionName &name) const
 {
    AccessLockerRead lock(&access_locker);
   ASSERT(exists(name));
@@ -179,9 +179,9 @@ Executions::execution_status_t Executions::getExecutionStatus(const QString &nam
 }
 
 
-Executions::executions_t Executions::getExecutionModule(const QString &name, const QString & module) const
+Executions::executions_t Executions::getExecutionModule(const ExecutionName &name, const ModuleFile & module) const
 {
-   AccessLockerRead lock(&access_locker);
+  AccessLockerRead lock(&access_locker);
   ASSERT(exists(name));
   ASSERT(moduleExists(name,module));
   ensureLoaded(name);
@@ -193,7 +193,7 @@ Executions::executions_t Executions::getExecutionModule(const QString &name, con
   return exec;
 }
 
-void Executions::setExecutionModule(const QString &name, const QString & module,const Executions::executions_t &e)
+void Executions::setExecutionModule(const ExecutionName &name, const ModuleFile & module,const Executions::executions_t &e)
 {
    AccessLockerWrite lock(&access_locker);
   ASSERT(exists(name));
@@ -203,7 +203,7 @@ void Executions::setExecutionModule(const QString &name, const QString & module,
   executions[name].load_state=LOAD_STATE_DIRTY;
 }
 
-void Executions::copy(const QString &dest,const QString &src)
+void Executions::copy(const ExecutionName &dest,const ExecutionName &src)
 {
    AccessLockerWrite lock(&access_locker);
   ASSERT(!exists(dest));
@@ -222,7 +222,7 @@ void Executions::setCSMes(CSMESFileThread *file)
   csmes_p=file;
 }
 
-bool Executions::preload(const QString &execution_name)
+bool Executions::preload(const ExecutionName &execution_name)
 {
   ASSERT(csmes_p);
   ASSERT (!execution_name.isEmpty());
@@ -448,7 +448,7 @@ bool Executions::save_executions_compact_format()
     {
       QString name=execution_it.key();
       QByteArray name_cstr=name.toUtf8();
-      QStringList module_list=executions[name].data.executions.keys();
+      ModuleFiles module_list=executions[name].data.executions.keys();
       if (csmes_p->sectionExists("",name_cstr.constData(),"",CSMESFile::EXECUTION_COMPACT))
       {
         if (!csmes_p->deleteSection("",name_cstr.constData(),"",CSMESFile::EXECUTION_COMPACT))
@@ -458,7 +458,7 @@ bool Executions::save_executions_compact_format()
       }
       csmes_p->openSection("","",name_cstr.constData(),"","",CSMESFile::EXECUTION_COMPACT,0,CSMESFile::NEW_RW,0);
       csmes_p->writeLong(module_list.count());
-      for (QStringList::const_iterator mod_it= module_list.begin(); mod_it != module_list.end(); ++mod_it )
+      for (ModuleFiles::const_iterator mod_it= module_list.begin(); mod_it != module_list.end(); ++mod_it )
       {
         QString mod=*mod_it;
         QByteArray mod_cstr=mod.toAscii();
@@ -511,8 +511,8 @@ bool Executions::save_executions_old_format()
     QByteArray name_cstr=name.toUtf8();
     if (execution_it.value().load_state==LOAD_STATE_DIRTY)
     {
-      QStringList module_list=executions[name].data.executions.keys();
-      for (QStringList::const_iterator mod_it= module_list.begin(); mod_it != module_list.end(); ++mod_it )
+      ModuleFiles module_list=executions[name].data.executions.keys();
+      for (ModuleFiles::const_iterator mod_it= module_list.begin(); mod_it != module_list.end(); ++mod_it )
       {
         QString mod=*mod_it;
         QByteArray mod_cstr=mod.toAscii();
@@ -636,7 +636,7 @@ bool Executions::save_old_format()
 }
 
 
-void Executions::ensureLoaded(const QString &execution_name) const
+void Executions::ensureLoaded(const ExecutionName &execution_name) const
 {
   QMutexLocker lock(&locker);
   ASSERT(executions.contains(execution_name));
@@ -656,11 +656,11 @@ void Executions::ensureLoaded(const QString &execution_name) const
 }
 
 
-QStringList Executions::optimizeExecutionListForCaching(const QStringList &l) const 
+ExecutionNames Executions::optimizeExecutionListForCaching(const ExecutionNames &l) const 
 {
-   AccessLockerWrite lock2(&access_locker);
-  QStringList r;
-  for (QStringList::const_iterator it=l.begin();it!=l.end();++it)
+  AccessLockerWrite lock2(&access_locker);
+  ExecutionNames r;
+  for (ExecutionNames::const_iterator it=l.begin();it!=l.end();++it)
   {
     if (cache.contains(*it))
       r.prepend(*it);
@@ -672,7 +672,7 @@ QStringList Executions::optimizeExecutionListForCaching(const QStringList &l) co
 
 
 
-void Executions::restoreExecution(const QString &execution_name,const modules_executions_private_t &execution) 
+void Executions::restoreExecution(const ExecutionName &execution_name,const modules_executions_private_t &execution) 
 {
    AccessLockerWrite lock(&access_locker);
   if (execution.load_state==LOAD_STATE_INVALID)
@@ -681,7 +681,7 @@ void Executions::restoreExecution(const QString &execution_name,const modules_ex
 }
 
 
-bool Executions::backupExecution(const QString &execution_name,modules_executions_private_t &execution) const
+bool Executions::backupExecution(const ExecutionName &execution_name,modules_executions_private_t &execution) const
 {
 
    AccessLockerRead lock(&access_locker);
@@ -694,7 +694,7 @@ bool Executions::backupExecution(const QString &execution_name,modules_execution
   return true;
 }
 
-void Executions::getExecution(const QString &execution_name,modules_executions_t &execution) const
+void Executions::getExecution(const ExecutionName &execution_name,modules_executions_t &execution) const
 {
    AccessLockerRead lock(&access_locker);
   ASSERT(exists(execution_name));

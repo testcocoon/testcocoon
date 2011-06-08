@@ -22,7 +22,7 @@
 #include "csmesbackgroundcomputations.h"
 #include <QTime>
 
-UndoCmdExecutionStatus::UndoCmdExecutionStatus (CSMes *csmes_p,const QString &name, Executions::execution_status_t e, QUndoCommand *parent) : QUndoCommand("",parent)
+UndoCmdExecutionStatus::UndoCmdExecutionStatus (CSMes *csmes_p,const ExecutionName &name, Executions::execution_status_t e, QUndoCommand *parent) : QUndoCommand("",parent)
 {
   m_csmes_p=csmes_p;
   m_name=name;

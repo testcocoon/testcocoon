@@ -19,6 +19,7 @@
 #ifndef _INSTRUMENTATION_H
 #define _INSTRUMENTATION_H
 #include "libinstrumentationpdef.h"
+#include "executionnames.h"
 #include <QString>
 #include <QColor>
 #include <QBrush>
@@ -170,7 +171,7 @@ class LIBINSTRUMENTATION_API Instrumentation
       return false;
     }
 
-    void explanation(Writer &,const QString &,const QString &comment,const QStringList executedBy[2],int level,coverage_method_t,int) const;
+    void explanation(Writer &,const QString &,const QString &comment,const ExecutionNames executedBy[2],int level,coverage_method_t,int) const;
     void setManuallyValidated(bool b) {  manually_validated=b; }
     bool getManuallyValidated() const {  return manually_validated; }
     void setNull() { type=TYPE_NULL; }

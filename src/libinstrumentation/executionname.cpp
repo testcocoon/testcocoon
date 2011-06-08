@@ -4,7 +4,7 @@
  **                ---   All rights reserved ---
  **
  ** This file may be distributed and/or modified under the terms of the
- ** GNU General Public License version 2 as published by the Free Software
+ ** GNU General Public License version 3 as published by the Free Software
  ** Foundation and appearing in the file LICENSE.TXT included in the
  ** packaging of this file.
  **
@@ -16,28 +16,4 @@
  **
  ****************************************************************************/
 
-#ifndef UNDO_EXECUTION_RENAME_H
-#define UNDO_EXECUTION_RENAME_H
-#include <QUndoCommand>
-#include <QString>
-#include "coveragebrowserpdef.h"
-#include "executions.h"
-class CSMes ;
-
-
-class UndoCmdExecutionRename : public QUndoCommand
-{
-  public:
-    UndoCmdExecutionRename (CSMes *csmes_p,const ExecutionName &old_name,const ExecutionName &new_name, QUndoCommand *parent);
-    virtual ~UndoCmdExecutionRename ();
-    virtual void redo();
-    virtual void undo();
-
-
-  private:
-
-    CSMes *m_csmes_p;
-    QString m_new_name;
-    QString m_old_name;
-};
-#endif
+#include "executionname.h"

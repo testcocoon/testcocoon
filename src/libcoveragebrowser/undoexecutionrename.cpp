@@ -21,7 +21,7 @@
 #include "csmesbackgroundcomputations.h"
 #include <QTime>
 
-UndoCmdExecutionRename::UndoCmdExecutionRename (CSMes *csmes_p,const QString &old_name,const QString &new_name,QUndoCommand *parent) : QUndoCommand("",parent)
+UndoCmdExecutionRename::UndoCmdExecutionRename (CSMes *csmes_p,const ExecutionName &old_name,const ExecutionName &new_name,QUndoCommand *parent) : QUndoCommand("",parent)
 {
   m_csmes_p=csmes_p;
   m_new_name=new_name;

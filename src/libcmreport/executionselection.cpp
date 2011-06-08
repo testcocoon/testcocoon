@@ -23,8 +23,8 @@ using namespace std;
 
 ExecutionSelection::ExecutionSelection(CSMes &m):_csmes(m)
 {
-    _test_count_mode=false;
-    _method=Instrumentation::COVERAGE_CONDITION;
+  _test_count_mode=false;
+  _method=Instrumentation::COVERAGE_CONDITION;
   _selections.clear();
 }
 
@@ -39,8 +39,8 @@ void ExecutionSelection::selectRegex(const QString &exp)
 void ExecutionSelection::_selectRegex(const QString &exp)
 {
   QRegExp regex(exp);
-  QStringList executions=_csmes.executionList();
-  for (QStringList::const_iterator it=executions.begin();it!=executions.end();++it)
+  ExecutionNames executions=_csmes.executionList();
+  for (ExecutionNames::const_iterator it=executions.begin();it!=executions.end();++it)
   {
     if (regex.exactMatch(*it) && !_selected_executions.contains(*it))
       _selected_executions+=*it;
@@ -58,8 +58,8 @@ void ExecutionSelection::deselectRegex(const QString &exp)
 void ExecutionSelection::_deselectRegex(const QString &exp)
 {
   QRegExp regex(exp);
-  QStringList new_selected;
-  for (QStringList::const_iterator it=_selected_executions.begin();it!=_selected_executions.end();++it)
+  ExecutionNames new_selected;
+  for (ExecutionNames::const_iterator it=_selected_executions.begin();it!=_selected_executions.end();++it)
   {
     if (!regex.exactMatch(*it))
       new_selected+=*it;
@@ -85,9 +85,9 @@ void ExecutionSelection::apply(bool debug)
   
   if (debug)
   {
-    QStringList executions=_csmes.executionList();
+    ExecutionNames executions=_csmes.executionList();
     cerr << "Execution List:" << endl;
-    for (QStringList::const_iterator itExec=executions.begin();itExec!=executions.end();++itExec)
+    for (ExecutionNames::const_iterator itExec=executions.begin();itExec!=executions.end();++itExec)
     {
       QString item=*itExec;
       cerr << '\t' << item.toStdString() <<endl;
@@ -96,5 +96,5 @@ void ExecutionSelection::apply(bool debug)
       cerr <<endl;
     }
   }
-  _csmes.selectExecutionsComparaison(_selected_executions, QStringList(),_test_count_mode, _method, CSMes::COMPARAISON_MODE_NONE) ;
+  _csmes.selectExecutionsComparaison(_selected_executions, ExecutionNames(),_test_count_mode, _method, CSMes::COMPARAISON_MODE_NONE) ;
 }

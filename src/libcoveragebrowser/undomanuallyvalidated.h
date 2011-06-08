@@ -20,13 +20,15 @@
 #define UNDO_MANUALLY_VALIDATED_H
 #include <QUndoCommand>
 #include <QString>
+#include "sourcefiles.h"
+#include "modulefiles.h"
 class CSMes ;
 
 
 class UndoCmdManuallyValidated : public QUndoCommand
 {
   public:
-    UndoCmdManuallyValidated (CSMes *csmes_p,const QString &module,const QString &source,int index,const bool &old_manually_validated,const bool &new_manually_validated, QUndoCommand *parent);
+    UndoCmdManuallyValidated (CSMes *csmes_p,const ModuleFile &module,const SourceFile &source,int index,const bool &old_manually_validated,const bool &new_manually_validated, QUndoCommand *parent);
     virtual void redo();
     virtual void undo();
 
@@ -34,8 +36,8 @@ class UndoCmdManuallyValidated : public QUndoCommand
   private:
 
     CSMes *m_csmes_p;
-    QString m_module;
-    QString m_source;
+    ModuleFile m_module;
+    SourceFile m_source;
     int m_index;
     bool m_old_manually_validated;
     bool m_new_manually_validated;

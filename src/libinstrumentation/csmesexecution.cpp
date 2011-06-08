@@ -25,11 +25,11 @@ CSMesExecution::CSMesExecution() :CSMesFunctionInfo()
 
 void CSMesExecution::clear()
 {
-   executions.clear();
-  is_test_count_mode_selected=false;
+  executions.clear();
+  _is_test_count_mode_selected=false;
   CSMesInstrumentation::clear();
-  selected_executions.clear();
-  selected_comparaison.clear();
+  _selected_executions.clear();
+  _selected_comparaison.clear();
 }
 
 void CSMesExecution::setExecutionState(Instrumentation &ins,const Executions::executions_t &mes, Instrumentation::coverage_method_t method,int translation) const
@@ -87,7 +87,7 @@ void CSMesExecution::clearExecutions(CSMesInstrumentations &_instrumentations) c
   }
 }
 
-bool CSMesExecution::selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const QStringList &ms,const QStringList &cmp,bool test_coverage_mode,Instrumentation::coverage_method_t method,const bool &abort_operation) const
+bool CSMesExecution::selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,const ExecutionNames &cmp,bool test_coverage_mode,Instrumentation::coverage_method_t method,const bool &abort_operation) const
 {
   bool ret = _selectExecutionsComparaison(_instrumentations,ms,cmp,test_coverage_mode,method,abort_operation) ;
   return ret;
@@ -109,7 +109,7 @@ bool CSMesExecution::_selectExecutionsComparaisonInit(Executions::modules_execut
 }
 
 
-bool CSMesExecution::_selectExecutionsComparaisonCombileHideExecutions(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const QStringList &comparaison) const
+bool CSMesExecution::_selectExecutionsComparaisonCombileHideExecutions(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const ExecutionNames &comparaison) const
 {
   CSMesInstrumentations::Modules::const_iterator  modit ;
   if (!comparaison.isEmpty())
@@ -126,11 +126,11 @@ bool CSMesExecution::_selectExecutionsComparaisonCombileHideExecutions(Execution
   return true;
 }
 
-bool CSMesExecution::_selectExecutionsComparaisonCombileExecutionsComparaison(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const QStringList &comparaison,const bool &abort_operation) const
+bool CSMesExecution::_selectExecutionsComparaisonCombileExecutionsComparaison(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const ExecutionNames &comparaison,const bool &abort_operation) const
 {
   CSMesInstrumentations::Modules::const_iterator  modit ;
-  QStringList mes=executions.optimizeExecutionListForCaching(comparaison);
-  for ( QStringList::const_iterator comparaisonit = mes.begin(); comparaisonit != mes.end(); ++comparaisonit )
+  ExecutionNames mes=executions.optimizeExecutionListForCaching(comparaison);
+  for ( ExecutionNames::const_iterator comparaisonit = mes.begin(); comparaisonit != mes.end(); ++comparaisonit )
   {
     if (abort_operation)
       return false;
@@ -152,11 +152,11 @@ bool CSMesExecution::_selectExecutionsComparaisonCombileExecutionsComparaison(Ex
   return true;
 }
 
-bool CSMesExecution::_selectExecutionsComparaisonCombileExecutions(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const QStringList &ms,bool test_coverage_mode,const bool &abort_operation) const
+bool CSMesExecution::_selectExecutionsComparaisonCombileExecutions(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,bool test_coverage_mode,const bool &abort_operation) const
 {
   CSMesInstrumentations::Modules::const_iterator  modit ;
-  QStringList mes=executions.optimizeExecutionListForCaching(ms);
-  for ( QStringList::const_iterator msit = mes.begin(); msit != mes.end(); ++msit )
+  ExecutionNames mes=executions.optimizeExecutionListForCaching(ms);
+  for ( ExecutionNames::const_iterator msit = mes.begin(); msit != mes.end(); ++msit )
   {
     if (abort_operation)
       return false;
@@ -221,16 +221,16 @@ bool CSMesExecution::_selectExecutionsComparaisonUpdateInstrumentation(const Exe
   return true;
 }
 
-bool CSMesExecution::_selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const QStringList &_ms,const QStringList &_cmp,bool test_coverage_mode,Instrumentation::coverage_method_t method,const bool &abort_operation) const
+bool CSMesExecution::_selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const ExecutionNames &_ms,const ExecutionNames &_cmp,bool test_coverage_mode,Instrumentation::coverage_method_t method,const bool &abort_operation) const
 {
-  QStringList ms;
-  for ( QStringList::const_iterator it = _ms.begin(); it != _ms.end(); ++it )
+  ExecutionNames ms;
+  for ( ExecutionNames::const_iterator it = _ms.begin(); it != _ms.end(); ++it )
   {
     if ( executions.exists(*it) && (!ms.contains(*it)))
       ms += *it;
   }
-  QStringList cmp;
-  for ( QStringList::const_iterator _it = _cmp.begin(); _it != _cmp.end(); ++_it )
+  ExecutionNames cmp;
+  for ( ExecutionNames::const_iterator _it = _cmp.begin(); _it != _cmp.end(); ++_it )
   {
     if ( executions.exists(*_it) && (!cmp.contains(*_it)))
       cmp += *_it;
@@ -256,15 +256,15 @@ bool CSMesExecution::_selectExecutionsComparaison(CSMesInstrumentations &_instru
   return true;
 }
 
-QStringList CSMesExecution::executionList() const
+ExecutionNames CSMesExecution::executionList() const
 {
   return executions.getExecutionList();
 }
 
-bool CSMesExecution::deleteExecution(const QStringList &ms)
+bool CSMesExecution::deleteExecution(const ExecutionNames &ms)
 {
   bool removed=false;
-  for ( QStringList::const_iterator it = ms.begin(); it != ms.end(); ++it )
+  for ( ExecutionNames::const_iterator it = ms.begin(); it != ms.end(); ++it )
   {
     removed = deleteExecution(*it) || removed ;
   }
@@ -280,7 +280,7 @@ Executions::execution_status_t CSMesExecution::combineExecutionStatus(Executions
 }
 
 
-bool CSMesExecution::mergeExecutions(const QStringList &sources,const QString &dest)
+bool CSMesExecution::mergeExecutions(const ExecutionNames &sources,const ExecutionName &dest)
 {
    if (executions.exists(dest))
       return false;
@@ -290,7 +290,7 @@ bool CSMesExecution::mergeExecutions(const QStringList &sources,const QString &d
    ModuleFiles modules=Modules();
 
    bool first=true;
-   for (QStringList::const_iterator execit=sources.begin();
+   for (ExecutionNames::const_iterator execit=sources.begin();
       execit!=sources.end();
       ++execit)
    {
@@ -310,7 +310,7 @@ bool CSMesExecution::mergeExecutions(const QStringList &sources,const QString &d
       for (int i=0;i<nb_exec;i++)
          exec[i]=Instrumentation::EXECUTION_STATE_NOT_EXECUTED;
 
-      for (QStringList::const_iterator execit=sources.begin();
+      for (ExecutionNames::const_iterator execit=sources.begin();
          execit!=sources.end();
          ++execit)
       {
@@ -324,7 +324,7 @@ bool CSMesExecution::mergeExecutions(const QStringList &sources,const QString &d
    return true;
 }
 
-bool CSMesExecution::deleteExecution(const QString &m)
+bool CSMesExecution::deleteExecution(const ExecutionName &m)
 {
   if (executions.exists(m))
   {
@@ -336,7 +336,7 @@ bool CSMesExecution::deleteExecution(const QString &m)
 }
 
 
-bool CSMesExecution::renameExecution(const QString &old_name,const QString &new_name)
+bool CSMesExecution::renameExecution(const ExecutionName &old_name,const ExecutionName &new_name)
 {
   if (!executionExists(old_name))
     return false;
@@ -347,24 +347,24 @@ bool CSMesExecution::renameExecution(const QString &old_name,const QString &new_
   return deleteExecution(old_name);
 }
 
-bool CSMesExecution::executionPathExists(const QString &m) const
+bool CSMesExecution::executionPathExists(const ExecutionName &m) const
 {
   QString path=m;
   if (m.right(1)!="/")
     path+="/";
 
-  QStringList execution_list=executions.getExecutionList();
-  for (QStringList::const_iterator it = execution_list.begin(); it != execution_list.end() ; ++it )
+  ExecutionNames execution_list=executions.getExecutionList();
+  for (ExecutionNames::const_iterator it = execution_list.begin(); it != execution_list.end() ; ++it )
     if ((*it).indexOf(path)==0)
       return true;
   return false;
 }
 
 
-QString CSMesExecution::duplicateExecution (const Executions::modules_executions_t &exec,const QStringList &exclude_names) const
+ExecutionName CSMesExecution::duplicateExecution (const Executions::modules_executions_t &exec,const ExecutionNames &exclude_names) const
 {
-  QStringList execution_list=executions.optimizeExecutionListForCaching(executions.getExecutionList());
-  for (QStringList::const_iterator mesit = execution_list.begin(); mesit != execution_list.end() ; ++mesit )
+  ExecutionNames execution_list=executions.optimizeExecutionListForCaching(executions.getExecutionList());
+  for (ExecutionNames::const_iterator mesit = execution_list.begin(); mesit != execution_list.end() ; ++mesit )
   {
     if (!exclude_names.contains(*mesit))
     {
@@ -372,14 +372,14 @@ QString CSMesExecution::duplicateExecution (const Executions::modules_executions
         return *mesit;
     }
   }
-  return QString();
+  return ExecutionName();
 }
 
 
 bool CSMesExecution::emptyExecution(const Executions::modules_executions_t &exec) const
 {
   const Executions::list_modules_executions_t &name_mes=exec.executions;
-  QStringList modlist=name_mes.keys();
+  ModuleFiles modlist=name_mes.keys();
   qSort(modlist);
 
 
@@ -399,7 +399,7 @@ bool CSMesExecution::emptyExecution(const Executions::modules_executions_t &exec
 }
 
 
-void CSMesExecution::mergeInExecution(const QString &name1,const Executions::modules_executions_t &exec2)
+void CSMesExecution::mergeInExecution(const ExecutionName &name1,const Executions::modules_executions_t &exec2)
 {
   if (!executions.exists(name1))
   {
@@ -431,8 +431,8 @@ bool CSMesExecution::sameExecution(const Executions::modules_executions_t &exec1
 {
   const Executions::list_modules_executions_t &name2_mes=exec2.executions;
   const Executions::list_modules_executions_t &name1_mes=exec1.executions;
-  QStringList modlist1=name1_mes.keys();
-  QStringList modlist2=name2_mes.keys();
+  ModuleFiles modlist1=name1_mes.keys();
+  ModuleFiles modlist2=name2_mes.keys();
   qSort(modlist1);
   qSort(modlist2);
 
@@ -458,7 +458,7 @@ bool CSMesExecution::sameExecution(const Executions::modules_executions_t &exec1
   return true;
 }
 
-bool CSMesExecution::sameExecution(const QString &name1,const QString &name2) const
+bool CSMesExecution::sameExecution(const ExecutionName &name1,const ExecutionName &name2) const
 {
   if (!executions.exists(name1))
     return false;
@@ -470,7 +470,7 @@ bool CSMesExecution::sameExecution(const QString &name1,const QString &name2) co
 }
 
 
-bool CSMesExecution::sameExecution(const QString &name1,const Executions::modules_executions_t &exec2) const
+bool CSMesExecution::sameExecution(const ExecutionName &name1,const Executions::modules_executions_t &exec2) const
 {
   if (!executions.exists(name1))
     return false;
@@ -478,7 +478,7 @@ bool CSMesExecution::sameExecution(const QString &name1,const Executions::module
   return sameExecution(exec1,exec2);
 }
 
-Executions::execution_status_t CSMesExecution::getExecutionStatus(const QString &name) const
+Executions::execution_status_t CSMesExecution::getExecutionStatus(const ExecutionName &name) const
 {
    Executions::execution_status_t  ret=Executions::EXECUTION_STATUS_UNKNOWN;
   if (executions.exists(name))
@@ -514,14 +514,14 @@ QColor CSMesExecution::executionStatusColor(Executions::execution_status_t v)
    }
 }
 
-QString CSMesExecution::getExecutionStatusStr(const QString &name) const
+QString CSMesExecution::getExecutionStatusStr(const ExecutionName &name) const
 {
   Executions::execution_status_t st= getExecutionStatus(name);
   int index=static_cast<int>(st);
   return executionsStatusStr()[index];
 }
 
-void CSMesExecution::setExecutionStatusStr(const QString &name,const QString &execution_status)
+void CSMesExecution::setExecutionStatusStr(const ExecutionName &name,const QString &execution_status)
 {
   int index=executionsStatusStr().indexOf(execution_status);
   ASSERT(index!=-1);
@@ -530,7 +530,7 @@ void CSMesExecution::setExecutionStatusStr(const QString &name,const QString &ex
 }
 
 
-void CSMesExecution::setExecutionStatus(const QString &name,Executions::execution_status_t t)
+void CSMesExecution::setExecutionStatus(const ExecutionName &name,Executions::execution_status_t t)
 {
   if (executions.exists(name))
   {
@@ -539,7 +539,7 @@ void CSMesExecution::setExecutionStatus(const QString &name,Executions::executio
   }
 }
 
-bool CSMesExecution::findModuleSourceForInstrumentation(QString &mod,QString &src,const Instrumentation *equiv) const
+bool CSMesExecution::findModuleSourceForInstrumentation(ModuleFile &mod,SourceFile &src,const Instrumentation *equiv) const
 {
   for (CSMesInstrumentations::Modules::const_iterator modit = instrumentations.modules.begin();
       modit != instrumentations.modules.end();
@@ -564,12 +564,12 @@ bool CSMesExecution::findModuleSourceForInstrumentation(QString &mod,QString &sr
   return false;
 }
 
-QStringList CSMesExecution::executedBy(ModuleFile module,SourceFile source,int instrument_id,bool selected_executions_only) const
+ExecutionNames CSMesExecution::executedBy(ModuleFile module,SourceFile source,int instrument_id,bool selected_executions_only) const
 {
   findSourceModule(module,source);
   ASSERT(module!="");
   ASSERT(source!="");
-  QStringList execList;
+  ExecutionNames execList;
   const CSMesInstrumentations::Instrumentations &inst_lst=instrumentations.modules[module].sources[source].instrumentations;
   const Instrumentation *inst_p=NULL;
   for (CSMesInstrumentations::Instrumentations::const_iterator it=inst_lst.begin();it!=inst_lst.end();++it)
@@ -583,15 +583,16 @@ QStringList CSMesExecution::executedBy(ModuleFile module,SourceFile source,int i
   {
     first=false;
     int index=equiv->getMinIndex()+offset;
-    QString mod,src;
+    ModuleFile mod;
+    SourceFile src;
     if (findModuleSourceForInstrumentation(mod,src,equiv))
     {
-      QStringList execution_list;
+      ExecutionNames execution_list;
       if (selected_executions_only)
-        execution_list=executions.optimizeExecutionListForCaching(selected_executions);
+        execution_list=executions.optimizeExecutionListForCaching(_selected_executions);
       else
         execution_list=executions.optimizeExecutionListForCaching(executions.getExecutionList());
-      for (QStringList::const_iterator it=execution_list.begin();it!=execution_list.end();++it)
+      for (ExecutionNames::const_iterator it=execution_list.begin();it!=execution_list.end();++it)
       {
         const QString &execName=(*it);
         if (executions.exists(execName))
@@ -612,7 +613,7 @@ QStringList CSMesExecution::executedBy(ModuleFile module,SourceFile source,int i
   return execList;
 }
 
-bool CSMesExecution::executionNameValid(const QString &name,QString &explanation)
+bool CSMesExecution::executionNameValid(const ExecutionName &name,QString &explanation)
 {
    explanation.clear();
   if (name.isEmpty())
@@ -642,7 +643,7 @@ bool CSMesExecution::executionNameValid(const QString &name,QString &explanation
   return true;
 }
 
-bool CSMesExecution::setExecutionComment(const QString &name, const QString &comment)
+bool CSMesExecution::setExecutionComment(const ExecutionName &name, const QString &comment)
 {
   if (executions.exists(name))
   {
@@ -653,7 +654,7 @@ bool CSMesExecution::setExecutionComment(const QString &name, const QString &com
   return false;
 }
 
-bool CSMesExecution::getExecutionComment(const QString &name, QString &comment) const
+bool CSMesExecution::getExecutionComment(const ExecutionName &name, QString &comment) const
 {
   if (executions.exists(name))
   {
@@ -704,12 +705,12 @@ bool CSMesExecution::createEmptyExecution(Executions::modules_executions_t &mts)
   return true;
 }
 
-void CSMesExecution::restoreExecution(const QString &name,const Executions::modules_executions_private_t &exec)
+void CSMesExecution::restoreExecution(const ExecutionName &name,const Executions::modules_executions_private_t &exec)
 {
   executions.restoreExecution(name,exec);
 }
 
-bool CSMesExecution::backupExecution(const QString &name,Executions::modules_executions_private_t &exec) const
+bool CSMesExecution::backupExecution(const ExecutionName &name,Executions::modules_executions_private_t &exec) const
 {
   return executions.backupExecution(name,exec);
 }

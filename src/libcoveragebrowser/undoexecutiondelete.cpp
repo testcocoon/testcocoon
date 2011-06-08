@@ -23,7 +23,7 @@
 #include "CoverageSettings.h"
 #include <QTime>
 
-UndoCmdExecutionDelete::UndoCmdExecutionDelete (CSMes *csmes_p,const QString &name,QUndoCommand *parent) : QUndoCommand("",parent)
+UndoCmdExecutionDelete::UndoCmdExecutionDelete (CSMes *csmes_p,const ExecutionName &name,QUndoCommand *parent) : QUndoCommand("",parent)
 {
   m_csmes_p=csmes_p;
   m_name=name;
@@ -59,8 +59,8 @@ void UndoCmdExecutionDelete::redo()
   {
     m_csmes_p->deleteExecution(m_name);
 
-    QStringList ms=CoverageSettings::object().getSelectedExecutions();
-    QStringList comparaison=CoverageSettings::object().getSelectedExecutionsComparaison();
+    ExecutionNames  ms=CoverageSettings::object().getSelectedExecutions();
+    ExecutionNames  comparaison=CoverageSettings::object().getSelectedExecutionsComparaison();
     if (ms.contains(m_name) || comparaison.contains(m_name))
     {
       ms.removeAll(m_name);

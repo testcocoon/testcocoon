@@ -27,7 +27,7 @@ class WOptimizedExecutionOrder : public QDialog, public Ui::WOptimizedExecutionO
     Q_OBJECT
 
 public:
-    WOptimizedExecutionOrder(const QStringList &execution_list,Instrumentation::coverage_method_t method,QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    WOptimizedExecutionOrder(const ExecutionNames &execution_list,Instrumentation::coverage_method_t method,QWidget* parent = 0, Qt::WindowFlags fl = 0);
     virtual ~WOptimizedExecutionOrder();
 
     void calculateStatistics();
@@ -35,7 +35,7 @@ public:
     QString toHtml() const;
 
 public slots:
-  void statisticExecution(const QStringList &mes,const QStringList &comparaisons,bool execution_analysis,
+  void statisticExecution(const ExecutionNames &mes,const ExecutionNames &comparaisons,bool execution_analysis,
       int coverage_level,Instrumentation::coverage_method_t method,CSMes::comparaison_mode_t,int nb_tested,int nb_untested) ;
   void save();
 
@@ -45,8 +45,8 @@ protected slots:
 private:
   void removeExecution(const QString &);
   void continueCalculateStatistics();
-  QStringList _execution_list;
-  QStringList _optimized_execution_list;
+  ExecutionNames _execution_list;
+  ExecutionNames _optimized_execution_list;
   Instrumentation::coverage_method_t _method;
   int _best_nb_tested;
   int _optimized_execution_nb_tested;

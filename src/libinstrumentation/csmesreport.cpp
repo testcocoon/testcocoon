@@ -88,11 +88,10 @@ QString CSMesReport::exportStatisticFunction(CSMesReport::table_t &table,int cov
   QString result ;
   table.clear();
   int i,j;
-  const QStringList executions=selectedExecutions();
+  const ExecutionNames executions=selectedExecutions();
   if (executions.isEmpty())
     return QObject::tr("No executions selected");
 
-  QStringList::const_iterator it_fct;
   const QList<CSMesFunctionInfo::functionskey_t> functions= Functions();
   int nb_functions=functions.count();
   int max_levels= (coverage_level>max_number_of_levels)?max_number_of_levels:coverage_level;
@@ -181,11 +180,10 @@ QString CSMesReport::exportStatisticGlobalCoverage(CSMesReport::table_t &table,i
   QString result ;
   table.clear();
   int i;
-  const QStringList executions=selectedExecutions();
+  const ExecutionNames executions=selectedExecutions();
   if (executions.isEmpty())
     return QObject::tr("No executions selected");
 
-  QStringList::const_iterator it_fct;
   int max_levels= (coverage_level>max_number_of_levels)?max_number_of_levels:coverage_level;
   float level_step= static_cast<float>(coverage_level)/static_cast<float>(max_number_of_levels);
   if (coverage_level==1)
@@ -224,7 +222,7 @@ QString CSMesReport::exportStatisticGlobalCoverage(CSMesReport::table_t &table,i
       level=static_cast<int>(i*level_step+1);
 
     int nb_tested,nb_untested;
-    if ( statisticExecution(executions,QStringList(),false,level,method,nb_tested,nb_untested,false) )
+    if ( statisticExecution(executions,ExecutionNames(),false,level,method,nb_tested,nb_untested,false) )
     {
       table[i+1][1].setData ( level, StatValue(nb_tested,nb_untested), TABLE_FORMAT_STATISTIC_LEVEL );
     }
@@ -237,11 +235,10 @@ QString CSMesReport::exportStatisticSources(CSMesReport::table_t &table,int cove
   QString result ;
   table.clear();
   int i,j;
-  const QStringList executions=selectedExecutions();
+  const ExecutionNames executions=selectedExecutions();
   if (executions.isEmpty())
     return QObject::tr("No executions selected");
 
-  QStringList::const_iterator it_fct;
   const SourceFiles sources= Sources(NON_EMPTY);
   int nb_sources=sources.count();
   int max_levels= (coverage_level>max_number_of_levels)?max_number_of_levels:coverage_level;
@@ -286,8 +283,8 @@ QString CSMesReport::exportStatisticSources(CSMesReport::table_t &table,int cove
       level=static_cast<int>(i*level_step+1);
 
     // module statistic
-    QHash<QString,int> nb_tested_list;
-    QHash<QString,int> nb_untested_list;
+    QHash<ExecutionName,int> nb_tested_list;
+    QHash<ExecutionName,int> nb_untested_list;
     if ( statisticSourcesExecution(sources,executions,level,method,nb_tested_list,nb_untested_list) )
     {
       for (j=0;j<nb_sources;j++)
@@ -345,11 +342,10 @@ QString CSMesReport::exportStatisticExecutions(CSMesReport::table_t &table,int c
   QString result ;
   table.clear();
   int i,j;
-  const QStringList executions=selectedExecutions();
+  const ExecutionNames executions=selectedExecutions();
   if (executions.isEmpty())
     return QObject::tr("No executions selected");
 
-  QStringList::const_iterator it_fct;
   int nb_executions=executions.count();
   int max_levels= (coverage_level>max_number_of_levels)?max_number_of_levels:coverage_level;
   float level_step= static_cast<float>(coverage_level)/static_cast<float>(max_number_of_levels);
@@ -397,10 +393,10 @@ QString CSMesReport::exportStatisticExecutions(CSMesReport::table_t &table,int c
     int nb_untested;
     for (j=0;j<nb_executions;j++)
     {
-      const QString &e=executions.at(j);
-      QStringList ee;
+      const ExecutionName &e=executions.at(j);
+      ExecutionNames ee;
       ee+=e;
-      if ( statisticExecution(ee,QStringList(),false,level,method,nb_tested,nb_untested,false) )
+      if ( statisticExecution(ee,ExecutionNames(),false,level,method,nb_tested,nb_untested,false) )
       {
         table[j+1][i+1].setData ( level, StatValue(nb_tested,nb_untested), TABLE_FORMAT_STATISTIC_LEVEL);
       }
@@ -448,12 +444,11 @@ QString CSMesReport::exportStatisticFunction(CSMesReport::table_t &table,int cov
   table.clear();
   int i,j;
   int nb_tested,nb_untested;
-  const QStringList executions=selectedExecutions();
+  const ExecutionNames executions=selectedExecutions();
   int nb_executions=executions.count();
   if (executions.isEmpty())
     return QObject::tr("No executions selected");
 
-  QStringList::const_iterator it_fct;
   const QList<CSMesFunctionInfo::functionskey_t> functions= Functions();
   int nb_functions=functions.count();
   table.resize(nb_functions+3);
@@ -483,7 +478,7 @@ QString CSMesReport::exportStatisticFunction(CSMesReport::table_t &table,int cov
     printStatus(QObject::tr("Exporting Statistics..."),i/(3+nb_executions));
     const QStringList execStr = executionsStatusStr();
     // module statistic
-    QStringList execs;
+    ExecutionNames execs;
     execs+=executions.at(i);
     table [1][i+3].setData( execStr[getExecutionStatus(executions.at(i))], TABLE_FORMAT_EXECUTION_STATUS);
     QHash<CSMesFunctionInfo::functionskey_t,int> nb_tested_list;
@@ -503,7 +498,7 @@ QString CSMesReport::exportStatisticFunction(CSMesReport::table_t &table,int cov
     nb_untested_list.clear();
 
     // statistics for each execution
-    if (statisticExecution(execs,QStringList(),false,coverage_level,method,nb_tested,nb_untested,instrumentations,false))
+    if (statisticExecution(execs,ExecutionNames(),false,coverage_level,method,nb_tested,nb_untested,instrumentations,false))
       table[nb_functions+2][i+3].setData ( coverage_level,StatValue(nb_tested,nb_untested), TABLE_FORMAT_STATISTIC_LEVEL);
     else
       table[nb_functions+2][i+3].setData ( coverage_level, ("--"), TABLE_FORMAT_STATISTIC_LEVEL);
@@ -524,7 +519,7 @@ QString CSMesReport::exportStatisticFunction(CSMesReport::table_t &table,int cov
     printStatus(QObject::tr("Exporting Statistics..."),(nb_executions+2)/(3+nb_executions));
 
     // global statistic
-    if (statisticExecution(executions,QStringList(),false,coverage_level,method,nb_tested,nb_untested,instrumentations,false))
+    if (statisticExecution(executions,ExecutionNames(),false,coverage_level,method,nb_tested,nb_untested,instrumentations,false))
       table[nb_functions+2][nb_executions+3].setData(coverage_level, StatValue(nb_tested,nb_untested),TABLE_FORMAT_STATISTIC_LEVEL);
     else
       table[nb_functions+2][nb_executions+3].setData(coverage_level, ("--"),TABLE_FORMAT_STATISTIC_LEVEL);
@@ -971,7 +966,7 @@ void CSMesReport::generateIntro(
   }
 
   {
-    QStringList execs=csmes.selectedExecutions();
+    ExecutionNames execs=csmes.selectedExecutions();
     {
       WriterSection execution_list_title(stream,Writer::HtmlExecutionListTitle);
       stream  << QObject::tr("Execution List") << ":" ; 
@@ -988,7 +983,7 @@ void CSMesReport::generateIntro(
         stream <<  QObject::tr("State")  ; 
       }
     }
-    for (QStringList::const_iterator it=execs.begin();it!=execs.end();++it)
+    for (ExecutionNames::const_iterator it=execs.begin();it!=execs.end();++it)
     {
       WriterSection execution_list_item(stream,Writer::ExecutionListItem);
       {

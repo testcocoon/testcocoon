@@ -82,8 +82,8 @@ void CoverageSettings::loadSettings()
   setCoverageLevel(Options::get_opt_int(QString(),"COVERAGE_LEVEL",1));
   setTestCoverageMode(Options::get_opt_bool(QString(),"TEST_COVERAGE_COUNT_MODE",false));
   setExecutionAnalysisMode(Options::get_opt_bool(QString(),"EXECUTION_ANALYSIS_MODE",false));
-  setSelectedExecutions(Options::get_opt_strlst(QString(),"SELECTED_EXECUTIONS",QStringList()));
-  setSelectedExecutionsComparaison(Options::get_opt_strlst(QString(),"SELECTED_EXECUTIONS_COMPARAISON",QStringList()));
+  setSelectedExecutions(ExecutionNames(ExecutionNames::fromQStringList(Options::get_opt_strlst(QString(),"SELECTED_EXECUTIONS",QStringList()))));
+  setSelectedExecutionsComparaison(ExecutionNames::fromQStringList(Options::get_opt_strlst(QString(),"SELECTED_EXECUTIONS_COMPARAISON",QStringList())));
   setSourceType(str2source_type(Options::get_opt_str(QString(),"SOURCE_TYPE","UNDEF")));
   notifyModification();
   _save_settings=true;
@@ -98,8 +98,8 @@ void CoverageSettings::saveSettings()
     Options::set_opt(QString(),"COVERAGE_LEVEL",_data._coverage_level);
     Options::set_opt(QString(),"COVERAGE_METHOD",static_cast<long>(_data._coverage_method));
     Options::set_opt(QString(),"COVERAGE_COMPARAISON_MODE",static_cast<long>(_data._release_comparaison_mode));
-    Options::set_opt(QString(),"SELECTED_EXECUTIONS",_data._selected_executions);
-    Options::set_opt(QString(),"SELECTED_EXECUTIONS_COMPARAISON",_data._selected_executions_comparaison);
+    Options::set_opt(QString(),"SELECTED_EXECUTIONS",_data._selected_executions.toQStringList());
+    Options::set_opt(QString(),"SELECTED_EXECUTIONS_COMPARAISON",_data._selected_executions_comparaison.toQStringList());
     if (_data._source_type!=CSMesUndoRedoFramework::SOURCE_UNDEF)
       Options::set_opt(QString(),"SOURCE_TYPE",source_type2str(_data._source_type));
   }
@@ -160,21 +160,21 @@ void CoverageSettings::setWorkingMode(working_mode_t b)
   }
 }
 
-void CoverageSettings::setSelectedExecutions(const QStringList &l)  
+void CoverageSettings::setSelectedExecutions(const ExecutionNames &l)  
 {
   if (_data._selected_executions!=l)
   {
     _data._selected_executions=l;
-    _data._selected_executions.sort();
+    qSort(_data._selected_executions);
     notify();
   }
 }
-void CoverageSettings::setSelectedExecutionsComparaison(const QStringList &l) 
+void CoverageSettings::setSelectedExecutionsComparaison(const ExecutionNames &l) 
 {
   if (_data._selected_executions_comparaison!=l)
   {
     _data._selected_executions_comparaison=l;
-    _data._selected_executions_comparaison.sort();
+    qSort(_data._selected_executions_comparaison);
     notify();
   }
 }
@@ -192,7 +192,7 @@ CoverageSettings& CoverageSettings::object()
   return *instance_p;
 }
 
-bool CoverageSettings::selectExecutionsComparaison(const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t m, bool execution_analysis_mode) 
+bool CoverageSettings::selectExecutionsComparaison(const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t m, bool execution_analysis_mode) 
 {
   setCoverageLevel(coverage_level);
   setExecutionAnalysisMode(execution_analysis_mode);
@@ -322,7 +322,7 @@ QString CoverageSettings::descriptionOfDifferences (const CoverageSettings &ref)
         descriptions+=tr("Select %1 executions").arg(n_selected);
       else
       {
-        for (QStringList::const_iterator it=_data._selected_executions.begin();it!=_data._selected_executions.end();++it)
+        for (ExecutionNames::const_iterator it=_data._selected_executions.begin();it!=_data._selected_executions.end();++it)
         {
           if (!ref._data._selected_executions.contains(*it))
           {
@@ -338,7 +338,7 @@ QString CoverageSettings::descriptionOfDifferences (const CoverageSettings &ref)
          descriptions+=tr("Deselect %1 executions").arg(-n_selected);
       else
       {
-        for (QStringList::const_iterator it=ref._data._selected_executions.begin();it!=ref._data._selected_executions.end();++it)
+        for (ExecutionNames::const_iterator it=ref._data._selected_executions.begin();it!=ref._data._selected_executions.end();++it)
         {
           if (!_data._selected_executions.contains(*it))
           {

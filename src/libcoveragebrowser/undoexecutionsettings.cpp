@@ -24,7 +24,7 @@
 #include "csmesbackgroundcomputations.h"
 #include <QTime>
 
-UndoCmdExecutionSettings::UndoCmdExecutionSettings (CSMes *csmes_p,const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t m, bool execution_analysis_mode,QUndoCommand *parent) : QUndoCommand("",parent)
+UndoCmdExecutionSettings::UndoCmdExecutionSettings (CSMes *csmes_p,const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t m, bool execution_analysis_mode,QUndoCommand *parent) : QUndoCommand("",parent)
 {
   m_csmes_p=csmes_p;
   redo_settings.selectExecutionsComparaison(ms,comparaison,test_coverage_mode, coverage_level,method, m, execution_analysis_mode) ;

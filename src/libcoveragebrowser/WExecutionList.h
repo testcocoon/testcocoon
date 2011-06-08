@@ -40,13 +40,11 @@ public:
     WExecutionList(QWidget* parent = 0,  Qt::WindowFlags fl = 0);
     virtual ~WExecutionList();
     void setCSMes(CSMesUndoRedoFramework *);
-    QString Module() const ;
-    QString Source() const;
-    void selectComparaison( const QStringList& selection_list, const QStringList &comparaison_list,bool test_coverage_mode,Instrumentation::coverage_method_t, bool execution_comparaison_mode, CSMes::comparaison_mode_t, int coverage_level);
+    void selectComparaison( const ExecutionNames& selection_list, const ExecutionNames &comparaison_list,bool test_coverage_mode,Instrumentation::coverage_method_t, bool execution_comparaison_mode, CSMes::comparaison_mode_t, int coverage_level);
 signals:
     void updateGUI();
     void setExplanation(const QString &);
-    void setExecutionComment(const QString &name,const QString &);
+    void setExecutionComment(const ExecutionName &name,const QString &);
     void setExecutionCommentAvailable(bool);
 private:
     MatchExpr filter;

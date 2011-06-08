@@ -52,12 +52,12 @@ class CSMesAnalysis : public CSMesEmma
     virtual ~CSMesAnalysis();
     void clear();
     bool compareCSMes(const QString &file);
-    void setManuallyValidated(const QString &mod,const QString &src,int index,bool b);
+    void setManuallyValidated(const ModuleFile &mod,const SourceFile &src,int index,bool b);
     QString relativeSourceNameReference(const QString &src) const;
     void equivalentModulesReference(const ModuleFile &module,const SourceFile &source,ModuleFile &mod,SourceFile &src,ModuleFile &mod_ref,SourceFile &src_ref) const ;
     modifications_t compareCSMesSource(const ModuleFile &module,const SourceFile &source) const ;
-    bool statisticExecution(const QStringList &ms,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,comparaison_mode_t, int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations,const bool &abort_operation) const;
-    bool statisticExecution(const QStringList &ms,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,comparaison_mode_t comparaison, int &nb_tested,int &nb_untested,const bool &abort_operation) const;
+    bool statisticExecution(const ExecutionNames &ms,const ExecutionNames &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,comparaison_mode_t, int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations,const bool &abort_operation) const;
+    bool statisticExecution(const ExecutionNames &ms,const ExecutionNames &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,comparaison_mode_t comparaison, int &nb_tested,int &nb_untested,const bool &abort_operation) const;
     const QString &getFilenameReference() const ;
     const ModuleFiles& ModulesReference() const ;
     SourceFiles SourcesReference(const SourceFile &s) const ;
@@ -71,8 +71,8 @@ class CSMesAnalysis : public CSMesEmma
     QVector<FunctionInfo> FunctionInfoSourceReference( const ModuleFile &module, const SourceFile &source) const;
     modifications_t compareCSMesFunction(const CSMesFunctionInfo::functionskey_t &func,const CSMesFunctionInfo::functionskey_t &func_ref) const;
     bool loadCSMes(const QString &file);
-    bool selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t methode, comparaison_mode_t m,const bool &abort_operation) const;
-    bool selectExecutionsComparaison(const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t method, comparaison_mode_t m,const bool &abort_operation) ;
+    bool selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t methode, comparaison_mode_t m,const bool &abort_operation) const;
+    bool selectExecutionsComparaison(const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t method, comparaison_mode_t m,const bool &abort_operation) ;
     comparaison_mode_t comparaisonMode() const { return comparaison_mode ; }
     QString  explanation (const ModuleFile &module,const SourceFile &source,const QList<int> &indexs,source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit) const ;
   protected:
@@ -102,14 +102,14 @@ class CSMesAnalysis : public CSMesEmma
     {
       private:
         comparaison_mode_t _comparaison;
-        QStringList _mes;
-        QStringList _cmp;
+        ExecutionNames _mes;
+        ExecutionNames _cmp;
         bool _execution_analysis;
         int _coverage_level;
         Instrumentation::coverage_method_t _method;
         friend inline uint qHash(const CSMesAnalysis::StatisticExecutionCacheKey &f) ;
       public:
-        StatisticExecutionCacheKey(const QStringList &mes,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,comparaison_mode_t comparaison)
+        StatisticExecutionCacheKey(const ExecutionNames &mes,const ExecutionNames &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,comparaison_mode_t comparaison)
         {
           _mes=mes;
           _cmp=cmp;

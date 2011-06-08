@@ -47,9 +47,9 @@ public:
   working_mode_t getWorkingMode() const { return _data._working_mode; }
   int getCoverageLevel() const { return _data._coverage_level; }
   bool getTestCoverageMode() const { return _data._test_coverage_mode; }
-  QStringList getSelectedExecutions() const { return _data._selected_executions; };
-  QStringList getSelectedExecutionsComparaison() const { return _data._selected_executions_comparaison; };
-  bool selectExecutionsComparaison(const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t m, bool execution_analysis_mode) ;
+  const ExecutionNames& getSelectedExecutions() const { return _data._selected_executions; };
+  const ExecutionNames& getSelectedExecutionsComparaison() const { return _data._selected_executions_comparaison; };
+  bool selectExecutionsComparaison(const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t m, bool execution_analysis_mode) ;
 
   QString descriptionOfDifferences (const CoverageSettings &ref) const;
 
@@ -69,8 +69,8 @@ private:
   void setCoverageMethod(Instrumentation::coverage_method_t m) ;
   void setCoverageLevel(int l) ;
   void setTestCoverageMode(bool b);
-  void setSelectedExecutions(const QStringList &)  ;
-  void setSelectedExecutionsComparaison(const QStringList &) ;
+  void setSelectedExecutions(const ExecutionNames &)  ;
+  void setSelectedExecutionsComparaison(const ExecutionNames &) ;
   void setReleaseComparaisonMode(CSMes::comparaison_mode_t m) ;
   void setExecutionAnalysisMode(bool);
   friend class SettingsCheck;
@@ -93,8 +93,8 @@ private:
     bool                                    _execution_analysis_mode;
     int                                     _coverage_level;
     bool                                    _test_coverage_mode;
-    QStringList                             _selected_executions;
-    QStringList                             _selected_executions_comparaison;
+    ExecutionNames                          _selected_executions;
+    ExecutionNames                          _selected_executions_comparaison;
     working_mode_t                          _working_mode;
     CSMesUndoRedoFramework::source_type_t   _source_type;
   };

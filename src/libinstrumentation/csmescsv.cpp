@@ -70,9 +70,9 @@ QString CSMesCsv::CSVstat(int nb_tested,int nb_untested,QChar floatSep)
 QString CSMesCsv::exportCSVStatisticModule(const QString &filename,QChar separator,QChar floatSep,int coverage_level,Instrumentation::coverage_method_t method) const
 {
   int nb_tested,nb_untested;
-  const QStringList executions=selectedExecutions();
+  const ExecutionNames executions=selectedExecutions();
   int nb_executions=executions.count();
-  QStringList::const_iterator it;
+  ExecutionNames::const_iterator it;
   if (executions.isEmpty())
     return QObject::tr("No executions selected");
   QFile f(filename);
@@ -103,10 +103,10 @@ QString CSMesCsv::exportCSVStatisticModule(const QString &filename,QChar separat
   printStatus(QObject::tr("Exporting Statistics..."),count/max_elem); count++;
   for (it=executions.begin();it!=executions.end();++it)
   {
-    QStringList execs;
+    ExecutionNames execs;
     execs+=*it;
-    QHash<QString,int> nb_tested_list;
-    QHash<QString,int> nb_untested_list;
+    QHash<ExecutionName,int> nb_tested_list;
+    QHash<ExecutionName,int> nb_untested_list;
     if ( statisticSourcesExecution(sources,execs,coverage_level,method,nb_tested_list,nb_untested_list,instrumentations) )
     {
       stream << CSVEscape(*it);
@@ -121,9 +121,9 @@ QString CSMesCsv::exportCSVStatisticModule(const QString &filename,QChar separat
       }
 
       // statistics for each execution
-      QStringList execs;
+      ExecutionNames execs;
       execs+=*it;
-      if (statisticExecution(execs,QStringList(),false,coverage_level,method,nb_tested,nb_untested,instrumentations,false))
+      if (statisticExecution(execs,ExecutionNames(),false,coverage_level,method,nb_tested,nb_untested,instrumentations,false))
         stream << separator << CSVstat(nb_tested,nb_untested,floatSep);
       else
         stream << separator << CSVEscape("--");
@@ -136,8 +136,8 @@ QString CSMesCsv::exportCSVStatisticModule(const QString &filename,QChar separat
   stream << CSVEscape(QObject::tr("Total"));
   stream << separator ;
   // statistics for each module
-  QHash<QString,int> nb_tested_list;
-  QHash<QString,int> nb_untested_list;
+  QHash<ExecutionName,int> nb_tested_list;
+  QHash<ExecutionName,int> nb_untested_list;
   if ( statisticSourcesExecution(sources,executions,coverage_level,method,nb_tested_list,nb_untested_list,instrumentations) )
   {
     for (it_src=sources.begin(),c=0;it_src!=sources.end();++it_src,c++)
@@ -151,7 +151,7 @@ QString CSMesCsv::exportCSVStatisticModule(const QString &filename,QChar separat
   printStatus(QObject::tr("Exporting Statistics..."),count/max_elem); count++;
 
   // global statistic
-  if (statisticExecution(executions,QStringList(),false,coverage_level,method,nb_tested,nb_untested,instrumentations,false))
+  if (statisticExecution(executions,ExecutionNames(),false,coverage_level,method,nb_tested,nb_untested,instrumentations,false))
     stream << separator << CSVstat(nb_tested,nb_untested,floatSep);
   else
     stream << separator << CSVEscape("--");

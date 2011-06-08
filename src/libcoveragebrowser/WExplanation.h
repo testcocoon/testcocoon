@@ -43,7 +43,7 @@ protected:
     CSMesUndoRedoFramework * csmes_p;
 
 protected slots:
-  void setExplanation(const QString &,const QString &,const QList<int> &,CSMes::source_type_t ,int ,Instrumentation::coverage_method_t ,int,const QString &);
+  void setExplanation(const ModuleFile &,const SourceFile &,const QList<int> &,CSMes::source_type_t ,int ,Instrumentation::coverage_method_t ,int,const QString &);
     virtual void languageChange();
 
 private:

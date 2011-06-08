@@ -3,6 +3,8 @@ SET(PROGNAME instrumentation)
 INCLUDE(../commoncode/common.cmake)
 
 set(SRCS
+    executionname.cpp
+    executionnames.cpp
     csmesinstrumentationdatabase.cpp
     instrumentation.cpp
     Service.cpp

@@ -37,7 +37,7 @@ class ExecutionSelection
 
   private:
     CSMes &_csmes;
-    QStringList _selected_executions;
+    ExecutionNames _selected_executions;
     bool _test_count_mode;
     Instrumentation::coverage_method_t _method;
   enum selection_type_t

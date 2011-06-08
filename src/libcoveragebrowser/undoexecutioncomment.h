@@ -20,6 +20,7 @@
 #define UNDO_EXECUTION_COMMENT_H
 #include <QUndoCommand>
 #include <QString>
+#include "executionname.h"
 class CSMes ;
 class WMain ;
 
@@ -27,7 +28,7 @@ class WMain ;
 class UndoCmdExecutionComment : public QUndoCommand
 {
   public:
-    UndoCmdExecutionComment (CSMes *csmes_p,WMain *wmain_p,const QString &name,const QString &old_comment,const QString &new_comment, QUndoCommand *parent);
+    UndoCmdExecutionComment (CSMes *csmes_p,WMain *wmain_p,const ExecutionName &name,const QString &old_comment,const QString &new_comment, QUndoCommand *parent);
     virtual void redo();
     virtual void undo();
 
@@ -35,7 +36,7 @@ class UndoCmdExecutionComment : public QUndoCommand
   private:
 
     CSMes *m_csmes_p;
-    QString m_name;
+    ExecutionName m_name;
     QString m_old_comment;
     QString m_new_comment;
     WMain *m_wmain_p;

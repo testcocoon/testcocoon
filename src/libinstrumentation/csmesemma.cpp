@@ -110,7 +110,7 @@ void CSMesEmma::exportEmmaStatistics(QXmlStreamWriter &stream,
 
 QString CSMesEmma::exportEMMAStatistic(const QString &filename,int coverage_level,Instrumentation::coverage_method_t method) const
 {
-  const QStringList executions=selectedExecutions();
+  const ExecutionNames executions=selectedExecutions();
   int nb_executions=executions.count();
   if (nb_executions==0)
     return QObject::tr("No executions selected");
@@ -123,11 +123,11 @@ QString CSMesEmma::exportEMMAStatistic(const QString &filename,int coverage_leve
 
     CSMesInstrumentations _instrumentations ;
     copyInstrumentation(_instrumentations,instrumentations);
-    selectExecutionsComparaison(_instrumentations,executions,QStringList(),is_test_count_mode_selected,method,false);
+    selectExecutionsComparaison(_instrumentations,executions,ExecutionNames(),is_test_count_mode_selected,method,false);
     CSMesInstrumentations _instrumentations_block ;
     copyInstrumentation(_instrumentations_block,instrumentations);
-    selectExecutionsComparaison(_instrumentations_block,executions,QStringList(),is_test_count_mode_selected,Instrumentation::COVERAGE_BRANCH,false);
-    QStringList::const_iterator it_fct;
+    selectExecutionsComparaison(_instrumentations_block,executions,ExecutionNames(),is_test_count_mode_selected,Instrumentation::COVERAGE_BRANCH,false);
+    ExecutionNames::const_iterator it_fct;
     const QList<CSMesFunctionInfo::functionskey_t> functions= Functions();
     int nb_functions=functions.count();
     QHash<CSMesFunctionInfo::functionskey_t,int> nb_tested_function_list;
@@ -147,8 +147,8 @@ QString CSMesEmma::exportEMMAStatistic(const QString &filename,int coverage_leve
     }
     int nb_class=classes.count();
 
-    QHash<QString,int> nb_tested_source_list;
-    QHash<QString,int> nb_untested_source_list;
+    QHash<ExecutionName,int> nb_tested_source_list;
+    QHash<ExecutionName,int> nb_untested_source_list;
     const SourceFiles sources= Sources(NON_EMPTY);
     int nb_sources=sources.count();
     statisticSourcesExecution(sources,executions,coverage_level,method,nb_tested_source_list,nb_untested_source_list,_instrumentations) ;
@@ -159,8 +159,8 @@ QString CSMesEmma::exportEMMAStatistic(const QString &filename,int coverage_leve
     int nb_tested_block,nb_untested_block;
     statistic(coverage_level,Instrumentation::COVERAGE_BRANCH,nb_tested_block,nb_untested_block,_instrumentations_block) ;
 
-    QHash<QString,int> nb_tested_source_block_list;
-    QHash<QString,int> nb_untested_source_block_list;
+    QHash<ExecutionName,int> nb_tested_source_block_list;
+    QHash<ExecutionName,int> nb_untested_source_block_list;
     statisticSourcesExecution(sources,executions,coverage_level,Instrumentation::COVERAGE_BRANCH,nb_tested_source_block_list,nb_untested_source_block_list,_instrumentations_block) ;
 
     QHash<CSMesFunctionInfo::functionskey_t,int> nb_tested_function_block_list;

@@ -50,11 +50,11 @@ class CSMesBackgroundComputations : public QObject
          };
         QList<int> lines_indexes;
          type_t  type;
-         QStringList measurements;
-         QStringList comparaisons;
+         ExecutionNames measurements;
+         ExecutionNames comparaisons;
          bool test_count_mode;
-         QString module;
-         QString source;
+         ModuleFile module;
+         SourceFile source;
          CSMes::source_type_t source_type;
          Instrumentation::coverage_method_t method;
          CSMes::comparaison_mode_t comparaison_mode;
@@ -98,9 +98,9 @@ class CSMesBackgroundComputations : public QObject
 
     void setCSMes(const CSMes *);
     void stop(bool stop_thread);
-    void calculateStatisticExecution(const QStringList &mes,const QStringList &comparaison,bool test_count_mode,int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t comparaison_mode) ;
-    void cancelStatisticExecution(const QStringList &mes,const QStringList &comparaison,bool test_count_mode,int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t comparaison_mode) ;
-    void calculateExplanation(const QString &module,const QString &source, const QList<int>& lines,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit);
+    void calculateStatisticExecution(const ExecutionNames &mes,const ExecutionNames &comparaison,bool test_count_mode,int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t comparaison_mode) ;
+    void cancelStatisticExecution(const ExecutionNames &mes,const ExecutionNames &comparaison,bool test_count_mode,int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t comparaison_mode) ;
+    void calculateExplanation(const ModuleFile &module,const SourceFile &source, const QList<int>& lines,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit);
     bool isRunning() const;
     bool isAllRunning() const;
 
@@ -110,13 +110,13 @@ class CSMesBackgroundComputations : public QObject
     void waitForRequest();
 
    signals:
-    void statisticExecution(const QStringList &,const QStringList &comparaison,bool execution_analysis,int ,Instrumentation::coverage_method_t , CSMes::comparaison_mode_t, int ,int ) ;
-    void explanation (const QString &module,const QString &source,const QList<int> &lines_indexs,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit,const QString &exp);
+    void statisticExecution(const ExecutionNames &,const ExecutionNames &comparaison,bool execution_analysis,int ,Instrumentation::coverage_method_t , CSMes::comparaison_mode_t, int ,int ) ;
+    void explanation (const ModuleFile &module,const SourceFile &source,const QList<int> &lines_indexs,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit,const QString &exp);
 
 
   private slots:
-    void statisticExecutionSlot(QStringList ,QStringList comparaison,bool execution_analysis,int ,Instrumentation::coverage_method_t , CSMes::comparaison_mode_t,int ,int ) ;
-    void explanationSlot (QString ,QString ,QList<int> ,CSMes::source_type_t ,int ,Instrumentation::coverage_method_t ,int, QString );
+    void statisticExecutionSlot(ExecutionNames ,ExecutionNames comparaison,bool execution_analysis,int ,Instrumentation::coverage_method_t , CSMes::comparaison_mode_t,int ,int ) ;
+    void explanationSlot (ModuleFile ,SourceFile ,QList<int> ,CSMes::source_type_t ,int ,Instrumentation::coverage_method_t ,int, QString );
 
    private:
     void startOneThread();

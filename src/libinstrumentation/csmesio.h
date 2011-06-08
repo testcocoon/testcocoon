@@ -42,7 +42,7 @@ class CSMesIO : public CSMesComment
   protected:
     LIBINSTRUMENTATION_API bool lock_csexe(QIODevice &file);
     LIBINSTRUMENTATION_API bool unlock_csexe(QIODevice &file);
-    bool loadCSExe(QIODevice &data,QString name,csexe_import_policy_t,Executions::execution_status_t default_execution_status,QStringList &new_executions,QString &info,QString &short_status,QString &errmsg,QHash<QString,Executions::modules_executions_private_t> *undo_backup_p,progress_function_t);
+    bool loadCSExe(QIODevice &data,ExecutionName name,csexe_import_policy_t,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsg,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,progress_function_t);
     bool loadCSMes(const QString &file);
     bool mergeCSMes(const QString &s,CSMESFile::merge_policy_t policy);
     bool saveCSMes();
@@ -56,16 +56,16 @@ class CSMesIO : public CSMesComment
     const QString &getFilename() const { return filename ; }
     const QString &error() const { return err; }
     void read_source(const QString &module,const QString &source, CSMESFile::type_t t,QString &qbuf) const;
-    unsigned long checksum(const QString &module,const QString &source) const;
+    unsigned long checksum(const ModuleFile &module,const SourceFile &source) const;
   private:
     CSMESFileThread csmes;
     QString filename;
   protected:
     QString err;
   private:
-    bool load_csexe_one(Executions::modules_executions_t &execution, QString &name,QString &err,QIODevice &data,QString &last_line,int &line_nr,const QString &name_orig,csexe_import_policy_t policy,Executions::execution_status_t default_execution_status) const;
-    bool isCSExeDirectory(const QString &) const;
-    QString executionName(const QString &default_name,const QString &execution_name,csexe_import_policy_t policy) const;
+    bool load_csexe_one(Executions::modules_executions_t &execution, ExecutionName &name,QString &err,QIODevice &data,QString &last_line,int &line_nr,const ExecutionName &name_orig,csexe_import_policy_t policy,Executions::execution_status_t default_execution_status) const;
+    bool isCSExeDirectory(const ExecutionName &) const;
+    ExecutionName executionName(const ExecutionName &default_name,const ExecutionName &execution_name,csexe_import_policy_t policy) const;
     bool has_condition_instrumentation;
 };
 

@@ -20,13 +20,14 @@
 #define UNDO_EXECUTION_STATUS_STR_H
 #include <QUndoCommand>
 #include <QString>
+#include "executionname.h"
 class CSMes ;
 
 
 class UndoCmdExecutionStatusStr : public QUndoCommand
 {
   public:
-    UndoCmdExecutionStatusStr (CSMes *csmes_p,const QString &execution_name, const QString & e, QUndoCommand *parent);
+    UndoCmdExecutionStatusStr (CSMes *csmes_p,const ExecutionName &execution_name, const QString & e, QUndoCommand *parent);
     virtual ~UndoCmdExecutionStatusStr ();
     virtual void redo();
     virtual void undo();
@@ -35,7 +36,7 @@ class UndoCmdExecutionStatusStr : public QUndoCommand
   private:
 
     CSMes *m_csmes_p;
-    QString m_name;
+    ExecutionName m_name;
     QString m_execution_status_new;
     QString m_execution_status_old;
 };

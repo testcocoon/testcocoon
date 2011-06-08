@@ -22,7 +22,7 @@
 #include "csmesbackgroundcomputations.h"
 #include <QTime>
 
-UndoCmdComment::UndoCmdComment (CSMes *csmes_p,const QString &module,const QString &source,int index,const QString &old_comment,const QString &new_comment,QUndoCommand *parent) : QUndoCommand("",parent)
+UndoCmdComment::UndoCmdComment (CSMes *csmes_p,const ModuleFile &module,const SourceFile &source,int index,const QString &old_comment,const QString &new_comment,QUndoCommand *parent) : QUndoCommand("",parent)
 {
   m_csmes_p=csmes_p;
   m_module=module;

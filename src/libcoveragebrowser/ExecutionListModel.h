@@ -48,40 +48,39 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
-    QModelIndex find(const QString & module, const QString &source) const ;
     bool setData(const QModelIndex &index, const QVariant &value, int role);
     bool deleteIndex(const QModelIndex &index);
-    bool renameIndex(const QModelIndex &index,const QString &name);
+    bool renameIndex(const QModelIndex &index,const ExecutionName &name);
     QString executionName(const QModelIndex &,bool execution_only=true) const;
     void Select(const QString &pattern,bool comments, bool no_comments, bool unknown, bool passed, bool failed, bool check_manually);
     void DeSelect(const QString &pattern,bool comments, bool no_comments, bool unknown, bool passed, bool failed, bool check_manually);
     void Comparaison( const QModelIndexList & v);
-    bool renameExecution(const QString &old_name,const QString &new_name);
-    bool deleteExecution(const QString &name);
-    bool deleteExecution(const QStringList &names);
-    bool mergeExecutions(const QStringList &executions,const QString &name);
+    bool renameExecution(const ExecutionName &old_name,const ExecutionName &new_name);
+    bool deleteExecution(const ExecutionName &name);
+    bool deleteExecution(const ExecutionNames &names);
+    bool mergeExecutions(const ExecutionNames &executions,const ExecutionName &name);
     bool setExecutionComment (const QModelIndex &index,const QString &comment);
     void refresh();
     void setFilter( bool comments, bool no_comments, bool unknown, bool passed, bool failed, bool check_manually) ;
-    void selectComparaison( const QStringList& selection_list, const QStringList &comparaison_list,bool test_coverage_mode,Instrumentation::coverage_method_t, bool execution_comparaison_mode, CSMes::comparaison_mode_t, int coverage_level);
+    void selectComparaison( const ExecutionNames& selection_list, const ExecutionNames &comparaison_list,bool test_coverage_mode,Instrumentation::coverage_method_t, bool execution_comparaison_mode, CSMes::comparaison_mode_t, int coverage_level);
 
 signals:
     void updateGUI();
 
 private:
-    static void updateGroupItems(const TreeList *rootItem,const QStringList &selected_executions,TreeList *e) ;
-    void getAllExecutions(const TreeList *e,QStringList &execs) const;
+    static void updateGroupItems(const TreeList *rootItem,const ExecutionNames &selected_executions,TreeList *e) ;
+    void getAllExecutions(const TreeList *e,ExecutionNames &execs) const;
     static  QString executionName(const TreeList *_rootItem,const TreeList *e,bool execution_only) ;
     void setupModelData();
     CSMesUndoRedoFramework *csmes_p;
-    QStringList executionList;
-    static inline TreeList * insertExecution (TreeList *_rootItem,const QStringList &selected_executions,const QString &name) ;
+    ExecutionNames executionList;
+    static inline TreeList * insertExecution (TreeList *_rootItem,const ExecutionNames &selected_executions,const ExecutionName &name) ;
 
-    TreeList * executionTreeList(const QString &name) const;
+    TreeList * executionTreeList(const ExecutionName &name) const;
     void invalidateStatisticsFromParents(TreeList *item_p);
     void stopBackgroundCalculation();
-    TreeList * executionTreeList(const QStringList &names) const;
-    QList<TreeList *> executionTreeLists(const QStringList &names) const;
+    TreeList * executionTreeList(const ExecutionNames &names) const;
+    QList<TreeList *> executionTreeLists(const ExecutionNames &names) const;
     bool filter_comment;
     bool filter_no_comment;
     bool filter_unknown;
@@ -92,7 +91,7 @@ private:
   
     void recalculateStatistics();
     void recalculateStatistics(QModelIndex );
-    static TreeList *generateRootItem(const QStringList &execution_list,const QStringList &selected_executions); 
+    static TreeList *generateRootItem(const ExecutionNames &execution_list,const ExecutionNames &selected_executions); 
     bool updateModelData();
     inline bool updateModelDataRemoveObselete(const TreeList *newRootItem,TreeList *_Item) ;
     inline bool updateModelDataInsertItems(const TreeList *newRootItem, TreeList *_Item) ;
@@ -102,7 +101,7 @@ private:
   
   
  public slots:
-    void statisticExecution(const QStringList &,const QStringList &, bool ,int,Instrumentation::coverage_method_t,CSMes::comparaison_mode_t, int,int) ;
+    void statisticExecution(const ExecutionNames &,const ExecutionNames &, bool ,int,Instrumentation::coverage_method_t,CSMes::comparaison_mode_t, int,int) ;
     void refreshView();
 };
 

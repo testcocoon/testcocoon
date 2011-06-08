@@ -172,13 +172,13 @@ QList<int> CSMes::commentedLinesOrg(const ModuleFile &mod,const SourceFile &src)
 }
 
 
-bool CSMes::statisticFunctionsExecution(const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_tested,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_untested) const
+bool CSMes::statisticFunctionsExecution(const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_tested,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_untested) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesStatistic::statisticFunctionsExecution(ms,coverage_level,method,nb_tested,nb_untested) ;
 }
 
-bool CSMes::statisticSourcesExecution(const SourceFiles &sources,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<QString,int> &nb_tested,QHash<QString,int> &nb_untested) const
+bool CSMes::statisticSourcesExecution(const SourceFiles &sources,const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<ExecutionName,int> &nb_tested,QHash<ExecutionName,int> &nb_untested) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesStatistic::statisticSourcesExecution(sources,ms,coverage_level,method,nb_tested,nb_untested) ;
@@ -197,13 +197,13 @@ bool CSMes::statistic(int coverage_level,Instrumentation::coverage_method_t meth
   return CSMesStatistic::statistic(coverage_level,method,nb_tested,nb_untested) ;
 }
 
-bool CSMes::statisticExecution(const QStringList &mes,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,CSMes::comparaison_mode_t comparaison,int &nb_tested,int &nb_untested,const bool &abort_operation) const
+bool CSMes::statisticExecution(const ExecutionNames &mes,const ExecutionNames &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,CSMes::comparaison_mode_t comparaison,int &nb_tested,int &nb_untested,const bool &abort_operation) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesAnalysis::statisticExecution(mes,cmp,execution_analysis,coverage_level,method,comparaison,nb_tested,nb_untested,abort_operation) ;
 }
 
-bool CSMes::statisticModuleExecution(ModuleFile module,SourceFile source,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const
+bool CSMes::statisticModuleExecution(ModuleFile module,SourceFile source,const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesStatistic::statisticModuleExecution(module,source,ms,coverage_level,method,nb_tested,nb_untested) ;
@@ -215,33 +215,33 @@ bool CSMes::statisticFunctionPre(ModuleFile module,SourceFile source,long start_
   return CSMesStatistic::statisticFunctionPre(module,source,start_line,start_column,end_line,end_column,coverage_level,method,nb_tested,nb_untested) ;
 }
 
-QStringList CSMes::executionList() const
+ExecutionNames CSMes::executionList() const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesExecution::executionList() ;
 }
 
-bool CSMes::setExecutionComment(const QString &name, const QString &comment)
+bool CSMes::setExecutionComment(const ExecutionName &name, const QString &comment)
 {
   AccessLockerWrite lock(csmes_locker);
   bool ret = CSMesExecution::setExecutionComment(name, comment) ;
   return ret;
 }
 
-bool CSMes::getExecutionComment(const QString &name, QString &comment) const
+bool CSMes::getExecutionComment(const ExecutionName &name, QString &comment) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesExecution::getExecutionComment(name, comment) ;
 }
 
-bool CSMes::deleteExecution(const QString &v)
+bool CSMes::deleteExecution(const ExecutionName &v)
 {
   AccessLockerWrite lock(csmes_locker);
   bool ret = CSMesExecution::deleteExecution(v) ;
   return ret;
 }
 
-bool CSMes::renameExecution(const QString &old_name,const QString &new_name)
+bool CSMes::renameExecution(const ExecutionName &old_name,const ExecutionName &new_name)
 {
   AccessLockerWrite lock(csmes_locker);
   bool ret = CSMesExecution::renameExecution(old_name,new_name) ;
@@ -249,75 +249,75 @@ bool CSMes::renameExecution(const QString &old_name,const QString &new_name)
 }
 
 
-void CSMes::restoreExecution(const QString &name,const Executions::modules_executions_private_t &exec)
+void CSMes::restoreExecution(const ExecutionName &name,const Executions::modules_executions_private_t &exec)
 {
   AccessLockerWrite lock(csmes_locker);
   CSMesExecution::restoreExecution(name,exec);
 }
 
-bool CSMes::backupExecution(const QString &name,Executions::modules_executions_private_t &exec) const
+bool CSMes::backupExecution(const ExecutionName &name,Executions::modules_executions_private_t &exec) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesExecution::backupExecution(name,exec);
 }
 
-bool CSMes::mergeExecutions(const QStringList &sources,const QString &dest)
+bool CSMes::mergeExecutions(const ExecutionNames &sources,const ExecutionName &dest)
 {
   AccessLockerWrite lock(csmes_locker);
   bool ret = CSMesExecution::mergeExecutions(sources,dest);
   return ret;
 }
 
-bool CSMes::executionExists(const QString &m) const
+bool CSMes::executionExists(const ExecutionName &m) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesExecution::executionExists(m) ;
 }
 
-bool CSMes::executionPathExists(const QString &m) const
+bool CSMes::executionPathExists(const ExecutionName &m) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesExecution::executionPathExists(m) ;
 }
 
-void CSMes::setExecutionStatus(const QString &name,Executions::execution_status_t e)
+void CSMes::setExecutionStatus(const ExecutionName &name,Executions::execution_status_t e)
 {
   AccessLockerWrite lock(csmes_locker);
   CSMesExecution::setExecutionStatus(name,e);
 }
 
-Executions::execution_status_t CSMes::getExecutionStatus(const QString &name) const
+Executions::execution_status_t CSMes::getExecutionStatus(const ExecutionName &name) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesExecution::getExecutionStatus(name) ;
 }
 
-QString CSMes::getExecutionStatusStr(const QString &name) const
+QString CSMes::getExecutionStatusStr(const ExecutionName &name) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesExecution::getExecutionStatusStr(name) ;
 }
 
-void CSMes::setExecutionStatusStr(const QString &name,const QString &execution_status)
+void CSMes::setExecutionStatusStr(const ExecutionName &name,const QString &execution_status)
 {
   AccessLockerWrite lock(csmes_locker);
   CSMesExecution::setExecutionStatusStr(name,execution_status) ;
 }
 
-bool CSMes::selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t methode, comparaison_mode_t m) const
+bool CSMes::selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t methode, comparaison_mode_t m) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesAnalysis::selectExecutionsComparaison(_instrumentations,ms,comparaison,test_coverage_mode, methode,m,false) ;
 }
 
-bool CSMes::selectExecutionsComparaison(const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t method, comparaison_mode_t m)
+bool CSMes::selectExecutionsComparaison(const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t method, comparaison_mode_t m)
 {
   AccessLockerWrite lock(csmes_locker);
   bool ret = CSMesAnalysis::selectExecutionsComparaison(ms,comparaison,test_coverage_mode, method,m,false) ;
   return ret;
 }
 
-QStringList CSMes::executedBy(const ModuleFile& module,const SourceFile & source,int index,bool selected_executions_only) const
+ExecutionNames CSMes::executedBy(const ModuleFile& module,const SourceFile & source,int index,bool selected_executions_only) const
 {
   AccessLockerRead lock(csmes_locker);
   return CSMesExecution::executedBy(module,source,index,selected_executions_only) ;
@@ -580,7 +580,7 @@ bool CSMes::loadCSMes(const QString &file)
   return ret;
 }
 
-bool CSMes::loadCSExe(QIODevice &data,QString name,csexe_import_policy_t p,Executions::execution_status_t default_execution_status,QStringList &new_executions,QString &info,QString &short_status,QString &errmsg,QHash<QString,Executions::modules_executions_private_t> *undo_backup_p,progress_function_t progress)
+bool CSMes::loadCSExe(QIODevice &data,ExecutionName name,csexe_import_policy_t p,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsg,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,progress_function_t progress)
 {
   AccessLockerWrite lock(csmes_locker);
   bool ret = CSMesAnalysis::loadCSExe(data,name,p,default_execution_status,new_executions,info,short_status,errmsg,undo_backup_p,progress);

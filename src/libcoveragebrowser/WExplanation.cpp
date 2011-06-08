@@ -65,16 +65,16 @@ void WExplanation::init()
   //text_p->setTextFormat(Qt::RichText);
   text_p->setReadOnly(true);
   connect( & CSMesBackgroundComputations::GetObject(),
-      SIGNAL(explanation(const QString &,const QString &,const QList<int> &,CSMes::source_type_t ,int ,Instrumentation::coverage_method_t ,int,const QString &)),
+      SIGNAL(explanation(const ModuleFile &,const SourceFile &,const QList<int> &,CSMes::source_type_t ,int ,Instrumentation::coverage_method_t ,int,const QString &)),
       this,
-      SLOT(setExplanation(const QString &,const QString &,const QList<int> &,CSMes::source_type_t ,int ,Instrumentation::coverage_method_t ,int,const QString &)));
+      SLOT(setExplanation(const ModuleFile &,const SourceFile &,const QList<int> &,CSMes::source_type_t ,int ,Instrumentation::coverage_method_t ,int,const QString &)));
 }
 
 void WExplanation::destroy()
 {
 }
 
-void WExplanation::setExplanation(const QString &module,const QString &source,const QList<int> &lines_indexs,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit,const QString &text)
+void WExplanation::setExplanation(const ModuleFile &module,const SourceFile &source,const QList<int> &lines_indexs,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit,const QString &text)
 {
 	if ( !_requested_module.isEmpty() &&            _requested_module            != module )
 		return;

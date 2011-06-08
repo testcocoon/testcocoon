@@ -21,13 +21,14 @@
 #include <QUndoCommand>
 #include <QString>
 #include <QStringList>
+#include "executionnames.h"
 class CSMes ;
 
 
 class UndoCmdExecutionMerge : public QUndoCommand
 {
   public:
-    UndoCmdExecutionMerge (CSMes *csmes_p,const QStringList &sources,const QString &execution_name, QUndoCommand *parent);
+    UndoCmdExecutionMerge (CSMes *csmes_p,const ExecutionNames &sources,const ExecutionName &execution_name, QUndoCommand *parent);
     virtual ~UndoCmdExecutionMerge ();
     virtual void redo();
     virtual void undo();
@@ -36,7 +37,7 @@ class UndoCmdExecutionMerge : public QUndoCommand
   private:
 
     CSMes *m_csmes_p;
-    QString m_name;
-    QStringList m_sources;
+    ExecutionName m_name;
+    ExecutionNames m_sources;
 };
 #endif

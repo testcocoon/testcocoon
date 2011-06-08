@@ -221,8 +221,8 @@ WMain::WMain(QWidget* parent, Qt::WindowFlags fl): QMainWindow ( parent, fl )
   // Executions
   connect( executions_p,SIGNAL( setExplanation(const QString &)),
            explanation_p ,SLOT( setExplanation( const QString &) ) ) ;
-  connect( executions_p,SIGNAL( setExecutionComment(const QString &,const QString &)),
-           this ,SLOT( _setExecutionComment( const QString &,const QString &) ) ) ;
+  connect( executions_p,SIGNAL( setExecutionComment(const ExecutionName &,const QString &)),
+           this ,SLOT( _setExecutionComment( const ExecutionName &,const QString &) ) ) ;
   connect( execution_comment_p,SIGNAL( accept()),
            this ,SLOT( _saveExecutionComment( ) ) ) ;
   connect( executions_p,SIGNAL( setExecutionCommentAvailable(bool)),
@@ -323,9 +323,9 @@ WMain::WMain(QWidget* parent, Qt::WindowFlags fl): QMainWindow ( parent, fl )
   createWindowMenu();
   createViewMenu();
   fullUpdate();
-  QStringList execs=selectedExecutions();
-  QStringList cmps=selectedExecutionsComparaison();
-  selectExecutions(QStringList(),QStringList(),getTestCoverageMode(),getCoverageMethod(),getExecutionAnalysisMode(),getReleaseComparaisonMode(),getCoverageLevel());
+  ExecutionNames execs=selectedExecutions();
+  ExecutionNames cmps=selectedExecutionsComparaison();
+  selectExecutions(ExecutionNames(),ExecutionNames(),getTestCoverageMode(),getCoverageMethod(),getExecutionAnalysisMode(),getReleaseComparaisonMode(),getCoverageLevel());
   selectExecutions(execs,cmps,getTestCoverageMode(),getCoverageMethod(),getExecutionAnalysisMode(),getReleaseComparaisonMode(),getCoverageLevel());
   csmes_file_p->clearUndoStack();
 }
@@ -462,7 +462,7 @@ void WMain::on_viewSourceAction_triggered()
   newSourceWindow (modules_browser_p->Module(),modules_browser_p->Source());
 }
 
-QMdiSubWindow *WMain::newSourceWindow (const QString &module,const QString &source)
+QMdiSubWindow *WMain::newSourceWindow (const ModuleFile &module,const SourceFile &source)
 {
   WSourceView *t = new WSourceView( workspace_p );
   QMdiSubWindow *subwindow_p=workspace_p->addSubWindow(t);
@@ -539,10 +539,10 @@ void WMain::LoadExecution(const WLoadExecution &exe,bool set_watch_only)
   }
 }
 
-void WMain::loadCSExeCommand(const QString &command,const QStringList &arguments,const QString &prefix,CSMesUndoRedoFramework::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,bool minimize_memory_usage)
+void WMain::loadCSExeCommand(const QString &command,const QStringList &arguments,const ExecutionName &prefix,CSMesUndoRedoFramework::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,bool minimize_memory_usage)
 {
   QString info,short_status;
-  QStringList new_measurements;
+  ExecutionNames new_measurements;
   WProcess *command_p=new WProcess;
   QByteArray csexe_data;
   command_p->setPrintStdOutput(false);
@@ -590,10 +590,10 @@ void WMain::loadCSExeCommand(const QString &command,const QStringList &arguments
   }
 }
 
-void WMain::loadCSExeFile(const QString &filename,const QString &prefix,CSMesUndoRedoFramework::csexe_import_policy_t policy,bool delete_after,Executions::execution_status_t default_execution_status,bool minimize_memory_usage)
+void WMain::loadCSExeFile(const QString &filename,const ExecutionName &prefix,CSMesUndoRedoFramework::csexe_import_policy_t policy,bool delete_after,Executions::execution_status_t default_execution_status,bool minimize_memory_usage)
 {
   QString info,short_status;
-  QStringList new_measurements;
+  ExecutionNames new_measurements;
   if (!csmes_file_p->loadCSExe( filename , prefix ,policy , default_execution_status,new_measurements,info,short_status ,!minimize_memory_usage,load_csexe_progress))
   {
     QMessageBox::warning(this,
@@ -1387,17 +1387,17 @@ SourceFiles WMain::sourceList() const
   return csmes_file_p->Sources(CSMes::NON_EMPTY);
 }
 
-QStringList WMain::executionsList() const
+ExecutionNames WMain::executionsList() const
 {
   return csmes_file_p->executionList();
 }
 
-bool WMain::statisticExecutions(const QStringList &l,int &nb_tested,int &nb_untested) const
+bool WMain::statisticExecutions(const ExecutionNames &l,int &nb_tested,int &nb_untested) const
 {
-  return csmes_file_p->statisticExecution(l,QStringList(),false,getCoverageLevel(),getCoverageMethod(),getReleaseComparaisonMode(),nb_tested,nb_untested,false);
+  return csmes_file_p->statisticExecution(l,ExecutionNames(),false,getCoverageLevel(),getCoverageMethod(),getReleaseComparaisonMode(),nb_tested,nb_untested,false);
 }
 
-bool WMain::selectExecutions( const QStringList& selection_list, const QStringList &cmp_items,bool test_coverage_mode,Instrumentation::coverage_method_t method, bool execution_comparaison_mode, CSMes::comparaison_mode_t csmes_comparaison_mode, int coverage_level)
+bool WMain::selectExecutions( const ExecutionNames& selection_list, const ExecutionNames &cmp_items,bool test_coverage_mode,Instrumentation::coverage_method_t method, bool execution_comparaison_mode, CSMes::comparaison_mode_t csmes_comparaison_mode, int coverage_level)
 {
   if (executions_p)
   {
@@ -1407,18 +1407,18 @@ bool WMain::selectExecutions( const QStringList& selection_list, const QStringLi
   return false;
 }
 
-QStringList WMain::selectedExecutions() const
+ExecutionNames WMain::selectedExecutions() const
 {
   return CoverageSettings::object().getSelectedExecutions();
 }
 
-QStringList WMain::selectedExecutionsComparaison() const
+ExecutionNames WMain::selectedExecutionsComparaison() const
 {
   return CoverageSettings::object().getSelectedExecutionsComparaison();
 }
 
 
-bool WMain::renameExecution(const QString &old_name,const QString & new_name)
+bool WMain::renameExecution(const ExecutionName &old_name,const ExecutionName & new_name)
 {
   CSMesBackgroundComputations::Pauser statistic_pauser;
   if (csmes_file_p->renameExecution(old_name,new_name))
@@ -1429,7 +1429,7 @@ bool WMain::renameExecution(const QString &old_name,const QString & new_name)
   return false;
 }
 
-bool WMain::deleteExecution(const QString &name)
+bool WMain::deleteExecution(const ExecutionName &name)
 {
   CSMesBackgroundComputations::Pauser statistic_pauser;
   if (csmes_file_p->deleteExecution(name))
@@ -1476,13 +1476,13 @@ void WMain::quitApplication()
     qApp->quit();
 }
 
-bool WMain::getExecutionState(const QString &execution,Executions::execution_status_t &status) const
+bool WMain::getExecutionState(const ExecutionName &execution,Executions::execution_status_t &status) const
 {
   status=csmes_file_p->getExecutionStatus(execution);
   return true;
 }
 
-bool WMain::setExecutionState(const QString &execution,Executions::execution_status_t status)
+bool WMain::setExecutionState(const ExecutionName &execution,Executions::execution_status_t status)
 {
   CSMesBackgroundComputations::Pauser statistic_pauser;
   csmes_file_p->setExecutionStatus(execution,status);
@@ -1497,7 +1497,7 @@ void WMain::on_findTextAction_triggered()
 
 void WMain::on_exportStatisticEMMAAction_triggered()
 {
-  const QStringList executions=selectedExecutions();
+  const ExecutionNames executions=selectedExecutions();
   if (executions.count()==0)
   {
     QMessageBox::warning(this,tr("Error"),tr("No executions selected"), QMessageBox::Ok,QMessageBox::NoButton);
@@ -1526,7 +1526,7 @@ void WMain::on_exportStatisticEMMAAction_triggered()
 
 void WMain::on_exportStatisticFunctionAction_triggered()
 {
-  const QStringList executions=selectedExecutions();
+  const ExecutionNames executions=selectedExecutions();
   if (executions.count()==0)
   {
     QMessageBox::warning(this,tr("Error"),tr("No executions selected"), QMessageBox::Ok,QMessageBox::NoButton);
@@ -1573,7 +1573,7 @@ void WMain::on_exportStatisticFunctionAction_triggered()
 
 void WMain::on_exportStatisticModuleAction_triggered()
 {
-  const QStringList executions=selectedExecutions();
+  const ExecutionNames executions=selectedExecutions();
   if (executions.count()==0)
   {
     QMessageBox::warning(this,tr("Error"),tr("No executions selected"), QMessageBox::Ok,QMessageBox::NoButton);
@@ -1833,7 +1833,7 @@ void WMain::on_actionTestCocoon_Website_triggered(bool)
 void WMain::on_executionBenefitAnalysisAction_triggered(bool b)
 {
   if (b != getExecutionAnalysisMode() )
-    selectExecutions(QStringList(),QStringList(),getTestCoverageMode(),getCoverageMethod(),b,getReleaseComparaisonMode(),getCoverageLevel());
+    selectExecutions(ExecutionNames(),ExecutionNames(),getTestCoverageMode(),getCoverageMethod(),b,getReleaseComparaisonMode(),getCoverageLevel());
 }
 
 bool WMain::getExecutionAnalysisMode() const
@@ -2090,7 +2090,7 @@ void WMain::on_actionCondition_and_Branch_triggered(bool b)
 
 void WMain::on_generateHtmlReportAction_triggered()
 {
-  const QStringList executions=selectedExecutions();
+  const ExecutionNames executions=selectedExecutions();
   if (executions.count()==0)
   {
     QMessageBox::warning(this,tr("Error"),tr("No executions selected"), QMessageBox::Ok,QMessageBox::NoButton);
@@ -2286,7 +2286,7 @@ void WMain::clearExecutionComment()
   execution_comment_p->setText(QString());
 }
 
-void WMain::_setExecutionComment(const QString &name,const QString &comment)
+void WMain::_setExecutionComment(const ExecutionName &name,const QString &comment)
 {
   CSMesBackgroundComputations::Pauser statistic_pauser;
   QString oldcomment;

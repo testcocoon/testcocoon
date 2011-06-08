@@ -28,6 +28,8 @@ CSMesBackgroundComputation::CSMesBackgroundComputation(CSMesBackgroundComputatio
   pool_p=p;
    qRegisterMetaType<QModelIndex>("QModelIndex");
    qRegisterMetaType<QStringList>("QStringList");
+   qRegisterMetaType<ExecutionName>("ExecutionName");
+   qRegisterMetaType<ExecutionNames>("ExecutionNames");
    qRegisterMetaType<QList<int> >("QList<int>");
    qRegisterMetaType<Instrumentation::coverage_method_t>("Instrumentation::coverage_method_t");
    qRegisterMetaType<CSMes::source_type_t>("CSMes::source_type_t");

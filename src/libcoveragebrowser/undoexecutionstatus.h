@@ -27,7 +27,7 @@ class CSMes ;
 class UndoCmdExecutionStatus : public QUndoCommand
 {
   public:
-    UndoCmdExecutionStatus (CSMes *csmes_p,const QString &execution_name, Executions::execution_status_t e, QUndoCommand *parent);
+    UndoCmdExecutionStatus (CSMes *csmes_p,const ExecutionName &execution_name, Executions::execution_status_t e, QUndoCommand *parent);
     virtual ~UndoCmdExecutionStatus ();
     virtual void redo();
     virtual void undo();
@@ -36,7 +36,7 @@ class UndoCmdExecutionStatus : public QUndoCommand
   private:
 
     CSMes *m_csmes_p;
-    QString m_name;
+    ExecutionName m_name;
     Executions::execution_status_t m_execution_status_new;
     Executions::execution_status_t m_execution_status_old;
 };

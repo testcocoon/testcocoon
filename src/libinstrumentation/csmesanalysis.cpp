@@ -890,14 +890,14 @@ void CSMesAnalysis::modifiedAndNotModifiedFunctions(QList<functionskey_t> &modif
   }
 }
 
-bool CSMesAnalysis::selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t methode, comparaison_mode_t m,const bool &abort_operation) const
+bool CSMesAnalysis::selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t methode, comparaison_mode_t m,const bool &abort_operation) const
 {
   bool ret = CSMesExecution::selectExecutionsComparaison(_instrumentations,ms,comparaison,test_coverage_mode, methode,abort_operation) ;
   processComparaisonMode(_instrumentations,m);
   return ret;
 }
 
-bool CSMesAnalysis::selectExecutionsComparaison(const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t method, comparaison_mode_t m,const bool &abort_operation) 
+bool CSMesAnalysis::selectExecutionsComparaison(const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t method, comparaison_mode_t m,const bool &abort_operation) 
 {
   comparaison_mode=m;
   bool ret = CSMesExecution::selectExecutionsComparaison(ms,comparaison,test_coverage_mode, method,abort_operation) ;
@@ -905,7 +905,7 @@ bool CSMesAnalysis::selectExecutionsComparaison(const QStringList &ms,const QStr
   return ret;
 }
 
-bool CSMesAnalysis::statisticExecution(const QStringList &ms,const QStringList &cmp,bool test_count_mode,int coverage_level,Instrumentation::coverage_method_t method,comparaison_mode_t comparaison, int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations,const bool &abort_operation) const
+bool CSMesAnalysis::statisticExecution(const ExecutionNames &ms,const ExecutionNames &cmp,bool test_count_mode,int coverage_level,Instrumentation::coverage_method_t method,comparaison_mode_t comparaison, int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations,const bool &abort_operation) const
 {
   CSMesInstrumentations __instrumentations ;
   copyInstrumentation(__instrumentations,_instrumentations);
@@ -923,7 +923,7 @@ bool CSMesAnalysis::statisticExecution(const QStringList &ms,const QStringList &
 inline uint qHash(const CSMesAnalysis::StatisticExecutionCacheKey &f) 
 {
   uint h=0;
-  QStringList::const_iterator it;
+  ExecutionNames::const_iterator it;
   for (it=f._mes.begin();it!=f._mes.end();++it)
     h = h ^ qHash(*it);
   for (it=f._cmp.begin();it!=f._cmp.end();++it)
@@ -935,7 +935,7 @@ inline uint qHash(const CSMesAnalysis::StatisticExecutionCacheKey &f)
   return h;
 }
 
-bool CSMesAnalysis::statisticExecution(const QStringList &mes,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,comparaison_mode_t comparaison, int &nb_tested,int &nb_untested,const bool &abort_operation) const 
+bool CSMesAnalysis::statisticExecution(const ExecutionNames &mes,const ExecutionNames &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,comparaison_mode_t comparaison, int &nb_tested,int &nb_untested,const bool &abort_operation) const 
 {
   StatisticExecutionCacheKey cache_key(mes,cmp,execution_analysis,coverage_level,method,comparaison);
   QMutexLocker locker(&_statistic_execution_cache_mutex);
@@ -987,7 +987,7 @@ void CSMesAnalysis::clearStatisticExecutionCache()
   _statistic_cache_miss=0;
 }
 
-void CSMesAnalysis::setManuallyValidated(const QString &mod,const QString &src,int index,bool b)
+void CSMesAnalysis::setManuallyValidated(const ModuleFile &mod,const SourceFile &src,int index,bool b)
 {
   CSMesEmma::setManuallyValidated(mod,src,index,b);
   clearStatisticExecutionCache();

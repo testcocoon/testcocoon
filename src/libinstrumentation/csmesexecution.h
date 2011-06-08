@@ -36,74 +36,74 @@ class CSMesExecution : public CSMesFunctionInfo
     }
   protected:
     CSMesExecution();
-    void restoreExecution(const QString &name,const Executions::modules_executions_private_t &exec);
-    bool backupExecution(const QString &execution_name,Executions::modules_executions_private_t &execution) const;
-    bool isTestCountModeSelected() const { return is_test_count_mode_selected; }
-    Instrumentation::coverage_method_t coverageMethod() const { return coverage_method; }
-    QStringList executionList() const;
-    const QStringList &selectedExecutions() const { return selected_executions; }
-    const QStringList &selectedComparaison() const { return selected_comparaison; }
-    bool setExecutionComment(const QString &name, const QString &comment) ;
-    bool getExecutionComment(const QString &name, QString &comment) const ;
-    bool deleteExecution(const QString &) ;
-    bool renameExecution(const QString &old_name,const QString &new_name) ;
-    bool deleteExecution(const QStringList &ms);
-    bool mergeExecutions(const QStringList &sources,const QString &dest);
-    bool executionExists(const QString &m) const 
+    void restoreExecution(const ExecutionName &name,const Executions::modules_executions_private_t &exec);
+    bool backupExecution(const ExecutionName &execution_name,Executions::modules_executions_private_t &execution) const;
+    bool isTestCountModeSelected() const { return _is_test_count_mode_selected; }
+    Instrumentation::coverage_method_t coverageMethod() const { return _coverage_method; }
+    ExecutionNames executionList() const;
+    const ExecutionNames &selectedExecutions() const { return _selected_executions; }
+    const ExecutionNames &selectedComparaison() const { return _selected_comparaison; }
+    bool setExecutionComment(const ExecutionName &name, const QString &comment) ;
+    bool getExecutionComment(const ExecutionName &name, QString &comment) const ;
+    bool deleteExecution(const ExecutionName &) ;
+    bool renameExecution(const ExecutionName &old_name,const ExecutionName &new_name) ;
+    bool deleteExecution(const ExecutionNames &ms);
+    bool mergeExecutions(const ExecutionNames &sources,const ExecutionName &dest);
+    bool executionExists(const ExecutionName &m) const 
     {
        return executions.exists(m); 
     }
-    bool executionPathExists(const QString &m) const ;
-    void setExecutionStatus(const QString &name,Executions::execution_status_t); 
-    Executions::execution_status_t getExecutionStatus(const QString &name) const; 
+    bool executionPathExists(const ExecutionName &m) const ;
+    void setExecutionStatus(const ExecutionName &name,Executions::execution_status_t); 
+    Executions::execution_status_t getExecutionStatus(const ExecutionName &name) const; 
     static QStringList executionsStatusStr() ;
-    QString getExecutionStatusStr(const QString &name) const; 
-    void setExecutionStatusStr(const QString &name,const QString &execution_status) ; 
-    bool selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t methode,const bool &abort_operation) const;
-    bool selectExecutionsComparaison(const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t method,const bool &abort_operation)
+    QString getExecutionStatusStr(const ExecutionName &name) const; 
+    void setExecutionStatusStr(const ExecutionName &name,const QString &execution_status) ; 
+    bool selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t methode,const bool &abort_operation) const;
+    bool selectExecutionsComparaison(const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t method,const bool &abort_operation)
     {
-      is_test_count_mode_selected=test_coverage_mode;
-      coverage_method=method;
-      selected_executions=ms;
-      selected_comparaison=comparaison;
+      _is_test_count_mode_selected=test_coverage_mode;
+      _coverage_method=method;
+      _selected_executions=ms;
+      _selected_comparaison=comparaison;
       return selectExecutionsComparaison(instrumentations,ms,comparaison,test_coverage_mode,method,abort_operation);
     }
-    void mergeInExecution(const QString &name1,const Executions::modules_executions_t &exec2) ;
-    QStringList executedBy(ModuleFile module,SourceFile source,int index,bool selected_executions_only) const;
-    static bool executionNameValid(const QString &name,QString &explanation);
+    void mergeInExecution(const ExecutionName &name1,const Executions::modules_executions_t &exec2) ;
+    ExecutionNames executedBy(ModuleFile module,SourceFile source,int index,bool selected_executions_only) const;
+    static bool executionNameValid(const ExecutionName &name,QString &explanation);
     static QColor executionStatusColor(Executions::execution_status_t v);
   protected:
     bool createEmptyExecution(Executions::modules_executions_t &) const;
-    QString duplicateExecution (const Executions::modules_executions_t &exec,const QStringList &exclude_names) const;
+    ExecutionName duplicateExecution (const Executions::modules_executions_t &exec,const ExecutionNames &exclude_names) const;
     bool emptyExecution(const Executions::modules_executions_t &exec) const;
-    bool sameExecution(const QString &name1,const QString &name2) const;
-    bool sameExecution(const QString &name1,const Executions::modules_executions_t &exec2) const;
+    bool sameExecution(const ExecutionName &name1,const ExecutionName &name2) const;
+    bool sameExecution(const ExecutionName &name1,const Executions::modules_executions_t &exec2) const;
     bool sameExecution(const Executions::modules_executions_t &exec1,const Executions::modules_executions_t &exec2) const;
     void clear();
     void clearExecutions(CSMesInstrumentations &_instrumentations) const;
     void clearExecutions()
     {
-      is_test_count_mode_selected=false;
-      coverage_method=Instrumentation::METHOD_UNKNOWN;
-      selected_executions.clear();
-      selected_comparaison.clear();
+      _is_test_count_mode_selected=false;
+      _coverage_method=Instrumentation::METHOD_UNKNOWN;
+      _selected_executions.clear();
+      _selected_comparaison.clear();
       clearExecutions(instrumentations) ;
     }
     Executions executions;
   private:
-    bool is_test_count_mode_selected;
-    Instrumentation::coverage_method_t coverage_method;
-    QStringList selected_executions;
-    QStringList selected_comparaison;
+    bool                                 _is_test_count_mode_selected;
+    Instrumentation::coverage_method_t   _coverage_method;
+    ExecutionNames                       _selected_executions;
+    ExecutionNames                       _selected_comparaison;
     inline void setExecutionState(Instrumentation &ins,const Executions::executions_t &mes, Instrumentation::coverage_method_t , int translation) const;
-    bool findModuleSourceForInstrumentation(QString &mod,QString &src,const Instrumentation *equiv) const;
+    bool findModuleSourceForInstrumentation(ModuleFile &mod,SourceFile &src,const Instrumentation *equiv) const;
     static Executions::execution_status_t combineExecutionStatus(Executions::execution_status_t,Executions::execution_status_t);
-    inline bool _selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const QStringList &ms,const QStringList &cmp,bool test_coverage_mode,Instrumentation::coverage_method_t method,const bool &abort_operation) const;
+    inline bool _selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,const ExecutionNames &cmp,bool test_coverage_mode,Instrumentation::coverage_method_t method,const bool &abort_operation) const;
   private:
     inline bool _selectExecutionsComparaisonInit(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations) const;
-    inline bool _selectExecutionsComparaisonCombileExecutions(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const QStringList &ms,bool test_coverage_mode,const bool &abort_operation) const;
-    inline bool _selectExecutionsComparaisonCombileExecutionsComparaison(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const QStringList &comparaison,const bool &abort_operation) const;
-    inline bool _selectExecutionsComparaisonCombileHideExecutions(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const QStringList &comparaison) const;
+    inline bool _selectExecutionsComparaisonCombileExecutions(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,bool test_coverage_mode,const bool &abort_operation) const;
+    inline bool _selectExecutionsComparaisonCombileExecutionsComparaison(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const ExecutionNames &comparaison,const bool &abort_operation) const;
+    inline bool _selectExecutionsComparaisonCombileHideExecutions(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const ExecutionNames &comparaison) const;
     inline bool _selectExecutionsComparaisonUpdateInstrumentation(const Executions::modules_executions_t &execution,CSMesInstrumentations &_instrumentations,Instrumentation::coverage_method_t method,const bool &abort_operation) const;
 };
 

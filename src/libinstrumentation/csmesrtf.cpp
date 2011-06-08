@@ -811,11 +811,11 @@ QString CSMesRTF::explanationFragmentTextFromIndex (const QString &format, const
 
 void CSMesRTF::explanationFragmentFromIndex (Writer &stream,const ModuleFile &module,const SourceFile &source,int index,source_type_t source_type,int coverage_level, Instrumentation::coverage_method_t method,int executed_by_limit,bool table_fragment) const
 {
-   QStringList executedByExecution[2];
+   ExecutionNames executedByExecution[2];
    const QVector<Instrumentation> &inst=instrumentationList(module,source);
    if (inst.isEmpty())
       return ;
-   QStringList executionList=selectedExecutions();
+   ExecutionNames executionList=selectedExecutions();
    const Instrumentation &cur_inst=inst.at(index);
    int s_col, s_line, e_col, e_line;
    if (source_type == ORIGINAL)
@@ -834,8 +834,8 @@ void CSMesRTF::explanationFragmentFromIndex (Writer &stream,const ModuleFile &mo
    }
    for (int i=cur_inst.getMinIndex();i<=cur_inst.getMaxIndex();i++)
    {
-      QStringList execByList=executedBy(module,source,i,true);
-      for (QStringList::const_iterator exeit=execByList.begin();
+      ExecutionNames execByList=executedBy(module,source,i,true);
+      for (ExecutionNames::const_iterator exeit=execByList.begin();
          exeit!=execByList.end();
          ++exeit)
       {

@@ -46,9 +46,9 @@ ExecutionListModel::ExecutionListModel(QObject *parent) : TreeListModel(parent,E
 {
   csmes_p=NULL;
   connect( & CSMesBackgroundComputations::GetObject(),
-      SIGNAL(statisticExecution(const QStringList &,const QStringList& , bool ,int ,Instrumentation::coverage_method_t,CSMes::comparaison_mode_t, int ,int )),
+      SIGNAL(statisticExecution(const ExecutionNames &,const ExecutionNames& , bool ,int ,Instrumentation::coverage_method_t,CSMes::comparaison_mode_t, int ,int )),
       this,
-      SLOT(statisticExecution(const QStringList &,const QStringList& , bool ,int ,Instrumentation::coverage_method_t,CSMes::comparaison_mode_t, int ,int )));
+      SLOT(statisticExecution(const ExecutionNames &,const ExecutionNames& , bool ,int ,Instrumentation::coverage_method_t,CSMes::comparaison_mode_t, int ,int )));
   filter_comment=true;
   filter_no_comment=true;
   filter_unknown=true;
@@ -57,7 +57,7 @@ ExecutionListModel::ExecutionListModel(QObject *parent) : TreeListModel(parent,E
   filter_check_manually=true;
 }
 
-void ExecutionListModel::statisticExecution(const QStringList &mes,const QStringList &comparaison , bool test_count_mode,
+void ExecutionListModel::statisticExecution(const ExecutionNames &mes,const ExecutionNames &comparaison , bool test_count_mode,
     int coverage_level,Instrumentation::coverage_method_t method,CSMes::comparaison_mode_t comparaison_mode,int nb_tested,int nb_untested)
 {
   if (CoverageSettings::object().getCoverageMethod()!=method)
@@ -120,7 +120,7 @@ QVariant ExecutionListModel::data (const QModelIndex &index, int role) const
     ItemNbTested.toInt(&ok);
     if (   (ItemNbTested.toString()!=processing_text) && (!ok) )
     {
-      QStringList execs;
+      ExecutionNames execs;
       getAllExecutions(item_p,execs);
 
       bool use_thread=Options::get_opt_bool(QString(),"STATISTICS_CALULATION_BACKGROUND",DEF_STATISTICS_CALULATION_BACKGROUND);
@@ -129,7 +129,7 @@ QVariant ExecutionListModel::data (const QModelIndex &index, int role) const
         if (CoverageSettings::object().getExecutionAnalysisMode())
           CSMesBackgroundComputations::GetObject().calculateStatisticExecution(execs,CoverageSettings::object().getSelectedExecutionsComparaison(),CoverageSettings::object().getTestCoverageMode(),CoverageSettings::object().getCoverageLevel(),CoverageSettings::object().getCoverageMethod(),CoverageSettings::object().getReleaseComparaisonMode());
         else
-          CSMesBackgroundComputations::GetObject().calculateStatisticExecution(execs,QStringList(),CoverageSettings::object().getTestCoverageMode(),CoverageSettings::object().getCoverageLevel(),CoverageSettings::object().getCoverageMethod(),CoverageSettings::object().getReleaseComparaisonMode());
+          CSMesBackgroundComputations::GetObject().calculateStatisticExecution(execs,ExecutionNames(),CoverageSettings::object().getTestCoverageMode(),CoverageSettings::object().getCoverageLevel(),CoverageSettings::object().getCoverageMethod(),CoverageSettings::object().getReleaseComparaisonMode());
         item_p->data(ITEM_NB_TESTED) = processing_text;
         item_p->data(ITEM_NB_UNTESTED) = processing_text;
       }
@@ -140,7 +140,7 @@ QVariant ExecutionListModel::data (const QModelIndex &index, int role) const
         if (CoverageSettings::object().getExecutionAnalysisMode())
           csmes_p->statisticExecution(execs,CoverageSettings::object().getSelectedExecutionsComparaison(),CoverageSettings::object().getTestCoverageMode(),CoverageSettings::object().getCoverageLevel(),CoverageSettings::object().getCoverageMethod(),CoverageSettings::object().getReleaseComparaisonMode(),nb_tested,nb_untested,false);
         else
-          csmes_p->statisticExecution(execs,QStringList(),CoverageSettings::object().getTestCoverageMode(),CoverageSettings::object().getCoverageLevel(),CoverageSettings::object().getCoverageMethod(),CoverageSettings::object().getReleaseComparaisonMode(),nb_tested,nb_untested,false);
+          csmes_p->statisticExecution(execs,ExecutionNames(),CoverageSettings::object().getTestCoverageMode(),CoverageSettings::object().getCoverageLevel(),CoverageSettings::object().getCoverageMethod(),CoverageSettings::object().getReleaseComparaisonMode(),nb_tested,nb_untested,false);
 
         item_p->data(ITEM_NB_TESTED) = nb_tested;
         item_p->data(ITEM_NB_UNTESTED) = nb_untested;
@@ -161,9 +161,9 @@ QVariant ExecutionListModel::data (const QModelIndex &index, int role) const
         bool failed=false;
         bool check_manually=false;
 
-        QStringList _executions;
+        ExecutionNames _executions;
         getAllExecutions(item_p,_executions);
-        for (QStringList::const_iterator it=_executions.begin();it!=_executions.end();it++)
+        for (ExecutionNames::const_iterator it=_executions.begin();it!=_executions.end();it++)
         {
           const QString &execution_name=*it;
           QString comment_string;
@@ -349,10 +349,10 @@ QVariant ExecutionListModel::data (const QModelIndex &index, int role) const
           {
             bool first=true;
             QString execution_str;
-            QStringList executions;
+            ExecutionNames executions;
             Executions::execution_status_t status=Executions::EXECUTION_STATUS_UNKNOWN;
             getAllExecutions(item_p,executions);
-            for (QStringList::const_iterator it=executions.begin(); it!=executions.end(); ++it)
+            for (ExecutionNames::const_iterator it=executions.begin(); it!=executions.end(); ++it)
             {
               if (first)
               {
@@ -380,7 +380,6 @@ QVariant ExecutionListModel::data (const QModelIndex &index, int role) const
 
 bool ExecutionListModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-  QStringList::const_iterator it;
   if (!index.isValid())
     return false;
 
@@ -415,12 +414,12 @@ bool ExecutionListModel::setData(const QModelIndex &index, const QVariant &value
           {
             csmes_p->beginUndoGroup(tr("Changing execution state of '%1' to '%2'").arg(executionName(rootItem,item_p,false)).arg(value.toString()));
             QString execution_str;
-            QStringList executions;
+            ExecutionNames executions;
             getAllExecutions(item_p,executions);
-            for (QStringList::const_iterator it=executions.begin(); it!=executions.end(); ++it)
+            for (ExecutionNames::const_iterator it=executions.begin(); it!=executions.end(); ++it)
             {
-              const QString &name=*it;
-              if (name!=QString::null)
+              const ExecutionName &name=*it;
+              if (!name.isEmpty())
               {
                 csmes_p->setExecutionStatusStr(name,value.toString());
                 emit dataChanged(index,index);
@@ -433,54 +432,56 @@ bool ExecutionListModel::setData(const QModelIndex &index, const QVariant &value
       }
       break;
     case Qt::CheckStateRole:
-      QStringList selected_executions;
-      QStringList comparaison_items;
-      if (CoverageSettings::object().getExecutionAnalysisMode())
       {
-        selected_executions=CoverageSettings::object().getSelectedExecutionsComparaison();
-        comparaison_items=CoverageSettings::object().getSelectedExecutions();
-      }
-      else
-      {
-        selected_executions=CoverageSettings::object().getSelectedExecutions();
-        comparaison_items=CoverageSettings::object().getSelectedExecutionsComparaison();
-      }
-      QStringList new_selected_executions;
-      getAllExecutions(item_p,new_selected_executions);
-      for (it=new_selected_executions.begin();
-          it!=new_selected_executions.end();
-          ++it)
-      {
-        bool ok;
-        int v;
-        switch ( (v=value.toInt(&ok)) )
+        ExecutionNames selected_executions;
+        ExecutionNames comparaison_items;
+        if (CoverageSettings::object().getExecutionAnalysisMode())
         {
-          case Qt::PartiallyChecked:
-          case Qt::Checked:
-            selected_executions+=*it;
-            break;
-          default:
-            ASSERT(false);
-          case Qt::Unchecked:
-            selected_executions.removeAll(*it);
-            break;
+          selected_executions=CoverageSettings::object().getSelectedExecutionsComparaison();
+          comparaison_items=CoverageSettings::object().getSelectedExecutions();
         }
-        ASSERT(ok);;
-        TreeList * i_p=executionTreeList(*it);
-        if (i_p)
-          i_p->data(ITEM_CHECKSTATE) =value;
+        else
+        {
+          selected_executions=CoverageSettings::object().getSelectedExecutions();
+          comparaison_items=CoverageSettings::object().getSelectedExecutionsComparaison();
+        }
+        ExecutionNames new_selected_executions;
+        getAllExecutions(item_p,new_selected_executions);
+        for (ExecutionNames::const_iterator it=new_selected_executions.begin();
+            it!=new_selected_executions.end();
+            ++it)
+        {
+          bool ok;
+          int v;
+          switch ( (v=value.toInt(&ok)) )
+          {
+            case Qt::PartiallyChecked:
+            case Qt::Checked:
+              selected_executions+=*it;
+              break;
+            default:
+              ASSERT(false);
+            case Qt::Unchecked:
+              selected_executions.removeAll(*it);
+              break;
+          }
+          ASSERT(ok);;
+          TreeList * i_p=executionTreeList(*it);
+          if (i_p)
+            i_p->data(ITEM_CHECKSTATE) =value;
+        }
+        if (csmes_p)
+          selectComparaison(selected_executions,comparaison_items,
+              CoverageSettings::object().getTestCoverageMode(),
+              CoverageSettings::object().getCoverageMethod(),
+              CoverageSettings::object().getExecutionAnalysisMode(),
+              CoverageSettings::object().getReleaseComparaisonMode(),
+              CoverageSettings::object().getCoverageLevel()
+              );
+        emit dataChanged(index,index);
+        refreshView();
+        return true;
       }
-      if (csmes_p)
-        selectComparaison(selected_executions,comparaison_items,
-            CoverageSettings::object().getTestCoverageMode(),
-            CoverageSettings::object().getCoverageMethod(),
-            CoverageSettings::object().getExecutionAnalysisMode(),
-            CoverageSettings::object().getReleaseComparaisonMode(),
-            CoverageSettings::object().getCoverageLevel()
-            );
-      emit dataChanged(index,index);
-      refreshView();
-      return true;
   }
   return false;
 }
@@ -538,7 +539,7 @@ void ExecutionListModel::setupModelData()
   if (csmes_p)
     executionList=csmes_p->executionList();
 
-  QStringList selected_executions;
+  ExecutionNames selected_executions;
   if (CoverageSettings::object().getExecutionAnalysisMode())
     selected_executions=CoverageSettings::object().getSelectedExecutionsComparaison();
   else
@@ -547,7 +548,7 @@ void ExecutionListModel::setupModelData()
   endResetModel();
 }
 
-TreeList *ExecutionListModel::generateRootItem(const QStringList &execution_list,const QStringList &selected_executions)
+TreeList *ExecutionListModel::generateRootItem(const ExecutionNames &execution_list,const ExecutionNames &selected_executions)
 {
   QVector <QVariant> rootData(EXECUTION_LIST_COLUMN_MAX);
   rootData[EXECUTION_LIST_COLUMN_NAME]=tr("Executions") ;
@@ -557,7 +558,7 @@ TreeList *ExecutionListModel::generateRootItem(const QStringList &execution_list
   TreeList *_rootItem = new TreeList(rootData);
 
   /* insert the new items */
-  for ( QStringList::const_iterator mes_it = execution_list.begin(); mes_it != execution_list.end(); ++mes_it )
+  for ( ExecutionNames::const_iterator mes_it = execution_list.begin(); mes_it != execution_list.end(); ++mes_it )
     insertExecution(_rootItem,selected_executions,*mes_it);
 
   updateGroupItems(_rootItem,selected_executions, _rootItem);
@@ -578,7 +579,7 @@ TreeList *ExecutionListModel::findExecution(const TreeList *parent_p,const QStri
 }
 
 
-TreeList * ExecutionListModel::insertExecution (TreeList *_rootItem,const QStringList &selected_executions,const QString &name)
+TreeList * ExecutionListModel::insertExecution (TreeList *_rootItem,const ExecutionNames &selected_executions,const ExecutionName &name)
 {
   CSMesBackgroundComputations::Pauser statistic_pauser;
   TreeList *item_p=NULL;
@@ -620,7 +621,7 @@ TreeList * ExecutionListModel::insertExecution (TreeList *_rootItem,const QStrin
   return item_p;
 }
 
-QList<TreeList *> ExecutionListModel::executionTreeLists(const QStringList &names) const
+QList<TreeList *> ExecutionListModel::executionTreeLists(const ExecutionNames &names) const
 {
   QList<TreeList *> result;
   int nb_names=names.count();
@@ -631,7 +632,7 @@ QList<TreeList *> ExecutionListModel::executionTreeLists(const QStringList &name
 
   for(;item_p && item_p!=rootItem;item_p=item_p->parent())
   {
-    QStringList exec_names;
+    ExecutionNames exec_names;
     getAllExecutions(item_p,exec_names);
 
     if (exec_names.count()==nb_names)
@@ -643,16 +644,16 @@ QList<TreeList *> ExecutionListModel::executionTreeLists(const QStringList &name
   return result;
 }
 
-TreeList * ExecutionListModel::executionTreeList(const QStringList &names) const
+TreeList * ExecutionListModel::executionTreeList(const ExecutionNames &names) const
 {
   if (names.isEmpty())
     return NULL;
 
-  QString testsName=names.at(0);
+  ExecutionName testsName=names.at(0);
   if (names.count()==1)
     return executionTreeList(testsName);
 
-  for (QStringList::const_iterator it=names.begin();it!=names.end();++it)
+  for (ExecutionNames::const_iterator it=names.begin();it!=names.end();++it)
   {
     QString str=*it;
     str=str.left(testsName.size()+1);
@@ -668,7 +669,7 @@ TreeList * ExecutionListModel::executionTreeList(const QStringList &names) const
   return executionTreeList(testsName);
 }
 
-TreeList * ExecutionListModel::executionTreeList(const QString &name) const
+TreeList * ExecutionListModel::executionTreeList(const ExecutionName &name) const
 {
   QStringList name_list = name.split('/');
   int count=name_list.size();
@@ -708,7 +709,7 @@ QString ExecutionListModel::executionName(const TreeList *_rootItem,const TreeLi
   return name;
 }
 
-void ExecutionListModel::getAllExecutions(const TreeList *e,QStringList &execs) const
+void ExecutionListModel::getAllExecutions(const TreeList *e,ExecutionNames &execs) const
 {
   int cnt=e->childCount();
   for (int i=0;i<cnt;i++)
@@ -722,7 +723,7 @@ void ExecutionListModel::getAllExecutions(const TreeList *e,QStringList &execs) 
 }
 
 
-void ExecutionListModel::updateGroupItems(const TreeList *_rootItem,const QStringList &selected_executions,TreeList *e)
+void ExecutionListModel::updateGroupItems(const TreeList *_rootItem,const ExecutionNames &selected_executions,TreeList *e)
 {
   bool first_item=true;
   Qt::CheckState st=Qt::Unchecked;
@@ -784,7 +785,7 @@ bool ExecutionListModel::deleteIndex(const QModelIndex &index)
 {
   CSMesBackgroundComputations::Pauser statistic_pauser;
   TreeList *item_p=static_cast<TreeList*>(index.internalPointer());
-  QStringList execs;
+  ExecutionNames execs;
   getAllExecutions(item_p,execs);
   if (!csmes_p->deleteExecution(execs))
     return false;
@@ -792,7 +793,7 @@ bool ExecutionListModel::deleteIndex(const QModelIndex &index)
   return true;
 }
 
-bool ExecutionListModel::deleteExecution(const QStringList &names)
+bool ExecutionListModel::deleteExecution(const ExecutionNames &names)
 {
   CSMesBackgroundComputations::Pauser statistic_pauser;
   bool result=true;
@@ -804,7 +805,7 @@ bool ExecutionListModel::deleteExecution(const QStringList &names)
   return result;
 }
 
-bool ExecutionListModel::renameExecution(const QString &old_name,const QString &new_name)
+bool ExecutionListModel::renameExecution(const ExecutionName &old_name,const ExecutionName &new_name)
 {
   CSMesBackgroundComputations::Pauser statistic_pauser;
   TreeList *item_p=executionTreeList(old_name);
@@ -814,7 +815,7 @@ bool ExecutionListModel::renameExecution(const QString &old_name,const QString &
   return renameIndex(index,new_name);
 }
 
-bool ExecutionListModel::deleteExecution(const QString &name)
+bool ExecutionListModel::deleteExecution(const ExecutionName &name)
 {
   CSMesBackgroundComputations::Pauser statistic_pauser;
   TreeList *item_p=executionTreeList(name);
@@ -824,7 +825,7 @@ bool ExecutionListModel::deleteExecution(const QString &name)
   return deleteIndex(index);
 }
 
-bool ExecutionListModel::mergeExecutions(const QStringList &executions,const QString &name)
+bool ExecutionListModel::mergeExecutions(const ExecutionNames &executions,const ExecutionName &name)
 {
   CSMesBackgroundComputations::Pauser statistic_pauser;
   if (!csmes_p->mergeExecutions(executions,name))
@@ -846,7 +847,7 @@ bool ExecutionListModel::setExecutionComment (const QModelIndex &index,const QSt
   return false;
 }
 
-bool ExecutionListModel::renameIndex (const QModelIndex &index,const QString &new_name)
+bool ExecutionListModel::renameIndex (const QModelIndex &index,const ExecutionName &new_name)
 {
   CSMesBackgroundComputations::Pauser statistic_pauser;
   if (new_name == QString::null)
@@ -916,8 +917,8 @@ void ExecutionListModel::Select(const QString &pattern,bool filter_comment, bool
 {
   if (csmes_p==NULL) return;
   MatchExpr match(pattern);
-  QStringList selected_executions;
-  QStringList comparaison_items;
+  ExecutionNames selected_executions;
+  ExecutionNames comparaison_items;
   if (CoverageSettings::object().getExecutionAnalysisMode())
   {
     selected_executions=CoverageSettings::object().getSelectedExecutionsComparaison();
@@ -928,9 +929,9 @@ void ExecutionListModel::Select(const QString &pattern,bool filter_comment, bool
     selected_executions=CoverageSettings::object().getSelectedExecutions();
     comparaison_items=CoverageSettings::object().getSelectedExecutionsComparaison();
   }
-  QStringList selection_list=selected_executions;
-  const QStringList &list=csmes_p->executionList();
-  for (QStringList::const_iterator list_it=list.begin();list_it!=list.end();++list_it)
+  ExecutionNames selection_list=selected_executions;
+  const ExecutionNames &list=csmes_p->executionList();
+  for (ExecutionNames::const_iterator list_it=list.begin();list_it!=list.end();++list_it)
   {
     if (match.indexIn(*list_it)>=0)
     {
@@ -990,8 +991,8 @@ void ExecutionListModel::DeSelect(const QString &pattern,bool filter_comment, bo
 {
   if (csmes_p==NULL) return;
   MatchExpr match(pattern);
-  QStringList selected_executions;
-  QStringList comparaison_items;
+  ExecutionNames selected_executions;
+  ExecutionNames comparaison_items;
   if (CoverageSettings::object().getExecutionAnalysisMode())
   {
     selected_executions=CoverageSettings::object().getSelectedExecutionsComparaison();
@@ -1002,8 +1003,8 @@ void ExecutionListModel::DeSelect(const QString &pattern,bool filter_comment, bo
     selected_executions=CoverageSettings::object().getSelectedExecutions();
     comparaison_items=CoverageSettings::object().getSelectedExecutionsComparaison();
   }
-  QStringList selection_list=selected_executions;
-  for (QStringList::const_iterator list_it=selection_list.begin();list_it!=selection_list.end();++list_it)
+  ExecutionNames selection_list=selected_executions;
+  for (ExecutionNames::const_iterator list_it=selection_list.begin();list_it!=selection_list.end();++list_it)
   {
     if (match.indexIn(*list_it)>=0)
     {
@@ -1062,15 +1063,15 @@ void ExecutionListModel::DeSelect(const QString &pattern,bool filter_comment, bo
 void ExecutionListModel::Comparaison( const QModelIndexList & indexes)
 {
   QModelIndex index;
-  QStringList selected_executions;
+  ExecutionNames selected_executions;
   if (CoverageSettings::object().getExecutionAnalysisMode())
     selected_executions=CoverageSettings::object().getSelectedExecutionsComparaison();
   else
     selected_executions=CoverageSettings::object().getSelectedExecutions();
-  QStringList selection_list=selected_executions;
+  ExecutionNames selection_list=selected_executions;
   if (selection_list.isEmpty())
     return;
-  QStringList comparaison_items;
+  ExecutionNames comparaison_items;
 
   foreach(index, indexes)
   {
@@ -1088,7 +1089,7 @@ void ExecutionListModel::Comparaison( const QModelIndexList & indexes)
 }
 
 
-void ExecutionListModel::selectComparaison( const QStringList& selection_list, const QStringList &cmp_items,bool test_coverage_mode,Instrumentation::coverage_method_t method, bool execution_comparaison_mode, CSMes::comparaison_mode_t csmes_comparaison_mode,int coverage_level)
+void ExecutionListModel::selectComparaison( const ExecutionNames& selection_list, const ExecutionNames &cmp_items,bool test_coverage_mode,Instrumentation::coverage_method_t method, bool execution_comparaison_mode, CSMes::comparaison_mode_t csmes_comparaison_mode,int coverage_level)
 {
   CSMesBackgroundComputations::Pauser statistic_pauser;
   if (csmes_p==NULL)
@@ -1096,15 +1097,15 @@ void ExecutionListModel::selectComparaison( const QStringList& selection_list, c
 
   emit layoutAboutToBeChanged();
 
-  QStringList executions=csmes_p->executionList();
-  QStringList selected_executions;
-  QStringList comparaison_items;
-  for ( QStringList::const_iterator it = selection_list.begin(); it != selection_list.end(); ++it )
+  ExecutionNames executions=csmes_p->executionList();
+  ExecutionNames selected_executions;
+  ExecutionNames comparaison_items;
+  for ( ExecutionNames::const_iterator it = selection_list.begin(); it != selection_list.end(); ++it )
   {
     if ( executions.contains(*it) && (!selected_executions.contains(*it)))
       selected_executions += *it;
   }
-  for ( QStringList::const_iterator _it = cmp_items.begin(); _it != cmp_items.end(); ++_it )
+  for ( ExecutionNames::const_iterator _it = cmp_items.begin(); _it != cmp_items.end(); ++_it )
   {
     if ( executions.contains(*_it) && (!comparaison_items.contains(*_it)))
       comparaison_items += *_it;
@@ -1113,12 +1114,12 @@ void ExecutionListModel::selectComparaison( const QStringList& selection_list, c
   if (execution_comparaison_mode)
   {
     if (selected_executions.isEmpty())
-      csmes_p->selectExecutionsComparaison(QStringList(),QStringList(),test_coverage_mode,coverage_level,method,csmes_comparaison_mode,execution_comparaison_mode);
+      csmes_p->selectExecutionsComparaison(ExecutionNames(),ExecutionNames(),test_coverage_mode,coverage_level,method,csmes_comparaison_mode,execution_comparaison_mode);
     else
       csmes_p->selectExecutionsComparaison(comparaison_items,selected_executions,test_coverage_mode,coverage_level,method,csmes_comparaison_mode,execution_comparaison_mode);
   }
   else
-    csmes_p->selectExecutionsComparaison(selected_executions,QStringList(),test_coverage_mode,coverage_level,method,csmes_comparaison_mode,execution_comparaison_mode);
+    csmes_p->selectExecutionsComparaison(selected_executions,ExecutionNames(),test_coverage_mode,coverage_level,method,csmes_comparaison_mode,execution_comparaison_mode);
 
   emit layoutChanged();
 }
@@ -1177,7 +1178,7 @@ void ExecutionListModel::recalculateStatistics(QModelIndex parent)
 bool ExecutionListModel::updateModelData()
 {
   bool modified=false;
-  QStringList selected_executions;
+  ExecutionNames selected_executions;
   if (CoverageSettings::object().getExecutionAnalysisMode())
     selected_executions=CoverageSettings::object().getSelectedExecutionsComparaison();
   else

@@ -146,7 +146,7 @@ bool CMCsExeImport::analyse_args(int argc,const char* const* argv)
 
   QString short_status;
   QString info;
-  QStringList new_executions;
+  ExecutionNames new_executions;
   QFile f(csexe_filename);
   QString err;
   if (!csmes.loadCSExe(f,title,policy,default_execution_status,new_executions,info,short_status,err,NULL,NULL))

@@ -28,7 +28,7 @@ class CSMesStatistic : public CSMesRTF
   protected:
     CSMesStatistic();
   protected:
-    bool statisticFunctionsExecution(const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_tested,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_untested) const
+    bool statisticFunctionsExecution(const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_tested,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_untested) const
     {
       return statisticFunctionsExecution(ms,coverage_level,method,nb_tested,nb_untested,instrumentations) ;
     }
@@ -40,10 +40,10 @@ class CSMesStatistic : public CSMesRTF
     {
       return statistic(coverage_level,method,nb_tested,nb_untested,instrumentations);
     }
-    bool statisticExecution(const QStringList &mes,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const bool &abort_operation) const ;
+    bool statisticExecution(const ExecutionNames &mes,const ExecutionNames &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const bool &abort_operation) const ;
     static QString printStat(double v) ;
     static QString printStat(int nb_tested,int nb_untested) ;
-    bool statisticModuleExecution(ModuleFile module,SourceFile source,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const
+    bool statisticModuleExecution(ModuleFile module,SourceFile source,const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested) const
     {
       return statisticModuleExecution(module,source,ms,coverage_level,method,nb_tested,nb_untested,instrumentations) ;
     }
@@ -54,15 +54,15 @@ class CSMesStatistic : public CSMesRTF
   protected:
     bool statistic(const ModuleFile &mod,const SourceFile &src,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const;
     bool statistic(int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const;
-    bool statisticExecution(const QStringList &mes,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations,const bool &abort_operation) const ;
-    bool statisticModuleExecution(ModuleFile module,SourceFile source,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const;
+    bool statisticExecution(const ExecutionNames &mes,const ExecutionNames &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations,const bool &abort_operation) const ;
+    bool statisticModuleExecution(ModuleFile module,SourceFile source,const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const;
     bool statisticFunctionPre(ModuleFile module,SourceFile source,long start_line,long start_column,long end_line,long end_column,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const;
     bool statisticModule(const ModuleFile &module,const SourceFile &source,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const;
-    bool statisticSourcesExecution(const SourceFiles &sources,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<QString,int> &nb_tested,QHash<QString,int> &nb_untested,const CSMesInstrumentations &_instrumentations) const;
-    bool statisticSourcesExecution(const SourceFiles &sources,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<QString,int> &nb_tested,QHash<QString,int> &nb_untested) const
+    bool statisticSourcesExecution(const SourceFiles &sources,const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<ExecutionName,int> &nb_tested,QHash<ExecutionName,int> &nb_untested,const CSMesInstrumentations &_instrumentations) const;
+    bool statisticSourcesExecution(const SourceFiles &sources,const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<ExecutionName,int> &nb_tested,QHash<ExecutionName,int> &nb_untested) const
     {
       return statisticSourcesExecution(sources,ms,coverage_level,method,nb_tested,nb_untested,instrumentations) ;
     }
-    bool statisticFunctionsExecution(const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_tested,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_untested,const CSMesInstrumentations &_instrumentations) const;
+    bool statisticFunctionsExecution(const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_tested,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_untested,const CSMesInstrumentations &_instrumentations) const;
 } ;
 #endif

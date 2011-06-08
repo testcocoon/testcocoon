@@ -27,7 +27,7 @@ class CSMes ;
 class UndoCmdExecutionDelete : public QUndoCommand
 {
   public:
-    UndoCmdExecutionDelete (CSMes *csmes_p,const QString &execution_name, QUndoCommand *parent);
+    UndoCmdExecutionDelete (CSMes *csmes_p,const ExecutionName &execution_name, QUndoCommand *parent);
     virtual ~UndoCmdExecutionDelete ();
     virtual void redo();
     virtual void undo();
@@ -36,7 +36,7 @@ class UndoCmdExecutionDelete : public QUndoCommand
   private:
 
     CSMes *m_csmes_p;
-    QString m_name;
+    ExecutionName m_name;
     Executions::modules_executions_private_t *m_exec;
 };
 #endif

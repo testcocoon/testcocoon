@@ -33,6 +33,8 @@ CSMesBackgroundComputations::CSMesBackgroundComputations(QObject *parent) : QObj
 {
    qRegisterMetaType<QModelIndex>("QModelIndex");
    qRegisterMetaType<QStringList>("QStringList");
+   qRegisterMetaType<ExecutionName>("ExecutionName");
+   qRegisterMetaType<ExecutionNames>("ExecutionNames");
    qRegisterMetaType<Instrumentation::coverage_method_t>("Instrumentation::coverage_method_t");
 
    _number_of_threads=QThread::idealThreadCount();
@@ -44,14 +46,14 @@ CSMesBackgroundComputations::CSMesBackgroundComputations(QObject *parent) : QObj
     for (QList<CSMesBackgroundComputation*>::Iterator itThread=_threads.begin();itThread!=_threads.end();++itThread)
     {
       connect( *itThread,
-          SIGNAL(statisticExecution(QStringList ,QStringList , bool ,int ,Instrumentation::coverage_method_t,CSMes::comparaison_mode_t,int ,int )),
+          SIGNAL(statisticExecution(ExecutionNames ,ExecutionNames , bool ,int ,Instrumentation::coverage_method_t,CSMes::comparaison_mode_t,int ,int )),
           this,
-          SLOT(statisticExecutionSlot(QStringList ,QStringList , bool ,int ,Instrumentation::coverage_method_t,CSMes::comparaison_mode_t,int ,int )));
+          SLOT(statisticExecutionSlot(ExecutionNames ,ExecutionNames , bool ,int ,Instrumentation::coverage_method_t,CSMes::comparaison_mode_t,int ,int )));
 
       connect( *itThread,
-          SIGNAL(explanation (QString ,QString,QList<int> ,CSMes::source_type_t ,int ,Instrumentation::coverage_method_t ,int,QString )),
+          SIGNAL(explanation (ModuleFile ,SourceFile,QList<int> ,CSMes::source_type_t ,int ,Instrumentation::coverage_method_t ,int,QString )),
           this,
-          SLOT(explanationSlot (QString,QString ,QList<int> ,CSMes::source_type_t ,int ,Instrumentation::coverage_method_t ,int,QString )));
+          SLOT(explanationSlot (ModuleFile,SourceFile ,QList<int> ,CSMes::source_type_t ,int ,Instrumentation::coverage_method_t ,int,QString )));
     }
 }
 
@@ -61,12 +63,12 @@ CSMesBackgroundComputations::~CSMesBackgroundComputations()
    stop(true);
 }
 
-void CSMesBackgroundComputations::explanationSlot (QString module,QString source,QList<int> lines_indexs,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit,QString exp)
+void CSMesBackgroundComputations::explanationSlot (ModuleFile module,SourceFile source,QList<int> lines_indexs,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit,QString exp)
 {
   emit explanation(module,source,lines_indexs,source_type,coverage_level,method,executed_by_limit,exp);
 }
 
-void CSMesBackgroundComputations::statisticExecutionSlot(QStringList mes,QStringList comparaison , bool execution_analysis,
+void CSMesBackgroundComputations::statisticExecutionSlot(ExecutionNames mes,ExecutionNames comparaison , bool execution_analysis,
     int coverage_level,Instrumentation::coverage_method_t method,CSMes::comparaison_mode_t comparaison_mode,int nb_tested,int nb_untested)
 {
   emit statisticExecution(mes,comparaison , execution_analysis, coverage_level,method,comparaison_mode,nb_tested,nb_untested) ;
@@ -158,7 +160,7 @@ void CSMesBackgroundComputations::stop(bool stop_thread)
   resume();
 }
 
-void CSMesBackgroundComputations::cancelStatisticExecution(const QStringList &mes,const QStringList &comparaisons,bool test_count_mode,int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t comparaison_mode)
+void CSMesBackgroundComputations::cancelStatisticExecution(const ExecutionNames &mes,const ExecutionNames &comparaisons,bool test_count_mode,int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t comparaison_mode)
 {
    data_t data;
 
@@ -173,7 +175,7 @@ void CSMesBackgroundComputations::cancelStatisticExecution(const QStringList &me
   cancelRequest(data);
 }
 
-void CSMesBackgroundComputations::calculateStatisticExecution(const QStringList &mes,const QStringList &comparaisons,bool test_count_mode,int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t comparaison_mode)
+void CSMesBackgroundComputations::calculateStatisticExecution(const ExecutionNames &mes,const ExecutionNames &comparaisons,bool test_count_mode,int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t comparaison_mode)
 {
    data_t data;
 
@@ -188,7 +190,7 @@ void CSMesBackgroundComputations::calculateStatisticExecution(const QStringList 
   enqueueRequest(data);
 }
 
-void CSMesBackgroundComputations::calculateExplanation(const QString &module,const QString &source,const QList<int> &lines_indexs,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit)
+void CSMesBackgroundComputations::calculateExplanation(const ModuleFile &module,const SourceFile &source,const QList<int> &lines_indexs,CSMes::source_type_t source_type,int coverage_level,Instrumentation::coverage_method_t method,int executed_by_limit)
 {
   data_t data;
 

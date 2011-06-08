@@ -144,14 +144,14 @@ bool CSMesStatistic::statistic(const ModuleFile &module_in,const SourceFile &sou
   return statisticModule(module,source,coverage_level,method,nb_tested,nb_untested,_instrumentations);
 }
 
-bool CSMesStatistic::statisticExecution(const QStringList &ms,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations,const bool &abort_operation) const
+bool CSMesStatistic::statisticExecution(const ExecutionNames &ms,const ExecutionNames &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations,const bool &abort_operation) const
 { 
   bool skip=false;
   if (execution_analysis)
   {
     if (cmp.isEmpty())
       skip=true;
-    for (QStringList::const_iterator it=ms.begin();it!=ms.end();++it)
+    for (ExecutionNames::const_iterator it=ms.begin();it!=ms.end();++it)
     {
       if (cmp.contains(*it))
       {
@@ -180,16 +180,16 @@ bool CSMesStatistic::statisticExecution(const QStringList &ms,const QStringList 
   }
 }
 
-bool CSMesStatistic::statisticFunctionsExecution(const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_tested,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_untested,const CSMesInstrumentations &_instrumentations) const
+bool CSMesStatistic::statisticFunctionsExecution(const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_tested,QHash<CSMesFunctionInfo::functionskey_t,int> &nb_untested,const CSMesInstrumentations &_instrumentations) const
 {
   nb_tested.clear();
   nb_untested.clear();
-  QStringList selected_measurements=selectedExecutions();
+  ExecutionNames selected_measurements=selectedExecutions();
   bool is_test_count_mode_selected=isTestCountModeSelected();
 
   CSMesInstrumentations __instrumentations ;
   copyInstrumentation(__instrumentations,_instrumentations);
-  selectExecutionsComparaison(__instrumentations,ms,QStringList(),is_test_count_mode_selected,method,false);
+  selectExecutionsComparaison(__instrumentations,ms,ExecutionNames(),is_test_count_mode_selected,method,false);
   const SourceFiles sources=Sources(ALL);
 
   for (SourceFiles::const_iterator itsrc=sources.begin();itsrc!=sources.end();++itsrc)
@@ -226,17 +226,17 @@ bool CSMesStatistic::statisticFunctionsExecution(const QStringList &ms,int cover
   return true;
 }
 
-bool CSMesStatistic::statisticSourcesExecution(const SourceFiles &sources,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<QString,int> &nb_tested,QHash<QString,int> &nb_untested,const CSMesInstrumentations &_instrumentations) const
+bool CSMesStatistic::statisticSourcesExecution(const SourceFiles &sources,const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,QHash<ExecutionName,int> &nb_tested,QHash<ExecutionName,int> &nb_untested,const CSMesInstrumentations &_instrumentations) const
 {
   bool res=true;
   nb_tested.clear();
   nb_untested.clear();
-  QStringList selected_measurements=selectedExecutions();
+  ExecutionNames selected_measurements=selectedExecutions();
   bool is_test_count_mode_selected=isTestCountModeSelected();
 
   CSMesInstrumentations __instrumentations ;
   copyInstrumentation(__instrumentations,_instrumentations);
-  selectExecutionsComparaison(__instrumentations,ms,QStringList(),is_test_count_mode_selected,method,false);
+  selectExecutionsComparaison(__instrumentations,ms,ExecutionNames(),is_test_count_mode_selected,method,false);
   for(SourceFiles::const_iterator it=sources.begin();res && it!=sources.end();++it)
   {
     SourceFile source=*it;
@@ -254,17 +254,17 @@ bool CSMesStatistic::statisticSourcesExecution(const SourceFiles &sources,const 
   return true;
 }
 
-bool CSMesStatistic::statisticModuleExecution(ModuleFile module,SourceFile source,const QStringList &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const
+bool CSMesStatistic::statisticModuleExecution(ModuleFile module,SourceFile source,const ExecutionNames &ms,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const CSMesInstrumentations &_instrumentations) const
 {
   if (!findSourceModule(module,source))
     return false;
   bool is_test_count_mode_selected=isTestCountModeSelected();
-  QStringList selected_measurements=selectedExecutions();
-  QStringList selected_comparaison=selectedComparaison();
+  ExecutionNames selected_measurements=selectedExecutions();
+  ExecutionNames selected_comparaison=selectedComparaison();
 
   CSMesInstrumentations __instrumentations ;
   copyInstrumentation(__instrumentations,_instrumentations);
-  selectExecutionsComparaison(__instrumentations,ms,QStringList(),is_test_count_mode_selected,method,false);
+  selectExecutionsComparaison(__instrumentations,ms,ExecutionNames(),is_test_count_mode_selected,method,false);
   bool res=statisticModule(module,source,coverage_level,method,nb_tested,nb_untested,__instrumentations);
 
   return res;
@@ -296,7 +296,7 @@ QString CSMesStatistic::printStat(double v)
 
 
 
-bool CSMesStatistic::statisticExecution(const QStringList &mes,const QStringList &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const bool &abort_operation) const 
+bool CSMesStatistic::statisticExecution(const ExecutionNames &mes,const ExecutionNames &cmp,bool execution_analysis,int coverage_level,Instrumentation::coverage_method_t method,int &nb_tested,int &nb_untested,const bool &abort_operation) const 
 {
    return statisticExecution(mes,cmp,execution_analysis,coverage_level,method,nb_tested,nb_untested,instrumentations,abort_operation);
 }

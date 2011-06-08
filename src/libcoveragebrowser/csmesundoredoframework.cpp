@@ -105,7 +105,7 @@ void CSMesUndoRedoFramework::pushUndoItem(QUndoCommand *c)
     undo_stack_p->push(c);
 }
 
-void CSMesUndoRedoFramework::setManuallyValidated(QString mod,QString src,int index,bool b)
+void CSMesUndoRedoFramework::setManuallyValidated(const ModuleFile & mod,const SourceFile & src,int index,bool b)
 {
   bool old_v=getManuallyValidated(mod,src,index);
   if (old_v!=b)
@@ -113,7 +113,7 @@ void CSMesUndoRedoFramework::setManuallyValidated(QString mod,QString src,int in
   
 }
 
-bool CSMesUndoRedoFramework::setExecutionComment(const QString &name, const QString &comment) 
+bool CSMesUndoRedoFramework::setExecutionComment(const ExecutionName &name, const QString &comment) 
 {
   QString old_comment;
   getExecutionComment(name,old_comment);
@@ -124,19 +124,19 @@ bool CSMesUndoRedoFramework::setExecutionComment(const QString &name, const QStr
 }
 
 
-bool CSMesUndoRedoFramework::deleteExecution(const QString &v) 
+bool CSMesUndoRedoFramework::deleteExecution(const ExecutionName &v) 
 {
   pushUndoItem(new UndoCmdExecutionDelete(this,v,undoStackInsertItem()));
   return true;
 }
 
-bool CSMesUndoRedoFramework::renameExecution(const QString &old_name,const QString &new_name) 
+bool CSMesUndoRedoFramework::renameExecution(const ExecutionName &old_name,const ExecutionName &new_name) 
 {
   pushUndoItem(new UndoCmdExecutionRename(this,old_name,new_name,undoStackInsertItem()));
   return true;
 }
 
-bool CSMesUndoRedoFramework::selectExecutionsComparaison(const QStringList &ms,const QStringList &comparaison,bool test_coverage_mode, int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t m, bool execution_analysis_mode) 
+bool CSMesUndoRedoFramework::selectExecutionsComparaison(const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, int coverage_level,Instrumentation::coverage_method_t method, CSMes::comparaison_mode_t m, bool execution_analysis_mode) 
 {
   UndoCmdExecutionSettings *undo_item_p = new UndoCmdExecutionSettings(this,ms,comparaison,test_coverage_mode, coverage_level,method, m, execution_analysis_mode,undoStackInsertItem());
   if (undo_item_p->nop())
@@ -148,16 +148,16 @@ bool CSMesUndoRedoFramework::selectExecutionsComparaison(const QStringList &ms,c
   return true;
 }
 
-bool CSMesUndoRedoFramework::renameExecutionPath(const QString &old_name,const QString &new_name) 
+bool CSMesUndoRedoFramework::renameExecutionPath(const ExecutionName &old_name,const ExecutionName &new_name) 
 {
-  QString old_path=old_name;
+  ExecutionName old_path=old_name;
   if (old_path.right(1)!="/")
     old_path+="/";
-  QString new_path=new_name;
+  ExecutionName new_path=new_name;
   if (new_path.right(1)!="/")
     new_path+="/";
-  QStringList execution_list=executions.getExecutionList();
-  QStringList::const_iterator it;
+  ExecutionNames execution_list=executions.getExecutionList();
+  ExecutionNames::const_iterator it;
   if (!executionPathExists(old_name))
     return false;
   int old_path_lg=old_path.length();
@@ -188,7 +188,7 @@ bool CSMesUndoRedoFramework::renameExecutionPath(const QString &old_name,const Q
   return true;
 }
 
-bool CSMesUndoRedoFramework::deleteExecution(const QStringList &ms)
+bool CSMesUndoRedoFramework::deleteExecution(const ExecutionNames &ms)
 {
   if (ms.isEmpty())
     return false;
@@ -196,7 +196,7 @@ bool CSMesUndoRedoFramework::deleteExecution(const QStringList &ms)
     beginUndoGroup(tr("Delete %1 executions").arg(QString::number(ms.count())));
   else
     beginUndoGroup(tr("Delete execution '%1'").arg(ms.at(0)));
-  for (QStringList::const_iterator it=ms.begin();it!=ms.end();++it)
+  for (ExecutionNames::const_iterator it=ms.begin();it!=ms.end();++it)
     pushUndoItem(new UndoCmdExecutionDelete(this,*it,undoStackInsertItem()));
   endUndoGroup();
   return true;
@@ -204,14 +204,14 @@ bool CSMesUndoRedoFramework::deleteExecution(const QStringList &ms)
 
 bool CSMesUndoRedoFramework::deleteExecutionPath(const QString &v) 
 {
-  QStringList to_remove;
+  ExecutionNames to_remove;
   QString path=v;
   if (v.right(1)!="/")
     path+="/";
 
   beginUndoGroup(tr("Delete executions '%1*'").arg(path));
-  QStringList execution_list=executions.getExecutionList();
-  for (QStringList::const_iterator it = execution_list.begin(); it != execution_list.end(); ++it ) 
+  ExecutionNames execution_list=executions.getExecutionList();
+  for (ExecutionNames::const_iterator it = execution_list.begin(); it != execution_list.end(); ++it ) 
   {
     if ((*it).indexOf(path)==0)
       to_remove+=*it;
@@ -221,18 +221,18 @@ bool CSMesUndoRedoFramework::deleteExecutionPath(const QString &v)
   return ret;
 }
 
-bool CSMesUndoRedoFramework::mergeExecutions(const QStringList &sources,const QString &dest)
+bool CSMesUndoRedoFramework::mergeExecutions(const ExecutionNames &sources,const ExecutionName &dest)
 {
   pushUndoItem(new UndoCmdExecutionMerge(this,sources,dest,undoStackInsertItem()));
   return true;
 }
 
-void CSMesUndoRedoFramework::setExecutionStatus(const QString &name,Executions::execution_status_t e)
+void CSMesUndoRedoFramework::setExecutionStatus(const ExecutionName &name,Executions::execution_status_t e)
 {
   pushUndoItem(new UndoCmdExecutionStatus(this,name,e,undoStackInsertItem()));
 }
 
-void CSMesUndoRedoFramework::setExecutionStatusStr(const QString &name,const QString &execution_status) 
+void CSMesUndoRedoFramework::setExecutionStatusStr(const ExecutionName &name,const QString &execution_status) 
 {
   pushUndoItem(new UndoCmdExecutionStatusStr(this,name,execution_status,undoStackInsertItem()));
 }
@@ -245,32 +245,32 @@ bool CSMesUndoRedoFramework::loadCSMes(const QString &file)
   return ret;
 }
 
-void CSMesUndoRedoFramework::insert_execution_undo_stack(const QStringList &new_executions)
+void CSMesUndoRedoFramework::insert_execution_undo_stack(const ExecutionNames &new_executions)
 {
   if (!new_executions.isEmpty())
   {
     QString title="Load "+QString::number(new_executions.count())+ " Executions";
     beginUndoGroup(title);
-    for (QStringList::const_iterator it=new_executions.begin();it!=new_executions.end();++it)
+    for (ExecutionNames::const_iterator it=new_executions.begin();it!=new_executions.end();++it)
       pushUndoItem(new UndoCmdExecutionInsert(this,*it,undoStackInsertItem()));
     endUndoGroup();
   }
 }
 
-bool CSMesUndoRedoFramework::loadCSExe(const QString &file,const QString &name,csexe_import_policy_t p,Executions::execution_status_t default_execution_status,QStringList &new_executions,QString &info,QString &short_status,bool use_undo,progress_function_t progress)
+bool CSMesUndoRedoFramework::loadCSExe(const QString &file,const ExecutionName &name,csexe_import_policy_t p,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,bool use_undo,progress_function_t progress)
 {
   QFile f(file);
   return loadCSExe(f,name,p,default_execution_status,new_executions,info,short_status,use_undo,progress);
 }
 
-bool CSMesUndoRedoFramework::loadCSExe(const QByteArray &data,const QString &name,csexe_import_policy_t p,Executions::execution_status_t default_execution_status,QStringList &new_executions,QString &info,QString &short_status,bool use_undo,progress_function_t progress)
+bool CSMesUndoRedoFramework::loadCSExe(const QByteArray &data,const ExecutionName &name,csexe_import_policy_t p,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,bool use_undo,progress_function_t progress)
 {
   QBuffer file;
   file.setData(data);
   return loadCSExe(file,name,p,default_execution_status,new_executions,info,short_status,use_undo,progress);
 }
 
-bool CSMesUndoRedoFramework::loadCSExe(QIODevice &data,QString name,csexe_import_policy_t p,Executions::execution_status_t default_execution_status,QStringList &new_executions,QString &info,QString &short_status,bool use_undo,progress_function_t progress)
+bool CSMesUndoRedoFramework::loadCSExe(QIODevice &data,const ExecutionName &name,csexe_import_policy_t p,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,bool use_undo,progress_function_t progress)
 {
   if (!lock_csexe(data))
     return false;
@@ -279,14 +279,14 @@ bool CSMesUndoRedoFramework::loadCSExe(QIODevice &data,QString name,csexe_import
   {
     QString title=tr("Load Executions");
     beginUndoGroup(title);
-    QHash<QString,Executions::modules_executions_private_t> undo_backup;
+    QHash<ExecutionName,Executions::modules_executions_private_t> undo_backup;
     QString err;
     ret = CSMes::loadCSExe(data,name,p,default_execution_status,new_executions,info,short_status,err,&undo_backup,progress);
 
-    for (QHash<QString,Executions::modules_executions_private_t>::const_iterator modifit=undo_backup.begin();
+    for (QHash<ExecutionName,Executions::modules_executions_private_t>::const_iterator modifit=undo_backup.begin();
         modifit!=undo_backup.end();++modifit)
       pushUndoItem(new UndoCmdExecutionBackup(this,modifit.key(),modifit.value(),undoStackInsertItem()));
-    for (QStringList::const_iterator it=new_executions.begin();it!=new_executions.end();++it)
+    for (ExecutionNames::const_iterator it=new_executions.begin();it!=new_executions.end();++it)
       pushUndoItem(new UndoCmdExecutionInsert(this,*it,undoStackInsertItem()));
 
     title += " ("+short_status+")";
@@ -336,7 +336,7 @@ void CSMesUndoRedoFramework::clearUndoStack()
   undo_stack_p->clear();
 }
 
-bool CSMesUndoRedoFramework::setComment(QString module,QString source,int instrument_index,const QString &comment)
+bool CSMesUndoRedoFramework::setComment(const ModuleFile & module,const SourceFile & source,int instrument_index,const QString &comment)
 {
   QString old_comment=getComment(module,source,instrument_index);
   if (old_comment!=comment)

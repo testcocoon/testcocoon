@@ -22,7 +22,7 @@
 #include "csmesbackgroundcomputations.h"
 #include <QTime>
 
-UndoCmdManuallyValidated::UndoCmdManuallyValidated (CSMes *csmes_p,const QString &module,const QString &source,int index,const bool &old_manually_validated,const bool &new_manually_validated,QUndoCommand *parent) : QUndoCommand("",parent)
+UndoCmdManuallyValidated::UndoCmdManuallyValidated (CSMes *csmes_p,const ModuleFile &module,const SourceFile &source,int index,const bool &old_manually_validated,const bool &new_manually_validated,QUndoCommand *parent) : QUndoCommand("",parent)
 {
   m_csmes_p=csmes_p;
   m_module=module;

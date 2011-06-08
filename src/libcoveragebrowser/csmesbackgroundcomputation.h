@@ -45,8 +45,8 @@ class CSMesBackgroundComputation : public QThread
       void pause();
       void resume();
    signals:
-    void explanation(QString ,QString ,QList<int> ,CSMes::source_type_t ,int ,Instrumentation::coverage_method_t ,int,QString );
-    void statisticExecution(QStringList ,QStringList,bool execution_analysis,int ,Instrumentation::coverage_method_t ,CSMes::comparaison_mode_t, int ,int ) ;
+    void explanation(ModuleFile ,SourceFile ,QList<int> ,CSMes::source_type_t ,int ,Instrumentation::coverage_method_t ,int,QString );
+    void statisticExecution(ExecutionNames ,ExecutionNames,bool execution_analysis,int ,Instrumentation::coverage_method_t ,CSMes::comparaison_mode_t, int ,int ) ;
 
    protected:
       void run();

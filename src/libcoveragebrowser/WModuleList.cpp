@@ -202,19 +202,19 @@ void WModuleList::selectSource (const ModuleFile &module,const SourceFile &sourc
   }
 }
 
-QString WModuleList::Module() const
+ModuleFile WModuleList::Module() const
 {
   if (modulesSortModel_p==NULL)
-    return QString::null;
+    return ModuleFile();
 
   QModelIndex curr_index= modulesSortModel_p->mapToSource (modulesView_p->currentIndex());
   return modulesModel_p->module(curr_index);
 }
 
-QString WModuleList::Source() const
+SourceFile WModuleList::Source() const
 {
   if (modulesSortModel_p==NULL)
-    return QString::null;
+    return SourceFile();
 
   QModelIndex curr_index= modulesSortModel_p->mapToSource (modulesView_p->currentIndex());
   return modulesModel_p->source(curr_index);

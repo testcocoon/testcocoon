@@ -50,8 +50,8 @@ WLoadExecution::WLoadExecution(const CSMesUndoRedoFramework *c_p,QWidget* parent
   file_p->setCompleter( file_completor_p );
 
   lru=Options::get_opt_strlst(QString(),"/CSEXE_NAME_COMPLETION");
-  QStringList namelist=c_p->executionList() ;
-  lru=appendLRUatEnd(namelist,lru);
+  ExecutionNames namelist=c_p->executionList() ;
+  lru=appendLRUatEnd(namelist.toQStringList(),lru);
   name_completor_p = new QCompleter(name_p);
   name_completor_model_p=new QStringListModel(lru,name_completor_p);
   name_completor_p->setModel(name_completor_model_p);

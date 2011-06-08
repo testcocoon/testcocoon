@@ -289,8 +289,8 @@ void ExecutionListView::renameRegex()
   if (dialog.exec())
   {
     csmes_p->beginUndoGroup(tr("Rename executions '%1' -> '%2'").arg(dialog.source()).arg(dialog.destination()));
-    QStringList sources=dialog.sourceList();
-    QStringList destinations=dialog.destinationList();
+    ExecutionNames sources=dialog.sourceList();
+    ExecutionNames destinations=dialog.destinationList();
     int sz=sources.size();
     for (int i=0;i<sz;i++)
     {
@@ -316,7 +316,7 @@ void ExecutionListView::deleteRegex()
   WExecutionDelete dialog(csmes_p,this);
   if (dialog.exec())
   {
-    QStringList sources=dialog.sourceList();
+    ExecutionNames sources=dialog.sourceList();
     csmes_p->beginUndoGroup(tr("Delete executions '%1'").arg(dialog.source()));
     int sz=sources.size();
     for (int i=0;i<sz;i++)
@@ -344,7 +344,7 @@ void ExecutionListView::mergeRegex()
   if (dialog.exec())
   {
     csmes_p->beginUndoGroup(tr("Merge executions '%1' -> '%2'").arg(dialog.source()).arg(dialog.destination()));
-    QStringList sources=dialog.sourceList();
+    ExecutionNames sources=dialog.sourceList();
     QString name=dialog.destinationExecution();
     printStatus(tr("Generating '%1'...").arg(name),0.0);
     if (!model_p->mergeExecutions(sources,name))
@@ -353,7 +353,7 @@ void ExecutionListView::mergeRegex()
     }
     else
     {
-      QStringList sources=dialog.sourceList();
+      ExecutionNames sources=dialog.sourceList();
       int sz=sources.size();
       for (int i=0;i<sz;i++)
       {
