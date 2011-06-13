@@ -177,7 +177,7 @@ bool CSMESFile::readSectionIndex()
     return false;
   }
   char2long(tmp_ch,section_sz);
-  int magic;
+  int magic=0;
   if (readFile(&magic,1,4)<=0)
   {
     error_msg="Wrong file format";
@@ -390,13 +390,13 @@ bool CSMESFile::writeSectionIndex()
 bool CSMESFile::isCSMESFile(const char *file)
 {
   FUNCTION_TRACE;
-  long magic;
+  long magic=0;
   FILE *ftest;
   ftest=fopen(file,"r+"BINARY_FORMAT );
   if (ftest==NULL)
     return false;
   FSEEK(ftest,-4,SEEK_END);
-  if (fread(&magic,1,sizeof(magic),ftest)<=0)
+  if (fread(&magic,1,4,ftest)<=0)
   {
     fclose(ftest);
     return false;
