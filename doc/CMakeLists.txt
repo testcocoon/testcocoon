@@ -1,6 +1,7 @@
 PROJECT(testcocoondoc NONE)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.4)
 INCLUDE(UseLATEX.cmake)
+SET(TESTCOCOON_DOC_PDF ${CMAKE_CURRENT_BINARY_DIR}/testcocoon.pdf)
 SET(LATEX_SRCS 
               ../src/LICENSE.TXT
               customiofile.c
@@ -90,6 +91,8 @@ IF (DEFINED GENSRCIMG)
 ENDIF()
 
 ADD_CUSTOM_TARGET(kpdf
-                  COMMAND kpdf ${CMAKE_CURRENT_BINARY_DIR}/testcocoon.pdf
-                  DEPENDS  ${CMAKE_CURRENT_BINARY_DIR}/testcocoon.pdf
+                  COMMAND kpdf ${TESTCOCOON_DOC_PDF}
+                  DEPENDS  ${TESTCOCOON_DOC_PDF}
     )
+
+INSTALL (FILES ${TESTCOCOON_DOC_PDF} DESTINATION share/doc/testcocoon)
