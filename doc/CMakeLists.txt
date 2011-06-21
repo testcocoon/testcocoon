@@ -95,4 +95,9 @@ ADD_CUSTOM_TARGET(kpdf
                   DEPENDS  ${TESTCOCOON_DOC_PDF}
     )
 
+ADD_CUSTOM_TARGET(okular
+                  COMMAND okular ${TESTCOCOON_DOC_PDF}
+                  DEPENDS  ${TESTCOCOON_DOC_PDF}
+    )
+
 INSTALL (FILES ${TESTCOCOON_DOC_PDF} DESTINATION share/doc/testcocoon)

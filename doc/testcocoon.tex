@@ -3529,6 +3529,56 @@ Source code:
 \end{alltt}
 }
 %END LATEX
+\chapter{\label{building}Building \TestCocoon}
+
+\section{Required Tools}
+
+For building the documentation \LaTeX\ is necessary: on \Linux\ the version
+provided by the distribution should be fine, on \MicrosoftWindows\
+MiKTeX\footnote{\url{http://www.miktex.org}} can be used and on \MacOSX\ Tex
+Live\footnote{\url{http://www.tug.org/texlive/}} can be installed.
+
+\bigskip\par
+
+Following tools needs to be installed to compile:
+
+\begin{tabular}[ht]{|l|l|l|} \hline
+  \Linux           & \MicrosoftWindows      & \MacOSX \\ \hline
+  flex             &                        & \\ hline
+  bison            &                        & \\ \hline
+  GNU g++ compiler & \VisualStudioNET\ 2005 & \AppleXcode \\ \hline
+\end{tabular}
+
+\QtLibrary\ version 4.6.3 is also required.
+
+\bigskip\par
+
+To generate the installer, following software are necessary:
+
+\begin{tabular}[ht]{|l|l|l|} \hline
+  \Linux   & \MicrosoftWindows                       & \MacOSX \\ \hline
+  makeself & NSIS\footnote{\url{http://nsis.sf.net}} & IceBerg\footnote{\url{http://s.sudre.free.fr/Packaging.html}} \\ \hline
+\end{tabular}
+
+\section{Build Steps}
+
+To build Qt execute:
+
+\begin{tabular}[ht]{|l|l|l|} \hline
+  \Linux                        & \MicrosoftWindows    & \MacOSX \\ \hline
+  gen/linux/buildqt.bat install & gen/macos/buildqt.sh & gen/windows/buildqt.sh \\ \hline
+\end{tabular}
+
+\bigskip\par
+
+To build \TestCocoon\ installer:
+
+\begin{tabular}[ht]{|l|l|l|} \hline
+  \Linux              & \MicrosoftWindows  & \MacOSX \\ \hline
+  gen/linux/build.bat & gen/macos/build.sh & gen/windows/build.sh \\ \hline
+\end{tabular}
+
+
 \chapter{\label{customioexample}Customizing I/O of \CoverageScanner\ library}
 
 \section{Custom I/O using C file access}
