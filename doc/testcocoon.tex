@@ -3540,16 +3540,17 @@ Live\footnote{\url{http://www.tug.org/texlive/}} can be installed.
 
 \bigskip\par
 
-Following tools needs to be installed to compile:
+Following tools needs to be installed to compile the project:
 
 \begin{tabular}[ht]{|l|l|l|} \hline
   \Linux           & \MicrosoftWindows      & \MacOSX \\ \hline
-  flex             &                        & \\ hline
-  bison            &                        & \\ \hline
+  flex version 2.5.35            &                        & \\ hline
+  bison version 2.4.1           &                        & \\ \hline
   GNU g++ compiler & \VisualStudioNET\ 2005 & \AppleXcode \\ \hline
+  \multicolumn{3}{|c|}{\QtLibrary\ version 4.6.3 or above} \\ \hline
+  \multicolumn{3}{|c|}{\Kitware\ \CMake} version 2.8 \\ \hline
 \end{tabular}
 
-\QtLibrary\ version 4.6.3 is also required.
 
 \bigskip\par
 
@@ -3560,7 +3561,7 @@ To generate the installer, following software are necessary:
   makeself & NSIS\footnote{\url{http://nsis.sf.net}} & IceBerg\footnote{\url{http://s.sudre.free.fr/Packaging.html}} \\ \hline
 \end{tabular}
 
-\section{Build Steps}
+\section{Build Installer}
 
 To build Qt execute:
 
@@ -3578,7 +3579,28 @@ To build \TestCocoon\ installer:
   gen/linux/build.bat & gen/macos/build.sh & gen/windows/build.sh \\ \hline
 \end{tabular}
 
+\section{Build Steps}
 
+To build the sources follows this steps:
+\begin{enumerate}
+  \item Create an empty directory which will contains the result of the build (object and executables).
+  \item In a shell/DOS prompt go into this directory and execute:
+    \begin{verbatim}
+    cmake -DCMAKE_BUILD_TYPE=<build_type> <path_of_testcocoon_sources>
+    \end{verbatim}
+    Following values of \verb$<build_type>$ are possible: \newline
+    \begin{tabular}[ht]{|c|l|} \hline
+      \verb$<build_type>$ & \textbf{Description} \\ \hline
+      debug & debug mode build \\ \hline
+      release & release mode build \\ \hline
+      log & release mode build with verbose log output \\ \hline
+    \end{tabular}
+    \NOTE{-G can be used to generate \VisualStudioNET\ or \AppleXcode\ projects.}
+  \item Execute \verb$make$ or \verb$nmake$ to generate the project.
+  \item On Unix, '\verb$make install$' (resp. '\verb$make uninstall$') installs \TestCocoon\ (resp. unistalls). 
+        Setting the \CMake\ variable \verb$CMAKE_INSTALL_PREFIX$ permits to set the installation path (ex: \verb$cmake -DCMAKE_INSTALL_PREFIX=/tmp/InstallTest ...$)
+
+\end{enumerate}
 \chapter{\label{customioexample}Customizing I/O of \CoverageScanner\ library}
 
 \section{Custom I/O using C file access}
