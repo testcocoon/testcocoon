@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 2.6.0)
 SET(PROGNAME instrumentation)
 INCLUDE(../commoncode/common.cmake)
+IF("${CMAKE_SYSTEM}" MATCHES "Linux")
+  FIND_PROGRAM(FLEX_EXECUTABLE flex)
+  FIND_PROGRAM(BISON_EXECUTABLE bison)
+endif()
 
 set(SRCS
     executionname.cpp
@@ -40,6 +44,52 @@ set(SRCS
 
 set(MOC_HDRS
     FileSystemWatcher.h
+)
+
+
+IF(DEFINED FLEX_EXECUTABLE AND DEFINED BISON_EXECUTABLE)
+  MACRO (GENPARSER FLEX_ARGS BISON_ARGS PARSER_NAME PARSER_POSTFIX)
+#SET(BISON_GLOBAL_ARGS --no-lines)
+#SET(FLEX_GLOBAL_ARGS --noline)
+# Create custom command for flex/lex (note the outputs)
+     ADD_CUSTOM_COMMAND(
+       OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${PARSER_NAME}_lex_${PARSER_POSTFIX}.cxx
+       COMMAND ${FLEX_EXECUTABLE} ${FLEX_ARGS} ${FLEX_GLOBAL_ARGS} -P ${PARSER_NAME} -o ${PARSER_NAME}_lex_${PARSER_POSTFIX}.cxx ${PARSER_NAME}.l
+       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${PARSER_NAME}.l
+       )
+
+# Create custom command for bison/yacc (note the DEPENDS)
+     ADD_CUSTOM_COMMAND(
+       OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${PARSER_NAME}_yacc_${PARSER_POSTFIX}.cxx
+       COMMAND ${BISON_EXECUTABLE} ${BISON_ARGS} -d ${BISON_GLOBAL_ARGS} ${PARSER_NAME}.y -o ${PARSER_NAME}_yacc_${PARSER_POSTFIX}.cxx
+       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${PARSER_NAME}_lex_${PARSER_POSTFIX}.cxx ${CMAKE_CURRENT_SOURCE_DIR}/${PARSER_NAME}.y
+       )
+
+# Since parser.c does not exists yet when cmake is run, mark
+# it as generated
+     SET_SOURCE_FILES_PROPERTIES(${CMAKE_CURRENT_SOURCE_DIR}/${PARSER_NAME}_yacc_${PARSER_POSTFIX}.cxx GENERATED)
+     SET_SOURCE_FILES_PROPERTIES(${CMAKE_CURRENT_SOURCE_DIR}/${PARSER_NAME}_lex_${PARSER_POSTFIX}.cxx GENERATED)
+
+     ADD_CUSTOM_TARGET (${PARSER_NAME}_${PARSER_POSTFIX}
+         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${PARSER_NAME}_yacc_${PARSER_POSTFIX}.cxx
+                 ${CMAKE_CURRENT_SOURCE_DIR}/${PARSER_NAME}_lex_${PARSER_POSTFIX}.cxx )
+  ENDMACRO()
+
+  GENPARSER("" ""     csexe_parser       release)
+  GENPARSER("" "-t"   csexe_parser       debug)
+endif()
+
+if ("${CMAKE_BUILD_TYPE_UPPER}" STREQUAL "LOG")
+  SET(PARSER_BUILD_MODE debug)
+else()
+  SET(PARSER_BUILD_MODE release)
+endif()
+  
+SET(SRCS ${SRCS}
+      csexe_parser_yacc_${PARSER_BUILD_MODE}.cxx
+      csexe_parser_lex_${PARSER_BUILD_MODE}.cxx
 )
 
 # After this call, foo_MOC_SRCS = moc_Class1.cxx moc_Class2.cxx moc_Class3.cxx.
