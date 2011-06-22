@@ -207,7 +207,7 @@ QString CSMesEmma::exportEMMAStatistic(const QString &filename,int coverage_leve
       int nb_tested_class;
       int nb_untested_class;
       int nb_tested_blocks=nb_tested_block;
-      int nb_untested_blocks=nb_tested_block;
+      int nb_untested_blocks=nb_untested_block;
       emmaStatisticMethods(nb_tested_function_list,nb_tested_method,nb_untested_method);
       emmaStatisticClasses(nb_tested_function_list,nb_tested_class,nb_untested_class);
 
