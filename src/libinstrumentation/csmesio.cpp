@@ -19,6 +19,7 @@
 #include "libinstrumentationpdef.h"
 #include "csmesio.h"
 #include "Service.h"
+#include "csexe_parser.h"
 #include <QObject>
 #include <QThread>
 #include <QTextDocument>
@@ -33,6 +34,8 @@
 #ifdef OS_WIN32
 #include <windows.h>
 #endif
+
+#define CSEXE_LEX_YACC_PARSER 1
 
 CSMesIO::CSMesIO() : CSMesComment()
 {
@@ -444,8 +447,11 @@ bool CSMesIO::load_csexe_one(Executions::modules_executions_t &mts, ExecutionNam
   return !import_error;
 }
 
-bool CSMesIO::loadCSExe(QIODevice &file,ExecutionName name_orig,csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,progress_function_t progress_p)
+bool CSMesIO::loadCSExe(QIODevice &file,const ExecutionName &name_orig,csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,progress_function_t progress_p)
 {
+#if CSEXE_LEX_YACC_PARSER
+  return csexe_parse(*this,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p) == 0;
+#else
   QTime timeWatch;
   errmsgs.clear();
   timeWatch.restart();
@@ -696,6 +702,7 @@ bool CSMesIO::loadCSExe(QIODevice &file,ExecutionName name_orig,csexe_import_pol
   double loadTime=static_cast<double>(timeWatch.elapsed())/1000.0;
   printStatus(QObject::tr("Execution report loaded. (%1s)").arg(QString::number(loadTime,'f',3)),-1.0);
   return true;
+#endif
 }
 
 void CSMesIO::clear()

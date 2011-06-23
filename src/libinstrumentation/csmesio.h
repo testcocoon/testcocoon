@@ -42,7 +42,7 @@ class CSMesIO : public CSMesComment
   protected:
     LIBINSTRUMENTATION_API bool lock_csexe(QIODevice &file);
     LIBINSTRUMENTATION_API bool unlock_csexe(QIODevice &file);
-    bool loadCSExe(QIODevice &data,ExecutionName name,csexe_import_policy_t,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsg,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,progress_function_t);
+    bool loadCSExe(QIODevice &data,const ExecutionName &name,csexe_import_policy_t,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsg,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,progress_function_t);
     bool loadCSMes(const QString &file);
     bool mergeCSMes(const QString &s,CSMESFile::merge_policy_t policy);
     bool saveCSMes();

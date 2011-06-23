@@ -19,7 +19,6 @@
 %option prefix="csexe_parser"
 /*%option outfile="lex.yy.c"*/
 %option fast
-%option stack
 %option 8bit
 /*%option nounistd*/
 
@@ -94,16 +93,14 @@ number                 {D}*
 rank_specifier         "["{white_space}*(","{white_space}*)*"]"
 
 
-%x IN_COMMENT IN_PREPROCESSOR IN__LINE__COMMENT
-
-%s IN_ATTRIB IN_ACCESSOR IN_GETSET
-
+%s START_LINE LINE_INSTRUMENTATION_SOURCE_FILENAME LINE_INSTRUMENTATION_SOURCE_SIGNATURE LINE_INSTRUMENTATION_SOURCE_SIZE LINE_INSTRUMENTATION_VALUE LINE_TITLE LINE_STATUS
 
 %{
 #include <string.h>
 #include <stdio.h>
 #include "debug.h"
 #include "csexe_parser.h"
+#include "instrumentation.h"
 #ifdef ___GNUC___
 #define yyunput ____attribute____ ((unused)) yyunput
 #define yy_top_state ____attribute____ ((unused)) yy_top_state
@@ -116,56 +113,88 @@ static int (*yy_input)(char *,int)=NULL;
 
 extern YYLTYPE yylloc;
 extern YYSTYPE yylval;
+static inline unsigned int hex2uint(const char *s);
 %}
 
 %%
 
-'!'              { return '!' ; }
-'*'              { return '*' ; }
-'-'              { return '-' ; }
-"+"              { return '+' ; }
-"/"              { return '/' ; }
-':'              { return ':'; }
-'\\'             { return '\\'; }
-'\n'             { return '\n'; }
-'\r'             { /* ignore */ }
-[\xA7]           { return '*' ; /* § */ }
-{number}         { return __NUMBER__ ; }
-.                { return __STRING__; }
+<INITIAL,START_LINE>{
+"# Measurements"(\r*)\n    {  return __CSEXE_MEASUREMENT__ ; }
+"!"                        {  BEGIN(LINE_STATUS); return __CSEXE_STATUS__ ; }
+"*"                        {  BEGIN(LINE_TITLE); return __CSEXE_TITLE__ ; }
+[\xA7]                     {  BEGIN(LINE_TITLE); return __CSEXE_TITLE__ ; /* § */ }
+"/"                        {  BEGIN(LINE_INSTRUMENTATION_SOURCE_SIZE); return __CSEXE_INSTRUMENTATION_SOURCE__ ; }
+"\\"                       {  BEGIN(LINE_INSTRUMENTATION_VALUE); return __CSEXE_INSTRUMENTATION_VALUES__ ; }
+}
 
+<LINE_INSTRUMENTATION_SOURCE_SIZE>{
+{number}     {  return __NUMBER__ ; }
+":"          {  BEGIN(LINE_INSTRUMENTATION_SOURCE_SIGNATURE); return ':'; }
+}
 
+<LINE_INSTRUMENTATION_SOURCE_SIGNATURE>{
+{number}     {  return __NUMBER__ ; }
+":"          {  BEGIN(LINE_INSTRUMENTATION_SOURCE_FILENAME); return ':'; }
+}
 
+<LINE_INSTRUMENTATION_SOURCE_FILENAME>[^\r\n]*  { yylval.str=STRDUP(yytext); return __STRING__; }
+
+<LINE_TITLE>[^\r\n]*                    {  yylval.str=STRDUP(yytext); return __STRING__; }
+
+<LINE_INSTRUMENTATION_VALUE>{
+"?"                      {  yylval.value=Instrumentation::EXECUTION_STATE_HIDDEN; return __NUMBER__ ; }
+"-"                      {  yylval.value=Instrumentation::EXECUTION_STATE_NOT_EXECUTED;return __NUMBER__ ; }
+"+"                      {  yylval.value=static_cast<Instrumentation::execution_state_t>(1) ; return __NUMBER__ ; }
+[0-9A-F]{8}              {  yylval.value=hex2uint(yytext) ; 
+                            if (yylval.value>Instrumentation::EXECUTION_MAX)
+                              yylval.value=Instrumentation::EXECUTION_MAX;
+                            return __NUMBER__ ; 
+                         }
+}
+
+<LINE_STATUS>{
+"PASSED"                      {  return __STATUS_PASSED__ ; }
+"FAILED"                      {  return __STATUS_FAILED__ ; }
+"CHECK_MANUALLY"              {  return __STATUS_CHECK_MANUALLY__ ; }
+}
+
+<*>\n  {  BEGIN(START_LINE); return '\n'; }
+<*>\r  {  /* ignore */ }
 %%
 
-int
-yywrap()
+static inline unsigned int hex2uint(const char *s)
+{
+  unsigned int v=0;
+  ASSERT(strlen(s)==8);
+  for (int i=0;i<8;i++)
+  {
+    char c=s[i] ;
+    if (c<='9' && c>='0')
+      c-='0';
+    else
+      c-='A'-10;
+    v|=c<<(4*(7-i));
+  }
+  return v;
+}
+
+static QIODevice *qiodevice_p=NULL;
+static int yy_input_qiodevice(char *buf,int max_size)
+{
+  int result;
+  if ( (result = qiodevice_p->read( (char *) buf, max_size )) < 0 ) 
+    return 0;
+  return result;
+}
+
+int yywrap()
 {
 	return(1);
 }
 
-char *csexe_input_buffer=NULL;
-static int   csexe_input_buffer_pos=0;
-int   csexe_input_buffer_sz=0;
-
-static int yy_input_buffer(char *buf,int max_size)
+void init_csexe_parserlex(CSMesIO &csmes,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
 {
-  int sz=max_size;
-  if (sz>=csexe_input_buffer_sz-csexe_input_buffer_pos)
-    sz=csexe_input_buffer_sz-csexe_input_buffer_pos;
-  if (sz)
-  {
-    memcpy(buf,&csexe_input_buffer[csexe_input_buffer_pos],sz);
-    csexe_input_buffer_pos+=sz;
-  }
-
-  return sz;
-}
-
-void init_csexe_parserlex( )
-{
-  FREE(csexe_input_buffer);
-  csexe_input_buffer=NULL;
-  csexe_input_buffer_pos=0;
-  csexe_input_buffer_sz=0;
-  yy_input=yy_input_buffer;
+  BEGIN(START_LINE);
+  yy_input=yy_input_qiodevice;
+  qiodevice_p=&file;
 }

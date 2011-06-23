@@ -40,7 +40,15 @@
       know about them.  */
    enum yytokentype {
      __NUMBER__ = 258,
-     __STRING__ = 259
+     __STRING__ = 259,
+     __CSEXE_MEASUREMENT__ = 260,
+     __CSEXE_STATUS__ = 261,
+     __STATUS_PASSED__ = 262,
+     __STATUS_FAILED__ = 263,
+     __STATUS_CHECK_MANUALLY__ = 264,
+     __CSEXE_TITLE__ = 265,
+     __CSEXE_INSTRUMENTATION_SOURCE__ = 266,
+     __CSEXE_INSTRUMENTATION_VALUES__ = 267
    };
 #endif
 
@@ -51,14 +59,15 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 34 "csexe_parser.y"
+#line 33 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
- csexe_t csexe;
+ char *        str;
+ unsigned long value;
 
 
 
 /* Line 1676 of yacc.c  */
-#line 62 "csexe_parser_yacc_release.hxx"
+#line 71 "csexe_parser_yacc.hxx"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
