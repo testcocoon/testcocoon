@@ -19,22 +19,19 @@
 #ifndef CSEXE_PARSE_INCLUDE_H
 #define CSEXE_PARSE_INCLUDE_H
 
-typedef int csexe_t;
-
-#if !defined(LOG) 
-#include "csexe_parser_yacc_release.hxx"
-#else
-#include "csexe_parser_yacc_debug.hxx"
-#endif
+#include "csexe_parser_yacc.hxx"
 #include <stdio.h>
+#include <QHash>
+#include <QIODevice>
+#include "csmesio.h"
+
+long csexe_parse(CSMesIO &csmes,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p);
 
 /* debug function for bison */
 int csexe_yyprint(FILE *f,int type,YYSTYPE value);
 #define  YYPRINT(file,type,value) csexe_yyprint(file,type,value);
 
-extern char *csexe_input_buffer;
-extern int   csexe_input_buffer_sz;
-void init_csexe_parserlex();
+void init_csexe_parserlex(CSMesIO &csmes,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p);
 int csexe_parsererror(const char *s);
 #endif
 

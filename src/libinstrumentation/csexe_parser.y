@@ -25,14 +25,14 @@
 #pragma warning(disable : 4065)
 #endif
 extern int csexe_parserlex (void);
-void init_csexe_parser_lex();
 
 
 %}
 %name-prefix="csexe_parser"
 %union
 {
- csexe_t csexe;
+ char *        str;
+ unsigned long value;
 }
 %locations
 %verbose
@@ -41,7 +41,19 @@ void init_csexe_parser_lex();
 
 %token __NUMBER__
 %token __STRING__
+%token __CSEXE_MEASUREMENT__
+%token __CSEXE_STATUS__
+%token __STATUS_PASSED__
+%token __STATUS_FAILED__
+%token __STATUS_CHECK_MANUALLY__
+%token __CSEXE_TITLE__
+%token __CSEXE_INSTRUMENTATION_SOURCE__
+%token __CSEXE_INSTRUMENTATION_VALUES__
 
+%type <value> __NUMBER__ instrumentation
+
+%type <str>   __STRING__ str module_name
+%destructor { if ($$) FREE($$); } str module_name
 
 %start csexe_parser 
 
@@ -60,17 +72,17 @@ csexe_measurement : csexe_titles csexe_start_banner
                   | csexe_start_banner
                   ;
 
-csexe_start_banner: '#' __STRING__ '\n' csexe_instrumentations
-                  | '#' __STRING__ '\n' csexe_instrumentations csexe_status
-                  | '#' __STRING__ '\n' csexe_status
-                  | '#' __STRING__ '\n' 
+csexe_start_banner: __CSEXE_MEASUREMENT__ '\n' csexe_instrumentations
+                  | __CSEXE_MEASUREMENT__ '\n' csexe_instrumentations csexe_status
+                  | __CSEXE_MEASUREMENT__ '\n' csexe_status
+                  | __CSEXE_MEASUREMENT__ '\n' 
                   ;
 
 csexe_instrumentations: csexe_instrumentation
                       | csexe_instrumentation csexe_instrumentations
                       ;
 
-csexe_instrumentation: '/' nb_mes ':' signature ':' module_name '\n' module_instrumentation
+csexe_instrumentation: __CSEXE_INSTRUMENTATION_SOURCE__ nb_mes ':' signature ':' module_name '\n' module_instrumentation
                      ;
 
 nb_mes: __NUMBER__ 
@@ -79,43 +91,40 @@ nb_mes: __NUMBER__
 signature: __NUMBER__ 
       ;
 
-module_name: title
+module_name: str
+		   { $$=$1; $1=NULL; }
            ;
 
-module_instrumentation: '\\' instrumentations '\n'
-                      | '\\' '\n'
+module_instrumentation: __CSEXE_INSTRUMENTATION_VALUES__ instrumentations '\n'
+                      | __CSEXE_INSTRUMENTATION_VALUES__ '\n'
                       ;
 
 instrumentations: instrumentation 
                 | instrumentation instrumentations
                 ;
 instrumentation: __NUMBER__
-               | '+'
-               | '-'
-               | '?'
                ;
 
 csexe_status: csexe_one_status
             | csexe_one_status csexe_status
             ;
 
-csexe_one_status : '!' title '\n'
-                  | '!' '\n'
+csexe_one_status : __CSEXE_STATUS__ __STATUS_PASSED__ '\n'
+                  | __CSEXE_STATUS__ __STATUS_FAILED__ '\n'
+                  | __CSEXE_STATUS__ __STATUS_CHECK_MANUALLY__ '\n'
                   ;
 
 csexe_titles: csexe_title
             | csexe_title csexe_titles
             ;
 
-csexe_title : '*' title '\n'
-            | '*' '\n'
+csexe_title : __CSEXE_TITLE__ str '\n'
+            | __CSEXE_TITLE__ '\n'
             ;
 
-title: title_char
-     | title_char title
-     ;
-
-title_char: '+' | '?' | '-' | '*' | ':' | '!' |  '/' | '\\' | __NUMBER__ | __STRING__ ;
+str:  __STRING__ 
+   { $$=$1; }
+   ;
 
 %%
 
@@ -123,28 +132,16 @@ title_char: '+' | '?' | '-' | '*' | ':' | '!' |  '/' | '\\' | __NUMBER__ | __STR
 
 int csexe_parsererror(const  char *s)
 {
-  //fprintf(stderr,"file:%s line:%i column:%i %s\n",filename,line,column,s);
+  fprintf(stderr,"%s\n",s);
   return 0;
 }
 
 int yyparse();
-int csexe_init()
-{
-  int ret=0;
-  init_csexe_parserlex();
-#if YYDEBUG
-  yydebug=1;
-#endif
-  return ret;
-}
 
-int csexe_parse(const char *text_line)
+long csexe_parse(CSMesIO &csmes,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
 {
   int ret;
-  int old_lg=csexe_input_buffer_sz;
-  csexe_input_buffer_sz+=strlen(text_line);
-  csexe_input_buffer=(char*)REALLOC(csexe_input_buffer,csexe_input_buffer_sz+1);
-  strcpy(&csexe_input_buffer[old_lg],text_line);
+  init_csexe_parserlex(csmes,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
   DEBUG2("Start parsing:#%s\n",text_line);
   ret=yyparse();
   DEBUG3("End parsing(ret=%i):#%s\n",ret,text_line);
