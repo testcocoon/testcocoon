@@ -114,6 +114,8 @@ fakeroot install -m 0755 $SOURCE_DIR/gen/linux/buildqt.sh ${BUILDROOT}/opt/TestC
 #done
 #popd 
 fakeroot install -m 0644 $DISTRIB_RELEASE_DIR/src/coveragescanner/gcc.cspro ${BUILDROOT}/opt/TestCocoon/${VERSION}/gcc.cspro || exit
+fakeroot install -m 0644 $DISTRIB_RELEASE_DIR/src/coveragescanner/icpc.cspro ${BUILDROOT}/opt/TestCocoon/${VERSION}/icpc.cspro || exit
+fakeroot install -m 0644 $DISTRIB_RELEASE_DIR/src/coveragescanner/icc.cspro ${BUILDROOT}/opt/TestCocoon/${VERSION}/icc.cspro || exit
 fakeroot ln -s -f ../../opt/TestCocoon/${VERSION}/cmmerge ${BUILDROOT}/usr/bin/cmmerge || exit
 fakeroot ln -s -f ../../opt/TestCocoon/${VERSION}/cmcsexeimport ${BUILDROOT}/usr/bin/cmcsexeimport || exit
 fakeroot ln -s -f ../../opt/TestCocoon/${VERSION}/cmreport ${BUILDROOT}/usr/bin/cmreport || exit
