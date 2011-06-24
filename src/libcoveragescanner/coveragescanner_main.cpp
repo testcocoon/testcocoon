@@ -96,6 +96,10 @@ int coveragescanner(int argc,char **argv)
     DEBUG1("Do not instrument source file, call the native tool.\n");
     DEBUG3("call_native_tool(%s,%s)\n",option.profileToolName().c_str(),option.param_args()[0]);
     CompilerInterface  *compiler_p=CompilerFactory::create(option);
+    if (compiler_p==NULL)
+    {
+      FATAL1("Could not find CoverageScanner profile!");
+    }
     int ret = compiler_p->callNativeTool();
     TmpFile::object().deleteFiles();
     return ret;
