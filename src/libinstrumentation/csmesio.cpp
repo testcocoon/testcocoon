@@ -16,10 +16,13 @@
  **
  ****************************************************************************/
 
+#define CSEXE_LEX_YACC_PARSER 0
 #include "libinstrumentationpdef.h"
 #include "csmesio.h"
 #include "Service.h"
+#if CSEXE_LEX_YACC_PARSER
 #include "csexe_parser.h"
+#endif
 #include <QObject>
 #include <QThread>
 #include <QTextDocument>
@@ -35,7 +38,6 @@
 #include <windows.h>
 #endif
 
-#define CSEXE_LEX_YACC_PARSER 1
 
 CSMesIO::CSMesIO() : CSMesComment()
 {
