@@ -24,10 +24,15 @@ You can contribute to this issue through the forum: \url{http://testcocoon.org/f
 Full installation of \TestCocoon.\\
 Changes between \TestCocoon\ v1.5 and v1.6:
 \begin{description}
+\item[Build system]
+  \begin{itemize}
+    \item \NewFeature \verb$make install$ and \verb$make uninstall$ supported (experimental).
+  \end{itemize}
 \item[\CoverageScanner]
   \begin{itemize}
     \item         Use response file only if the command line contains more than 30000 bytes.
     \item \NewFeature Do not instrument dead code after a return/goto/break statement.
+    \item \BugFix On \Linux, profile files for Intel compiler are now installed correctly.
     \item \BugFix Under some circumstances, functions are places in a wrong name space.
     \item \BugFix The response file name includes now the PID. This should fix some issues when using a parallel build.
     \item \BugFix Using more than one response file is now working.
