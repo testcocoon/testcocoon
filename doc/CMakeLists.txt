@@ -100,4 +100,7 @@ ADD_CUSTOM_TARGET(okular
                   DEPENDS  ${TESTCOCOON_DOC_PDF}
     )
 
-INSTALL (FILES ${TESTCOCOON_DOC_PDF} DESTINATION share/doc/testcocoon)
+
+
+#INSTALL (FILES ${TESTCOCOON_DOC_PDF} DESTINATION share/doc/testcocoon RENAME TestCocoon.pdf)
+
