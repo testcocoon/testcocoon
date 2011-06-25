@@ -542,7 +542,7 @@ void foo()
 
 \chapter{Testing Methodologies}
 
-\section{\label{hitcount}Coverage Hit vs Coverage Count}
+\section[Hit vs Count]{\label{hitcount}Coverage Hit vs Coverage Count}
 \index{Code coverage hit}
 In some situations, for applications which requires a very high quality,
    requesting that a portion of code is executed is not enough.
@@ -566,7 +566,7 @@ Two solutions are available:
 \end{description}
 
 
-\section{\label{test-strategy}Testing Strategies}
+\section[Strategies]{\label{test-strategy}Testing Strategies}
 \TestCocoon\ can be adapted to several testing strategies, 
 from the first state of the development (unit tests) until
 complete product validation.
@@ -574,7 +574,7 @@ complete product validation.
 of each testing steps and so gives a precise overview of the 
 global software quality.
 
-\subsection{\label{test-stategy-white-box-tests}Manual White Box Tests}
+\subsection[Manual tests]{\label{test-stategy-white-box-tests}Manual White Box Tests}
 \begin{CITE}
 White box testing (a.k.a. clear box testing, glass box testing or structural testing) uses an internal perspective of the system to design test cases based on internal structure. It requires programming skills to identify all paths through the software. The tester chooses test case inputs to exercise paths through the code and determines the appropriate outputs.
   \CITEFrom{Definition from Wikipedia}
@@ -584,7 +584,7 @@ Interactive white box tests a easy to proceed using \TestCocoon:
 once the application is compiled with \CoverageScanner, the tester can execute 
 it and after each execution import the execution report in \CoverageBrowser.
   
-\subsection{\label{test-stategy-black-box-tests}Manual Black Box Tests}
+\subsection[Black box tests]{\label{test-stategy-black-box-tests}Manual Black Box Tests}
 \begin{CITE}
 Black box testing takes an external perspective of the test object to derive test cases. These tests can be functional or non-functional, though usually functional. The test designer selects valid and invalid input and determines the correct output. There is no knowledge of the test object's internal structure.
   \CITEFrom{Definition from Wikipedia}
@@ -604,7 +604,7 @@ This method has the disadvantage that tester cannot comment and manage its own e
   and see the statistics, but does not have access to any coverage information
   at source level.
 
-\subsection{\label{test-stategy-unit-tests}Unit Tests}
+\subsection[Unit Tests]{\label{test-stategy-unit-tests}Unit Tests}
 \begin{CITE}
   Unit testing is a procedure used to validate that individual units of source code are working properly. A unit is the smallest testable part of an application. In procedural programming a unit may be an individual program, function, procedure etc, while in object-oriented programming, the smallest unit is always a Class; which may be a base/super class, abstract class or derived/child class.
   \CITEFrom{Definition from Wikipedia}
@@ -616,7 +616,7 @@ This method has the disadvantage that tester cannot comment and manage its own e
   it is possible to merge the instrumentation database of the unit tests in those 
   of the real application.
 
-\subsection{\label{test-stategy-automatic-tests}Automatic Tests}
+\subsection[Automatic Tests]{\label{test-stategy-automatic-tests}Automatic Tests}
 
 \TestCocoon\ supports the possibility to add the execution name and its state
 directly in the execution report. No specific library is necessary and inserting this information
@@ -3544,11 +3544,12 @@ Following tools needs to be installed to compile the project:
 
 \begin{tabular}[ht]{|l|l|l|} \hline
   \Linux           & \MicrosoftWindows      & \MacOSX \\ \hline
-  flex version 2.5.35            &                        & \\ hline
+  flex version 2.5.35            &                        & \\ \hline
   bison version 2.4.1           &                        & \\ \hline
+  & 7-Zip                       & \\ \hline
   GNU g++ compiler & \VisualStudioNET\ 2005 & \AppleXcode \\ \hline
   \multicolumn{3}{|c|}{\QtLibrary\ version 4.6.3 or above} \\ \hline
-  \multicolumn{3}{|c|}{\Kitware\ \CMake} version 2.8 \\ \hline
+  \multicolumn{3}{|c|}{\Kitware\ \CMake\ version 2.8} \\ \hline
 \end{tabular}
 
 
@@ -3563,11 +3564,36 @@ To generate the installer, following software are necessary:
 
 \section{Build Installer}
 
-To build Qt execute:
+To build Qt:
 
 \begin{tabular}[ht]{|l|l|l|} \hline
   \Linux                        & \MicrosoftWindows    & \MacOSX \\ \hline
-  gen/linux/buildqt.bat install & gen/macos/buildqt.sh & gen/windows/buildqt.sh \\ \hline
+\begin{minipage}[t]{0.3\textwidth}
+  In a shell, execute:
+\begin{verbatim}
+cd gen/linux
+./buildqt.sh install 
+\end{verbatim}
+\end{minipage}
+  & 
+\begin{minipage}[t]{0.3\textwidth}
+Create the directory \verb$\qt\x86$. Copy the windows source files of Qt
+version 4.6.3 on it.\\
+  In a DOS console, execute:
+\begin{verbatim}
+  cd gen\windows
+  buildqt_x86.bat
+\end{verbatim}
+\end{minipage}
+  &
+\begin{minipage}[t]{0.3\textwidth}
+  In a shell, execute:
+\begin{verbatim}
+  cd gen/macos
+  ./buildqt.sh
+\end{verbatim}
+\end{minipage}
+  \\ \hline
 \end{tabular}
 
 \bigskip\par
@@ -3576,7 +3602,25 @@ To build \TestCocoon\ installer:
 
 \begin{tabular}[ht]{|l|l|l|} \hline
   \Linux              & \MicrosoftWindows  & \MacOSX \\ \hline
-  gen/linux/build.bat & gen/macos/build.sh & gen/windows/build.sh \\ \hline
+\begin{minipage}[t]{0.3\textwidth}
+\begin{verbatim}
+  gen/linux/build.sh 
+\end{verbatim}
+\end{minipage}
+  &
+\begin{minipage}[t]{0.3\textwidth}
+\begin{verbatim}
+  cd gen\windows
+  build.bat
+\end{verbatim}
+\end{minipage}
+  & 
+\begin{minipage}[t]{0.3\textwidth}
+\begin{verbatim}
+  gen/macos/build.sh
+\end{verbatim}
+\end{minipage}
+  \\ \hline
 \end{tabular}
 
 \section{Build Steps}
