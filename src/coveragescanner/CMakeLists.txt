@@ -49,7 +49,7 @@ IF(UNIX)
             COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME} ${CMAKE_CURRENT_BINARY_DIR}/csicpc
             )
       ENDIF()
-      FILE(GLOB csprolist ${CMAKE_CURRENT_BINARY_DIR}/*.cspro)
+      FILE(GLOB csprolist ${CMAKE_CURRENT_SOURCE_DIR}/*.cspro)
       INSTALL(FILES ${csprolist} DESTINATION bin)
       FOREACH(csprofile ${csprolist})
         GET_FILENAME_COMPONENT(csproname "${csprofile}" NAME)
@@ -86,7 +86,7 @@ ELSE()
 	      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/lib.cspro ${CMAKE_CURRENT_BINARY_DIR}/visualstudio/lib.cspro
 	      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/link.cspro ${CMAKE_CURRENT_BINARY_DIR}/visualstudio/link.cspro
 	      )
-      FILE(GLOB csprolist ${CMAKE_CURRENT_BINARY_DIR}/*.cspro)
+      FILE(GLOB csprolist ${CMAKE_CURRENT_SOURCE_DIR}/*.cspro)
       INSTALL(FILES ${csprolist} DESTINATION bin)
       FOREACH(csprofile ${csprolist})
         GET_FILENAME_COMPONENT(csproname "${csprofile}" NAME)
