@@ -98,6 +98,10 @@ rank_specifier         "["{white_space}*(","{white_space}*)*"]"
 %{
 #include <string.h>
 #include <stdio.h>
+#if OS_WIN32
+#include <io.h>
+#define isatty _isatty
+#endif
 #include "debug.h"
 #include "csexe_parser.h"
 #include "instrumentation.h"

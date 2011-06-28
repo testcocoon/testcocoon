@@ -1749,6 +1749,10 @@ char *csexe_parsertext;
 #line 99 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 #include <string.h>
 #include <stdio.h>
+#if OS_WIN32
+#include <io.h>
+#define isatty _isatty
+#endif
 #include "debug.h"
 #include "csexe_parser.h"
 #include "instrumentation.h"
@@ -1765,7 +1769,7 @@ static int (*yy_input)(char *,int)=NULL;
 extern YYLTYPE yylloc;
 extern YYSTYPE yylval;
 static inline unsigned int hex2uint(const char *s);
-#line 1769 "csexe_parser_lex.cxx"
+#line 1773 "csexe_parser_lex.cxx"
 
 #define INITIAL 0
 #define START_LINE 1
@@ -1943,10 +1947,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 119 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 123 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 
 
-#line 1950 "csexe_parser_lex.cxx"
+#line 1954 "csexe_parser_lex.cxx"
 
 	if ( !(yy_init) )
 		{
@@ -2027,88 +2031,88 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 122 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 126 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  return __CSEXE_MEASUREMENT__ ; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 123 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 127 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(LINE_STATUS); return __CSEXE_STATUS__ ; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 124 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 128 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(LINE_TITLE); return __CSEXE_TITLE__ ; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 125 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 129 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(LINE_TITLE); return __CSEXE_TITLE__ ; /* § */ }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 126 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 130 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(LINE_INSTRUMENTATION_SOURCE_SIZE); return __CSEXE_INSTRUMENTATION_SOURCE__ ; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 127 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 131 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(LINE_INSTRUMENTATION_VALUE); return __CSEXE_INSTRUMENTATION_VALUES__ ; }
 	YY_BREAK
 
 
 case 7:
 YY_RULE_SETUP
-#line 131 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 135 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  return __NUMBER__ ; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 132 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 136 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(LINE_INSTRUMENTATION_SOURCE_SIGNATURE); return ':'; }
 	YY_BREAK
 
 
 case 9:
 YY_RULE_SETUP
-#line 136 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 140 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  return __NUMBER__ ; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 137 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 141 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(LINE_INSTRUMENTATION_SOURCE_FILENAME); return ':'; }
 	YY_BREAK
 
 case 11:
 YY_RULE_SETUP
-#line 140 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 144 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 { yylval.str=STRDUP(csexe_parsertext); return __STRING__; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 142 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 146 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  yylval.str=STRDUP(csexe_parsertext); return __STRING__; }
 	YY_BREAK
 
 case 13:
 YY_RULE_SETUP
-#line 145 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 149 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  yylval.value=Instrumentation::EXECUTION_STATE_HIDDEN; return __NUMBER__ ; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 146 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 150 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  yylval.value=Instrumentation::EXECUTION_STATE_NOT_EXECUTED;return __NUMBER__ ; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 147 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 151 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  yylval.value=static_cast<Instrumentation::execution_state_t>(1) ; return __NUMBER__ ; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 148 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 152 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  yylval.value=hex2uint(csexe_parsertext) ; 
                             if (yylval.value>Instrumentation::EXECUTION_MAX)
                               yylval.value=Instrumentation::EXECUTION_MAX;
@@ -2119,37 +2123,37 @@ YY_RULE_SETUP
 
 case 17:
 YY_RULE_SETUP
-#line 156 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 160 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  return __STATUS_PASSED__ ; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 157 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 161 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  return __STATUS_FAILED__ ; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 158 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 162 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  return __STATUS_CHECK_MANUALLY__ ; }
 	YY_BREAK
 
 case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
-#line 161 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 165 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(START_LINE); return '\n'; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 162 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 166 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  /* ignore */ }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 163 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 167 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 ECHO;
 	YY_BREAK
-#line 2153 "csexe_parser_lex.cxx"
+#line 2157 "csexe_parser_lex.cxx"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(START_LINE):
 case YY_STATE_EOF(LINE_INSTRUMENTATION_SOURCE_FILENAME):
@@ -3148,7 +3152,7 @@ void csexe_parserfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 163 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 167 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 
 
 
