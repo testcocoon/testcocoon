@@ -1,14 +1,6 @@
 \section{Known Issues}
-\begin{description}
-\item{\TestCocoon\ installer:}
-\newline 
-On \MicrosoftWindows\ the installer can wipe the \verb$PATH$ variable.
-This is an issue on the NSIS installer. 
-You can contribute to this issue through the forum: \url{http://testcocoon.org/forum/viewtopic.php?f=3&t=8}.
 
-\newline 
-\Workaround see \ahref{faq.html#windows-path-issue}{FAQ}.
-\end{description}
+Nothing relevant.
 
 
 \section{Software Packages}
@@ -24,9 +16,14 @@ You can contribute to this issue through the forum: \url{http://testcocoon.org/f
 Full installation of \TestCocoon.\\
 Changes between \TestCocoon\ v1.5 and v1.6:
 \begin{description}
+\item[Windows installer]
+  \begin{itemize}
+    \item \BugFix On \MicrosoftWindows\ the installer does no more wipe the \verb$PATH$ variable.
+  \end{itemize}
 \item[Build system]
   \begin{itemize}
     \item \NewFeature \verb$make install$ and \verb$make uninstall$ supported (experimental).
+    \item \NewFeature \verb$make package$ generates a debian installer (experimental).
   \end{itemize}
 \item[\CoverageScanner]
   \begin{itemize}
