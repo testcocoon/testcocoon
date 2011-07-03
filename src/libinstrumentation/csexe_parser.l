@@ -20,6 +20,7 @@
 /*%option outfile="lex.yy.c"*/
 %option fast
 %option 8bit
+%option bison-locations bison-bridge
 /*%option nounistd*/
 
 D           [0-9]
@@ -113,9 +114,6 @@ static int (*yy_input)(char *,int)=NULL;
 #define YY_INPUT(buf,result,max_size) result=yy_input(buf,max_size)
 #define yyinput input
 #define yylval csexe_parserlval
-#define yylloc csexe_parserlloc
-
-extern YYLTYPE yylloc;
 extern YYSTYPE yylval;
 static inline unsigned int hex2uint(const char *s);
 %}
@@ -141,17 +139,17 @@ static inline unsigned int hex2uint(const char *s);
 ":"          {  BEGIN(LINE_INSTRUMENTATION_SOURCE_FILENAME); return ':'; }
 }
 
-<LINE_INSTRUMENTATION_SOURCE_FILENAME>[^\r\n]*  { yylval.str=STRDUP(yytext); return __STRING__; }
+<LINE_INSTRUMENTATION_SOURCE_FILENAME>[^\r\n]*  { yylval->str=STRDUP(yytext); return __STRING__; }
 
-<LINE_TITLE>[^\r\n]*                    {  yylval.str=STRDUP(yytext); return __STRING__; }
+<LINE_TITLE>[^\r\n]*                    {  yylval->str=STRDUP(yytext); return __STRING__; }
 
 <LINE_INSTRUMENTATION_VALUE>{
-"?"                      {  yylval.value=Instrumentation::EXECUTION_STATE_HIDDEN; return __NUMBER__ ; }
-"-"                      {  yylval.value=Instrumentation::EXECUTION_STATE_NOT_EXECUTED;return __NUMBER__ ; }
-"+"                      {  yylval.value=static_cast<Instrumentation::execution_state_t>(1) ; return __NUMBER__ ; }
-[0-9A-F]{8}              {  yylval.value=hex2uint(yytext) ; 
-                            if (yylval.value>Instrumentation::EXECUTION_MAX)
-                              yylval.value=Instrumentation::EXECUTION_MAX;
+"?"                      {  yylval->value=Instrumentation::EXECUTION_STATE_HIDDEN; return __NUMBER__ ; }
+"-"                      {  yylval->value=Instrumentation::EXECUTION_STATE_NOT_EXECUTED;return __NUMBER__ ; }
+"+"                      {  yylval->value=static_cast<Instrumentation::execution_state_t>(1) ; return __NUMBER__ ; }
+[0-9A-F]{8}              {  yylval->value=hex2uint(yytext) ; 
+                            if (yylval->value>Instrumentation::EXECUTION_MAX)
+                              yylval->value=Instrumentation::EXECUTION_MAX;
                             return __NUMBER__ ; 
                          }
 }

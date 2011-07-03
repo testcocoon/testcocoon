@@ -30,9 +30,12 @@ long csexe_parse(CSMesIO &csmes,QIODevice &file,const ExecutionName &name_orig,C
 /* debug function for bison */
 int csexe_yyprint(FILE *f,int type,YYSTYPE value);
 #define  YYPRINT(file,type,value) csexe_yyprint(file,type,value);
+#define yylloc csexe_parserlloc
+
+extern YYLTYPE yylloc;
 
 void init_csexe_parserlex(CSMesIO &csmes,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p);
-int csexe_parsererror(const char *s);
+int csexe_parsererror(YYLTYPE *yylloc, QString *randdomness, const char *s);
 #endif
 
 

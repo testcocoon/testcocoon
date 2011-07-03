@@ -52,7 +52,7 @@
 #define YYSKELETON_NAME "yacc.c"
 
 /* Pure parsers.  */
-#define YYPURE 0
+#define YYPURE 1
 
 /* Push parsers.  */
 #define YYPUSH 0
@@ -81,17 +81,18 @@
 #include "csexe_parser.h"
 #include <string.h>
 #include "debug.h"
+#include "executionname.h"
+#include <QString>
 #define yyerror csexe_parsererror
 #if OS_WIN32
 #pragma warning(disable : 4065)
 #endif
-extern int csexe_parserlex (void);
-
-
+extern int csexe_parserlex (YYSTYPE * yylval_param,YYLTYPE * yylloc_param );
+extern ExecutionName _csexe_parser_execution_title;
 
 
 /* Line 189 of yacc.c  */
-#line 95 "csexe_parser_yacc.cxx"
+#line 96 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -103,7 +104,7 @@ extern int csexe_parserlex (void);
 # undef YYERROR_VERBOSE
 # define YYERROR_VERBOSE 1
 #else
-# define YYERROR_VERBOSE 0
+# define YYERROR_VERBOSE 1
 #endif
 
 /* Enabling the token table.  */
@@ -138,7 +139,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 33 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 34 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
  char *        str;
  unsigned long value;
@@ -146,7 +147,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 150 "csexe_parser_yacc.cxx"
+#line 151 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -171,7 +172,7 @@ typedef struct YYLTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 175 "csexe_parser_yacc.cxx"
+#line 176 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 
 #ifdef short
 # undef short
@@ -467,10 +468,10 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    63,    63,    64,    67,    68,    71,    72,    75,    76,
-      77,    78,    81,    82,    85,    88,    91,    94,    98,    99,
-     102,   103,   105,   108,   109,   112,   113,   114,   117,   118,
-     121,   122,   125
+       0,    66,    66,    67,    70,    71,    74,    75,    78,    79,
+      80,    81,    84,    85,    88,    91,    94,    97,   101,   102,
+     105,   106,   108,   111,   112,   115,   116,   117,   120,   121,
+     124,   130,   133
 };
 #endif
 
@@ -619,7 +620,7 @@ do								\
     }								\
   else								\
     {								\
-      yyerror (YY_("syntax error: cannot back up")); \
+      yyerror (&yylloc, randomness, YY_("syntax error: cannot back up")); \
       YYERROR;							\
     }								\
 while (YYID (0))
@@ -674,9 +675,9 @@ while (YYID (0))
 /* YYLEX -- calling `yylex' with the right arguments.  */
 
 #ifdef YYLEX_PARAM
-# define YYLEX yylex (YYLEX_PARAM)
+# define YYLEX yylex (&yylval, &yylloc, YYLEX_PARAM)
 #else
-# define YYLEX yylex ()
+# define YYLEX yylex (&yylval, &yylloc)
 #endif
 
 /* Enable debugging if requested.  */
@@ -699,7 +700,7 @@ do {									  \
     {									  \
       YYFPRINTF (stderr, "%s ", Title);					  \
       yy_symbol_print (stderr,						  \
-		  Type, Value, Location); \
+		  Type, Value, Location, randomness); \
       YYFPRINTF (stderr, "\n");						  \
     }									  \
 } while (YYID (0))
@@ -713,19 +714,21 @@ do {									  \
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp)
+yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, QString *randomness)
 #else
 static void
-yy_symbol_value_print (yyoutput, yytype, yyvaluep, yylocationp)
+yy_symbol_value_print (yyoutput, yytype, yyvaluep, yylocationp, randomness)
     FILE *yyoutput;
     int yytype;
     YYSTYPE const * const yyvaluep;
     YYLTYPE const * const yylocationp;
+    QString *randomness;
 #endif
 {
   if (!yyvaluep)
     return;
   YYUSE (yylocationp);
+  YYUSE (randomness);
 # ifdef YYPRINT
   if (yytype < YYNTOKENS)
     YYPRINT (yyoutput, yytoknum[yytype], *yyvaluep);
@@ -747,14 +750,15 @@ yy_symbol_value_print (yyoutput, yytype, yyvaluep, yylocationp)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp)
+yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, QString *randomness)
 #else
 static void
-yy_symbol_print (yyoutput, yytype, yyvaluep, yylocationp)
+yy_symbol_print (yyoutput, yytype, yyvaluep, yylocationp, randomness)
     FILE *yyoutput;
     int yytype;
     YYSTYPE const * const yyvaluep;
     YYLTYPE const * const yylocationp;
+    QString *randomness;
 #endif
 {
   if (yytype < YYNTOKENS)
@@ -764,7 +768,7 @@ yy_symbol_print (yyoutput, yytype, yyvaluep, yylocationp)
 
   YY_LOCATION_PRINT (yyoutput, *yylocationp);
   YYFPRINTF (yyoutput, ": ");
-  yy_symbol_value_print (yyoutput, yytype, yyvaluep, yylocationp);
+  yy_symbol_value_print (yyoutput, yytype, yyvaluep, yylocationp, randomness);
   YYFPRINTF (yyoutput, ")");
 }
 
@@ -807,13 +811,14 @@ do {								\
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_reduce_print (YYSTYPE *yyvsp, YYLTYPE *yylsp, int yyrule)
+yy_reduce_print (YYSTYPE *yyvsp, YYLTYPE *yylsp, int yyrule, QString *randomness)
 #else
 static void
-yy_reduce_print (yyvsp, yylsp, yyrule)
+yy_reduce_print (yyvsp, yylsp, yyrule, randomness)
     YYSTYPE *yyvsp;
     YYLTYPE *yylsp;
     int yyrule;
+    QString *randomness;
 #endif
 {
   int yynrhs = yyr2[yyrule];
@@ -827,7 +832,7 @@ yy_reduce_print (yyvsp, yylsp, yyrule)
       YYFPRINTF (stderr, "   $%d = ", yyi + 1);
       yy_symbol_print (stderr, yyrhs[yyprhs[yyrule] + yyi],
 		       &(yyvsp[(yyi + 1) - (yynrhs)])
-		       , &(yylsp[(yyi + 1) - (yynrhs)])		       );
+		       , &(yylsp[(yyi + 1) - (yynrhs)])		       , randomness);
       YYFPRINTF (stderr, "\n");
     }
 }
@@ -835,7 +840,7 @@ yy_reduce_print (yyvsp, yylsp, yyrule)
 # define YY_REDUCE_PRINT(Rule)		\
 do {					\
   if (yydebug)				\
-    yy_reduce_print (yyvsp, yylsp, Rule); \
+    yy_reduce_print (yyvsp, yylsp, Rule, randomness); \
 } while (YYID (0))
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
@@ -1086,18 +1091,20 @@ yysyntax_error (char *yyresult, int yystate, int yychar)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, YYLTYPE *yylocationp)
+yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, YYLTYPE *yylocationp, QString *randomness)
 #else
 static void
-yydestruct (yymsg, yytype, yyvaluep, yylocationp)
+yydestruct (yymsg, yytype, yyvaluep, yylocationp, randomness)
     const char *yymsg;
     int yytype;
     YYSTYPE *yyvaluep;
     YYLTYPE *yylocationp;
+    QString *randomness;
 #endif
 {
   YYUSE (yyvaluep);
   YYUSE (yylocationp);
+  YYUSE (randomness);
 
   if (!yymsg)
     yymsg = "Deleting";
@@ -1108,20 +1115,20 @@ yydestruct (yymsg, yytype, yyvaluep, yylocationp)
       case 24: /* "module_name" */
 
 /* Line 1000 of yacc.c  */
-#line 56 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 59 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 	{ if ((yyvaluep->str)) FREE((yyvaluep->str)); };
 
 /* Line 1000 of yacc.c  */
-#line 1116 "csexe_parser_yacc.cxx"
+#line 1123 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 	break;
       case 32: /* "str" */
 
 /* Line 1000 of yacc.c  */
-#line 56 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 59 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 	{ if ((yyvaluep->str)) FREE((yyvaluep->str)); };
 
 /* Line 1000 of yacc.c  */
-#line 1125 "csexe_parser_yacc.cxx"
+#line 1132 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 	break;
 
       default:
@@ -1138,24 +1145,13 @@ int yyparse ();
 #endif
 #else /* ! YYPARSE_PARAM */
 #if defined __STDC__ || defined __cplusplus
-int yyparse (void);
+int yyparse (QString *randomness);
 #else
 int yyparse ();
 #endif
 #endif /* ! YYPARSE_PARAM */
 
 
-/* The lookahead symbol.  */
-int yychar;
-
-/* The semantic value of the lookahead symbol.  */
-YYSTYPE yylval;
-
-/* Location data for the lookahead symbol.  */
-YYLTYPE yylloc;
-
-/* Number of syntax errors so far.  */
-int yynerrs;
 
 
 
@@ -1177,15 +1173,25 @@ yyparse (YYPARSE_PARAM)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 int
-yyparse (void)
+yyparse (QString *randomness)
 #else
 int
-yyparse ()
-
+yyparse (randomness)
+    QString *randomness;
 #endif
 #endif
 {
+/* The lookahead symbol.  */
+int yychar;
 
+/* The semantic value of the lookahead symbol.  */
+YYSTYPE yylval;
+
+/* Location data for the lookahead symbol.  */
+YYLTYPE yylloc;
+
+    /* Number of syntax errors so far.  */
+    int yynerrs;
 
     int yystate;
     /* Number of tokens to shift before error messages enabled.  */
@@ -1453,21 +1459,32 @@ yyreduce:
         case 17:
 
 /* Line 1455 of yacc.c  */
-#line 95 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 98 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yyvsp[(1) - (1)].str); (yyvsp[(1) - (1)].str)=NULL; ;}
+    break;
+
+  case 30:
+
+/* Line 1455 of yacc.c  */
+#line 125 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+    {
+              QString title = QString::fromUtf8((yyvsp[(2) - (3)].str)).trimmed();
+              if (!title.isEmpty())
+                _csexe_parser_execution_title = title;
+            ;}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 126 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 134 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yyvsp[(1) - (1)].str); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1471 "csexe_parser_yacc.cxx"
+#line 1488 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1503,7 +1520,7 @@ yyerrlab:
     {
       ++yynerrs;
 #if ! YYERROR_VERBOSE
-      yyerror (YY_("syntax error"));
+      yyerror (&yylloc, randomness, YY_("syntax error"));
 #else
       {
 	YYSIZE_T yysize = yysyntax_error (0, yystate, yychar);
@@ -1527,11 +1544,11 @@ yyerrlab:
 	if (0 < yysize && yysize <= yymsg_alloc)
 	  {
 	    (void) yysyntax_error (yymsg, yystate, yychar);
-	    yyerror (yymsg);
+	    yyerror (&yylloc, randomness, yymsg);
 	  }
 	else
 	  {
-	    yyerror (YY_("syntax error"));
+	    yyerror (&yylloc, randomness, YY_("syntax error"));
 	    if (yysize != 0)
 	      goto yyexhaustedlab;
 	  }
@@ -1555,7 +1572,7 @@ yyerrlab:
       else
 	{
 	  yydestruct ("Error: discarding",
-		      yytoken, &yylval, &yylloc);
+		      yytoken, &yylval, &yylloc, randomness);
 	  yychar = YYEMPTY;
 	}
     }
@@ -1612,7 +1629,7 @@ yyerrlab1:
 
       yyerror_range[0] = *yylsp;
       yydestruct ("Error: popping",
-		  yystos[yystate], yyvsp, yylsp);
+		  yystos[yystate], yyvsp, yylsp, randomness);
       YYPOPSTACK (1);
       yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
@@ -1652,7 +1669,7 @@ yyabortlab:
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
 yyexhaustedlab:
-  yyerror (YY_("memory exhausted"));
+  yyerror (&yylloc, randomness, YY_("memory exhausted"));
   yyresult = 2;
   /* Fall through.  */
 #endif
@@ -1660,7 +1677,7 @@ yyexhaustedlab:
 yyreturn:
   if (yychar != YYEMPTY)
      yydestruct ("Cleanup: discarding lookahead",
-		 yytoken, &yylval, &yylloc);
+		 yytoken, &yylval, &yylloc, randomness);
   /* Do not reclaim the symbols of the rule which action triggered
      this YYABORT or YYACCEPT.  */
   YYPOPSTACK (yylen);
@@ -1668,7 +1685,7 @@ yyreturn:
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-		  yystos[*yyssp], yyvsp, yylsp);
+		  yystos[*yyssp], yyvsp, yylsp, randomness);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -1686,27 +1703,42 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 129 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 137 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
 
 #include <stdio.h>
 
-int csexe_parsererror(const  char *s)
+int csexe_parsererror(YYLTYPE *yylloc, QString *errormsg, const  char *s)
 {
-  fprintf(stderr,"%s\n",s);
+  *errormsg = "Line "+QString::number(yylloc->first_line);
+  *errormsg += ", Column "+QString::number(yylloc->first_column);
+  *errormsg +=":" + QString::fromAscii(s);
+  fprintf(stderr,"Error:%s\n",errormsg->toAscii().data());
   return 0;
 }
 
-int yyparse();
+int yyparse(int *randomness);
 
 long csexe_parse(CSMesIO &csmes,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
 {
-  int ret;
-  init_csexe_parserlex(csmes,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
-  DEBUG2("Start parsing:#%s\n",text_line);
-  ret=yyparse();
-  DEBUG3("End parsing(ret=%i):#%s\n",ret,text_line);
-  return ret;
+  info.clear();
+  short_status.clear();
+  if ( file.open( QIODevice::ReadOnly ) )
+  {
+    int ret;
+    _csexe_parser_execution_title=name_orig;
+    init_csexe_parserlex(csmes,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
+    DEBUG2("Start parsing:#%s\n",text_line);
+    QString errormsg;
+    ret=yyparse(&errormsg);
+    DEBUG3("End parsing(ret=%i):#%s\n",ret,text_line);
+    file.close();
+    return ret;
+  }
+
+  short_status=QObject::tr("Error opening I/O device");
+  info=short_status;
+  return -1;
 }
 
 int csexe_yyprint(FILE *f,int /*type*/,YYSTYPE value)
@@ -1715,4 +1747,5 @@ int csexe_yyprint(FILE *f,int /*type*/,YYSTYPE value)
   return 0;
 }
 
+ExecutionName _csexe_parser_execution_title;
 

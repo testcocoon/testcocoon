@@ -20,13 +20,14 @@
 #include "csexe_parser.h"
 #include <string.h>
 #include "debug.h"
+#include "executionname.h"
+#include <QString>
 #define yyerror csexe_parsererror
 #if OS_WIN32
 #pragma warning(disable : 4065)
 #endif
-extern int csexe_parserlex (void);
-
-
+extern int csexe_parserlex (YYSTYPE * yylval_param,YYLTYPE * yylloc_param );
+extern ExecutionName _csexe_parser_execution_title;
 %}
 %name-prefix="csexe_parser"
 %union
@@ -36,8 +37,10 @@ extern int csexe_parserlex (void);
 }
 %locations
 %verbose
-/*%error-verbose*/
+%error-verbose
 /*%debug*/
+%pure-parser
+%parse-param {QString *randomness}
 
 %token __NUMBER__
 %token __STRING__
@@ -119,6 +122,11 @@ csexe_titles: csexe_title
             ;
 
 csexe_title : __CSEXE_TITLE__ str '\n'
+            {
+              QString title = QString::fromUtf8($2).trimmed();
+              if (!title.isEmpty())
+                _csexe_parser_execution_title = title;
+            }
             | __CSEXE_TITLE__ '\n'
             ;
 
@@ -130,22 +138,37 @@ str:  __STRING__
 
 #include <stdio.h>
 
-int csexe_parsererror(const  char *s)
+int csexe_parsererror(YYLTYPE *yylloc, QString *errormsg, const  char *s)
 {
-  fprintf(stderr,"%s\n",s);
+  *errormsg = "Line "+QString::number(yylloc->first_line);
+  *errormsg += ", Column "+QString::number(yylloc->first_column);
+  *errormsg +=":" + QString::fromAscii(s);
+  fprintf(stderr,"Error:%s\n",errormsg->toAscii().data());
   return 0;
 }
 
-int yyparse();
+int yyparse(int *randomness);
 
 long csexe_parse(CSMesIO &csmes,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
 {
-  int ret;
-  init_csexe_parserlex(csmes,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
-  DEBUG2("Start parsing:#%s\n",text_line);
-  ret=yyparse();
-  DEBUG3("End parsing(ret=%i):#%s\n",ret,text_line);
-  return ret;
+  info.clear();
+  short_status.clear();
+  if ( file.open( QIODevice::ReadOnly ) )
+  {
+    int ret;
+    _csexe_parser_execution_title=name_orig;
+    init_csexe_parserlex(csmes,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
+    DEBUG2("Start parsing:#%s\n",text_line);
+    QString errormsg;
+    ret=yyparse(&errormsg);
+    DEBUG3("End parsing(ret=%i):#%s\n",ret,text_line);
+    file.close();
+    return ret;
+  }
+
+  short_status=QObject::tr("Error opening I/O device");
+  info=short_status;
+  return -1;
 }
 
 int csexe_yyprint(FILE *f,int /*type*/,YYSTYPE value)
@@ -154,3 +177,4 @@ int csexe_yyprint(FILE *f,int /*type*/,YYSTYPE value)
   return 0;
 }
 
+ExecutionName _csexe_parser_execution_title;

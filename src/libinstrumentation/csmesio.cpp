@@ -16,7 +16,7 @@
  **
  ****************************************************************************/
 
-#define CSEXE_LEX_YACC_PARSER 0
+#define CSEXE_LEX_YACC_PARSER 1
 #include "libinstrumentationpdef.h"
 #include "csmesio.h"
 #include "Service.h"
