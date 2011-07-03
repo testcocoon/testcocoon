@@ -189,7 +189,20 @@ extern FILE *csexe_parserin, *csexe_parserout;
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
 
-    #define YY_LESS_LINENO(n)
+    /* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
+     *       access to the local variable yy_act. Since yyless() is a macro, it would break
+     *       existing scanners that call yyless() from OUTSIDE csexe_parserlex. 
+     *       One obvious solution it to make yy_act a global. I tried that, and saw
+     *       a 5% performance hit in a non-csexe_parserlineno scanner, because yy_act is
+     *       normally declared as a register variable-- so it is not worth it.
+     */
+    #define  YY_LESS_LINENO(n) \
+            do { \
+                int yyl;\
+                for ( yyl = n; yyl < csexe_parserleng; ++yyl )\
+                    if ( csexe_parsertext[yyl] == '\n' )\
+                        --csexe_parserlineno;\
+            }while(0)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -395,9 +408,9 @@ struct yy_trans_info
 	flex_int16_t yy_verify;
 	flex_int16_t yy_nxt;
 	};
-static yyconst struct yy_trans_info yy_transition[6117] =
+static yyconst struct yy_trans_info yy_transition[6085] =
     {
- {   0,   0 }, {   0,5861 }, {   0,   0 }, {   0,5859 }, {   1,4128 },
+ {   0,   0 }, {   0,5829 }, {   0,   0 }, {   0,5827 }, {   1,4128 },
  {   2,4128 }, {   3,4128 }, {   4,4128 }, {   5,4128 }, {   6,4128 },
  {   7,4128 }, {   8,4128 }, {   9,4128 }, {  10,4130 }, {  11,4128 },
  {  12,4128 }, {  13,4132 }, {  14,4128 }, {  15,4128 }, {  16,4128 },
@@ -454,7 +467,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
 
  { 247,4128 }, { 248,4128 }, { 249,4128 }, { 250,4128 }, { 251,4128 },
  { 252,4128 }, { 253,4128 }, { 254,4128 }, { 255,4128 }, { 256,4128 },
- {   0,   0 }, {   0,5601 }, {   1,3870 }, {   2,3870 }, {   3,3870 },
+ {   0,   0 }, {   0,5569 }, {   1,3870 }, {   2,3870 }, {   3,3870 },
  {   4,3870 }, {   5,3870 }, {   6,3870 }, {   7,3870 }, {   8,3870 },
  {   9,3870 }, {  10,3872 }, {  11,3870 }, {  12,3870 }, {  13,3874 },
  {  14,3870 }, {  15,3870 }, {  16,3870 }, {  17,3870 }, {  18,3870 },
@@ -510,7 +523,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 239,3870 }, { 240,3870 }, { 241,3870 }, { 242,3870 }, { 243,3870 },
  { 244,3870 }, { 245,3870 }, { 246,3870 }, { 247,3870 }, { 248,3870 },
  { 249,3870 }, { 250,3870 }, { 251,3870 }, { 252,3870 }, { 253,3870 },
- { 254,3870 }, { 255,3870 }, { 256,3870 }, {   0,   0 }, {   0,5343 },
+ { 254,3870 }, { 255,3870 }, { 256,3870 }, {   0,   0 }, {   0,5311 },
  {   1,3612 }, {   2,3612 }, {   3,3612 }, {   4,3612 }, {   5,3612 },
  {   6,3612 }, {   7,3612 }, {   8,3612 }, {   9,3612 }, {  10,3614 },
  {  11,3612 }, {  12,3612 }, {  13,3616 }, {  14,3612 }, {  15,3612 },
@@ -567,7 +580,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 241,3612 }, { 242,3612 }, { 243,3612 }, { 244,3612 }, { 245,3612 },
  { 246,3612 }, { 247,3612 }, { 248,3612 }, { 249,3612 }, { 250,3612 },
  { 251,3612 }, { 252,3612 }, { 253,3612 }, { 254,3612 }, { 255,3612 },
- { 256,3612 }, {   0,   0 }, {   0,5085 }, {   1,3354 }, {   2,3354 },
+ { 256,3612 }, {   0,   0 }, {   0,5053 }, {   1,3354 }, {   2,3354 },
  {   3,3354 }, {   4,3354 }, {   5,3354 }, {   6,3354 }, {   7,3354 },
  {   8,3354 }, {   9,3354 }, {  10,3356 }, {  11,3354 }, {  12,3354 },
  {  13,3358 }, {  14,3354 }, {  15,3354 }, {  16,3354 }, {  17,3354 },
@@ -624,7 +637,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 243,3354 }, { 244,3354 }, { 245,3354 }, { 246,3354 }, { 247,3354 },
  { 248,3354 }, { 249,3354 }, { 250,3354 }, { 251,3354 }, { 252,3354 },
  { 253,3354 }, { 254,3354 }, { 255,3354 }, { 256,3354 }, {   0,  11 },
- {   0,4827 }, {   1,3123 }, {   2,3123 }, {   3,3123 }, {   4,3123 },
+ {   0,4795 }, {   1,3123 }, {   2,3123 }, {   3,3123 }, {   4,3123 },
  {   5,3123 }, {   6,3123 }, {   7,3123 }, {   8,3123 }, {   9,3123 },
  {  10,3098 }, {  11,3123 }, {  12,3123 }, {  13,3100 }, {  14,3123 },
 
@@ -680,7 +693,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 240,3123 }, { 241,3123 }, { 242,3123 }, { 243,3123 }, { 244,3123 },
  { 245,3123 }, { 246,3123 }, { 247,3123 }, { 248,3123 }, { 249,3123 },
  { 250,3123 }, { 251,3123 }, { 252,3123 }, { 253,3123 }, { 254,3123 },
- { 255,3123 }, { 256,3123 }, {   0,  11 }, {   0,4569 }, {   1,2865 },
+ { 255,3123 }, { 256,3123 }, {   0,  11 }, {   0,4537 }, {   1,2865 },
  {   2,2865 }, {   3,2865 }, {   4,2865 }, {   5,2865 }, {   6,2865 },
 
  {   7,2865 }, {   8,2865 }, {   9,2865 }, {  10,2840 }, {  11,2865 },
@@ -738,7 +751,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 247,2865 }, { 248,2865 }, { 249,2865 }, { 250,2865 }, { 251,2865 },
  { 252,2865 }, { 253,2865 }, { 254,2865 }, { 255,2865 }, { 256,2865 },
 
- {   0,   9 }, {   0,4311 }, {   1,2580 }, {   2,2580 }, {   3,2580 },
+ {   0,   9 }, {   0,4279 }, {   1,2580 }, {   2,2580 }, {   3,2580 },
  {   4,2580 }, {   5,2580 }, {   6,2580 }, {   7,2580 }, {   8,2580 },
  {   9,2580 }, {  10,2582 }, {  11,2580 }, {  12,2580 }, {  13,2584 },
  {  14,2580 }, {  15,2580 }, {  16,2580 }, {  17,2580 }, {  18,2580 },
@@ -794,7 +807,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 244,2580 }, { 245,2580 }, { 246,2580 }, { 247,2580 }, { 248,2580 },
 
  { 249,2580 }, { 250,2580 }, { 251,2580 }, { 252,2580 }, { 253,2580 },
- { 254,2580 }, { 255,2580 }, { 256,2580 }, {   0,   9 }, {   0,4053 },
+ { 254,2580 }, { 255,2580 }, { 256,2580 }, {   0,   9 }, {   0,4021 },
  {   1,2322 }, {   2,2322 }, {   3,2322 }, {   4,2322 }, {   5,2322 },
  {   6,2322 }, {   7,2322 }, {   8,2322 }, {   9,2322 }, {  10,2324 },
  {  11,2322 }, {  12,2322 }, {  13,2326 }, {  14,2322 }, {  15,2322 },
@@ -851,7 +864,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 241,2322 }, { 242,2322 }, { 243,2322 }, { 244,2322 }, { 245,2322 },
  { 246,2322 }, { 247,2322 }, { 248,2322 }, { 249,2322 }, { 250,2322 },
  { 251,2322 }, { 252,2322 }, { 253,2322 }, { 254,2322 }, { 255,2322 },
- { 256,2322 }, {   0,   7 }, {   0,3795 }, {   1,2064 }, {   2,2064 },
+ { 256,2322 }, {   0,   7 }, {   0,3763 }, {   1,2064 }, {   2,2064 },
  {   3,2064 }, {   4,2064 }, {   5,2064 }, {   6,2064 }, {   7,2064 },
  {   8,2064 }, {   9,2064 }, {  10,2066 }, {  11,2064 }, {  12,2064 },
  {  13,2068 }, {  14,2064 }, {  15,2064 }, {  16,2064 }, {  17,2064 },
@@ -908,7 +921,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 243,2064 }, { 244,2064 }, { 245,2064 }, { 246,2064 }, { 247,2064 },
  { 248,2064 }, { 249,2064 }, { 250,2064 }, { 251,2064 }, { 252,2064 },
  { 253,2064 }, { 254,2064 }, { 255,2064 }, { 256,2064 }, {   0,   7 },
- {   0,3537 }, {   1,1806 }, {   2,1806 }, {   3,1806 }, {   4,1806 },
+ {   0,3505 }, {   1,1806 }, {   2,1806 }, {   3,1806 }, {   4,1806 },
  {   5,1806 }, {   6,1806 }, {   7,1806 }, {   8,1806 }, {   9,1806 },
  {  10,1808 }, {  11,1806 }, {  12,1806 }, {  13,1810 }, {  14,1806 },
  {  15,1806 }, {  16,1806 }, {  17,1806 }, {  18,1806 }, {  19,1806 },
@@ -964,7 +977,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 240,1806 }, { 241,1806 }, { 242,1806 }, { 243,1806 }, { 244,1806 },
  { 245,1806 }, { 246,1806 }, { 247,1806 }, { 248,1806 }, { 249,1806 },
  { 250,1806 }, { 251,1806 }, { 252,1806 }, { 253,1806 }, { 254,1806 },
- { 255,1806 }, { 256,1806 }, {   0,   0 }, {   0,3279 }, {   1,1548 },
+ { 255,1806 }, { 256,1806 }, {   0,   0 }, {   0,3247 }, {   1,1548 },
  {   2,1548 }, {   3,1548 }, {   4,1548 }, {   5,1548 }, {   6,1548 },
  {   7,1548 }, {   8,1548 }, {   9,1548 }, {  10,1550 }, {  11,1548 },
  {  12,1548 }, {  13,1552 }, {  14,1548 }, {  15,1548 }, {  16,1548 },
@@ -1021,7 +1034,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 242,1548 }, { 243,1548 }, { 244,1548 }, { 245,1548 }, { 246,1548 },
  { 247,1548 }, { 248,1548 }, { 249,1548 }, { 250,1548 }, { 251,1548 },
  { 252,1548 }, { 253,1548 }, { 254,1548 }, { 255,1548 }, { 256,1548 },
- {   0,   0 }, {   0,3021 }, {   1,1290 }, {   2,1290 }, {   3,1290 },
+ {   0,   0 }, {   0,2989 }, {   1,1290 }, {   2,1290 }, {   3,1290 },
  {   4,1290 }, {   5,1290 }, {   6,1290 }, {   7,1290 }, {   8,1290 },
 
  {   9,1290 }, {  10,1292 }, {  11,1290 }, {  12,1290 }, {  13,1294 },
@@ -1077,7 +1090,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 239,1290 }, { 240,1290 }, { 241,1290 }, { 242,1290 }, { 243,1290 },
  { 244,1290 }, { 245,1290 }, { 246,1290 }, { 247,1290 }, { 248,1290 },
  { 249,1290 }, { 250,1290 }, { 251,1290 }, { 252,1290 }, { 253,1290 },
- { 254,1290 }, { 255,1290 }, { 256,1290 }, {   0,  12 }, {   0,2763 },
+ { 254,1290 }, { 255,1290 }, { 256,1290 }, {   0,  12 }, {   0,2731 },
 
  {   1,1409 }, {   2,1409 }, {   3,1409 }, {   4,1409 }, {   5,1409 },
  {   6,1409 }, {   7,1409 }, {   8,1409 }, {   9,1409 }, {  10,1034 },
@@ -1135,7 +1148,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 246,1409 }, { 247,1409 }, { 248,1409 }, { 249,1409 }, { 250,1409 },
 
  { 251,1409 }, { 252,1409 }, { 253,1409 }, { 254,1409 }, { 255,1409 },
- { 256,1409 }, {   0,  12 }, {   0,2505 }, {   1,1151 }, {   2,1151 },
+ { 256,1409 }, {   0,  12 }, {   0,2473 }, {   1,1151 }, {   2,1151 },
  {   3,1151 }, {   4,1151 }, {   5,1151 }, {   6,1151 }, {   7,1151 },
  {   8,1151 }, {   9,1151 }, {  10, 776 }, {  11,1151 }, {  12,1151 },
  {  13, 778 }, {  14,1151 }, {  15,1151 }, {  16,1151 }, {  17,1151 },
@@ -1192,7 +1205,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 243,1151 }, { 244,1151 }, { 245,1151 }, { 246,1151 }, { 247,1151 },
  { 248,1151 }, { 249,1151 }, { 250,1151 }, { 251,1151 }, { 252,1151 },
  { 253,1151 }, { 254,1151 }, { 255,1151 }, { 256,1151 }, {   0,   0 },
- {   0,2247 }, {   1, 516 }, {   2, 516 }, {   3, 516 }, {   4, 516 },
+ {   0,2215 }, {   1, 516 }, {   2, 516 }, {   3, 516 }, {   4, 516 },
  {   5, 516 }, {   6, 516 }, {   7, 516 }, {   8, 516 }, {   9, 516 },
  {  10, 518 }, {  11, 516 }, {  12, 516 }, {  13, 520 }, {  14, 516 },
  {  15, 516 }, {  16, 516 }, {  17, 516 }, {  18, 516 }, {  19, 516 },
@@ -1248,7 +1261,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 240, 516 }, { 241, 516 }, { 242, 516 }, { 243, 516 }, { 244, 516 },
  { 245, 516 }, { 246, 516 }, { 247, 516 }, { 248, 516 }, { 249, 516 },
  { 250, 516 }, { 251, 516 }, { 252, 516 }, { 253, 516 }, { 254, 516 },
- { 255, 516 }, { 256, 516 }, {   0,   0 }, {   0,1989 }, {   1, 258 },
+ { 255, 516 }, { 256, 516 }, {   0,   0 }, {   0,1957 }, {   1, 258 },
  {   2, 258 }, {   3, 258 }, {   4, 258 }, {   5, 258 }, {   6, 258 },
  {   7, 258 }, {   8, 258 }, {   9, 258 }, {  10, 260 }, {  11, 258 },
  {  12, 258 }, {  13, 262 }, {  14, 258 }, {  15, 258 }, {  16, 258 },
@@ -1305,13 +1318,13 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 242, 258 }, { 243, 258 }, { 244, 258 }, { 245, 258 }, { 246, 258 },
  { 247, 258 }, { 248, 258 }, { 249, 258 }, { 250, 258 }, { 251, 258 },
  { 252, 258 }, { 253, 258 }, { 254, 258 }, { 255, 258 }, { 256, 258 },
- {   0,  22 }, {   0,1731 }, {   0,  20 }, {   0,1729 }, {   0,  21 },
- {   0,1727 }, {   0,   2 }, {   0,1725 }, {   0,  22 }, {   0,1723 },
- {   0,   3 }, {   0,1721 }, {   0,   5 }, {   0,1719 }, {   0,   6 },
- {   0,1717 }, {   0,   4 }, {   0,1715 }, {   0,  10 }, {   0,1713 },
+ {   0,  22 }, {   0,1699 }, {   0,  20 }, {   0,1697 }, {   0,  21 },
+ {   0,1695 }, {   0,   2 }, {   0,1693 }, {   0,  22 }, {   0,1691 },
+ {   0,   3 }, {   0,1689 }, {   0,   5 }, {   0,1687 }, {   0,   6 },
+ {   0,1685 }, {   0,   4 }, {   0,1683 }, {   0,  10 }, {   0,1681 },
 
- {   0,   8 }, {   0,1711 }, {   0,  15 }, {   0,1709 }, {   0,  14 },
- {   0,1707 }, {   0,   0 }, {   0,  11 }, {   0,1704 }, {   1, 608 },
+ {   0,   8 }, {   0,1679 }, {   0,  15 }, {   0,1677 }, {   0,  14 },
+ {   0,1675 }, {   0,   0 }, {   0,  11 }, {   0,1672 }, {   1, 608 },
  {   2, 608 }, {   3, 608 }, {   4, 608 }, {   5, 608 }, {   6, 608 },
  {   7, 608 }, {   8, 608 }, {   9, 608 }, {   0,   0 }, {  11, 608 },
  {  12, 608 }, {  32, 302 }, {  14, 608 }, {  15, 608 }, {  16, 608 },
@@ -1368,15 +1381,15 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 242, 608 }, { 243, 608 }, { 244, 608 }, { 245, 608 }, { 246, 608 },
  { 247, 608 }, { 248, 608 }, { 249, 608 }, { 250, 608 }, { 251, 608 },
  { 252, 608 }, { 253, 608 }, { 254, 608 }, { 255, 608 }, { 256, 608 },
- {   0,   9 }, {   0,1446 }, {   0,  13 }, {   0,1444 }, {   0,   0 },
- {   0,   0 }, {   0,  22 }, {   0,1440 }, {   0,   0 }, {   0,   0 },
- {   0,   7 }, {   0,1436 }, {   0,   0 }, {   0,   0 }, {   0,  22 },
- {   0,1432 }, {   0,  22 }, {   0,1430 }, {   0,   0 }, {   0,   0 },
- {   0,  22 }, {   0,1426 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
- {   0,   0 }, {   0,1421 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
+ {   0,   9 }, {   0,1414 }, {   0,  13 }, {   0,1412 }, {   0,   0 },
+ {   0,   0 }, {   0,  22 }, {   0,1408 }, {   0,   0 }, {   0,   0 },
+ {   0,   7 }, {   0,1404 }, {   0,   0 }, {   0,   0 }, {   0,  22 },
+ {   0,1400 }, {   0,  22 }, {   0,1398 }, {   0,   0 }, {   0,   0 },
+ {   0,  22 }, {   0,1394 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
+ {   0,   0 }, {   0,1389 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
 
- {   0,   0 }, {   0,   0 }, {   0,1410 }, {   0,   0 }, {   0,   0 },
+ {   0,   0 }, {   0,   0 }, {   0,1378 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {  48, 608 },
  {  49, 608 }, {  50, 608 }, {  51, 608 }, {  52, 608 }, {  53, 608 },
@@ -1388,7 +1401,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  {  65, 599 }, {   0,   0 }, {  65, 614 }, {   0,   0 }, {   0,   0 },
 
  {   0,   0 }, {  65, 608 }, {  66, 608 }, {  67, 608 }, {  68, 608 },
- {  69, 608 }, {  70, 608 }, {   0,  12 }, {   0,1354 }, {   1, 608 },
+ {  69, 608 }, {  70, 608 }, {   0,  12 }, {   0,1322 }, {   1, 608 },
  {   2, 608 }, {   3, 608 }, {   4, 608 }, {   5, 608 }, {   6, 608 },
  {   7, 608 }, {   8, 608 }, {   9, 608 }, {  77, 933 }, {  11, 608 },
  {  12, 608 }, {  69, 928 }, {  14, 608 }, {  15, 608 }, {  16, 608 },
@@ -1445,7 +1458,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 242, 608 }, { 243, 608 }, { 244, 608 }, { 245, 608 }, { 246, 608 },
  { 247, 608 }, { 248, 608 }, { 249, 608 }, { 250, 608 }, { 251, 608 },
  { 252, 608 }, { 253, 608 }, { 254, 608 }, { 255, 608 }, { 256, 608 },
- {   0,  11 }, {   0,1096 }, {   1,   0 }, {   2,   0 }, {   3,   0 },
+ {   0,  11 }, {   0,1064 }, {   1,   0 }, {   2,   0 }, {   3,   0 },
  {   4,   0 }, {   5,   0 }, {   6,   0 }, {   7,   0 }, {   8,   0 },
  {   9,   0 }, {   0,   0 }, {  11,   0 }, {  12,   0 }, {   0,   0 },
  {  14,   0 }, {  15,   0 }, {  16,   0 }, {  17,   0 }, {  18,   0 },
@@ -1501,12 +1514,12 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 239,   0 }, { 240,   0 }, { 241,   0 }, { 242,   0 }, { 243,   0 },
  { 244,   0 }, { 245,   0 }, { 246,   0 }, { 247,   0 }, { 248,   0 },
  { 249,   0 }, { 250,   0 }, { 251,   0 }, { 252,   0 }, { 253,   0 },
- { 254,   0 }, { 255,   0 }, { 256,   0 }, {   0,   9 }, {   0, 838 },
- {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0, 833 },
- {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   7 }, {   0, 828 },
+ { 254,   0 }, { 255,   0 }, { 256,   0 }, {   0,   9 }, {   0, 806 },
+ {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0, 801 },
+ {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   7 }, {   0, 796 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
- {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0, 818 },
- {   0,   0 }, {   0, 816 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
+ {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0, 786 },
+ {   0,   0 }, {   0, 784 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
 
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
@@ -1522,7 +1535,7 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  {  56, 332 }, {  57, 332 }, {  73, 353 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {  65, 332 },
  {  66, 332 }, {  67, 332 }, {  68, 332 }, {  69, 332 }, {  70, 332 },
- {   0,  12 }, {   0, 746 }, {   1,   0 }, {   2,   0 }, {   3,   0 },
+ {   0,  12 }, {   0, 714 }, {   1,   0 }, {   2,   0 }, {   3,   0 },
  {   4,   0 }, {   5,   0 }, {   6,   0 }, {   7,   0 }, {   8,   0 },
  {   9,   0 }, {   0,   0 }, {  11,   0 }, {  12,   0 }, {  83, 338 },
  {  14,   0 }, {  15,   0 }, {  16,   0 }, {  17,   0 }, {  18,   0 },
@@ -1578,61 +1591,61 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  { 239,   0 }, { 240,   0 }, { 241,   0 }, { 242,   0 }, { 243,   0 },
  { 244,   0 }, { 245,   0 }, { 246,   0 }, { 247,   0 }, { 248,   0 },
  { 249,   0 }, { 250,   0 }, { 251,   0 }, { 252,   0 }, { 253,   0 },
- { 254,   0 }, { 255,   0 }, { 256,   0 }, {   0,   0 }, {   0, 488 },
- {   0,   0 }, {   0, 486 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
- {   0, 482 }, {   0,   0 }, {   0, 480 }, {   0,   0 }, {   0, 478 },
- {   0,   0 }, {   0, 476 }, {   0,   0 }, {   0, 474 }, {   0,   0 },
- {   0, 472 }, {   0,   0 }, {   0, 470 }, {   0,   0 }, {   0, 468 },
- {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0, 463 },
+ { 254,   0 }, { 255,   0 }, { 256,   0 }, {   0,   0 }, {   0, 456 },
+ {   0,   0 }, {   0, 454 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
+ {   0, 450 }, {   0,   0 }, {   0, 448 }, {   0,   0 }, {   0, 446 },
+ {   0,   0 }, {   0, 444 }, {   0,   0 }, {   0, 442 }, {   0,   0 },
+ {   0, 440 }, {   0,   0 }, {   0, 438 }, {   0,   0 }, {   0, 436 },
+ {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0, 431 },
 
- {   0,   0 }, {   0, 461 }, {   0,   0 }, {   0, 459 }, {   0,   0 },
- {   0,   0 }, {   0, 456 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
+ {   0,   0 }, {   0, 429 }, {   0,   0 }, {   0, 427 }, {   0,   0 },
+ {   0,   0 }, {   0, 424 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
- {   0, 442 }, {   0,  18 }, {   0, 440 }, {   0,   0 }, {  48,  60 },
+ {   0, 410 }, {   0,  18 }, {   0, 408 }, {   0,   0 }, {  48,  60 },
  {  49,  60 }, {  50,  60 }, {  51,  60 }, {  52,  60 }, {  53,  60 },
  {  54,  60 }, {  55,  60 }, {  56,  60 }, {  57,  60 }, {   0,   0 },
- {   0,   0 }, {   0, 426 }, {   0,  17 }, {   0, 424 }, {   0,   0 },
- {   0, 422 }, {  65,  60 }, {  66,  60 }, {  67,  60 }, {  68,  60 },
+ {   0,   0 }, {   0, 394 }, {   0,  17 }, {   0, 392 }, {   0,   0 },
+ {   0, 390 }, {  65,  60 }, {  66,  60 }, {  67,  60 }, {  68,  60 },
  {  69,  60 }, {  70,  60 }, {  67,   8 }, {   0,   0 }, {   0,   0 },
 
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {  76,   8 }, {  69,  11 },
  {   0,   0 }, {  69,  11 }, {   0,   0 }, {  75,  11 }, {   0,   0 },
- {   0, 397 }, {   0,   0 }, {  83,   8 }, {   0,   0 }, {  68,  21 },
- {   0,   0 }, {  68,  35 }, {   0,   0 }, {   0, 389 }, {   0,   0 },
+ {   0, 365 }, {   0,   0 }, {  83,   8 }, {   0,   0 }, {  68,  21 },
+ {   0,   0 }, {  68,  35 }, {   0,   0 }, {   0, 357 }, {   0,   0 },
  { 101,  12 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
- {   0,   0 }, {   0,   0 }, {   0, 380 }, {  97,   8 }, {  48,  29 },
+ {   0,   0 }, {   0,   0 }, {   0, 348 }, {  97,   8 }, {  48,  29 },
  {  49,  29 }, {  50,  29 }, {  51,  29 }, {  52,  29 }, {  53,  29 },
  {  54,  29 }, {  55,  29 }, {  56,  29 }, {  57,  29 }, {  95,  21 },
- {   0,   0 }, {   0, 366 }, {  77,  53 }, {   0,  16 }, {   0, 363 },
+ {   0,   0 }, {   0, 334 }, {  77,  53 }, {   0,  16 }, {   0, 331 },
 
  {   0,   0 }, {  65,  29 }, {  66,  29 }, {  67,  29 }, {  68,  29 },
- {  69,  29 }, {  70,  29 }, {   0,   0 }, {   0, 354 }, { 115,  12 },
- {   0,   0 }, {   0, 351 }, {   0,   0 }, {  48,  31 }, {  49,  31 },
+ {  69,  29 }, {  70,  29 }, {   0,   0 }, {   0, 322 }, { 115,  12 },
+ {   0,   0 }, {   0, 319 }, {   0,   0 }, {  48,  31 }, {  49,  31 },
  {  50,  31 }, {  51,  31 }, {  52,  31 }, {  53,  31 }, {  54,  31 },
  {  55,  31 }, {  56,  31 }, {  57,  31 }, { 117,  34 }, {   0,   0 },
- {   0, 337 }, {   0,   0 }, {   0, 335 }, {   0,   0 }, {   0, 333 },
+ {   0, 305 }, {   0,   0 }, {   0, 303 }, {   0,   0 }, {   0, 301 },
  {  65,  31 }, {  66,  31 }, {  67,  31 }, {  68,  31 }, {  69,  31 },
- {  70,  31 }, {   0,   0 }, {   0, 325 }, {  65,  35 }, {   0,   0 },
- {   0, 322 }, {   0,   0 }, {   0, 320 }, {   0,   0 }, {  48,  29 },
+ {  70,  31 }, {   0,   0 }, {   0, 293 }, {  65,  35 }, {   0,   0 },
+ {   0, 290 }, {   0,   0 }, {   0, 288 }, {   0,   0 }, {  48,  29 },
  {  49,  29 }, {  50,  29 }, {  51,  29 }, {  52,  29 }, {  53,  29 },
 
  {  54,  29 }, {  55,  29 }, {  56,  29 }, {  57,  29 }, { 114,  42 },
- {   0,   0 }, {   0, 306 }, {   0,   0 }, {   0, 304 }, {   0,   0 },
- {   0, 302 }, {  65,  29 }, {  66,  29 }, {  67,  29 }, {  68,  29 },
- {  69,  29 }, {  70,  29 }, {   0,   0 }, {   0, 294 }, {   0,   0 },
- {   0,   0 }, {   0,   0 }, {   0,   0 }, {  48, -26 }, {  49, -26 },
+ {   0,   0 }, {   0, 274 }, {   0,   0 }, {   0, 272 }, {   0,   0 },
+ {   0, 270 }, {  65,  29 }, {  66,  29 }, {  67,  29 }, {  68,  29 },
+ {  69,  29 }, {  70,  29 }, {   0,   0 }, {   0, 262 }, {   0,   1 },
+ {   0, 260 }, {   0,  19 }, {   0, 258 }, {  48, -26 }, {  49, -26 },
  {  50, -26 }, {  51, -26 }, {  52, -26 }, {  53, -26 }, {  54, -26 },
  {  55, -26 }, {  56, -26 }, {  57, -26 }, { 101,  29 }, {   0,   0 },
- {   0,   0 }, {  78,  19 }, {   0,   0 }, {   0, 274 }, {   0,   0 },
+ {   0,   0 }, {  78,  19 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {  65, -26 }, {  66, -26 }, {  67, -26 }, {  68, -26 }, {  69, -26 },
- {  70, -26 }, {   0,  19 }, {   0, 265 }, {  10,  12 }, {   0,   1 },
+ {  70, -26 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
 
- {   0, 262 }, {  13,  16 }, {  65,   5 }, {   0,   0 }, {   0, 258 },
+ {   0,   0 }, {   0,   0 }, {  65,   5 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
- {   0,   0 }, {   0,   0 }, {  85,  10 }, {   0,   0 }, {  10,  -4 },
- {   0,   0 }, {   0,   0 }, {  13,   0 }, {  76,  16 }, {   0,   0 },
+ {   0,   0 }, {   0,   0 }, {  85,  10 }, {   0,   0 }, {   0,   0 },
+ {   0,   0 }, {   0,   0 }, {   0,   0 }, {  76,  16 }, {   0,   0 },
  { 109,  18 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  { 101,  11 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {  76,  10 },
@@ -1641,11 +1654,11 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
 
  { 110,  16 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
- {   0,   0 }, {   0,   0 }, {  89,  29 }, {   0,   0 }, {   0,   0 },
+ {   0,   0 }, {   0,   0 }, {  89,   4 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, { 116,   4 }, {   0,   0 }, {   0,   0 },
- { 115,  28 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
+ { 115,  10 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
@@ -1678,15 +1691,8 @@ static yyconst struct yy_trans_info yy_transition[6117] =
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
  {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
- {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
- {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
- {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
- {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
- {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
-
- {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
- {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 },
- {   0,   0 }, { 257,  23 }, {   1,   0 },    };
+ {   0,   0 }, {   0,   0 }, {   0,   0 }, {   0,   0 }, { 257,  23 },
+ {   1,   0 },    };
 
 static yyconst struct yy_trans_info *yy_start_state_list[17] =
     {
@@ -1709,6 +1715,12 @@ static yyconst struct yy_trans_info *yy_start_state_list[17] =
     &yy_transition[3873],
 
     } ;
+
+/* Table of booleans, true if rule could match eol. */
+static yyconst flex_int32_t yy_rule_can_match_eol[23] =
+    {   0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    1, 0, 0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -1746,7 +1758,7 @@ char *csexe_parsertext;
 /*%option nounistd*/
 /* [\xEE-\xEF][\x80-\xBF][\x80-\xBF] - UTF8__BYTE_ORDER__MARK */
 
-#line 100 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 102 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 #include <string.h>
 #include <stdio.h>
 #if OS_WIN32
@@ -1760,13 +1772,14 @@ char *csexe_parsertext;
 #define yyunput ____attribute____ ((unused)) yyunput
 #define yy_top_state ____attribute____ ((unused)) yy_top_state
 #endif
+#define YY_USER_ACTION yylloc->first_line = yylloc->last_line = csexe_parserlineno;
 static int (*yy_input)(char *,int)=NULL;
 #define YY_INPUT(buf,result,max_size) result=yy_input(buf,max_size)
 #define yyinput input
 #define yylval csexe_parserlval
 extern YYSTYPE yylval;
 static inline unsigned int hex2uint(const char *s);
-#line 1770 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_lex.cxx"
+#line 1783 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_lex.cxx"
 
 #define INITIAL 0
 #define START_LINE 1
@@ -1958,10 +1971,10 @@ YY_DECL
     
         YYLTYPE * yylloc;
     
-#line 121 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 124 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 
 
-#line 1965 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_lex.cxx"
+#line 1978 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_lex.cxx"
 
     yylval = yylval_param;
 
@@ -2032,6 +2045,16 @@ yy_find_action:
 
 		YY_DO_BEFORE_ACTION;
 
+		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
+			{
+			int yyl;
+			for ( yyl = 0; yyl < csexe_parserleng; ++yyl )
+				if ( csexe_parsertext[yyl] == '\n' )
+					   
+    csexe_parserlineno++;
+;
+			}
+
 do_action:	/* This label is used only to access EOF actions. */
 
 		switch ( yy_act )
@@ -2044,90 +2067,89 @@ do_action:	/* This label is used only to access EOF actions. */
 			goto yy_find_action;
 
 case 1:
-/* rule 1 can match eol */
 YY_RULE_SETUP
-#line 124 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 127 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  return __CSEXE_MEASUREMENT__ ; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 125 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 128 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(LINE_STATUS); return __CSEXE_STATUS__ ; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 126 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 129 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(LINE_TITLE); return __CSEXE_TITLE__ ; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 127 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 130 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(LINE_TITLE); return __CSEXE_TITLE__ ; /* § */ }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 128 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 131 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(LINE_INSTRUMENTATION_SOURCE_SIZE); return __CSEXE_INSTRUMENTATION_SOURCE__ ; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 129 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 132 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(LINE_INSTRUMENTATION_VALUE); return __CSEXE_INSTRUMENTATION_VALUES__ ; }
 	YY_BREAK
 
 
 case 7:
 YY_RULE_SETUP
-#line 133 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 136 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  return __NUMBER__ ; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 134 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 137 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(LINE_INSTRUMENTATION_SOURCE_SIGNATURE); return ':'; }
 	YY_BREAK
 
 
 case 9:
 YY_RULE_SETUP
-#line 138 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 141 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  return __NUMBER__ ; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 139 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 142 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(LINE_INSTRUMENTATION_SOURCE_FILENAME); return ':'; }
 	YY_BREAK
 
 case 11:
 YY_RULE_SETUP
-#line 142 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 145 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 { yylval->str=STRDUP(csexe_parsertext); return __STRING__; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 144 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 147 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  yylval->str=STRDUP(csexe_parsertext); return __STRING__; }
 	YY_BREAK
 
 case 13:
 YY_RULE_SETUP
-#line 147 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 150 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  yylval->value=Instrumentation::EXECUTION_STATE_HIDDEN; return __NUMBER__ ; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 148 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 151 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  yylval->value=Instrumentation::EXECUTION_STATE_NOT_EXECUTED;return __NUMBER__ ; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 149 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 152 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  yylval->value=static_cast<Instrumentation::execution_state_t>(1) ; return __NUMBER__ ; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 150 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 153 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  yylval->value=hex2uint(csexe_parsertext) ; 
                             if (yylval->value>Instrumentation::EXECUTION_MAX)
                               yylval->value=Instrumentation::EXECUTION_MAX;
@@ -2138,37 +2160,37 @@ YY_RULE_SETUP
 
 case 17:
 YY_RULE_SETUP
-#line 158 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 161 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  return __STATUS_PASSED__ ; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 159 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 162 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  return __STATUS_FAILED__ ; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 160 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 163 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  return __STATUS_CHECK_MANUALLY__ ; }
 	YY_BREAK
 
 case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
-#line 163 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 166 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  BEGIN(START_LINE); return '\n'; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 164 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 167 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 {  /* ignore */ }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 165 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 168 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 ECHO;
 	YY_BREAK
-#line 2172 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_lex.cxx"
+#line 2194 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_lex.cxx"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(START_LINE):
 case YY_STATE_EOF(LINE_INSTRUMENTATION_SOURCE_FILENAME):
@@ -2530,6 +2552,10 @@ static int yy_get_next_buffer (void)
 
 	*--yy_cp = (char) c;
 
+    if ( c == '\n' ){
+        --csexe_parserlineno;
+    }
+
 	(yytext_ptr) = yy_bp;
 	(yy_hold_char) = *yy_cp;
 	(yy_c_buf_p) = yy_cp;
@@ -2604,6 +2630,11 @@ static int yy_get_next_buffer (void)
 	c = *(unsigned char *) (yy_c_buf_p);	/* cast for 8-bit char's */
 	*(yy_c_buf_p) = '\0';	/* preserve csexe_parsertext */
 	(yy_hold_char) = *++(yy_c_buf_p);
+
+	if ( c == '\n' )
+		   
+    csexe_parserlineno++;
+;
 
 	return c;
 }
@@ -3075,6 +3106,9 @@ static int yy_init_globals (void)
      * This function is called from csexe_parserlex_destroy(), so don't allocate here.
      */
 
+    /* We do not touch csexe_parserlineno unless the option is enabled. */
+    csexe_parserlineno =  1;
+    
     (yy_buffer_stack) = 0;
     (yy_buffer_stack_top) = 0;
     (yy_buffer_stack_max) = 0;
@@ -3167,7 +3201,7 @@ void csexe_parserfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 165 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
+#line 168 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
 
 
 
@@ -3201,9 +3235,10 @@ int csexe_parserwrap()
 	return(1);
 }
 
-void init_csexe_parserlex(CSMesIO &csmes,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
+void init_csexe_parserlex(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
 {
   BEGIN(START_LINE);
+  csexe_parserlineno=1;
   yy_input=yy_input_qiodevice;
   qiodevice_p=&file;
 }

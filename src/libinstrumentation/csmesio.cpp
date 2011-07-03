@@ -452,7 +452,11 @@ bool CSMesIO::load_csexe_one(Executions::modules_executions_t &mts, ExecutionNam
 bool CSMesIO::loadCSExe(QIODevice &file,const ExecutionName &name_orig,csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,progress_function_t progress_p)
 {
 #if CSEXE_LEX_YACC_PARSER
-  return csexe_parse(*this,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p) == 0;
+  QString filename;
+  QFile *file_p=dynamic_cast<QFile*>(&file);
+  if (file_p)
+    filename=file_p->fileName();
+  return csexe_parse(*this,filename,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p) == 0;
 #else
   QTime timeWatch;
   errmsgs.clear();

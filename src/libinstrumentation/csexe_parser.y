@@ -40,7 +40,8 @@ extern ExecutionName _csexe_parser_execution_title;
 %error-verbose
 /*%debug*/
 %pure-parser
-%parse-param {QString *randomness}
+%parse-param {const QString &filename}
+%parse-param {QString &errormsg}
 
 %token __NUMBER__
 %token __STRING__
@@ -138,18 +139,20 @@ str:  __STRING__
 
 #include <stdio.h>
 
-int csexe_parsererror(YYLTYPE *yylloc, QString *errormsg, const  char *s)
+int csexe_parsererror(YYLTYPE *yylloc, const QString &filename,QString &errormsg, const  char *s)
 {
-  *errormsg = "Line "+QString::number(yylloc->first_line);
-  *errormsg += ", Column "+QString::number(yylloc->first_column);
-  *errormsg +=":" + QString::fromAscii(s);
-  fprintf(stderr,"Error:%s\n",errormsg->toAscii().data());
+  errormsg.clear();
+  if (!filename.isEmpty())
+    errormsg+=QObject::tr("File '%1'").arg(filename)+" ";
+  errormsg += QObject::tr("Line %1").arg(QString::number(yylloc->first_line));
+  errormsg +=":" + QString::fromAscii(s);
+  fprintf(stderr,"Error:%s\n",errormsg.toAscii().data());
   return 0;
 }
 
 int yyparse(int *randomness);
 
-long csexe_parse(CSMesIO &csmes,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
+long csexe_parse(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
 {
   info.clear();
   short_status.clear();
@@ -157,10 +160,10 @@ long csexe_parse(CSMesIO &csmes,QIODevice &file,const ExecutionName &name_orig,C
   {
     int ret;
     _csexe_parser_execution_title=name_orig;
-    init_csexe_parserlex(csmes,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
+    init_csexe_parserlex(csmes,filename,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
     DEBUG2("Start parsing:#%s\n",text_line);
     QString errormsg;
-    ret=yyparse(&errormsg);
+    ret=yyparse(filename,errormsg);
     DEBUG3("End parsing(ret=%i):#%s\n",ret,text_line);
     file.close();
     return ret;

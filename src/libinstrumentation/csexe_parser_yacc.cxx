@@ -468,10 +468,10 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    66,    66,    67,    70,    71,    74,    75,    78,    79,
-      80,    81,    84,    85,    88,    91,    94,    97,   101,   102,
-     105,   106,   108,   111,   112,   115,   116,   117,   120,   121,
-     124,   130,   133
+       0,    67,    67,    68,    71,    72,    75,    76,    79,    80,
+      81,    82,    85,    86,    89,    92,    95,    98,   102,   103,
+     106,   107,   109,   112,   113,   116,   117,   118,   121,   122,
+     125,   131,   134
 };
 #endif
 
@@ -620,7 +620,7 @@ do								\
     }								\
   else								\
     {								\
-      yyerror (&yylloc, randomness, YY_("syntax error: cannot back up")); \
+      yyerror (&yylloc, filename, errormsg, YY_("syntax error: cannot back up")); \
       YYERROR;							\
     }								\
 while (YYID (0))
@@ -700,7 +700,7 @@ do {									  \
     {									  \
       YYFPRINTF (stderr, "%s ", Title);					  \
       yy_symbol_print (stderr,						  \
-		  Type, Value, Location, randomness); \
+		  Type, Value, Location, filename, errormsg); \
       YYFPRINTF (stderr, "\n");						  \
     }									  \
 } while (YYID (0))
@@ -714,21 +714,23 @@ do {									  \
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, QString *randomness)
+yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, const QString &filename, QString &errormsg)
 #else
 static void
-yy_symbol_value_print (yyoutput, yytype, yyvaluep, yylocationp, randomness)
+yy_symbol_value_print (yyoutput, yytype, yyvaluep, yylocationp, filename, errormsg)
     FILE *yyoutput;
     int yytype;
     YYSTYPE const * const yyvaluep;
     YYLTYPE const * const yylocationp;
-    QString *randomness;
+    const QString &filename;
+    QString &errormsg;
 #endif
 {
   if (!yyvaluep)
     return;
   YYUSE (yylocationp);
-  YYUSE (randomness);
+  YYUSE (filename);
+  YYUSE (errormsg);
 # ifdef YYPRINT
   if (yytype < YYNTOKENS)
     YYPRINT (yyoutput, yytoknum[yytype], *yyvaluep);
@@ -750,15 +752,16 @@ yy_symbol_value_print (yyoutput, yytype, yyvaluep, yylocationp, randomness)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, QString *randomness)
+yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, const QString &filename, QString &errormsg)
 #else
 static void
-yy_symbol_print (yyoutput, yytype, yyvaluep, yylocationp, randomness)
+yy_symbol_print (yyoutput, yytype, yyvaluep, yylocationp, filename, errormsg)
     FILE *yyoutput;
     int yytype;
     YYSTYPE const * const yyvaluep;
     YYLTYPE const * const yylocationp;
-    QString *randomness;
+    const QString &filename;
+    QString &errormsg;
 #endif
 {
   if (yytype < YYNTOKENS)
@@ -768,7 +771,7 @@ yy_symbol_print (yyoutput, yytype, yyvaluep, yylocationp, randomness)
 
   YY_LOCATION_PRINT (yyoutput, *yylocationp);
   YYFPRINTF (yyoutput, ": ");
-  yy_symbol_value_print (yyoutput, yytype, yyvaluep, yylocationp, randomness);
+  yy_symbol_value_print (yyoutput, yytype, yyvaluep, yylocationp, filename, errormsg);
   YYFPRINTF (yyoutput, ")");
 }
 
@@ -811,14 +814,15 @@ do {								\
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_reduce_print (YYSTYPE *yyvsp, YYLTYPE *yylsp, int yyrule, QString *randomness)
+yy_reduce_print (YYSTYPE *yyvsp, YYLTYPE *yylsp, int yyrule, const QString &filename, QString &errormsg)
 #else
 static void
-yy_reduce_print (yyvsp, yylsp, yyrule, randomness)
+yy_reduce_print (yyvsp, yylsp, yyrule, filename, errormsg)
     YYSTYPE *yyvsp;
     YYLTYPE *yylsp;
     int yyrule;
-    QString *randomness;
+    const QString &filename;
+    QString &errormsg;
 #endif
 {
   int yynrhs = yyr2[yyrule];
@@ -832,7 +836,7 @@ yy_reduce_print (yyvsp, yylsp, yyrule, randomness)
       YYFPRINTF (stderr, "   $%d = ", yyi + 1);
       yy_symbol_print (stderr, yyrhs[yyprhs[yyrule] + yyi],
 		       &(yyvsp[(yyi + 1) - (yynrhs)])
-		       , &(yylsp[(yyi + 1) - (yynrhs)])		       , randomness);
+		       , &(yylsp[(yyi + 1) - (yynrhs)])		       , filename, errormsg);
       YYFPRINTF (stderr, "\n");
     }
 }
@@ -840,7 +844,7 @@ yy_reduce_print (yyvsp, yylsp, yyrule, randomness)
 # define YY_REDUCE_PRINT(Rule)		\
 do {					\
   if (yydebug)				\
-    yy_reduce_print (yyvsp, yylsp, Rule, randomness); \
+    yy_reduce_print (yyvsp, yylsp, Rule, filename, errormsg); \
 } while (YYID (0))
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
@@ -1091,20 +1095,22 @@ yysyntax_error (char *yyresult, int yystate, int yychar)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, YYLTYPE *yylocationp, QString *randomness)
+yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, YYLTYPE *yylocationp, const QString &filename, QString &errormsg)
 #else
 static void
-yydestruct (yymsg, yytype, yyvaluep, yylocationp, randomness)
+yydestruct (yymsg, yytype, yyvaluep, yylocationp, filename, errormsg)
     const char *yymsg;
     int yytype;
     YYSTYPE *yyvaluep;
     YYLTYPE *yylocationp;
-    QString *randomness;
+    const QString &filename;
+    QString &errormsg;
 #endif
 {
   YYUSE (yyvaluep);
   YYUSE (yylocationp);
-  YYUSE (randomness);
+  YYUSE (filename);
+  YYUSE (errormsg);
 
   if (!yymsg)
     yymsg = "Deleting";
@@ -1115,20 +1121,20 @@ yydestruct (yymsg, yytype, yyvaluep, yylocationp, randomness)
       case 24: /* "module_name" */
 
 /* Line 1000 of yacc.c  */
-#line 59 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 60 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 	{ if ((yyvaluep->str)) FREE((yyvaluep->str)); };
 
 /* Line 1000 of yacc.c  */
-#line 1123 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1129 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 	break;
       case 32: /* "str" */
 
 /* Line 1000 of yacc.c  */
-#line 59 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 60 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 	{ if ((yyvaluep->str)) FREE((yyvaluep->str)); };
 
 /* Line 1000 of yacc.c  */
-#line 1132 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1138 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 	break;
 
       default:
@@ -1145,7 +1151,7 @@ int yyparse ();
 #endif
 #else /* ! YYPARSE_PARAM */
 #if defined __STDC__ || defined __cplusplus
-int yyparse (QString *randomness);
+int yyparse (const QString &filename, QString &errormsg);
 #else
 int yyparse ();
 #endif
@@ -1173,11 +1179,12 @@ yyparse (YYPARSE_PARAM)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 int
-yyparse (QString *randomness)
+yyparse (const QString &filename, QString &errormsg)
 #else
 int
-yyparse (randomness)
-    QString *randomness;
+yyparse (filename, errormsg)
+    const QString &filename;
+    QString &errormsg;
 #endif
 #endif
 {
@@ -1459,14 +1466,14 @@ yyreduce:
         case 17:
 
 /* Line 1455 of yacc.c  */
-#line 98 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 99 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yyvsp[(1) - (1)].str); (yyvsp[(1) - (1)].str)=NULL; ;}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 125 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 126 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
               QString title = QString::fromUtf8((yyvsp[(2) - (3)].str)).trimmed();
               if (!title.isEmpty())
@@ -1477,14 +1484,14 @@ yyreduce:
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 134 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 135 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yyvsp[(1) - (1)].str); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1488 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1495 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1520,7 +1527,7 @@ yyerrlab:
     {
       ++yynerrs;
 #if ! YYERROR_VERBOSE
-      yyerror (&yylloc, randomness, YY_("syntax error"));
+      yyerror (&yylloc, filename, errormsg, YY_("syntax error"));
 #else
       {
 	YYSIZE_T yysize = yysyntax_error (0, yystate, yychar);
@@ -1544,11 +1551,11 @@ yyerrlab:
 	if (0 < yysize && yysize <= yymsg_alloc)
 	  {
 	    (void) yysyntax_error (yymsg, yystate, yychar);
-	    yyerror (&yylloc, randomness, yymsg);
+	    yyerror (&yylloc, filename, errormsg, yymsg);
 	  }
 	else
 	  {
-	    yyerror (&yylloc, randomness, YY_("syntax error"));
+	    yyerror (&yylloc, filename, errormsg, YY_("syntax error"));
 	    if (yysize != 0)
 	      goto yyexhaustedlab;
 	  }
@@ -1572,7 +1579,7 @@ yyerrlab:
       else
 	{
 	  yydestruct ("Error: discarding",
-		      yytoken, &yylval, &yylloc, randomness);
+		      yytoken, &yylval, &yylloc, filename, errormsg);
 	  yychar = YYEMPTY;
 	}
     }
@@ -1629,7 +1636,7 @@ yyerrlab1:
 
       yyerror_range[0] = *yylsp;
       yydestruct ("Error: popping",
-		  yystos[yystate], yyvsp, yylsp, randomness);
+		  yystos[yystate], yyvsp, yylsp, filename, errormsg);
       YYPOPSTACK (1);
       yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
@@ -1669,7 +1676,7 @@ yyabortlab:
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
 yyexhaustedlab:
-  yyerror (&yylloc, randomness, YY_("memory exhausted"));
+  yyerror (&yylloc, filename, errormsg, YY_("memory exhausted"));
   yyresult = 2;
   /* Fall through.  */
 #endif
@@ -1677,7 +1684,7 @@ yyexhaustedlab:
 yyreturn:
   if (yychar != YYEMPTY)
      yydestruct ("Cleanup: discarding lookahead",
-		 yytoken, &yylval, &yylloc, randomness);
+		 yytoken, &yylval, &yylloc, filename, errormsg);
   /* Do not reclaim the symbols of the rule which action triggered
      this YYABORT or YYACCEPT.  */
   YYPOPSTACK (yylen);
@@ -1685,7 +1692,7 @@ yyreturn:
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-		  yystos[*yyssp], yyvsp, yylsp, randomness);
+		  yystos[*yyssp], yyvsp, yylsp, filename, errormsg);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -1703,23 +1710,25 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 137 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 138 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
 
 #include <stdio.h>
 
-int csexe_parsererror(YYLTYPE *yylloc, QString *errormsg, const  char *s)
+int csexe_parsererror(YYLTYPE *yylloc, const QString &filename,QString &errormsg, const  char *s)
 {
-  *errormsg = "Line "+QString::number(yylloc->first_line);
-  *errormsg += ", Column "+QString::number(yylloc->first_column);
-  *errormsg +=":" + QString::fromAscii(s);
-  fprintf(stderr,"Error:%s\n",errormsg->toAscii().data());
+  errormsg.clear();
+  if (!filename.isEmpty())
+    errormsg+=QObject::tr("File '%1'").arg(filename)+" ";
+  errormsg += QObject::tr(" Line %1").arg(QString::number(yylloc->first_line));
+  errormsg +=":" + QString::fromAscii(s);
+  fprintf(stdout,"Error:%s\n",errormsg.toAscii().data());
   return 0;
 }
 
 int yyparse(int *randomness);
 
-long csexe_parse(CSMesIO &csmes,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
+long csexe_parse(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
 {
   info.clear();
   short_status.clear();
@@ -1727,10 +1736,10 @@ long csexe_parse(CSMesIO &csmes,QIODevice &file,const ExecutionName &name_orig,C
   {
     int ret;
     _csexe_parser_execution_title=name_orig;
-    init_csexe_parserlex(csmes,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
+    init_csexe_parserlex(csmes,filename,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
     DEBUG2("Start parsing:#%s\n",text_line);
     QString errormsg;
-    ret=yyparse(&errormsg);
+    ret=yyparse(filename,errormsg);
     DEBUG3("End parsing(ret=%i):#%s\n",ret,text_line);
     file.close();
     return ret;

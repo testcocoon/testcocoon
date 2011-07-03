@@ -20,7 +20,9 @@
 /*%option outfile="lex.yy.c"*/
 %option fast
 %option 8bit
-%option bison-locations bison-bridge
+%option bison-locations
+%option bison-bridge
+%option yylineno
 /*%option nounistd*/
 
 D           [0-9]
@@ -110,6 +112,7 @@ rank_specifier         "["{white_space}*(","{white_space}*)*"]"
 #define yyunput ____attribute____ ((unused)) yyunput
 #define yy_top_state ____attribute____ ((unused)) yy_top_state
 #endif
+#define YY_USER_ACTION yylloc->first_line = yylloc->last_line = yylineno;
 static int (*yy_input)(char *,int)=NULL;
 #define YY_INPUT(buf,result,max_size) result=yy_input(buf,max_size)
 #define yyinput input
@@ -121,7 +124,7 @@ static inline unsigned int hex2uint(const char *s);
 %%
 
 <INITIAL,START_LINE>{
-"# Measurements"(\r*)\n    {  return __CSEXE_MEASUREMENT__ ; }
+"# Measurements"           {  return __CSEXE_MEASUREMENT__ ; }
 "!"                        {  BEGIN(LINE_STATUS); return __CSEXE_STATUS__ ; }
 "*"                        {  BEGIN(LINE_TITLE); return __CSEXE_TITLE__ ; }
 [\xA7]                     {  BEGIN(LINE_TITLE); return __CSEXE_TITLE__ ; /* § */ }
@@ -194,9 +197,10 @@ int yywrap()
 	return(1);
 }
 
-void init_csexe_parserlex(CSMesIO &csmes,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
+void init_csexe_parserlex(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
 {
   BEGIN(START_LINE);
+  yylineno=1;
   yy_input=yy_input_qiodevice;
   qiodevice_p=&file;
 }
