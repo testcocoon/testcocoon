@@ -387,18 +387,18 @@ union yyalloc
 #endif
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  13
+#define YYFINAL  11
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   38
+#define YYLAST   37
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  15
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  18
+#define YYNNTS  21
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  32
+#define YYNRULES  36
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  50
+#define YYNSTATES  52
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -444,34 +444,34 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint8 yyprhs[] =
 {
-       0,     0,     3,     5,     6,     8,    11,    14,    16,    20,
-      25,    29,    32,    34,    37,    46,    48,    50,    52,    56,
-      59,    61,    64,    66,    68,    71,    75,    79,    83,    85,
-      88,    92,    95
+       0,     0,     3,     5,     6,     8,    11,    16,    19,    21,
+      24,    25,    27,    29,    32,    41,    43,    45,    47,    51,
+      54,    56,    59,    61,    62,    64,    66,    69,    73,    77,
+      81,    82,    84,    86,    89,    93,    96
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
       16,     0,    -1,    17,    -1,    -1,    18,    -1,    18,    17,
-      -1,    30,    19,    -1,    19,    -1,     5,    13,    20,    -1,
-       5,    13,    20,    28,    -1,     5,    13,    28,    -1,     5,
-      13,    -1,    21,    -1,    21,    20,    -1,    11,    22,    14,
-      23,    14,    24,    13,    25,    -1,     3,    -1,     3,    -1,
-      32,    -1,    12,    26,    13,    -1,    12,    13,    -1,    27,
-      -1,    27,    26,    -1,     3,    -1,    29,    -1,    29,    28,
-      -1,     6,     7,    13,    -1,     6,     8,    13,    -1,     6,
-       9,    13,    -1,    31,    -1,    31,    30,    -1,    10,    32,
-      13,    -1,    10,    13,    -1,     4,    -1
+      -1,    32,    19,    20,    29,    -1,    32,    30,    -1,    33,
+      -1,     5,    13,    -1,    -1,    21,    -1,    22,    -1,    22,
+      21,    -1,    11,    23,    14,    24,    14,    25,    13,    26,
+      -1,     3,    -1,     3,    -1,    35,    -1,    12,    27,    13,
+      -1,    12,    13,    -1,    28,    -1,    28,    27,    -1,     3,
+      -1,    -1,    30,    -1,    31,    -1,    31,    30,    -1,     6,
+       7,    13,    -1,     6,     8,    13,    -1,     6,     9,    13,
+      -1,    -1,    33,    -1,    34,    -1,    34,    33,    -1,    10,
+      35,    13,    -1,    10,    13,    -1,     4,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    67,    67,    68,    71,    72,    75,    76,    79,    80,
-      81,    82,    85,    86,    89,    92,    95,    98,   102,   103,
-     106,   107,   109,   112,   113,   116,   117,   118,   121,   122,
-     125,   131,   134
+       0,    67,    67,    68,    71,    72,    75,    76,    77,    80,
+      83,    84,    87,    88,    91,    94,    97,   100,   104,   105,
+     108,   109,   111,   113,   114,   117,   118,   121,   122,   123,
+     125,   126,   129,   130,   133,   139,   142
 };
 #endif
 
@@ -485,10 +485,12 @@ static const char *const yytname[] =
   "__STATUS_FAILED__", "__STATUS_CHECK_MANUALLY__", "__CSEXE_TITLE__",
   "__CSEXE_INSTRUMENTATION_SOURCE__", "__CSEXE_INSTRUMENTATION_VALUES__",
   "'\\n'", "':'", "$accept", "csexe_parser", "csexe_measurements",
-  "csexe_measurement", "csexe_start_banner", "csexe_instrumentations",
-  "csexe_instrumentation", "nb_mes", "signature", "module_name",
-  "module_instrumentation", "instrumentations", "instrumentation",
-  "csexe_status", "csexe_one_status", "csexe_titles", "csexe_title", "str", 0
+  "csexe_measurement", "csexe_start_banner", "csexe_instrumentations_opt",
+  "csexe_instrumentations", "csexe_instrumentation", "nb_mes", "signature",
+  "module_name", "module_instrumentation", "instrumentations",
+  "instrumentation", "csexe_status_opt", "csexe_status",
+  "csexe_one_status", "csexe_titles_opt", "csexe_titles", "csexe_title",
+  "str", 0
 };
 #endif
 
@@ -505,19 +507,19 @@ static const yytype_uint16 yytoknum[] =
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    15,    16,    16,    17,    17,    18,    18,    19,    19,
-      19,    19,    20,    20,    21,    22,    23,    24,    25,    25,
-      26,    26,    27,    28,    28,    29,    29,    29,    30,    30,
-      31,    31,    32
+       0,    15,    16,    16,    17,    17,    18,    18,    18,    19,
+      20,    20,    21,    21,    22,    23,    24,    25,    26,    26,
+      27,    27,    28,    29,    29,    30,    30,    31,    31,    31,
+      32,    32,    33,    33,    34,    34,    35
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     0,     1,     2,     2,     1,     3,     4,
-       3,     2,     1,     2,     8,     1,     1,     1,     3,     2,
-       1,     2,     1,     1,     2,     3,     3,     3,     1,     2,
-       3,     2,     1
+       0,     2,     1,     0,     1,     2,     4,     2,     1,     2,
+       0,     1,     1,     2,     8,     1,     1,     1,     3,     2,
+       1,     2,     1,     0,     1,     1,     2,     3,     3,     3,
+       0,     1,     1,     2,     3,     2,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -525,69 +527,74 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       3,     0,     0,     0,     2,     4,     7,     0,    28,    11,
-      32,    31,     0,     1,     5,     6,    29,     0,     0,     8,
-      12,    10,    23,    30,     0,     0,     0,    15,     0,     9,
-      13,    24,    25,    26,    27,     0,    16,     0,     0,     0,
-      17,     0,     0,    14,    22,    19,     0,    20,    18,    21
+      30,     0,     0,     2,    30,     0,     8,    32,    36,    35,
+       0,     1,     5,     0,     0,    10,     7,    25,    33,    34,
+       9,     0,     0,     0,     0,    23,    11,    12,    26,    27,
+      28,    29,    15,     0,     6,    24,    13,     0,    16,     0,
+       0,     0,    17,     0,     0,    14,    22,    19,     0,    20,
+      18,    21
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     3,     4,     5,     6,    19,    20,    28,    37,    39,
-      43,    46,    47,    21,    22,     7,     8,    12
+      -1,     2,     3,     4,    15,    25,    26,    27,    33,    39,
+      41,    45,    48,    49,    34,    16,    17,     5,     6,     7,
+      10
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -20
+#define YYPACT_NINF -15
 static const yytype_int8 yypact[] =
 {
-      -4,   -10,    -2,     4,   -20,    -4,   -20,    11,    -1,     1,
-     -20,   -20,     5,   -20,   -20,   -20,   -20,     6,    14,    13,
-       9,   -20,    13,   -20,     8,    10,    12,   -20,    15,   -20,
-     -20,   -20,   -20,   -20,   -20,    19,   -20,    16,    20,    18,
-     -20,    21,    -3,   -20,   -20,   -20,    22,    23,   -20,   -20
+       0,     2,     7,   -15,     1,    -2,   -15,     4,   -15,   -15,
+      -5,   -15,   -15,    -4,     9,     8,   -15,    14,   -15,   -15,
+     -15,    10,    11,    12,    18,    14,   -15,     8,   -15,   -15,
+     -15,   -15,   -15,    13,   -15,   -15,   -15,    19,   -15,    15,
+      22,    17,   -15,    16,    -1,   -15,   -15,   -15,    20,    28,
+     -15,   -15
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -20,   -20,    27,   -20,    29,     7,   -20,   -20,   -20,   -20,
-     -20,   -19,   -20,   -14,   -20,    26,   -20,     0
+     -15,   -15,    30,   -15,   -15,   -15,     5,   -15,   -15,   -15,
+     -15,   -15,   -14,   -15,   -15,   -12,   -15,   -15,    29,   -15,
+      -3
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
    number is the opposite.  If zero, do what YYDEFACT says.
    If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -1
-static const yytype_uint8 yytable[] =
+#define YYTABLE_NINF -5
+static const yytype_int8 yytable[] =
 {
-      44,     1,    10,     9,    13,    29,     2,    17,    31,     2,
-      45,    11,    18,    24,    25,    26,     1,    27,    23,    17,
-      18,    32,    36,    33,    10,    34,    44,    30,    49,    35,
-      38,    41,    14,    42,    16,    48,    15,     0,    40
+      -3,    -4,    46,    13,    14,    28,     8,    11,    19,    20,
+       1,     1,    47,    35,     1,     9,    21,    22,    23,    24,
+      14,    32,    38,    29,    30,    31,     8,    37,    44,    40,
+      43,    46,    36,    50,    12,    51,    18,    42
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_uint8 yycheck[] =
 {
-       3,     5,     4,    13,     0,    19,    10,     6,    22,    10,
-      13,    13,    11,     7,     8,     9,     5,     3,    13,     6,
-      11,    13,     3,    13,     4,    13,     3,    20,    47,    14,
-      14,    13,     5,    12,     8,    13,     7,    -1,    38
+       0,     0,     3,     5,     6,    17,     4,     0,    13,    13,
+      10,    10,    13,    25,    10,    13,     7,     8,     9,    11,
+       6,     3,     3,    13,    13,    13,     4,    14,    12,    14,
+      13,     3,    27,    13,     4,    49,     7,    40
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     5,    10,    16,    17,    18,    19,    30,    31,    13,
-       4,    13,    32,     0,    17,    19,    30,     6,    11,    20,
-      21,    28,    29,    13,     7,     8,     9,     3,    22,    28,
-      20,    28,    13,    13,    13,    14,     3,    23,    14,    24,
-      32,    13,    12,    25,     3,    13,    26,    27,    13,    26
+       0,    10,    16,    17,    18,    32,    33,    34,     4,    13,
+      35,     0,    17,     5,     6,    19,    30,    31,    33,    13,
+      13,     7,     8,     9,    11,    20,    21,    22,    30,    13,
+      13,    13,     3,    23,    29,    30,    21,    14,     3,    24,
+      14,    25,    35,    13,    12,    26,     3,    13,    27,    28,
+      13,    27
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1118,23 +1125,23 @@ yydestruct (yymsg, yytype, yyvaluep, yylocationp, filename, errormsg)
 
   switch (yytype)
     {
-      case 24: /* "module_name" */
+      case 25: /* "module_name" */
 
 /* Line 1000 of yacc.c  */
 #line 60 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 	{ if ((yyvaluep->str)) FREE((yyvaluep->str)); };
 
 /* Line 1000 of yacc.c  */
-#line 1129 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1136 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 	break;
-      case 32: /* "str" */
+      case 35: /* "str" */
 
 /* Line 1000 of yacc.c  */
 #line 60 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 	{ if ((yyvaluep->str)) FREE((yyvaluep->str)); };
 
 /* Line 1000 of yacc.c  */
-#line 1138 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1145 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 	break;
 
       default:
@@ -1466,14 +1473,14 @@ yyreduce:
         case 17:
 
 /* Line 1455 of yacc.c  */
-#line 99 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 101 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yyvsp[(1) - (1)].str); (yyvsp[(1) - (1)].str)=NULL; ;}
     break;
 
-  case 30:
+  case 34:
 
 /* Line 1455 of yacc.c  */
-#line 126 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 134 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
               QString title = QString::fromUtf8((yyvsp[(2) - (3)].str)).trimmed();
               if (!title.isEmpty())
@@ -1481,17 +1488,17 @@ yyreduce:
             ;}
     break;
 
-  case 32:
+  case 36:
 
 /* Line 1455 of yacc.c  */
-#line 135 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 143 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yyvsp[(1) - (1)].str); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1495 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1502 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1710,7 +1717,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 138 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 146 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
 
 #include <stdio.h>
@@ -1720,9 +1727,9 @@ int csexe_parsererror(YYLTYPE *yylloc, const QString &filename,QString &errormsg
   errormsg.clear();
   if (!filename.isEmpty())
     errormsg+=QObject::tr("File '%1'").arg(filename)+" ";
-  errormsg += QObject::tr(" Line %1").arg(QString::number(yylloc->first_line));
+  errormsg += QObject::tr("Line %1").arg(QString::number(yylloc->first_line));
   errormsg +=":" + QString::fromAscii(s);
-  fprintf(stdout,"Error:%s\n",errormsg.toAscii().data());
+  fprintf(stderr,"Error:%s\n",errormsg.toAscii().data());
   return 0;
 }
 

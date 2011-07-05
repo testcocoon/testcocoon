@@ -72,15 +72,17 @@ csexe_measurements : csexe_measurement
                    | csexe_measurement csexe_measurements
                    ;
 
-csexe_measurement : csexe_titles csexe_start_banner
-                  | csexe_start_banner
+csexe_measurement : csexe_titles_opt csexe_start_banner csexe_instrumentations_opt csexe_status_opt
+                  | csexe_titles_opt csexe_status
+                  | csexe_titles
                   ;
 
-csexe_start_banner: __CSEXE_MEASUREMENT__ '\n' csexe_instrumentations
-                  | __CSEXE_MEASUREMENT__ '\n' csexe_instrumentations csexe_status
-                  | __CSEXE_MEASUREMENT__ '\n' csexe_status
-                  | __CSEXE_MEASUREMENT__ '\n' 
+csexe_start_banner: __CSEXE_MEASUREMENT__ '\n' 
                   ;
+
+csexe_instrumentations_opt: /*empty */
+                          | csexe_instrumentations
+                          ;
 
 csexe_instrumentations: csexe_instrumentation
                       | csexe_instrumentation csexe_instrumentations
@@ -108,6 +110,9 @@ instrumentations: instrumentation
                 ;
 instrumentation: __NUMBER__
                ;
+csexe_status_opt: /*empty */
+                | csexe_status
+                ;
 
 csexe_status: csexe_one_status
             | csexe_one_status csexe_status
@@ -117,6 +122,9 @@ csexe_one_status : __CSEXE_STATUS__ __STATUS_PASSED__ '\n'
                   | __CSEXE_STATUS__ __STATUS_FAILED__ '\n'
                   | __CSEXE_STATUS__ __STATUS_CHECK_MANUALLY__ '\n'
                   ;
+csexe_titles_opt: /* empty */
+                | csexe_titles
+                ;
 
 csexe_titles: csexe_title
             | csexe_title csexe_titles
