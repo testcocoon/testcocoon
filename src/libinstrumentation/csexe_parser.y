@@ -27,7 +27,10 @@
 #pragma warning(disable : 4065)
 #endif
 extern int csexe_parserlex (YYSTYPE * yylval_param,YYLTYPE * yylloc_param );
-extern ExecutionName _csexe_parser_execution_title;
+static ExecutionName _csexe_parser_execution_title;
+static Executions::execution_status_t _csexe_parser_execution_status;
+static ExecutionName _csexe_parser_execution_title_default;
+static Executions::execution_status_t _csexe_parser_execution_status_default;
 %}
 %name-prefix="csexe_parser"
 %union
@@ -39,6 +42,7 @@ extern ExecutionName _csexe_parser_execution_title;
 %verbose
 %error-verbose
 /*%debug*/
+%expect 0
 %pure-parser
 %parse-param {const QString &filename}
 %parse-param {QString &errormsg}
@@ -64,20 +68,26 @@ extern ExecutionName _csexe_parser_execution_title;
 
 %%
 
-csexe_parser : csexe_measurements
+csexe_parser : csexe_measurements 
              | /* empty */
              ;
 
 csexe_measurements : csexe_measurement 
-                   | csexe_measurement csexe_measurements
+                   | csexe_measurement csexe_measurements 
                    ;
 
-csexe_measurement : csexe_titles_opt csexe_start_banner csexe_instrumentations_opt csexe_status_opt
-                  | csexe_titles_opt csexe_status
-                  | csexe_titles
+csexe_measurement : {
+                    _csexe_parser_execution_title= _csexe_parser_execution_title_default;
+                    _csexe_parser_execution_status= _csexe_parser_execution_status_default;
+                    }
+                  csexe_measurement_
+                  ;
+                  
+csexe_measurement_: csexe_start_banner csexe_instrumentations_opt csexe_status_opt
+                  | csexe_title
                   ;
 
-csexe_start_banner: __CSEXE_MEASUREMENT__ '\n' 
+csexe_start_banner: __CSEXE_MEASUREMENT__ 
                   ;
 
 csexe_instrumentations_opt: /*empty */
@@ -88,7 +98,7 @@ csexe_instrumentations: csexe_instrumentation
                       | csexe_instrumentation csexe_instrumentations
                       ;
 
-csexe_instrumentation: __CSEXE_INSTRUMENTATION_SOURCE__ nb_mes ':' signature ':' module_name '\n' module_instrumentation
+csexe_instrumentation: __CSEXE_INSTRUMENTATION_SOURCE__ nb_mes ':' signature ':' module_name  module_instrumentation
                      ;
 
 nb_mes: __NUMBER__ 
@@ -101,8 +111,8 @@ module_name: str
 		   { $$=$1; $1=NULL; }
            ;
 
-module_instrumentation: __CSEXE_INSTRUMENTATION_VALUES__ instrumentations '\n'
-                      | __CSEXE_INSTRUMENTATION_VALUES__ '\n'
+module_instrumentation: __CSEXE_INSTRUMENTATION_VALUES__ instrumentations 
+                      | __CSEXE_INSTRUMENTATION_VALUES__ 
                       ;
 
 instrumentations: instrumentation 
@@ -118,25 +128,21 @@ csexe_status: csexe_one_status
             | csexe_one_status csexe_status
             ;
 
-csexe_one_status : __CSEXE_STATUS__ __STATUS_PASSED__ '\n'
-                  | __CSEXE_STATUS__ __STATUS_FAILED__ '\n'
-                  | __CSEXE_STATUS__ __STATUS_CHECK_MANUALLY__ '\n'
+csexe_one_status : __CSEXE_STATUS__ __STATUS_PASSED__ 
+                   { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_PASSED; }
+                  | __CSEXE_STATUS__ __STATUS_FAILED__ 
+                   { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_FAILED; }
+                  | __CSEXE_STATUS__ __STATUS_CHECK_MANUALLY__ 
+                   { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY; }
                   ;
-csexe_titles_opt: /* empty */
-                | csexe_titles
-                ;
 
-csexe_titles: csexe_title
-            | csexe_title csexe_titles
-            ;
-
-csexe_title : __CSEXE_TITLE__ str '\n'
+csexe_title : __CSEXE_TITLE__ str 
             {
               QString title = QString::fromUtf8($2).trimmed();
               if (!title.isEmpty())
                 _csexe_parser_execution_title = title;
             }
-            | __CSEXE_TITLE__ '\n'
+            | __CSEXE_TITLE__ 
             ;
 
 str:  __STRING__ 
@@ -168,6 +174,9 @@ long csexe_parse(CSMesIO &csmes,const QString &filename,QIODevice &file,const Ex
   {
     int ret;
     _csexe_parser_execution_title=name_orig;
+    _csexe_parser_execution_status=default_execution_status;
+    _csexe_parser_execution_title_default=name_orig;
+    _csexe_parser_execution_status_default=default_execution_status;
     init_csexe_parserlex(csmes,filename,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
     DEBUG2("Start parsing:#%s\n",text_line);
     QString errormsg;
@@ -188,4 +197,3 @@ int csexe_yyprint(FILE *f,int /*type*/,YYSTYPE value)
   return 0;
 }
 
-ExecutionName _csexe_parser_execution_title;

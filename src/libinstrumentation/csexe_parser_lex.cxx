@@ -2178,7 +2178,7 @@ case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
 #line 166 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.l"
-{  BEGIN(START_LINE); return '\n'; }
+{  BEGIN(START_LINE); /* ignore */ }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP

@@ -163,7 +163,7 @@ static inline unsigned int hex2uint(const char *s);
 "CHECK_MANUALLY"              {  return __STATUS_CHECK_MANUALLY__ ; }
 }
 
-<*>\n  {  BEGIN(START_LINE); return '\n'; }
+<*>\n  {  BEGIN(START_LINE); /* ignore */ }
 <*>\r  {  /* ignore */ }
 %%
 
