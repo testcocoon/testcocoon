@@ -49,6 +49,12 @@ void CsLibGen::save_source(const char *filename, const CompilerInterface &compil
   char signature_str[CHAINE_LEN];
   char tmp[CHAINE_LEN];
   char indexstr[CHAINE_LEN];
+  char *default_csexe_escaped=NULL;
+  if (default_csexe)
+  {
+    default_csexe_escaped = (char*)MALLOC(strlen(default_csexe)*2+1) ;
+    escape(default_csexe,default_csexe_escaped);
+  }
   DEBUG1("==== begin generating __cs_libgen.cs source code ====\n");
 
   if (filename==NULL)
@@ -77,7 +83,7 @@ void CsLibGen::save_source(const char *filename, const CompilerInterface &compil
     fputs_trace("const int  CS_TIMEOUT=3000;\n",f);
   }
   fputs_trace("static string __cs_appname=\"",f);
-  fputs_trace(default_csexe,f);
+  fputs_trace(default_csexe_escaped,f);
   fputs_trace(".csexe\";\n",f);
   fputs_trace("static System.IO.Stream __fopenread(string name) { return new FileStream(name,FileMode.Create,FileAccess.Read); }\n",f);
   fputs_trace("static System.IO.Stream __fopenappend(string name) { return new FileStream(name,FileMode.Append,FileAccess.Write); }\n",f);
@@ -508,7 +514,7 @@ void CsLibGen::save_source(const char *filename, const CompilerInterface &compil
     fputs_trace("  __coveragescanner_filename(System.Environment.GetCommandLineArgs()[0]);\n",f);
     fputs_trace("  } catch\n",f);
     fputs_trace("  {__coveragescanner_filename(\"",f);
-    fputs_trace(default_csexe,f);
+    fputs_trace(default_csexe_escaped,f);
     fputs_trace("\");}\n",f);
     fputs_trace("}\n",f);
   }
@@ -532,6 +538,7 @@ void CsLibGen::save_source(const char *filename, const CompilerInterface &compil
   if (filename!=NULL)
     fclose(f);
   DEBUG1("==== end generating __cs_libgen.cs source code ====\n");
+  FREE(default_csexe_escaped);
 }
 
 #ifdef LOG

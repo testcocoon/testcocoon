@@ -49,6 +49,12 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   char signature_str[CHAINE_LEN];
   char tmp[CHAINE_LEN];
   char indexstr[CHAINE_LEN];
+  char *default_csexe_escaped=NULL;
+  if (default_csexe)
+  {
+    default_csexe_escaped = (char*)MALLOC(strlen(default_csexe)*2+1) ;
+    escape(default_csexe,default_csexe_escaped);
+  }
   DEBUG1("==== begin generating __cs_libgen.c source code ====\n");
 
 
@@ -98,7 +104,7 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   fputs_trace("#define  CHAINE_LEN 1024\n",f);
 
   fputs_trace("static char __cs_appname[CHAINE_LEN+10]=\"",f);
-  fputs_trace(default_csexe,f);
+  fputs_trace(default_csexe_escaped,f);
   fputs_trace(".csexe\";\n",f);
   fputs_trace("static char __cs_testname[CHAINE_LEN]=\"\";\n",f);
   fputs_trace("static char __cs_teststate[CHAINE_LEN]=\"\";\n",f);
@@ -589,7 +595,7 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
     fputs_trace("static void __cs_init(void)\n",f);
     fputs_trace("{\n",f);
     fputs_trace("  __coveragescanner_filename(\"",f);
-    fputs_trace(default_csexe,f);
+    fputs_trace(default_csexe_escaped,f);
     fputs_trace("\");\n",f);
     fputs_trace("}\n",f);
 
@@ -786,6 +792,7 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   if (filename!=NULL)
     fclose(f);
   DEBUG1("==== end generating __cs_libgen.c source code ====\n");
+  FREE(default_csexe_escaped);
 }
 
 #ifdef LOG
