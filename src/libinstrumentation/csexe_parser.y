@@ -88,6 +88,9 @@ csexe_measurement_: csexe_start_banner csexe_instrumentations_opt csexe_status_o
                   ;
 
 csexe_start_banner: __CSEXE_MEASUREMENT__ 
+                  {
+                    
+                  }
                   ;
 
 csexe_instrumentations_opt: /*empty */
@@ -166,7 +169,7 @@ int csexe_parsererror(YYLTYPE *yylloc, const QString &filename,QString &errormsg
 
 int yyparse(int *randomness);
 
-long csexe_parse(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
+long CSExeParser::csexe_parse(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
 {
   info.clear();
   short_status.clear();

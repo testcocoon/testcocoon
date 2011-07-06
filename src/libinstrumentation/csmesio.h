@@ -23,6 +23,8 @@
 #include <QHash>
 #include "csmescomment.h"
 #include "csmesfilethread.h"
+class CSExeParser;
+
 class CSMesIO : public CSMesComment
 {
   protected:
@@ -63,6 +65,7 @@ class CSMesIO : public CSMesComment
   protected:
     QString err;
   private:
+    friend class CSExeParser;
     bool load_csexe_one(Executions::modules_executions_t &execution, ExecutionName &name,QString &err,QIODevice &data,QString &last_line,int &line_nr,const ExecutionName &name_orig,csexe_import_policy_t policy,Executions::execution_status_t default_execution_status) const;
     bool isCSExeDirectory(const ExecutionName &) const;
     ExecutionName executionName(const ExecutionName &default_name,const ExecutionName &execution_name,csexe_import_policy_t policy) const;

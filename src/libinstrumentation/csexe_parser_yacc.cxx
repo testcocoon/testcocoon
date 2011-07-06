@@ -471,9 +471,9 @@ static const yytype_int8 yyrhs[] =
 static const yytype_uint8 yyrline[] =
 {
        0,    71,    71,    72,    75,    76,    79,    79,    86,    87,
-      90,    93,    94,    97,    98,   101,   104,   107,   110,   114,
-     115,   118,   119,   121,   123,   124,   127,   128,   131,   133,
-     135,   139,   145,   148
+      90,    96,    97,   100,   101,   104,   107,   110,   113,   117,
+     118,   121,   122,   124,   126,   127,   130,   131,   134,   136,
+     138,   142,   148,   151
 };
 #endif
 
@@ -1477,38 +1477,47 @@ yyreduce:
                     ;}
     break;
 
+  case 10:
+
+/* Line 1455 of yacc.c  */
+#line 91 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+    {
+                    
+                  ;}
+    break;
+
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 111 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 114 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yyvsp[(1) - (1)].str); (yyvsp[(1) - (1)].str)=NULL; ;}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 132 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 135 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_PASSED; ;}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 134 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 137 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_FAILED; ;}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 136 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 139 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY; ;}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 140 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 143 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
               QString title = QString::fromUtf8((yyvsp[(2) - (2)].str)).trimmed();
               if (!title.isEmpty())
@@ -1519,14 +1528,14 @@ yyreduce:
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 149 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 152 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yyvsp[(1) - (1)].str); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1530 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1539 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1745,7 +1754,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 152 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 155 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
 
 #include <stdio.h>
@@ -1763,7 +1772,7 @@ int csexe_parsererror(YYLTYPE *yylloc, const QString &filename,QString &errormsg
 
 int yyparse(int *randomness);
 
-long csexe_parse(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
+long CSExeParser::csexe_parse(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
 {
   info.clear();
   short_status.clear();
