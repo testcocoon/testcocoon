@@ -133,12 +133,12 @@ static inline unsigned int hex2uint(const char *s);
 }
 
 <LINE_INSTRUMENTATION_SOURCE_SIZE>{
-{number}     {  return __NUMBER__ ; }
+{number}     {  yylval->l_value=QString(yytext).toLong(); return __LONG__ ; }
 ":"          {  BEGIN(LINE_INSTRUMENTATION_SOURCE_SIGNATURE); return ':'; }
 }
 
 <LINE_INSTRUMENTATION_SOURCE_SIGNATURE>{
-{number}     {  return __NUMBER__ ; }
+{number}     {  yylval->ul_value=QString(yytext).toULong(); return __ULONG__ ; }
 ":"          {  BEGIN(LINE_INSTRUMENTATION_SOURCE_FILENAME); return ':'; }
 }
 
@@ -147,13 +147,13 @@ static inline unsigned int hex2uint(const char *s);
 <LINE_TITLE>[^\r\n]*                    {  yylval->str=STRDUP(yytext); return __STRING__; }
 
 <LINE_INSTRUMENTATION_VALUE>{
-"?"                      {  yylval->value=Instrumentation::EXECUTION_STATE_HIDDEN; return __NUMBER__ ; }
-"-"                      {  yylval->value=Instrumentation::EXECUTION_STATE_NOT_EXECUTED;return __NUMBER__ ; }
-"+"                      {  yylval->value=static_cast<Instrumentation::execution_state_t>(1) ; return __NUMBER__ ; }
-[0-9A-F]{8}              {  yylval->value=hex2uint(yytext) ; 
-                            if (yylval->value>Instrumentation::EXECUTION_MAX)
-                              yylval->value=Instrumentation::EXECUTION_MAX;
-                            return __NUMBER__ ; 
+"?"                      {  yylval->ui_value=Instrumentation::EXECUTION_STATE_HIDDEN; return __UINT__ ; }
+"-"                      {  yylval->ui_value=Instrumentation::EXECUTION_STATE_NOT_EXECUTED;return __UINT__ ; }
+"+"                      {  yylval->ui_value=static_cast<Instrumentation::execution_state_t>(1) ; return __UINT__ ; }
+[0-9A-F]{8}              {  yylval->ui_value=hex2uint(yytext) ; 
+                            if (yylval->ui_value>Instrumentation::EXECUTION_MAX)
+                              yylval->ui_value=Instrumentation::EXECUTION_MAX;
+                            return __UINT__ ; 
                          }
 }
 

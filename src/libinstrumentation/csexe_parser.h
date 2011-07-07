@@ -34,6 +34,11 @@ class CSExeParser
     /* debug function for bison */
 
     static void init_csexe_parserlex(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p);
+
+  public:
+    static inline ExecutionName executionName(const ExecutionName &default_name,const ExecutionName &execution_name,CSMesIO::csexe_import_policy_t policy) ;
+    static inline bool createEmptyExecution(Executions::modules_executions_t &) ;
+    static inline bool moduleExists(const ModuleFile &m) ;
 };
 
 int csexe_yyprint(FILE *f,int type,YYSTYPE value);

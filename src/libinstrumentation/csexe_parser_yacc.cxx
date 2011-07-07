@@ -88,14 +88,20 @@
 #pragma warning(disable : 4065)
 #endif
 extern int csexe_parserlex (YYSTYPE * yylval_param,YYLTYPE * yylloc_param );
+static CSMesIO *_csmes_p=NULL;
 static ExecutionName _csexe_parser_execution_title;
+static ExecutionName _csexe_parser_execution_title_file;
 static Executions::execution_status_t _csexe_parser_execution_status;
 static ExecutionName _csexe_parser_execution_title_default;
 static Executions::execution_status_t _csexe_parser_execution_status_default;
+static CSMesIO::csexe_import_policy_t _csexe_parser_policy;
+static Executions::modules_executions_t mts;
+static QStringList _errors;
+static bool skip_module;
 
 
 /* Line 189 of yacc.c  */
-#line 99 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 105 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -122,16 +128,18 @@ static Executions::execution_status_t _csexe_parser_execution_status_default;
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     __NUMBER__ = 258,
-     __STRING__ = 259,
-     __CSEXE_MEASUREMENT__ = 260,
-     __CSEXE_STATUS__ = 261,
-     __STATUS_PASSED__ = 262,
-     __STATUS_FAILED__ = 263,
-     __STATUS_CHECK_MANUALLY__ = 264,
-     __CSEXE_TITLE__ = 265,
-     __CSEXE_INSTRUMENTATION_SOURCE__ = 266,
-     __CSEXE_INSTRUMENTATION_VALUES__ = 267
+     __ULONG__ = 258,
+     __LONG__ = 259,
+     __STRING__ = 260,
+     __UINT__ = 261,
+     __CSEXE_MEASUREMENT__ = 262,
+     __CSEXE_STATUS__ = 263,
+     __STATUS_PASSED__ = 264,
+     __STATUS_FAILED__ = 265,
+     __STATUS_CHECK_MANUALLY__ = 266,
+     __CSEXE_TITLE__ = 267,
+     __CSEXE_INSTRUMENTATION_SOURCE__ = 268,
+     __CSEXE_INSTRUMENTATION_VALUES__ = 269
    };
 #endif
 
@@ -142,15 +150,17 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 37 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 43 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
  char *        str;
- unsigned long value;
+ unsigned long ul_value;
+ unsigned int  ui_value;
+ long          l_value;
 
 
 
 /* Line 214 of yacc.c  */
-#line 154 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 164 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -175,7 +185,7 @@ typedef struct YYLTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 179 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 189 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 
 #ifdef short
 # undef short
@@ -392,20 +402,20 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  5
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   23
+#define YYLAST   22
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  14
+#define YYNTOKENS  16
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  21
+#define YYNNTS  22
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  33
+#define YYNRULES  34
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  41
+#define YYNSTATES  42
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   267
+#define YYMAXUTOK   269
 
 #define YYTRANSLATE(YYX)						\
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -418,7 +428,7 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,    13,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,    15,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -439,7 +449,7 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11,    12
+       5,     6,     7,     8,     9,    10,    11,    12,    13,    14
 };
 
 #if YYDEBUG
@@ -449,31 +459,31 @@ static const yytype_uint8 yyprhs[] =
 {
        0,     0,     3,     5,     6,     8,    11,    12,    15,    19,
       21,    23,    24,    26,    28,    31,    39,    41,    43,    45,
-      48,    50,    52,    55,    57,    58,    60,    62,    65,    68,
-      71,    74,    77,    79
+      48,    50,    52,    55,    57,    58,    60,    62,    65,    67,
+      70,    73,    76,    79,    81
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      15,     0,    -1,    16,    -1,    -1,    17,    -1,    17,    16,
-      -1,    -1,    18,    19,    -1,    20,    21,    30,    -1,    33,
-      -1,     5,    -1,    -1,    22,    -1,    23,    -1,    23,    22,
-      -1,    11,    24,    13,    25,    13,    26,    27,    -1,     3,
-      -1,     3,    -1,    34,    -1,    12,    28,    -1,    12,    -1,
-      29,    -1,    29,    28,    -1,     3,    -1,    -1,    31,    -1,
-      32,    -1,    32,    31,    -1,     6,     7,    -1,     6,     8,
-      -1,     6,     9,    -1,    10,    34,    -1,    10,    -1,     4,
-      -1
+      17,     0,    -1,    18,    -1,    -1,    19,    -1,    19,    18,
+      -1,    -1,    20,    21,    -1,    22,    23,    32,    -1,    36,
+      -1,     7,    -1,    -1,    24,    -1,    25,    -1,    25,    24,
+      -1,    13,    26,    15,    27,    15,    28,    29,    -1,     4,
+      -1,     3,    -1,    37,    -1,    14,    30,    -1,    14,    -1,
+      31,    -1,    31,    30,    -1,     6,    -1,    -1,    33,    -1,
+      34,    -1,    34,    33,    -1,    35,    -1,     8,     9,    -1,
+       8,    10,    -1,     8,    11,    -1,    12,    37,    -1,    12,
+      -1,     5,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    71,    71,    72,    75,    76,    79,    79,    86,    87,
-      90,    96,    97,   100,   101,   104,   107,   110,   113,   117,
-     118,   121,   122,   124,   126,   127,   130,   131,   134,   136,
-     138,   142,   148,   151
+       0,    83,    83,    84,    87,    88,    91,    91,    99,   100,
+     103,   110,   111,   114,   115,   118,   155,   158,   161,   165,
+     166,   169,   170,   172,   174,   175,   178,   179,   182,   199,
+     201,   203,   207,   211,   217
 };
 #endif
 
@@ -482,17 +492,17 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "__NUMBER__", "__STRING__",
-  "__CSEXE_MEASUREMENT__", "__CSEXE_STATUS__", "__STATUS_PASSED__",
-  "__STATUS_FAILED__", "__STATUS_CHECK_MANUALLY__", "__CSEXE_TITLE__",
-  "__CSEXE_INSTRUMENTATION_SOURCE__", "__CSEXE_INSTRUMENTATION_VALUES__",
-  "':'", "$accept", "csexe_parser", "csexe_measurements",
-  "csexe_measurement", "$@1", "csexe_measurement_", "csexe_start_banner",
-  "csexe_instrumentations_opt", "csexe_instrumentations",
-  "csexe_instrumentation", "nb_mes", "signature", "module_name",
-  "module_instrumentation", "instrumentations", "instrumentation",
-  "csexe_status_opt", "csexe_status", "csexe_one_status", "csexe_title",
-  "str", 0
+  "$end", "error", "$undefined", "__ULONG__", "__LONG__", "__STRING__",
+  "__UINT__", "__CSEXE_MEASUREMENT__", "__CSEXE_STATUS__",
+  "__STATUS_PASSED__", "__STATUS_FAILED__", "__STATUS_CHECK_MANUALLY__",
+  "__CSEXE_TITLE__", "__CSEXE_INSTRUMENTATION_SOURCE__",
+  "__CSEXE_INSTRUMENTATION_VALUES__", "':'", "$accept", "csexe_parser",
+  "csexe_measurements", "csexe_measurement", "$@1", "csexe_measurement_",
+  "csexe_start_banner", "csexe_instrumentations_opt",
+  "csexe_instrumentations", "csexe_instrumentation", "nb_mes", "signature",
+  "module_name", "module_instrumentation", "instrumentations",
+  "instrumentation", "csexe_status_opt", "csexe_status",
+  "csexe_one_status", "csexe_one_status_", "csexe_title", "str", 0
 };
 #endif
 
@@ -502,17 +512,17 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   267,    58
+     265,   266,   267,   268,   269,    58
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    14,    15,    15,    16,    16,    18,    17,    19,    19,
-      20,    21,    21,    22,    22,    23,    24,    25,    26,    27,
-      27,    28,    28,    29,    30,    30,    31,    31,    32,    32,
-      32,    33,    33,    34
+       0,    16,    17,    17,    18,    18,    20,    19,    21,    21,
+      22,    23,    23,    24,    24,    25,    26,    27,    28,    29,
+      29,    30,    30,    31,    32,    32,    33,    33,    34,    35,
+      35,    35,    36,    36,    37
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
@@ -520,8 +530,8 @@ static const yytype_uint8 yyr2[] =
 {
        0,     2,     1,     0,     1,     2,     0,     2,     3,     1,
        1,     0,     1,     1,     2,     7,     1,     1,     1,     2,
-       1,     1,     2,     1,     0,     1,     1,     2,     2,     2,
-       2,     2,     1,     1
+       1,     1,     2,     1,     0,     1,     1,     2,     1,     2,
+       2,     2,     2,     1,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -529,19 +539,19 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       6,     0,     2,     6,     0,     1,     5,    10,    32,     7,
-      11,     9,    33,    31,     0,    24,    12,    13,    16,     0,
-       0,     8,    25,    26,    14,     0,    28,    29,    30,    27,
-      17,     0,     0,     0,    18,    20,    15,    23,    19,    21,
-      22
+       6,     0,     2,     6,     0,     1,     5,    10,    33,     7,
+      11,     9,    34,    32,     0,    24,    12,    13,    16,     0,
+       0,     8,    25,    26,    28,    14,     0,    29,    30,    31,
+      27,    17,     0,     0,     0,    18,    20,    15,    23,    19,
+      21,    22
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
       -1,     1,     2,     3,     4,     9,    10,    15,    16,    17,
-      19,    31,    33,    36,    38,    39,    21,    22,    23,    11,
-      13
+      19,    32,    34,    37,    39,    40,    21,    22,    23,    24,
+      11,    13
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
@@ -549,19 +559,19 @@ static const yytype_int8 yydefgoto[] =
 #define YYPACT_NINF -22
 static const yytype_int8 yypact[] =
 {
-       4,     6,   -22,     7,    -5,   -22,   -22,   -22,     5,   -22,
-      -3,   -22,   -22,   -22,     8,     9,   -22,    -3,   -22,    -1,
-      -6,   -22,   -22,     9,   -22,    10,   -22,   -22,   -22,   -22,
-     -22,     1,     5,    -2,   -22,    13,   -22,   -22,   -22,    13,
-     -22
+       4,     6,   -22,     7,    -7,   -22,   -22,   -22,     3,   -22,
+      -4,   -22,   -22,   -22,     8,     2,   -22,    -4,   -22,    -2,
+      -8,   -22,   -22,     2,   -22,   -22,    11,   -22,   -22,   -22,
+     -22,   -22,     0,     3,    -3,   -22,    10,   -22,   -22,   -22,
+      10,   -22
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -22,   -22,    14,   -22,   -22,   -22,   -22,   -22,     2,   -22,
-     -22,   -22,   -22,   -22,   -21,   -22,   -22,     0,   -22,   -22,
-     -12
+     -22,   -22,    14,   -22,   -22,   -22,   -22,   -22,     1,   -22,
+     -22,   -22,   -22,   -22,   -21,   -22,   -22,    -1,   -22,   -22,
+     -22,   -13
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -571,27 +581,27 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -5
 static const yytype_int8 yytable[] =
 {
-       7,    26,    27,    28,    -3,     8,     5,    -4,    14,    12,
-      35,    18,    25,    30,    32,    20,    37,     6,    40,    24,
-      34,     0,     0,    29
+       7,    27,    28,    29,    -3,     8,     5,    -4,    12,    14,
+      20,    36,    18,    26,    31,    33,    38,     6,    25,    41,
+      35,     0,    30
 };
 
 static const yytype_int8 yycheck[] =
 {
-       5,     7,     8,     9,     0,    10,     0,     0,    11,     4,
-      12,     3,    13,     3,    13,     6,     3,     3,    39,    17,
-      32,    -1,    -1,    23
+       7,     9,    10,    11,     0,    12,     0,     0,     5,    13,
+       8,    14,     4,    15,     3,    15,     6,     3,    17,    40,
+      33,    -1,    23
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    15,    16,    17,    18,     0,    16,     5,    10,    19,
-      20,    33,     4,    34,    11,    21,    22,    23,     3,    24,
-       6,    30,    31,    32,    22,    13,     7,     8,     9,    31,
-       3,    25,    13,    26,    34,    12,    27,     3,    28,    29,
-      28
+       0,    17,    18,    19,    20,     0,    18,     7,    12,    21,
+      22,    36,     5,    37,    13,    23,    24,    25,     4,    26,
+       8,    32,    33,    34,    35,    24,    15,     9,    10,    11,
+      33,     3,    27,    15,    28,    37,    14,    29,     6,    30,
+      31,    30
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1122,23 +1132,23 @@ yydestruct (yymsg, yytype, yyvaluep, yylocationp, filename, errormsg)
 
   switch (yytype)
     {
-      case 26: /* "module_name" */
+      case 28: /* "module_name" */
 
 /* Line 1000 of yacc.c  */
-#line 64 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 76 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 	{ if ((yyvaluep->str)) FREE((yyvaluep->str)); };
 
 /* Line 1000 of yacc.c  */
-#line 1133 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1143 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 	break;
-      case 34: /* "str" */
+      case 37: /* "str" */
 
 /* Line 1000 of yacc.c  */
-#line 64 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 76 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 	{ if ((yyvaluep->str)) FREE((yyvaluep->str)); };
 
 /* Line 1000 of yacc.c  */
-#line 1142 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1152 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 	break;
 
       default:
@@ -1470,72 +1480,141 @@ yyreduce:
         case 6:
 
 /* Line 1455 of yacc.c  */
-#line 79 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 91 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
-                    _csexe_parser_execution_title= _csexe_parser_execution_title_default;
-                    _csexe_parser_execution_status= _csexe_parser_execution_status_default;
+                    _csexe_parser_execution_title_file.clear();
+                    _csexe_parser_execution_status= Executions::EXECUTION_STATUS_UNKNOWN;
+                    CSExeParser::createEmptyExecution(mts);
                     ;}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 91 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 104 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
+                    _csexe_parser_execution_title=CSExeParser::executionName(_csexe_parser_execution_title_default,_csexe_parser_execution_title_file,_csexe_parser_policy);
                     
                   ;}
+    break;
+
+  case 15:
+
+/* Line 1455 of yacc.c  */
+#line 119 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+    {
+                        skip_module=false;
+                        long nb_mes=(yyvsp[(2) - (7)].l_value);
+                        unsigned long signature=(yyvsp[(4) - (7)].ul_value);
+                        QString module=QString((yyvsp[(6) - (7)].str));
+                        (yyvsp[(6) - (7)].str)=NULL;
+
+#if 0
+                        if (!CSExeParser::moduleExists(module))
+                        {
+                          skip_module=true;
+                        }
+                        else
+                        {
+                          if (instrumentations.modules[module].signature!=signature)
+                            wrong_executions=true;
+                          else if (nb_mes!=nbInstrumentations(module))
+                            wrong_executions=true;
+                        }
+
+                        if (!skip_module)
+                        {
+                          mts.execution_status=execution_status;
+                          mes_p=&(mts.executions[module]);
+                          int mes_p_size=mes_p->size();
+                          if (mes_p_size!=nb_mes)
+                          {
+                            err=QObject::tr("Invalid file format")
+                              +" (" +QObject::tr("Line ")+QString::number(line_nr) +":"+QObject::tr("Wrong instrumentation size")+")";
+                            import_error=true;
+                          }
+                        }
+#endif
+                     ;}
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 114 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 162 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yyvsp[(1) - (1)].str); (yyvsp[(1) - (1)].str)=NULL; ;}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 135 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
-    { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_PASSED; ;}
+#line 183 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+    {
+                    switch (mts.execution_status)
+                    {
+                      case Executions::EXECUTION_STATUS_UNKNOWN:
+                          mts.execution_status=_csexe_parser_execution_status;
+                        break;
+                      case Executions::EXECUTION_STATUS_FAILED:
+                      case Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY:
+                      case Executions::EXECUTION_STATUS_PASSED:
+                        if (mts.execution_status!=_csexe_parser_execution_status)
+                          mts.execution_status=Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY;
+                        break;
+                    }
+                 ;}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 137 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
-    { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_FAILED; ;}
+#line 200 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+    { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_PASSED; ;}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 139 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
-    { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY; ;}
+#line 202 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+    { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_FAILED; ;}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 143 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 204 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+    { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY; ;}
+    break;
+
+  case 32:
+
+/* Line 1455 of yacc.c  */
+#line 208 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
-              QString title = QString::fromUtf8((yyvsp[(2) - (2)].str)).trimmed();
-              if (!title.isEmpty())
-                _csexe_parser_execution_title = title;
+              _csexe_parser_execution_title_file = QString::fromUtf8((yyvsp[(2) - (2)].str)).trimmed();
             ;}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 152 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 212 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+    {
+              _csexe_parser_execution_title_file.clear();
+            ;}
+    break;
+
+  case 34:
+
+/* Line 1455 of yacc.c  */
+#line 218 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yyvsp[(1) - (1)].str); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1539 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1618 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1754,7 +1833,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 155 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 221 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
 
 #include <stdio.h>
@@ -1779,10 +1858,14 @@ long CSExeParser::csexe_parse(CSMesIO &csmes,const QString &filename,QIODevice &
   if ( file.open( QIODevice::ReadOnly ) )
   {
     int ret;
-    _csexe_parser_execution_title=name_orig;
+    _errors.clear();
+    _csmes_p=&csmes;
+    skip_module=false;
+    _csexe_parser_execution_title_file.clear();
     _csexe_parser_execution_status=default_execution_status;
     _csexe_parser_execution_title_default=name_orig;
     _csexe_parser_execution_status_default=default_execution_status;
+    _csexe_parser_policy=policy;
     init_csexe_parserlex(csmes,filename,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
     DEBUG2("Start parsing:#%s\n",text_line);
     QString errormsg;
@@ -1803,4 +1886,18 @@ int csexe_yyprint(FILE *f,int /*type*/,YYSTYPE value)
   return 0;
 }
 
+ExecutionName CSExeParser::executionName(const ExecutionName &default_name,const ExecutionName &execution_name,CSMesIO::csexe_import_policy_t policy) 
+{
+  return _csmes_p->executionName(default_name,execution_name,policy) ;
+}
+
+bool CSExeParser::createEmptyExecution(Executions::modules_executions_t &mts) 
+{
+  return _csmes_p->createEmptyExecution(mts);
+}
+
+bool CSExeParser::moduleExists(const ModuleFile &m) 
+{
+  return _csmes_p->moduleExists(m);
+}
 
