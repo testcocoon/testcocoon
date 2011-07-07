@@ -59,7 +59,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 37 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 37 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
  char *        str;
  unsigned long value;
@@ -67,7 +67,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 71 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
+#line 71 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

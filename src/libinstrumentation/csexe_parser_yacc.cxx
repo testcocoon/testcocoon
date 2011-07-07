@@ -76,7 +76,7 @@
 /* Copy the first part of user declarations.  */
 
 /* Line 189 of yacc.c  */
-#line 19 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 19 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
 #include "csexe_parser.h"
 #include <string.h>
@@ -95,7 +95,7 @@ static Executions::execution_status_t _csexe_parser_execution_status_default;
 
 
 /* Line 189 of yacc.c  */
-#line 99 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 99 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -142,7 +142,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 37 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 37 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
  char *        str;
  unsigned long value;
@@ -150,7 +150,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 154 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 154 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -175,7 +175,7 @@ typedef struct YYLTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 179 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 179 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 
 #ifdef short
 # undef short
@@ -1125,20 +1125,20 @@ yydestruct (yymsg, yytype, yyvaluep, yylocationp, filename, errormsg)
       case 26: /* "module_name" */
 
 /* Line 1000 of yacc.c  */
-#line 64 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 64 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 	{ if ((yyvaluep->str)) FREE((yyvaluep->str)); };
 
 /* Line 1000 of yacc.c  */
-#line 1133 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1133 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 	break;
       case 34: /* "str" */
 
 /* Line 1000 of yacc.c  */
-#line 64 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 64 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 	{ if ((yyvaluep->str)) FREE((yyvaluep->str)); };
 
 /* Line 1000 of yacc.c  */
-#line 1142 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1142 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 	break;
 
       default:
@@ -1470,7 +1470,7 @@ yyreduce:
         case 6:
 
 /* Line 1455 of yacc.c  */
-#line 79 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 79 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
                     _csexe_parser_execution_title= _csexe_parser_execution_title_default;
                     _csexe_parser_execution_status= _csexe_parser_execution_status_default;
@@ -1480,7 +1480,7 @@ yyreduce:
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 91 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 91 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
                     
                   ;}
@@ -1489,35 +1489,35 @@ yyreduce:
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 114 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 114 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yyvsp[(1) - (1)].str); (yyvsp[(1) - (1)].str)=NULL; ;}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 135 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 135 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_PASSED; ;}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 137 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 137 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_FAILED; ;}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 139 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 139 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { _csexe_parser_execution_status=Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY; ;}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 143 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 143 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
               QString title = QString::fromUtf8((yyvsp[(2) - (2)].str)).trimmed();
               if (!title.isEmpty())
@@ -1528,14 +1528,14 @@ yyreduce:
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 152 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 152 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yyvsp[(1) - (1)].str); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1539 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1539 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1754,7 +1754,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 155 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 155 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
 
 #include <stdio.h>

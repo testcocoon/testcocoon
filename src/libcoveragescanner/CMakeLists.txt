@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 2.6.0)
 SET(PROGNAME coveragescannerlib)
 INCLUDE(../commoncode/common.cmake)
-IF("${CMAKE_SYSTEM}" MATCHES "Linux")
-  FIND_PROGRAM(FLEX_EXECUTABLE flex)
-  FIND_PROGRAM(BISON_EXECUTABLE bison)
-endif()
 
 SET(SRCS
   argv.cpp
