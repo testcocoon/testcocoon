@@ -20,9 +20,6 @@
 #include "libinstrumentationpdef.h"
 #include "csmesio.h"
 #include "Service.h"
-#if CSEXE_LEX_YACC_PARSER
-#include "csexe_parser.h"
-#endif
 #include <QObject>
 #include <QThread>
 #include <QTextDocument>
@@ -36,6 +33,9 @@
 #include "instrumentation.h"
 #ifdef OS_WIN32
 #include <windows.h>
+#endif
+#if CSEXE_LEX_YACC_PARSER
+#include "csexe_parser.h"
 #endif
 
 
@@ -456,7 +456,8 @@ bool CSMesIO::loadCSExe(QIODevice &file,const ExecutionName &name_orig,csexe_imp
   QFile *file_p=dynamic_cast<QFile*>(&file);
   if (file_p)
     filename=file_p->fileName();
-  return CSExeParser::csexe_parse(*this,filename,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p) == 0;
+  CSExeParser csexe_parser;
+  return csexe_parser.csexe_parse(*this,filename,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
 #else
   QTime timeWatch;
   errmsgs.clear();

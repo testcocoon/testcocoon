@@ -26,7 +26,6 @@
 #if OS_WIN32
 #pragma warning(disable : 4065)
 #endif
-extern int csexe_parserlex (YYSTYPE * yylval_param,YYLTYPE * yylloc_param );
 static CSMesIO *_csmes_p=NULL;
 static ExecutionName _csexe_parser_execution_title;
 static ExecutionName _csexe_parser_execution_title_file;
@@ -38,7 +37,21 @@ static Executions::modules_executions_t mts;
 static QStringList _errors;
 static bool skip_module;
 %}
-%name-prefix="csexe_parser"
+%skeleton "lalr1.cc"                          /*  -*- C++ -*- */
+%require "2.4.1"
+%defines
+%define parser_class_name "CSExeParser"
+// The parsing context.
+%code requires {
+#include <string>
+class CSExeParserDriver;
+class CSExeParser;
+}
+
+%parse-param { CSExeParserDriver& driver }
+%lex-param   { CSExeParserDriver& driver }
+
+
 %union
 {
  char *        str;
@@ -47,18 +60,24 @@ static bool skip_module;
  long          l_value;
 }
 %locations
-%verbose
+/*%verbose*/
 %error-verbose
 /*%debug*/
 %expect 0
 %pure-parser
-%parse-param {const QString &filename}
-%parse-param {QString &errormsg}
+%initial-action
+{
+ // Initialize the initial location.
+ @$.begin.filename = @$.end.filename = &driver.file;
+};
 
+
+%token __END__ 0 "End of file"
 %token __ULONG__
 %token __LONG__
 %token __STRING__
 %token __UINT__
+%token __SEPARATOR__
 %token __CSEXE_MEASUREMENT__
 %token __CSEXE_STATUS__
 %token __STATUS_PASSED__
@@ -80,8 +99,8 @@ static bool skip_module;
 
 %%
 
-csexe_parser : csexe_measurements 
-             | /* empty */
+csexe_parser : csexe_measurements  
+             | /* empty */ 
              ;
 
 csexe_measurements : csexe_measurement 
@@ -91,7 +110,7 @@ csexe_measurements : csexe_measurement
 csexe_measurement : {
                     _csexe_parser_execution_title_file.clear();
                     _csexe_parser_execution_status= Executions::EXECUTION_STATUS_UNKNOWN;
-                    CSExeParser::createEmptyExecution(mts);
+                    //CSExeParser::createEmptyExecution(mts);
                     }
                   csexe_measurement_
                   ;
@@ -102,7 +121,7 @@ csexe_measurement_: csexe_start_banner csexe_instrumentations_opt csexe_status_o
 
 csexe_start_banner: __CSEXE_MEASUREMENT__ 
                   {
-                    _csexe_parser_execution_title=CSExeParser::executionName(_csexe_parser_execution_title_default,_csexe_parser_execution_title_file,_csexe_parser_policy);
+                    //_csexe_parser_execution_title=CSExeParser::executionName(_csexe_parser_execution_title_default,_csexe_parser_execution_title_file,_csexe_parser_policy);
                     
                   }
                   ;
@@ -115,7 +134,7 @@ csexe_instrumentations: csexe_instrumentation
                       | csexe_instrumentation csexe_instrumentations
                       ;
 
-csexe_instrumentation: __CSEXE_INSTRUMENTATION_SOURCE__ nb_mes ':' signature ':' module_name  module_instrumentation
+csexe_instrumentation: __CSEXE_INSTRUMENTATION_SOURCE__ nb_mes __SEPARATOR__ signature __SEPARATOR__ module_name  module_instrumentation
                      {
                         skip_module=false;
                         long nb_mes=$2;
@@ -222,26 +241,14 @@ str:  __STRING__
 
 #include <stdio.h>
 
-int csexe_parsererror(YYLTYPE *yylloc, const QString &filename,QString &errormsg, const  char *s)
-{
-  errormsg.clear();
-  if (!filename.isEmpty())
-    errormsg+=QObject::tr("File '%1'").arg(filename)+" ";
-  errormsg += QObject::tr("Line %1").arg(QString::number(yylloc->first_line));
-  errormsg +=":" + QString::fromAscii(s);
-  fprintf(stderr,"Error:%s\n",errormsg.toAscii().data());
-  return 0;
-}
 
-int yyparse(int *randomness);
-
-long CSExeParser::csexe_parse(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
+bool CSExeParser::csexe_parse(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
 {
   info.clear();
   short_status.clear();
   if ( file.open( QIODevice::ReadOnly ) )
   {
-    int ret;
+    bool ret;
     _errors.clear();
     _csmes_p=&csmes;
     skip_module=false;
@@ -252,22 +259,17 @@ long CSExeParser::csexe_parse(CSMesIO &csmes,const QString &filename,QIODevice &
     _csexe_parser_policy=policy;
     init_csexe_parserlex(csmes,filename,file,name_orig,policy,default_execution_status,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
     DEBUG2("Start parsing:#%s\n",text_line);
-    QString errormsg;
-    ret=yyparse(filename,errormsg);
-    DEBUG3("End parsing(ret=%i):#%s\n",ret,text_line);
+    CSExeParserDriver driver;
+    driver.parse(filename);
+    ret= ( driver.result!=0 );
+    DEBUG3("End parsing(ret=%i):#%s\n",driver.result,text_line);
     file.close();
     return ret;
   }
 
   short_status=QObject::tr("Error opening I/O device");
   info=short_status;
-  return -1;
-}
-
-int csexe_yyprint(FILE *f,int /*type*/,YYSTYPE value)
-{
-  //yyprint_token(f,value.token.text);
-  return 0;
+  return false;
 }
 
 ExecutionName CSExeParser::executionName(const ExecutionName &default_name,const ExecutionName &execution_name,CSMesIO::csexe_import_policy_t policy) 
@@ -283,4 +285,9 @@ bool CSExeParser::createEmptyExecution(Executions::modules_executions_t &mts)
 bool CSExeParser::moduleExists(const ModuleFile &m) 
 {
   return _csmes_p->moduleExists(m);
+}
+
+void yy::CSExeParser::error (const yy::CSExeParser::location_type& l, const std::string& m)
+{
+ driver.error (l, m);
 }

@@ -16,13 +16,13 @@
  **
  ****************************************************************************/
 
-%option prefix="csexe_parser"
 /*%option outfile="lex.yy.c"*/
-%option fast
 %option 8bit
-%option bison-locations
-%option bison-bridge
+%option fast
 %option yylineno
+%option noyywrap nounput batch 
+/*%option debug*/
+
 /*%option nounistd*/
 
 D           [0-9]
@@ -39,7 +39,6 @@ U6_3          [\xEE-\xEF][\xBC-\xBF][\x80-\xBF]
 /* [\xEE-\xEF][\x80-\xBF][\x80-\xBF] - UTF8__BYTE_ORDER__MARK */
 U6          {U6_1}|{U6_2}|{U6_3}
 U7          [\xF0][\x90-\xBF][\x80-\xBF][\x80-\xBF]
-U8          [\xF1-\xF3][\x80-\xBF][\x80-\xBF][\x80-\xBF]
 U9          [\xF4][\x80-\x8F][\x80-\xBF][\x80-\xBF]
 
 L       {ASCII}|{U2}|{U3}|{U4}|{U5}|{U6}|{U7}|{U8}|{U9}
@@ -107,65 +106,75 @@ rank_specifier         "["{white_space}*(","{white_space}*)*"]"
 #endif
 #include "debug.h"
 #include "csexe_parser.h"
+#include "csexe_parser_driver.h"
 #include "instrumentation.h"
 #ifdef ___GNUC___
 #define yyunput ____attribute____ ((unused)) yyunput
 #define yy_top_state ____attribute____ ((unused)) yy_top_state
 #endif
-#define YY_USER_ACTION yylloc->first_line = yylloc->last_line = yylineno;
 static int (*yy_input)(char *,int)=NULL;
 #define YY_INPUT(buf,result,max_size) result=yy_input(buf,max_size)
 #define yyinput input
-#define yylval csexe_parserlval
-extern YYSTYPE yylval;
 static inline unsigned int hex2uint(const char *s);
+#define yyterminate() return token::__END__
+# define YY_USER_ACTION  yylloc->columns (yyleng);
 %}
 
 %%
+%{
+  typedef yy::CSExeParser::token token;
+  yylloc->step ();
+%}
 
 <INITIAL,START_LINE>{
-"# Measurements"           {  return __CSEXE_MEASUREMENT__ ; }
-"!"                        {  BEGIN(LINE_STATUS); return __CSEXE_STATUS__ ; }
-"*"                        {  BEGIN(LINE_TITLE); return __CSEXE_TITLE__ ; }
-[\xA7]                     {  BEGIN(LINE_TITLE); return __CSEXE_TITLE__ ; /* § */ }
-"/"                        {  BEGIN(LINE_INSTRUMENTATION_SOURCE_SIZE); return __CSEXE_INSTRUMENTATION_SOURCE__ ; }
-"\\"                       {  BEGIN(LINE_INSTRUMENTATION_VALUE); return __CSEXE_INSTRUMENTATION_VALUES__ ; }
+"# Measurements"           {  return token::__CSEXE_MEASUREMENT__ ; }
+"!"                        {  BEGIN(LINE_STATUS); return token::__CSEXE_STATUS__ ; }
+"*"                        {  BEGIN(LINE_TITLE); return token::__CSEXE_TITLE__ ; }
+[\xA7]                     {  BEGIN(LINE_TITLE); return token::__CSEXE_TITLE__ ; /* § */ }
+"/"                        {  BEGIN(LINE_INSTRUMENTATION_SOURCE_SIZE); return token::__CSEXE_INSTRUMENTATION_SOURCE__ ; }
+"\\"                       {  BEGIN(LINE_INSTRUMENTATION_VALUE); return token::__CSEXE_INSTRUMENTATION_VALUES__ ; }
 }
 
 <LINE_INSTRUMENTATION_SOURCE_SIZE>{
-{number}     {  yylval->l_value=QString(yytext).toLong(); return __LONG__ ; }
-":"          {  BEGIN(LINE_INSTRUMENTATION_SOURCE_SIGNATURE); return ':'; }
+{number}     {  yylval->l_value=QString(yytext).toLong(); return token::__LONG__ ; }
+":"          {  BEGIN(LINE_INSTRUMENTATION_SOURCE_SIGNATURE); return token::__SEPARATOR__; }
 }
 
 <LINE_INSTRUMENTATION_SOURCE_SIGNATURE>{
-{number}     {  yylval->ul_value=QString(yytext).toULong(); return __ULONG__ ; }
-":"          {  BEGIN(LINE_INSTRUMENTATION_SOURCE_FILENAME); return ':'; }
+{number}     {  yylval->ul_value=QString(yytext).toULong(); return token::__ULONG__ ; }
+":"          {  BEGIN(LINE_INSTRUMENTATION_SOURCE_FILENAME); return token::__SEPARATOR__; }
 }
 
-<LINE_INSTRUMENTATION_SOURCE_FILENAME>[^\r\n]*  { yylval->str=STRDUP(yytext); return __STRING__; }
+<LINE_INSTRUMENTATION_SOURCE_FILENAME>[^\r\n]*  { yylval->str=STRDUP(yytext); return token::__STRING__; }
 
-<LINE_TITLE>[^\r\n]*                    {  yylval->str=STRDUP(yytext); return __STRING__; }
+<LINE_TITLE>[^\r\n]*                    {  yylval->str=STRDUP(yytext); return token::__STRING__; }
 
 <LINE_INSTRUMENTATION_VALUE>{
-"?"                      {  yylval->ui_value=Instrumentation::EXECUTION_STATE_HIDDEN; return __UINT__ ; }
-"-"                      {  yylval->ui_value=Instrumentation::EXECUTION_STATE_NOT_EXECUTED;return __UINT__ ; }
-"+"                      {  yylval->ui_value=static_cast<Instrumentation::execution_state_t>(1) ; return __UINT__ ; }
+"?"                      {  yylval->ui_value=Instrumentation::EXECUTION_STATE_HIDDEN; return token::__UINT__ ; }
+"-"                      {  yylval->ui_value=Instrumentation::EXECUTION_STATE_NOT_EXECUTED;return token::__UINT__ ; }
+"+"                      {  yylval->ui_value=static_cast<Instrumentation::execution_state_t>(1) ; return token::__UINT__ ; }
 [0-9A-F]{8}              {  yylval->ui_value=hex2uint(yytext) ; 
                             if (yylval->ui_value>Instrumentation::EXECUTION_MAX)
                               yylval->ui_value=Instrumentation::EXECUTION_MAX;
-                            return __UINT__ ; 
+                            return token::__UINT__ ; 
                          }
 }
 
 <LINE_STATUS>{
-"PASSED"                      {  return __STATUS_PASSED__ ; }
-"FAILED"                      {  return __STATUS_FAILED__ ; }
-"CHECK_MANUALLY"              {  return __STATUS_CHECK_MANUALLY__ ; }
+"PASSED"                      {  return token::__STATUS_PASSED__ ; }
+"FAILED"                      {  return token::__STATUS_FAILED__ ; }
+"CHECK_MANUALLY"              {  return token::__STATUS_CHECK_MANUALLY__ ; }
 }
 
 <*>\n  {  BEGIN(START_LINE); /* ignore */ }
 <*>\r  {  /* ignore */ }
 %%
+/* Work around an incompatibility in flex (at least versions
+  2.5.31 through 2.5.33): it generates code that does
+  not conform to C89.  See Debian bug 333231
+  <http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=333231>.  */
+# undef yywrap
+# define yywrap() 1
 
 static inline unsigned int hex2uint(const char *s)
 {
@@ -183,23 +192,12 @@ static inline unsigned int hex2uint(const char *s)
   return v;
 }
 
-static QIODevice *qiodevice_p=NULL;
-static int yy_input_qiodevice(char *buf,int max_size)
-{
-  int result;
-  if ( (result = qiodevice_p->read( (char *) buf, max_size )) < 0 ) 
-    return 0;
-  return result;
-}
-
-int yywrap()
-{
-	return(1);
-}
 
 void CSExeParser::init_csexe_parserlex(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
 {
   BEGIN(START_LINE);
+
+  yy_flex_debug=0;
   yylineno=1;
   yy_input=yy_input_qiodevice;
   qiodevice_p=&file;

@@ -34,6 +34,8 @@ set(SRCS
     writer.cpp
     htmlwriter.cpp
     xmlwriter.cpp
+    csexe_parser.cpp
+    csexe_parser_driver.cpp
     csmesemma.cpp
     csmescsv.cpp
 )
@@ -51,7 +53,7 @@ IF(DEFINED FLEX_EXECUTABLE AND DEFINED BISON_EXECUTABLE)
 # Create custom command for flex/lex (note the outputs)
      ADD_CUSTOM_COMMAND(
        OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${PARSER_NAME}_lex.cxx
-       COMMAND ${FLEX_EXECUTABLE} ${FLEX_ARGS} ${FLEX_GLOBAL_ARGS} -P ${PARSER_NAME} -o ${LEX_YACC_WDIR}${PARSER_NAME}_lex.cxx ${LEX_YACC_WDIR}${PARSER_NAME}.l
+       COMMAND ${FLEX_EXECUTABLE} ${FLEX_ARGS} ${FLEX_GLOBAL_ARGS} -o ${LEX_YACC_WDIR}${PARSER_NAME}_lex.cxx ${LEX_YACC_WDIR}${PARSER_NAME}.l
        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${PARSER_NAME}.l
        )
