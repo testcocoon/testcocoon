@@ -28,6 +28,7 @@
 #include "FunctionInfo.h"
 #include "modulefiles.h"
 #include "sourcefiles.h"
+class CSExeParserDriver;
 
 class CSMesInstrumentations 
 {
@@ -113,6 +114,7 @@ class CSMesInstrumentations
   friend class CSMesEmma;
   friend class CSMesIO;
   friend class CSMesStatistic;
+  friend class CSExeParserDriver;
 };
 
 #endif

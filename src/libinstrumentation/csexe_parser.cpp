@@ -20,6 +20,13 @@
 #include <QIODevice>
 #include <QtDebug>
 
+CSExeParser::CSExeParser(CSMesIO &csmes,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status) : _csmes(csmes),
+  _title_default(name_orig),
+  _status_default(default_execution_status),
+  _policy(policy)
+{
+}
+
 QIODevice *CSExeParser::qiodevice_p=NULL;
 int CSExeParser::yy_input_qiodevice(char *buf,int max_size)
 {

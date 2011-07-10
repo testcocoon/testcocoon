@@ -193,12 +193,12 @@ static inline unsigned int hex2uint(const char *s)
 }
 
 
-void CSExeParser::init_csexe_parserlex(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
+void CSExeParser::init_csexe_parserlex()
 {
   BEGIN(START_LINE);
 
   yy_flex_debug=0;
   yylineno=1;
   yy_input=yy_input_qiodevice;
-  qiodevice_p=&file;
+  qiodevice_p=_file_p;
 }

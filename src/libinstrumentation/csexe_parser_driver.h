@@ -20,6 +20,7 @@
 #define _CSEXE_PARSER_DDRIVER_H_
 #include "csexe_parser_yacc.hxx"
 #include <QString>
+#include "csmesio.h"
 
 class CSExeParser; 
 
@@ -35,7 +36,7 @@ YY_DECL;
 class CSExeParserDriver
 {
   public:
-    CSExeParserDriver();
+    CSExeParserDriver(CSMesIO &, const CSExeParser &);
     virtual ~CSExeParserDriver();
 
     // Handling the scanner.
@@ -50,6 +51,23 @@ class CSExeParserDriver
     // Error handling.
     void error (const yy::location& l, const std::string& m);
     void error (const std::string& m);
+
+    void csexe_measurement();
+
+    void set_status(Executions::execution_status_t s) ;
+    void set_title(const QString &);
+    void init_instrumentation(const QString &module,long nb_mes, unsigned long signature);
+    ExecutionName executionName(const ExecutionName &default_name,const ExecutionName &execution_name,CSMesIO::csexe_import_policy_t policy) ;
+  private:
+    CSMesIO &_csmes;
+    const CSExeParser &_csexe_parser;
+    Executions::modules_executions_t _mts;
+    Executions::execution_status_t _execution_status;
+    ExecutionName _execution_title;
+    ExecutionName _execution_title_file;
+    QStringList _errors;
+    bool _skip_module;
+    bool _wrong_executions;
 };
 
 #endif

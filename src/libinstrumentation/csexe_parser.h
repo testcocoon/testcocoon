@@ -26,21 +26,26 @@
 #include <QIODevice>
 #include "csmesio.h"
 
-class CSExeParser : public virtual CSMesIO
+class CSExeParser 
 {
   public:
-    bool csexe_parse(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p);
+    CSExeParser(CSMesIO &csmes,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status);
+    bool csexe_parse(const QString &filename,QIODevice &file,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p);
 
   private:
-    static void init_csexe_parserlex(CSMesIO &csmes,const QString &filename,QIODevice &file,const ExecutionName &name_orig,CSMesIO::csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p);
+    void init_csexe_parserlex();
 
   public:
-    static inline ExecutionName executionName(const ExecutionName &default_name,const ExecutionName &execution_name,CSMesIO::csexe_import_policy_t policy) ;
-    static inline bool createEmptyExecution(Executions::modules_executions_t &) ;
-    static inline bool moduleExists(const ModuleFile &m) ;
 
     static QIODevice *qiodevice_p;
     static int yy_input_qiodevice(char *buf,int max_size);
+
+    const ExecutionName &_title_default;
+    const Executions::execution_status_t &_status_default;
+    const CSMesIO::csexe_import_policy_t &_policy;
+  private:
+    CSMesIO &_csmes;
+    QIODevice *_file_p;
 };
 
 #endif
