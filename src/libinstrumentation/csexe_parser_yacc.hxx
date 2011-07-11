@@ -40,7 +40,7 @@
 /* "%code requires" blocks.  */
 
 /* Line 35 of lalr1.cc  */
-#line 35 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 35 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
 #include <string>
 class CSExeParserDriver;
@@ -49,7 +49,7 @@ class CSExeParser;
 
 
 /* Line 35 of lalr1.cc  */
-#line 53 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
+#line 53 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
 
 
 #include <string>
@@ -63,7 +63,7 @@ class CSExeParser;
 namespace yy {
 
 /* Line 35 of lalr1.cc  */
-#line 67 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
+#line 67 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
   class position;
   class location;
 
@@ -73,7 +73,7 @@ namespace yy {
 } // yy
 
 /* Line 35 of lalr1.cc  */
-#line 77 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
+#line 77 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
 
 #include "location.hh"
 
@@ -121,7 +121,7 @@ do {							\
 namespace yy {
 
 /* Line 35 of lalr1.cc  */
-#line 125 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
+#line 125 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
 
   /// A Bison parser.
   class CSExeParser
@@ -133,7 +133,7 @@ namespace yy {
     {
 
 /* Line 35 of lalr1.cc  */
-#line 46 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 46 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
  char *        str;
  unsigned long ul_value;
@@ -143,7 +143,7 @@ namespace yy {
 
 
 /* Line 35 of lalr1.cc  */
-#line 147 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
+#line 147 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
     };
 #else
     typedef YYSTYPE semantic_type;
@@ -345,7 +345,7 @@ namespace yy {
 } // yy
 
 /* Line 35 of lalr1.cc  */
-#line 349 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
+#line 349 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
 
 
 

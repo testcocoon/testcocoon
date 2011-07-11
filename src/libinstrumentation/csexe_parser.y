@@ -122,13 +122,17 @@ csexe_instrumentations: csexe_instrumentation
                       | csexe_instrumentation csexe_instrumentations
                       ;
 
-csexe_instrumentation: __CSEXE_INSTRUMENTATION_SOURCE__ nb_mes __SEPARATOR__ signature __SEPARATOR__ module_name  module_instrumentation
+csexe_instrumentation: __CSEXE_INSTRUMENTATION_SOURCE__ nb_mes __SEPARATOR__ signature __SEPARATOR__ module_name 
                      {
                         long nb_mes=$2;
                         unsigned long signature=$4;
                         QString module=QString($6);
                         $6=NULL;
-                        driver.init_instrumentation(module,nb_mes,signature);
+                        driver.init_add_instrumentation(@1.begin.line,module,nb_mes,signature);
+                     }
+                     module_instrumentation
+                     {
+                        driver.endup_add_instrumentation(@1.begin.line);
                      }
                      ;
 
@@ -150,6 +154,9 @@ instrumentations: instrumentation
                 | instrumentation instrumentations
                 ;
 instrumentation: __UINT__
+               {
+                 driver.add_instrumentation(@1.begin.line,static_cast<Instrumentation::execution_state_t>($1));
+               }
                ;
 csexe_status_opt: /*empty */
                 | csexe_status
@@ -197,8 +204,7 @@ bool CSExeParser::csexe_parse(const QString &filename,QIODevice &file,ExecutionN
     init_csexe_parserlex();
     DEBUG2("Start parsing:#%s\n",text_line);
     CSExeParserDriver driver(_csmes,*this);
-    driver.parse(filename);
-    ret= ( driver.result!=0 );
+    ret = driver.parse(filename);
     DEBUG3("End parsing(ret=%i):#%s\n",driver.result,text_line);
     file.close();
     return ret;

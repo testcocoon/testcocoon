@@ -39,25 +39,24 @@ class CSExeParserDriver
     CSExeParserDriver(CSMesIO &, const CSExeParser &);
     virtual ~CSExeParserDriver();
 
-    // Handling the scanner.
-    bool trace_scanning;
-    int result;
-
     // Handling the parser.
-    void parse (const QString & f);
+    bool parse (const QString & f);
     std::string file;
-    bool trace_parsing;
+
+
+    void csexe_measurement();
+
+    void add_instrumentation(int line_nr,Instrumentation::execution_state_t v);
+    void set_status(Executions::execution_status_t s) ;
+    void set_title(const QString &);
+    void init_add_instrumentation(int line_nr,const QString &module,long nb_mes, unsigned long signature);
+    void endup_add_instrumentation(int line_nr);
+    ExecutionName executionName(const ExecutionName &default_name,const ExecutionName &execution_name,CSMesIO::csexe_import_policy_t policy) ;
 
     // Error handling.
     void error (const yy::location& l, const std::string& m);
     void error (const std::string& m);
 
-    void csexe_measurement();
-
-    void set_status(Executions::execution_status_t s) ;
-    void set_title(const QString &);
-    void init_instrumentation(const QString &module,long nb_mes, unsigned long signature);
-    ExecutionName executionName(const ExecutionName &default_name,const ExecutionName &execution_name,CSMesIO::csexe_import_policy_t policy) ;
   private:
     CSMesIO &_csmes;
     const CSExeParser &_csexe_parser;
@@ -68,6 +67,8 @@ class CSExeParserDriver
     QStringList _errors;
     bool _skip_module;
     bool _wrong_executions;
+    Executions::executions_t* _mes_p ;
+    int _mes_p_index;
 };
 
 #endif
