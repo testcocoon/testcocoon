@@ -98,9 +98,12 @@ csexe_measurements : csexe_measurement
                    ;
 
 csexe_measurement : {
-                      driver.csexe_measurement();
+                      driver.begin_csexe_measurement();
                     }
                   csexe_measurement_
+                    {
+                      driver.end_csexe_measurement();
+                    }
                   ;
                   
 csexe_measurement_: csexe_start_banner csexe_instrumentations_opt csexe_status_opt
@@ -109,8 +112,7 @@ csexe_measurement_: csexe_start_banner csexe_instrumentations_opt csexe_status_o
 
 csexe_start_banner: __CSEXE_MEASUREMENT__ 
                   {
-                    //_csexe_parser_execution_title=CSExeParser::executionName(_csexe_parser_execution_title_default,_csexe_parser_execution_title_file,_csexe_parser_policy);
-                    
+                    driver.begin_measurement();
                   }
                   ;
 

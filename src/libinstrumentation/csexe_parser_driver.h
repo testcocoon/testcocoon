@@ -44,13 +44,15 @@ class CSExeParserDriver
     std::string file;
 
 
-    void csexe_measurement();
+    void end_csexe_measurement();
+    void begin_csexe_measurement();
 
     void add_instrumentation(int line_nr,Instrumentation::execution_state_t v);
     void set_status(Executions::execution_status_t s) ;
     void set_title(const QString &);
     void init_add_instrumentation(int line_nr,const QString &module,long nb_mes, unsigned long signature);
     void endup_add_instrumentation(int line_nr);
+    void begin_measurement();
     ExecutionName executionName(const ExecutionName &default_name,const ExecutionName &execution_name,CSMesIO::csexe_import_policy_t policy) ;
 
     // Error handling.

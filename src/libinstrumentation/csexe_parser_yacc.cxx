@@ -36,7 +36,7 @@
 /* First part of user declarations.  */
 
 /* Line 311 of lalr1.cc  */
-#line 19 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 19 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
 #include "csexe_parser.h"
 #include <string.h>
@@ -50,7 +50,7 @@
 
 
 /* Line 311 of lalr1.cc  */
-#line 54 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 54 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 
 
 #include "csexe_parser_yacc.hxx"
@@ -59,7 +59,7 @@
 
 
 /* Line 317 of lalr1.cc  */
-#line 63 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 63 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 
 #ifndef YY_
 # if YYENABLE_NLS
@@ -128,7 +128,7 @@ do {					\
 namespace yy {
 
 /* Line 380 of lalr1.cc  */
-#line 132 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 132 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 #if YYERROR_VERBOSE
 
   /* Return YYSTR after stripping away unnecessary quotes and
@@ -231,20 +231,20 @@ namespace yy {
         case 29: /* "module_name" */
 
 /* Line 480 of lalr1.cc  */
-#line 85 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 85 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 	{ if ((yyvaluep->str)) FREE((yyvaluep->str)); };
 
 /* Line 480 of lalr1.cc  */
-#line 239 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 239 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 	break;
       case 37: /* "str" */
 
 /* Line 480 of lalr1.cc  */
-#line 85 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 85 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 	{ if ((yyvaluep->str)) FREE((yyvaluep->str)); };
 
 /* Line 480 of lalr1.cc  */
-#line 248 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 248 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 	break;
 
 	default:
@@ -323,14 +323,14 @@ namespace yy {
     /* User initialization code.  */
     
 /* Line 553 of lalr1.cc  */
-#line 59 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 59 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 {
  // Initialize the initial location.
  yylloc.begin.filename = yylloc.end.filename = &driver.file;
 }
 
 /* Line 553 of lalr1.cc  */
-#line 334 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 334 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 
     /* Initialize the stacks.  The initial state will be pushed in
        yynewstate, since the latter expects the semantical and the
@@ -449,26 +449,34 @@ namespace yy {
 	  case 6:
 
 /* Line 678 of lalr1.cc  */
-#line 100 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 100 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
-                      driver.csexe_measurement();
+                      driver.begin_csexe_measurement();
+                    }
+    break;
+
+  case 7:
+
+/* Line 678 of lalr1.cc  */
+#line 104 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+    {
+                      driver.end_csexe_measurement();
                     }
     break;
 
   case 10:
 
 /* Line 678 of lalr1.cc  */
-#line 111 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 114 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
-                    //_csexe_parser_execution_title=CSExeParser::executionName(_csexe_parser_execution_title_default,_csexe_parser_execution_title_file,_csexe_parser_policy);
-                    
+                    driver.begin_measurement();
                   }
     break;
 
   case 15:
 
 /* Line 678 of lalr1.cc  */
-#line 126 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 128 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
                         long nb_mes=(yysemantic_stack_[(6) - (2)].l_value);
                         unsigned long signature=(yysemantic_stack_[(6) - (4)].ul_value);
@@ -481,7 +489,7 @@ namespace yy {
   case 16:
 
 /* Line 678 of lalr1.cc  */
-#line 134 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 136 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
                         driver.endup_add_instrumentation((yylocation_stack_[(8) - (1)]).begin.line);
                      }
@@ -490,14 +498,14 @@ namespace yy {
   case 19:
 
 /* Line 678 of lalr1.cc  */
-#line 146 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 148 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yysemantic_stack_[(1) - (1)].str); (yysemantic_stack_[(1) - (1)].str)=NULL; }
     break;
 
   case 24:
 
 /* Line 678 of lalr1.cc  */
-#line 157 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 159 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
                  driver.add_instrumentation((yylocation_stack_[(1) - (1)]).begin.line,static_cast<Instrumentation::execution_state_t>((yysemantic_stack_[(1) - (1)].ui_value)));
                }
@@ -506,28 +514,28 @@ namespace yy {
   case 29:
 
 /* Line 678 of lalr1.cc  */
-#line 170 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 172 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { driver.set_status(Executions::EXECUTION_STATUS_PASSED); }
     break;
 
   case 30:
 
 /* Line 678 of lalr1.cc  */
-#line 172 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 174 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { driver.set_status(Executions::EXECUTION_STATUS_FAILED); }
     break;
 
   case 31:
 
 /* Line 678 of lalr1.cc  */
-#line 174 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 176 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { driver.set_status(Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY); }
     break;
 
   case 32:
 
 /* Line 678 of lalr1.cc  */
-#line 178 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 180 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
               driver.set_title(QString::fromUtf8((yysemantic_stack_[(2) - (2)].str)).trimmed());
             }
@@ -536,7 +544,7 @@ namespace yy {
   case 33:
 
 /* Line 678 of lalr1.cc  */
-#line 182 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 184 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
               driver.set_title(QString());
             }
@@ -545,14 +553,14 @@ namespace yy {
   case 34:
 
 /* Line 678 of lalr1.cc  */
-#line 188 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 190 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yysemantic_stack_[(1) - (1)].str); }
     break;
 
 
 
 /* Line 678 of lalr1.cc  */
-#line 556 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 564 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 	default:
           break;
       }
@@ -915,10 +923,10 @@ namespace yy {
   const unsigned char
   CSExeParser::yyrline_[] =
   {
-         0,    92,    92,    93,    96,    97,   100,   100,   106,   107,
-     110,   117,   118,   121,   122,   126,   125,   139,   142,   145,
-     149,   150,   153,   154,   156,   161,   162,   165,   166,   169,
-     171,   173,   177,   181,   187
+         0,    92,    92,    93,    96,    97,   100,   100,   109,   110,
+     113,   119,   120,   123,   124,   128,   127,   141,   144,   147,
+     151,   152,   155,   156,   158,   163,   164,   167,   168,   171,
+     173,   175,   179,   183,   189
   };
 
   // Print the state stack on the debug stream.
@@ -1012,11 +1020,11 @@ namespace yy {
 } // yy
 
 /* Line 1054 of lalr1.cc  */
-#line 1016 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1024 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 
 
 /* Line 1056 of lalr1.cc  */
-#line 191 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 193 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
 
 #include <stdio.h>

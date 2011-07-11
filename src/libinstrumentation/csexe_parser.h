@@ -40,6 +40,10 @@ class CSExeParser
     static QIODevice *qiodevice_p;
     static int yy_input_qiodevice(char *buf,int max_size);
 
+    const ExecutionName &defaultTitle() const { return _title_default; }
+    const Executions::execution_status_t & defaultStatus() const { return _status_default; }
+    const CSMesIO::csexe_import_policy_t &policy() const { return _policy; }
+  private:
     const ExecutionName &_title_default;
     const Executions::execution_status_t &_status_default;
     const CSMesIO::csexe_import_policy_t &_policy;

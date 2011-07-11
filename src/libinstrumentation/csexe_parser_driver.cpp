@@ -53,12 +53,16 @@ void CSExeParserDriver::error (const std::string& m)
   _errors += QString::fromStdString(m);
 }
 
-void CSExeParserDriver::csexe_measurement()
+void CSExeParserDriver::begin_csexe_measurement()
 {
   _execution_title_file.clear();
   _execution_status= Executions::EXECUTION_STATUS_UNKNOWN;
   _wrong_executions=false;
   _csmes.createEmptyExecution(_mts);
+}
+
+void CSExeParserDriver::end_csexe_measurement()
+{
 }
 
 ExecutionName CSExeParserDriver::executionName(const ExecutionName &default_name,const ExecutionName &execution_name,CSMesIO::csexe_import_policy_t policy) 
@@ -150,4 +154,10 @@ void  CSExeParserDriver::endup_add_instrumentation(int line_nr)
 void CSExeParserDriver::set_title(const QString &s)
 {
   _execution_title_file=s;
+}
+
+
+void CSExeParserDriver::begin_measurement()
+{
+  _execution_title=_csmes.executionName(_csexe_parser.defaultTitle(),_execution_title_file,_csexe_parser.policy());
 }
