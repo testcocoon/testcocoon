@@ -18,6 +18,9 @@
 
 #include "csexe_parser_driver.h"
 #include "csexe_parser.h"
+#include <QTime>
+#include "Service.h"
+#include <QTextDocument>
 
 CSExeParserDriver::CSExeParserDriver (CSMesIO &c,const CSExeParser &p) : _csexe_parser(p),_csmes(c)
 {
@@ -29,40 +32,268 @@ CSExeParserDriver::~CSExeParserDriver ()
 
 bool CSExeParserDriver::parse (const QString &f)
 {
-  _errors.clear();
+  QTime timeWatch;
+  timeWatch.restart();
+  _undo_backup_p=NULL;
+  _errmsg.clear();
+  _errmsgs.clear();
   _skip_module=false;
   _mes_p=NULL;
+  _nb_mes_invalid=0;
+  _nb_mes_duplicates=0;
+  _execution_nr=0;
   _execution_title_file.clear();
+  _mes_new.clear();
+  _mes_modif.clear();
+  _detailled_info.clear();
+  _new_executions.clear();
+
   file = f.toStdString();
   yy::CSExeParser parser (*this);
   //parser.set_debug_level (trace_parsing);
-  parser.parse ();
 
-  return _errors.isEmpty();
+
+  _detailled_info="<TABLE cellpadding=\"3\" cellspacing=\"0\" border=\"1\">";
+  _detailled_info+="<TR>";
+  _detailled_info+="<TD><B>#</TD>";
+  _detailled_info+="<TD><B>"+QObject::tr("Name")+"</B></TD>";
+  _detailled_info+="<TD><B>"+QObject::tr("Status")+"</B></TD>";
+  _detailled_info+="<TD><B>"+QObject::tr("Description")+"</B></TD>";
+  _detailled_info+="</TR>";
+  parser.parse ();
+  _detailled_info+="</TABLE>";
+
+  _info.clear();
+
+  ExecutionNames::Iterator it;
+  if ( (!_mes_new.isEmpty()) || (!_mes_modif.isEmpty()))
+    _csmes.setModificationFlag();
+
+  _info+="<HTML><BODY>";
+  if (!_mes_new.isEmpty())
+  {
+    _info+=QObject::tr("New executions added:")+"<BR>";
+    _info+="<UL>";
+    for ( it = _mes_new.begin(); it != _mes_new.end(); ++it )
+      _info+="<LI><TT>"+Qt::escape(*it)+"</TT></LI>";
+    _info+="</UL>";
+    _info+="<BR>";
+  }
+
+  if (!_mes_modif.isEmpty())
+  {
+    _info+=QObject::tr("Modified executions:")+"<BR>";
+    _info+="<UL>";
+    for ( it = _mes_modif.begin(); it != _mes_modif.end(); ++it )
+      _info+="<LI><TT>"+Qt::escape(*it)+"</TT></LI>";
+    _info+="</UL>";
+    _info+="<BR>";
+  }
+
+  if (_nb_mes_invalid>0)
+  {
+    _info+="<HR>";
+    _info+=QObject::tr("Number of invalid executions (not loaded):")+QString::number(_nb_mes_invalid)+"<BR>";
+    _info+="<BR>";
+  }
+
+  if (_nb_mes_duplicates>0)
+  {
+    _info+="<HR>";
+    _info+=QObject::tr("Duplicate executions (not loaded):")+QString::number(_nb_mes_duplicates);
+    _info+="<BR>";
+  }
+  _info+="<P>";
+  _info+=QObject::tr("Detailed information:");
+  _info+="<BR>";
+  _info+=_detailled_info;
+  _info+="</P>";
+  _info+="</HTML></BODY>";
+
+  _new_executions=_mes_new;
+  _new_executions+=_mes_modif;
+
+  _short_status.clear();
+  if (_mes_new.count()>0)
+    _short_status += QObject::tr("%1 new executions").arg(_mes_new.count());
+  if (_mes_modif.count()>0)
+  {
+    if (!_short_status.isEmpty()) _short_status+=", ";
+    _short_status += QObject::tr("%1 merged executions").arg(_mes_modif.count());
+  }
+  if (_nb_mes_duplicates>0)
+  {
+    if (!_short_status.isEmpty()) _short_status+=", ";
+    _short_status += QObject::tr("%1 duplicates (not loaded)").arg(_nb_mes_duplicates);
+  }
+  if (_nb_mes_invalid)
+  {
+    if (!_short_status.isEmpty()) _short_status+=", ";
+    _short_status += QObject::tr("%1 invalid executions (not loaded)").arg(_nb_mes_invalid);
+  }
+
+  double loadTime=static_cast<double>(timeWatch.elapsed())/1000.0;
+  bool result=_errmsgs.isEmpty();
+  if (result)
+    printStatus(QObject::tr("Execution report loaded. (%1s)").arg(QString::number(loadTime,'f',3)),-1.0);
+  else
+    printStatus(QObject::tr("Importing execution report fails."),-1.0);
+
+  return result;
 }
 
 void CSExeParserDriver::error (const yy::location& l, const std::string& m)
 {
   std::cerr << l << ": " << m << std::endl;
-  _errors += QString::fromStdString(m);
+  _errmsg = QString::fromStdString(m);
 }
 
 void CSExeParserDriver::error (const std::string& m)
 {
   std::cerr << m << std::endl;
-  _errors += QString::fromStdString(m);
+  _errmsg = QString::fromStdString(m);
 }
 
 void CSExeParserDriver::begin_csexe_measurement()
 {
+  _errmsg.clear();
   _execution_title_file.clear();
   _execution_status= Executions::EXECUTION_STATUS_UNKNOWN;
   _wrong_executions=false;
+  _mts.clear();
   _csmes.createEmptyExecution(_mts);
+  _execution_nr++;
+  _detailled_info+="<TR>";
+  _detailled_info+="<TD>"+QString::number(_execution_nr)+"</TD>";
 }
 
 void CSExeParserDriver::end_csexe_measurement()
 {
+  if (_wrong_executions)
+  {
+    _detailled_info+="<TD></TD>";
+    _detailled_info+="<TD></TD>";
+    _detailled_info+="<TD>"+QObject::tr("Invalid Execution")+ "(" + Qt::escape(_errmsg) + ")" +"</TD>";
+    if (!_errmsgs.isEmpty())
+      _errmsgs+="\n";
+    _errmsgs+=_errmsg;
+    _nb_mes_invalid++;
+  }
+  else
+  {
+    _detailled_info+="<TD><TT>"+Qt::escape(_execution_title)+"</TT></TD>";
+    _detailled_info+="<TD bgcolor=\""+CSMesIO::executionStatusColor(_mts.execution_status).name()+"\">"+CSMesIO::executionsStatusStr()[_mts.execution_status]+"</TD>";
+    bool duplicate=false;
+    ExecutionName duplicate_execution;
+    bool empty_execution=false;
+    if (_csexe_parser.policy()!=CSMesIO::CSEXE_POLICY_IMPORT_DUPLICATES_AND_EMPTY)
+      empty_execution=_csmes.emptyExecution(_mts);
+    if (_csexe_parser.policy()==CSMesIO::CSEXE_POLICY_IGNORE_DUPLICATES && !empty_execution)
+    {
+      duplicate_execution=_csmes.duplicateExecution(_mts,ExecutionNames());
+      duplicate = ! duplicate_execution.isEmpty();
+    }
+
+    if (empty_execution)
+      ; // do nothing
+    else if (duplicate)
+      _nb_mes_duplicates++;
+    else if (_csmes.executions.exists(_execution_title))
+    {
+      if ( ! (_mes_modif.contains(_execution_title) || _mes_new.contains(_execution_title)) )
+        _mes_modif+=_execution_title;
+    }
+    else
+      _mes_new+=_execution_title;
+
+    switch (_csexe_parser.policy())
+    {
+      case CSMesIO::CSEXE_POLICY_INVALID:
+        ASSERT(false);
+        break;
+      case CSMesIO::CSEXE_POLICY_MERGE_ALL_TOGETHER:
+        if (empty_execution)
+          _detailled_info+="<TD>"+QObject::tr("not imported: empty execution.")+"</TD>";
+        else
+        {
+          _detailled_info+="<TD>"+QObject::tr("merged with the existing execution.")+"</TD>";
+          if (_undo_backup_p)
+          {
+            if (!_undo_backup_p->contains(_execution_title))
+            {
+              Executions::modules_executions_private_t exec;
+              bool ret = _csmes.backupExecution(_execution_title,exec);
+              if (ret)
+                (*_undo_backup_p)[_execution_title]=exec;
+            }
+          }
+          _csmes.mergeInExecution(_execution_title,_mts);
+        }
+        break;
+      case CSMesIO::CSEXE_POLICY_IMPORT_DUPLICATES_AND_EMPTY:
+        _detailled_info+="<TD>"+QObject::tr("imported")+"</TD>";
+        if (_undo_backup_p)
+        {
+          if (!_undo_backup_p->contains(_execution_title))
+          {
+            Executions::modules_executions_private_t exec;
+            bool ret = _csmes.backupExecution(_execution_title,exec);
+            if (ret)
+              (*_undo_backup_p)[_execution_title]=exec;
+          }
+        }
+        _csmes.executions.setExecution(_execution_title,_mts);
+        break;
+      case CSMesIO::CSEXE_POLICY_IMPORT_DUPLICATES:
+        if (empty_execution)
+          _detailled_info+="<TD>"+QObject::tr("not imported: empty execution.")+"</TD>";
+        else if (duplicate)
+          _detailled_info+="<TD>"+QObject::tr("not imported: same as '%1'.").arg("<TT>"+Qt::escape(duplicate_execution)+"</TT>")+"</TD>";
+        else
+        {
+          _detailled_info+="<TD>"+QObject::tr("imported")+"</TD>";
+          if (_undo_backup_p)
+          {
+            if (!_undo_backup_p->contains(_execution_title))
+            {
+              Executions::modules_executions_private_t exec;
+              bool ret = _csmes.backupExecution(_execution_title,exec);
+              if (ret)
+                (*_undo_backup_p)[_execution_title]=exec;
+            }
+          }
+          _csmes.executions.setExecution(_execution_title,_mts);
+        }
+        break;
+      case CSMesIO::CSEXE_POLICY_IGNORE_DUPLICATES:
+        if (empty_execution)
+          _detailled_info+="<TD>"+QObject::tr("not imported: empty execution.")+"</TD>";
+        else if (duplicate)
+          _detailled_info+="<TD>"+QObject::tr("not imported: same as '%1'.").arg("<TT>"+Qt::escape(duplicate_execution)+"</TT>")+"</TD>";
+        else
+        {
+          _detailled_info+="<TD>"+QObject::tr("imported")+"</TD>";
+          if (_undo_backup_p)
+          {
+            if (!_undo_backup_p->contains(_execution_title))
+            {
+              Executions::modules_executions_private_t exec;
+              bool ret = _csmes.backupExecution(_execution_title,exec);
+              if (ret)
+                (*_undo_backup_p)[_execution_title]=exec;
+            }
+          }
+          _csmes.executions.setExecution(_execution_title,_mts);
+        }
+        break;
+    }
+  }
+  _detailled_info+="</TR>";
+
+  if (_undo_backup_p==NULL)
+  {
+    // flushCSMes(); // Write executions to minimize memory usage
+  }
 }
 
 ExecutionName CSExeParserDriver::executionName(const ExecutionName &default_name,const ExecutionName &execution_name,CSMesIO::csexe_import_policy_t policy) 
@@ -91,6 +322,8 @@ void  CSExeParserDriver::init_add_instrumentation(int line_nr,const QString &mod
   _skip_module=false;
   _mes_p=NULL;
   _mes_p_index=0;
+  if (_wrong_executions)
+    return ;
 
   if (!_csmes.moduleExists(module))
   {
@@ -111,9 +344,9 @@ void  CSExeParserDriver::init_add_instrumentation(int line_nr,const QString &mod
     int mes_p_size=_mes_p->size();
     if (mes_p_size!=nb_mes)
     {
-      QString err=QObject::tr("Invalid file format")
+      _errmsg=QObject::tr("Invalid file format")
         +" (" +QObject::tr("Line ")+QString::number(line_nr) +":"+QObject::tr("Wrong instrumentation size")+")";
-      _errors+=err;
+      _wrong_executions=true;
       _mes_p=NULL;
     }
   }
@@ -125,10 +358,10 @@ void CSExeParserDriver::add_instrumentation(int line_nr, Instrumentation::execut
   {
     if (_mes_p_index>static_cast<unsigned int>(_mes_p->size()))
     {
-      QString err=QObject::tr("Invalid number of executions (too many instrumentation per file)")
+      _errmsg=QObject::tr("Invalid number of executions (too many instrumentation per file)")
         +" (" +QObject::tr("Line ")+QString::number(line_nr) +")";
-      _errors+=err;
       _mes_p=NULL;
+      _wrong_executions=true;
       return;
     }
     (*_mes_p)[_mes_p_index]=Instrumentation::combineExecution( (*_mes_p)[_mes_p_index] , instrumentation_item ) ;
@@ -142,10 +375,10 @@ void  CSExeParserDriver::endup_add_instrumentation(int line_nr)
   {
     if (_mes_p_index!=static_cast<unsigned int>(_mes_p->size()))
     {
-      QString err=QObject::tr("Invalid file format")
+      _errmsg=QObject::tr("Invalid file format")
         +" (" +QObject::tr("Line ")+QString::number(line_nr) +"):"+QObject::tr("Wrong instrumentation size");
-      _errors+=err;
       _mes_p=NULL;
+      _wrong_executions=true;
       return;
     }
   }

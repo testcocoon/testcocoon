@@ -20,7 +20,9 @@
 #define _CSEXE_PARSER_DDRIVER_H_
 #include "csexe_parser_yacc.hxx"
 #include <QString>
+#include <QHash>
 #include "csmesio.h"
+#include "executions.h"
 
 class CSExeParser; 
 
@@ -66,11 +68,20 @@ class CSExeParserDriver
     Executions::execution_status_t _execution_status;
     ExecutionName _execution_title;
     ExecutionName _execution_title_file;
-    QStringList _errors;
+    QString _errmsg;
+    QString _short_status;
+    QString _errmsgs;
+    QString _info;
+    ExecutionNames _mes_new,_mes_modif,_new_executions;
     bool _skip_module;
     bool _wrong_executions;
     Executions::executions_t* _mes_p ;
     int _mes_p_index;
+    QString _detailled_info;
+    int _nb_mes_duplicates;
+    int _execution_nr;
+    int _nb_mes_invalid;
+    QHash<ExecutionName,Executions::modules_executions_private_t> *_undo_backup_p;
 };
 
 #endif

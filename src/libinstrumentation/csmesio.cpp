@@ -451,13 +451,14 @@ bool CSMesIO::load_csexe_one(Executions::modules_executions_t &mts, ExecutionNam
 
 bool CSMesIO::loadCSExe(QIODevice &file,const ExecutionName &name_orig,csexe_import_policy_t policy,Executions::execution_status_t default_execution_status,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,progress_function_t progress_p)
 {
+  bool result=true;
 #if CSEXE_LEX_YACC_PARSER
   QString filename;
   QFile *file_p=dynamic_cast<QFile*>(&file);
   if (file_p)
     filename=file_p->fileName();
   CSExeParser csexe_parser(*this,name_orig,policy,default_execution_status);
-  return csexe_parser.csexe_parse(filename,file,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
+  result = csexe_parser.csexe_parse(filename,file,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
 #else
   QTime timeWatch;
   errmsgs.clear();
@@ -703,13 +704,13 @@ bool CSMesIO::loadCSExe(QIODevice &file,const ExecutionName &name_orig,csexe_imp
     short_status += QObject::tr("%1 invalid executions (not loaded)").arg(nb_mes_invalid);
   }
 
-  update();
   if (use_progress)
     progress_p(1.0,true);
   double loadTime=static_cast<double>(timeWatch.elapsed())/1000.0;
   printStatus(QObject::tr("Execution report loaded. (%1s)").arg(QString::number(loadTime,'f',3)),-1.0);
-  return true;
 #endif
+  update();
+  return result;
 }
 
 void CSMesIO::clear()

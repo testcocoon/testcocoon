@@ -56,6 +56,13 @@ class LIBINSTRUMENTATION_API Executions
       QString comment;
       list_modules_executions_t executions;
       execution_status_t execution_status;
+
+      void clear() 
+      {
+        executions.clear();
+        comment.clear();
+        execution_status=EXECUTION_STATUS_UNKNOWN;
+      }
     };
     struct modules_executions_private_t {
       modules_executions_t data;
