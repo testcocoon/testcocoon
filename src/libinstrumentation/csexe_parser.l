@@ -163,7 +163,7 @@ static inline unsigned int hex2uint(const char *s);
 "PASSED"                      {  return token::__STATUS_PASSED__ ; }
 "FAILED"                      {  return token::__STATUS_FAILED__ ; }
 "CHECK_MANUALLY"              {  return token::__STATUS_CHECK_MANUALLY__ ; }
-[^\n\r]                       {  return token::__STATUS_UNKNOWN__ ; }
+[^\n\r]*                      {  return token::__STATUS_UNKNOWN__ ; }
 }
 
 <*>\n+  { yylloc->lines (yyleng); yylloc->step ();  BEGIN(START_LINE); /* ignore */ }

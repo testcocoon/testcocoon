@@ -887,18 +887,18 @@ namespace yy {
   const char*
   const CSExeParser::yytname_[] =
   {
-    "\"End of file\"", "error", "$undefined", "\"unsigned value\"",
-  "\"value\"", "\"string\"", "\"unsigned integer\"", "\":\"",
-  "\"execution report\"", "\"execution status\"", "\"PASSED\"",
-  "\"FAILED\"", "\"CHECKED_MANUALLY\"", "\"UNKNOWN\"", "\"title\"",
-  "\"execution report source file\"", "\"execution report values\"",
-  "$accept", "csexe_parser", "csexe_measurements", "csexe_measurement",
-  "$@1", "csexe_measurement_", "csexe_start_banner",
-  "csexe_instrumentations_opt", "csexe_instrumentations",
-  "csexe_instrumentation", "$@2", "nb_mes", "signature", "module_name",
-  "module_instrumentation", "instrumentations", "instrumentation",
-  "csexe_status_opt", "csexe_status", "csexe_one_status", "csexe_title",
-  "str", 0
+    "\"EOF\"", "error", "$undefined", "\"unsigned value\"", "\"value\"",
+  "\"string\"", "\"unsigned integer\"", "\":\"", "\"execution report\"",
+  "\"execution status (! character)\"", "\"status PASSED\"",
+  "\"status FAILED\"", "\"status CHECKED_MANUALLY\"", "\"status UNKNOWN\"",
+  "\"title\"", "\"execution report source file\"",
+  "\"execution report values\"", "$accept", "csexe_parser",
+  "csexe_measurements", "csexe_measurement", "$@1", "csexe_measurement_",
+  "csexe_start_banner", "csexe_instrumentations_opt",
+  "csexe_instrumentations", "csexe_instrumentation", "$@2", "nb_mes",
+  "signature", "module_name", "module_instrumentation", "instrumentations",
+  "instrumentation", "csexe_status_opt", "csexe_status",
+  "csexe_one_status", "csexe_title", "str", 0
   };
 #endif
 
