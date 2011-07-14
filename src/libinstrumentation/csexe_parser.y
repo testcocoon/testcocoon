@@ -63,19 +63,20 @@ class CSExeParser;
 
 
 %token __END__ 0 "End of file"
-%token __ULONG__
-%token __LONG__
-%token __STRING__
-%token __UINT__
-%token __SEPARATOR__
-%token __CSEXE_MEASUREMENT__
-%token __CSEXE_STATUS__
-%token __STATUS_PASSED__
-%token __STATUS_FAILED__
-%token __STATUS_CHECK_MANUALLY__
-%token __CSEXE_TITLE__
-%token __CSEXE_INSTRUMENTATION_SOURCE__
-%token __CSEXE_INSTRUMENTATION_VALUES__
+%token __ULONG__ "unsigned value"
+%token __LONG__ "value"
+%token __STRING__ "string"
+%token __UINT__ "unsigned integer"
+%token __SEPARATOR__ ":"
+%token __CSEXE_MEASUREMENT__ "execution report"
+%token __CSEXE_STATUS__ "execution status"
+%token __STATUS_PASSED__ "PASSED"
+%token __STATUS_FAILED__ "FAILED"
+%token __STATUS_CHECK_MANUALLY__ "CHECKED_MANUALLY"
+%token __STATUS_UNKNOWN__ "UNKNOWN"
+%token __CSEXE_TITLE__ "title"
+%token __CSEXE_INSTRUMENTATION_SOURCE__ "execution report source file"
+%token __CSEXE_INSTRUMENTATION_VALUES__ "execution report values"
 
 %type <ui_value> __UINT__ instrumentation 
 %type <ul_value> __ULONG__ signature
@@ -89,7 +90,7 @@ class CSExeParser;
 
 %%
 
-csexe_parser : csexe_measurements  
+csexe_parser : csexe_status_opt csexe_measurements  
              | /* empty */ 
              ;
 
@@ -177,6 +178,8 @@ csexe_one_status : __CSEXE_STATUS__ __STATUS_PASSED__
                    { driver.set_status(Executions::EXECUTION_STATUS_FAILED); }
                   | __CSEXE_STATUS__ __STATUS_CHECK_MANUALLY__ 
                    { driver.set_status(Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY); }
+                  | __CSEXE_STATUS__ __STATUS_UNKNOWN__ 
+                   { driver.set_status(Executions::EXECUTION_STATUS_UNKNOWN); }
                   ;
 
 csexe_title : __CSEXE_TITLE__ str 
