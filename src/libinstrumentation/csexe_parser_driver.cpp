@@ -35,6 +35,7 @@ bool CSExeParserDriver::parse (const QString &f,ExecutionNames &new_executions,Q
   QTime timeWatch;
   timeWatch.restart();
   _flushpos=0;
+  _new_executions.clear();
   _progress_p=progress_p;
   _undo_backup_p=undo_backup_p;
   _errmsg.clear();
@@ -48,7 +49,6 @@ bool CSExeParserDriver::parse (const QString &f,ExecutionNames &new_executions,Q
   _mes_new.clear();
   _mes_modif.clear();
   _detailled_info.clear();
-  _new_executions.clear();
   _max_file_size=CSExeParser::qiodevice_p->size();
 
   file = f.toStdString();
@@ -173,7 +173,6 @@ bool CSExeParserDriver::begin_csexe_measurement()
       return false; // Interrupt
   }
   _errmsg.clear();
-  _execution_title_file.clear();
   _execution_status= Executions::EXECUTION_STATUS_UNKNOWN;
   _wrong_executions=false;
   _mts.clear();
@@ -416,4 +415,5 @@ void CSExeParserDriver::set_title(const QString &s)
 void CSExeParserDriver::begin_measurement()
 {
   _execution_title=_csmes.executionName(_csexe_parser.defaultTitle(),_execution_title_file,_csexe_parser.policy());
+  _execution_title_file.clear();
 }
