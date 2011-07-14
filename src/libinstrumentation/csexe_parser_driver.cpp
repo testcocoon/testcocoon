@@ -30,11 +30,13 @@ CSExeParserDriver::~CSExeParserDriver ()
 {
 }
 
-bool CSExeParserDriver::parse (const QString &f)
+bool CSExeParserDriver::parse (const QString &f,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
 {
   QTime timeWatch;
   timeWatch.restart();
-  _undo_backup_p=NULL;
+  _flushpos=0;
+  _progress_p=progress_p;
+  _undo_backup_p=undo_backup_p;
   _errmsg.clear();
   _errmsgs.clear();
   _skip_module=false;
@@ -47,6 +49,7 @@ bool CSExeParserDriver::parse (const QString &f)
   _mes_modif.clear();
   _detailled_info.clear();
   _new_executions.clear();
+  _max_file_size=CSExeParser::qiodevice_p->size();
 
   file = f.toStdString();
   yy::CSExeParser parser (*this);
@@ -139,6 +142,14 @@ bool CSExeParserDriver::parse (const QString &f)
   else
     printStatus(QObject::tr("Importing execution report fails."),-1.0);
 
+  if (_progress_p)
+    _progress_p(1.0,true);
+
+  new_executions=_new_executions;
+  info=_info;
+  short_status=_short_status;
+  errmsgs=_errmsgs;
+
   return result;
 }
 
@@ -154,8 +165,13 @@ void CSExeParserDriver::error (const std::string& m)
   _errmsg = QString::fromStdString(m);
 }
 
-void CSExeParserDriver::begin_csexe_measurement()
+bool CSExeParserDriver::begin_csexe_measurement()
 {
+  if (_progress_p)
+  {
+    if (_progress_p(((float)CSExeParser::qiodevice_p->pos())/_max_file_size,false))
+      return false; // Interrupt
+  }
   _errmsg.clear();
   _execution_title_file.clear();
   _execution_status= Executions::EXECUTION_STATUS_UNKNOWN;
@@ -165,6 +181,7 @@ void CSExeParserDriver::begin_csexe_measurement()
   _execution_nr++;
   _detailled_info+="<TR>";
   _detailled_info+="<TD>"+QString::number(_execution_nr)+"</TD>";
+  return true;
 }
 
 void CSExeParserDriver::end_csexe_measurement()
@@ -292,7 +309,13 @@ void CSExeParserDriver::end_csexe_measurement()
 
   if (_undo_backup_p==NULL)
   {
-    // flushCSMes(); // Write executions to minimize memory usage
+    qint64 pos=CSExeParser::qiodevice_p->pos();
+    static const qint64 flush_size=100*1024*1024;
+    if (pos-_flushpos>flush_size)
+    {
+      _csmes.flushCSMes(); // Write executions to minimize memory usage
+      _flushpos=pos;
+    }
   }
 }
 

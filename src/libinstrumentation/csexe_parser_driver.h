@@ -42,12 +42,12 @@ class CSExeParserDriver
     virtual ~CSExeParserDriver();
 
     // Handling the parser.
-    bool parse (const QString & f);
+    bool parse (const QString & f,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p);
     std::string file;
 
 
     void end_csexe_measurement();
-    void begin_csexe_measurement();
+    bool begin_csexe_measurement();
 
     void add_instrumentation(int line_nr,Instrumentation::execution_state_t v);
     void set_status(Executions::execution_status_t s) ;
@@ -82,6 +82,9 @@ class CSExeParserDriver
     int _execution_nr;
     int _nb_mes_invalid;
     QHash<ExecutionName,Executions::modules_executions_private_t> *_undo_backup_p;
+    CSMesIO::progress_function_t _progress_p;
+    float _max_file_size;
+    qint64 _flushpos;
 };
 
 #endif

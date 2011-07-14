@@ -98,7 +98,10 @@ csexe_measurements : csexe_measurement
                    ;
 
 csexe_measurement : {
-                      driver.begin_csexe_measurement();
+                      if (! driver.begin_csexe_measurement())
+                      { // Interrupt
+                        YYERROR;
+                      }
                     }
                   csexe_measurement_
                     {
@@ -206,7 +209,7 @@ bool CSExeParser::csexe_parse(const QString &filename,QIODevice &file,ExecutionN
     init_csexe_parserlex();
     DEBUG2("Start parsing:#%s\n",text_line);
     CSExeParserDriver driver(_csmes,*this);
-    ret = driver.parse(filename);
+    ret = driver.parse(filename,new_executions,info,short_status,errmsgs,undo_backup_p,( (!file.isSequential()) && (progress_p!=NULL) )?progress_p:NULL);
     DEBUG3("End parsing(ret=%i):#%s\n",driver.result,text_line);
     file.close();
     return ret;
