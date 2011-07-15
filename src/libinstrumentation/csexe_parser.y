@@ -48,7 +48,6 @@ class CSExeParser;
  unsigned long ul_value;
  long          l_value;
 }
-%locations
 /*%verbose*/
 %error-verbose
 /*%debug*/
@@ -57,7 +56,6 @@ class CSExeParser;
 %initial-action
 {
  // Initialize the initial location.
- @$.begin.filename = @$.end.filename = &driver.file;
 };
 
 
@@ -132,11 +130,11 @@ csexe_instrumentation: __CSEXE_INSTRUMENTATION_SOURCE__ nb_mes __SEPARATOR__ sig
                         unsigned long signature=$4;
                         QString module=QString($6);
                         $6=NULL;
-                        driver.init_add_instrumentation(@1.begin.line,module,nb_mes,signature);
+                        driver.init_add_instrumentation(module,nb_mes,signature);
                      }
                      module_instrumentation
                      {
-                        driver.endup_add_instrumentation(@1.begin.line);
+                        driver.endup_add_instrumentation();
                      }
                      ;
 

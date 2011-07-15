@@ -116,13 +116,11 @@ static int (*yy_input)(char *,int)=NULL;
 #define yyinput input
 static inline unsigned int hex2uint(const char *s);
 #define yyterminate() return token::__END__
-# define YY_USER_ACTION  yylloc->columns (yyleng);
 %}
 
 %%
 %{
   typedef yy::CSExeParser::token token;
-  yylloc->step ();
 %}
 
 <INITIAL,START_LINE>{
@@ -157,7 +155,7 @@ static inline unsigned int hex2uint(const char *s);
                               value=Instrumentation::EXECUTION_MAX;
                             driver.add_instrumentation(static_cast<Instrumentation::execution_state_t>(value)) ;
                          }
-\n     { yylloc->lines (yyleng); yylloc->step ();  BEGIN(START_LINE); return token::__EOL__;  }
+\n                       { driver.incrementLine();  BEGIN(START_LINE); return token::__EOL__;  }
 }
 
 <LINE_STATUS>{
@@ -167,7 +165,7 @@ static inline unsigned int hex2uint(const char *s);
 [^\n\r]*                      {  return token::__STATUS_UNKNOWN__ ; }
 }
 
-<INITIAL,START_LINE,LINE_INSTRUMENTATION_SOURCE_FILENAME,LINE_INSTRUMENTATION_SOURCE_SIGNATURE,LINE_INSTRUMENTATION_SOURCE_SIZE,LINE_STATUS,LINE_TITLE>\n*  { yylloc->lines (yyleng); yylloc->step ();  BEGIN(START_LINE); /* ignore */ }
+<INITIAL,START_LINE,LINE_INSTRUMENTATION_SOURCE_FILENAME,LINE_INSTRUMENTATION_SOURCE_SIGNATURE,LINE_INSTRUMENTATION_SOURCE_SIZE,LINE_STATUS,LINE_TITLE>\n  { driver.incrementLine(); BEGIN(START_LINE); /* ignore */ }
 <*>\r  {  /* ignore */ }
 %%
 /* Work around an incompatibility in flex (at least versions

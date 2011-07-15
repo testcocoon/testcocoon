@@ -34,6 +34,7 @@ bool CSExeParserDriver::parse (const QString &f,ExecutionNames &new_executions,Q
 {
   QTime timeWatch;
   timeWatch.restart();
+  _line=1;
   _flushpos=0;
   _execution_status= Executions::EXECUTION_STATUS_UNKNOWN;
   _new_executions.clear();
@@ -349,7 +350,7 @@ void CSExeParserDriver::set_status(Executions::execution_status_t s)
   }
 }
 
-void  CSExeParserDriver::init_add_instrumentation(int line_nr,const QString &module,long nb_mes, unsigned long signature)
+void  CSExeParserDriver::init_add_instrumentation(const QString &module,long nb_mes, unsigned long signature)
 {
   _skip_module=false;
   _mes_p=NULL;
@@ -377,14 +378,14 @@ void  CSExeParserDriver::init_add_instrumentation(int line_nr,const QString &mod
     if (mes_p_size!=nb_mes)
     {
       mark_execution_as_wrong(QObject::tr("Invalid file format")
-        +" (" +QObject::tr("Line ")+QString::number(line_nr) +":"+QObject::tr("Wrong instrumentation size")+")");
+        +" (" +QObject::tr("Line ")+QString::number(line()) +":"+QObject::tr("Wrong instrumentation size")+")");
       _mes_p=NULL;
     }
   }
 }
 
 
-void  CSExeParserDriver::endup_add_instrumentation(int line_nr)
+void  CSExeParserDriver::endup_add_instrumentation()
 {
   if (_mes_p)
   {
@@ -392,7 +393,7 @@ void  CSExeParserDriver::endup_add_instrumentation(int line_nr)
     {
       _mes_p=NULL;
       mark_execution_as_wrong(QObject::tr("Invalid file format")
-        +" (" +QObject::tr("Line ")+QString::number(line_nr) +"):"+QObject::tr("Wrong instrumentation size"));
+        +" (" +QObject::tr("Line ")+QString::number(line()) +"):"+QObject::tr("Wrong instrumentation size"));
       return;
     }
   }

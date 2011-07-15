@@ -30,7 +30,6 @@ class CSExeParser;
 # define YY_DECL                                      \
  yy::CSExeParser::token_type                         \
  yylex (yy::CSExeParser::semantic_type* yylval,      \
-        yy::CSExeParser::location_type* yylloc,      \
         CSExeParserDriver& driver)                                       
 // ... and declare it for the parser's sake.       
 YY_DECL;
@@ -65,18 +64,21 @@ class CSExeParserDriver
     }
     void set_status(Executions::execution_status_t s) ;
     void set_title(const QString &);
-    void init_add_instrumentation(int line_nr,const QString &module,long nb_mes, unsigned long signature);
-    void endup_add_instrumentation(int line_nr);
+    void init_add_instrumentation(const QString &module,long nb_mes, unsigned long signature);
+    void endup_add_instrumentation();
     void begin_measurement();
     ExecutionName executionName(const ExecutionName &default_name,const ExecutionName &execution_name,CSMesIO::csexe_import_policy_t policy) ;
 
     // Error handling.
-    void error (const yy::location& l, const std::string& m);
     void error (const std::string& m);
+    void error (const yy::location& l, const std::string& m);
+    int line() const {return _line;}
+    void incrementLine() { _line++; }
 
   private:
     void mark_execution_as_wrong(const QString &e) { _errmsg=e;  _wrong_executions=true; }
     CSMesIO &_csmes;
+    int _line;
     const CSExeParser &_csexe_parser;
     Executions::modules_executions_t _mts;
     Executions::execution_status_t _execution_status;

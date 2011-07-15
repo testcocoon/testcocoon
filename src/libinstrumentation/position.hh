@@ -50,7 +50,7 @@
 namespace yy {
 
 /* Line 38 of location.cc  */
-#line 54 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/position.hh"
+#line 54 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/position.hh"
   /// Abstract a position.
   class position
   {
@@ -163,5 +163,5 @@ namespace yy {
 } // yy
 
 /* Line 144 of location.cc  */
-#line 167 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/position.hh"
+#line 167 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/position.hh"
 #endif // not BISON_POSITION_HH
