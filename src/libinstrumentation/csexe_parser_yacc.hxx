@@ -137,13 +137,12 @@ namespace yy {
 
  char *        str;
  unsigned long ul_value;
- unsigned int  ui_value;
  long          l_value;
 
 
 
 /* Line 35 of lalr1.cc  */
-#line 147 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
+#line 146 "/Users/sfri/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.hxx"
     };
 #else
     typedef YYSTYPE semantic_type;
@@ -157,9 +156,9 @@ namespace yy {
    enum yytokentype {
      __END__ = 0,
      __ULONG__ = 258,
-     __LONG__ = 259,
-     __STRING__ = 260,
-     __UINT__ = 261,
+     __UINT__ = 259,
+     __LONG__ = 260,
+     __STRING__ = 261,
      __SEPARATOR__ = 262,
      __CSEXE_MEASUREMENT__ = 263,
      __CSEXE_STATUS__ = 264,
@@ -169,7 +168,8 @@ namespace yy {
      __STATUS_UNKNOWN__ = 268,
      __CSEXE_TITLE__ = 269,
      __CSEXE_INSTRUMENTATION_SOURCE__ = 270,
-     __CSEXE_INSTRUMENTATION_VALUES__ = 271
+     __CSEXE_INSTRUMENTATION_VALUES__ = 271,
+     __EOL__ = 272
    };
 
     };
@@ -266,7 +266,7 @@ namespace yy {
     static const signed char yytable_[];
     static const signed char yytable_ninf_;
 
-    static const unsigned char yycheck_[];
+    static const signed char yycheck_[];
 
     /// For a state, its accessing symbol.
     static const unsigned char yystos_[];

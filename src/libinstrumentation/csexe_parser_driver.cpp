@@ -374,22 +374,6 @@ void  CSExeParserDriver::init_add_instrumentation(int line_nr,const QString &mod
   }
 }
 
-void CSExeParserDriver::add_instrumentation(int line_nr, Instrumentation::execution_state_t instrumentation_item)
-{
-  if (_mes_p)
-  {
-    if (_mes_p_index>static_cast<unsigned int>(_mes_p->size()))
-    {
-      _errmsg=QObject::tr("Invalid number of executions (too many instrumentation per file)")
-        +" (" +QObject::tr("Line ")+QString::number(line_nr) +")";
-      _mes_p=NULL;
-      _wrong_executions=true;
-      return;
-    }
-    (*_mes_p)[_mes_p_index]=Instrumentation::combineExecution( (*_mes_p)[_mes_p_index] , instrumentation_item ) ;
-    _mes_p_index++;
-  }
-}
 
 void  CSExeParserDriver::endup_add_instrumentation(int line_nr)
 {

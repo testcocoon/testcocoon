@@ -46,7 +46,6 @@ class CSExeParser;
 {
  char *        str;
  unsigned long ul_value;
- unsigned int  ui_value;
  long          l_value;
 }
 %locations
@@ -64,9 +63,9 @@ class CSExeParser;
 
 %token __END__ 0 "EOF"
 %token __ULONG__ "unsigned value"
+%token __UINT__
 %token __LONG__ "value"
 %token __STRING__ "string"
-%token __UINT__ "unsigned integer"
 %token __SEPARATOR__ ":"
 %token __CSEXE_MEASUREMENT__ "execution report"
 %token __CSEXE_STATUS__ "execution status (! character)"
@@ -77,8 +76,8 @@ class CSExeParser;
 %token __CSEXE_TITLE__ "title"
 %token __CSEXE_INSTRUMENTATION_SOURCE__ "execution report source file"
 %token __CSEXE_INSTRUMENTATION_VALUES__ "execution report values"
+%token __EOL__ "end of line"
 
-%type <ui_value> __UINT__ instrumentation 
 %type <ul_value> __ULONG__ signature
 %type <l_value> __LONG__ nb_mes 
 
@@ -152,18 +151,10 @@ module_name: str
 		   { $$=$1; $1=NULL; }
            ;
 
-module_instrumentation: __CSEXE_INSTRUMENTATION_VALUES__ instrumentations 
-                      | __CSEXE_INSTRUMENTATION_VALUES__ 
+module_instrumentation: __CSEXE_INSTRUMENTATION_VALUES__ __EOL__
+                      | __CSEXE_INSTRUMENTATION_VALUES__ __END__
                       ;
 
-instrumentations: instrumentation 
-                | instrumentation instrumentations
-                ;
-instrumentation: __UINT__
-               {
-                 driver.add_instrumentation(@1.begin.line,static_cast<Instrumentation::execution_state_t>($1));
-               }
-               ;
 csexe_status_opt: /*empty */
                 | csexe_status
                 ;

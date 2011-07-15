@@ -49,7 +49,21 @@ class CSExeParserDriver
     void end_csexe_measurement();
     bool begin_csexe_measurement();
 
-    void add_instrumentation(int line_nr,Instrumentation::execution_state_t v);
+    void add_instrumentation(Instrumentation::execution_state_t instrumentation_item)
+    {
+      if (_mes_p)
+      {
+        if (_mes_p_index>static_cast<unsigned int>(_mes_p->size()))
+        {
+          _errmsg=QObject::tr("Invalid number of executions (too many instrumentation per file)");
+          _mes_p=NULL;
+          _wrong_executions=true;
+          return;
+        }
+        (*_mes_p)[_mes_p_index]=Instrumentation::combineExecution( (*_mes_p)[_mes_p_index] , instrumentation_item ) ;
+        _mes_p_index++;
+      }
+    }
     void set_status(Executions::execution_status_t s) ;
     void set_title(const QString &);
     void init_add_instrumentation(int line_nr,const QString &module,long nb_mes, unsigned long signature);

@@ -149,14 +149,15 @@ static inline unsigned int hex2uint(const char *s);
 <LINE_TITLE>[^\r\n]*                    {  yylval->str=STRDUP(yytext); return token::__STRING__; }
 
 <LINE_INSTRUMENTATION_VALUE>{
-"?"                      {  yylval->ui_value=Instrumentation::EXECUTION_STATE_HIDDEN; return token::__UINT__ ; }
-"-"                      {  yylval->ui_value=Instrumentation::EXECUTION_STATE_NOT_EXECUTED;return token::__UINT__ ; }
-"+"                      {  yylval->ui_value=static_cast<Instrumentation::execution_state_t>(1) ; return token::__UINT__ ; }
-[0-9A-F]{8}              {  yylval->ui_value=hex2uint(yytext) ; 
-                            if (yylval->ui_value>Instrumentation::EXECUTION_MAX)
-                              yylval->ui_value=Instrumentation::EXECUTION_MAX;
-                            return token::__UINT__ ; 
+"?"                      {  driver.add_instrumentation(Instrumentation::EXECUTION_STATE_HIDDEN);  }
+"-"                      {  driver.add_instrumentation(Instrumentation::EXECUTION_STATE_NOT_EXECUTED); }
+"+"                      {  driver.add_instrumentation(static_cast<Instrumentation::execution_state_t>(1)) ;  }
+[0-9A-F]{8}              {  unsigned int value=hex2uint(yytext) ; 
+                            if (value>Instrumentation::EXECUTION_MAX)
+                              value=Instrumentation::EXECUTION_MAX;
+                            driver.add_instrumentation(static_cast<Instrumentation::execution_state_t>(value)) ;
                          }
+\n     { yylloc->lines (yyleng); yylloc->step ();  BEGIN(START_LINE); return token::__EOL__;  }
 }
 
 <LINE_STATUS>{
@@ -166,7 +167,7 @@ static inline unsigned int hex2uint(const char *s);
 [^\n\r]*                      {  return token::__STATUS_UNKNOWN__ ; }
 }
 
-<*>\n+  { yylloc->lines (yyleng); yylloc->step ();  BEGIN(START_LINE); /* ignore */ }
+<INITIAL,START_LINE,LINE_INSTRUMENTATION_SOURCE_FILENAME,LINE_INSTRUMENTATION_SOURCE_SIGNATURE,LINE_INSTRUMENTATION_SOURCE_SIZE,LINE_STATUS,LINE_TITLE>\n*  { yylloc->lines (yyleng); yylloc->step ();  BEGIN(START_LINE); /* ignore */ }
 <*>\r  {  /* ignore */ }
 %%
 /* Work around an incompatibility in flex (at least versions
