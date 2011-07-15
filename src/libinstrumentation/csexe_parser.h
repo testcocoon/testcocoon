@@ -44,9 +44,9 @@ class CSExeParser
     const Executions::execution_status_t & defaultStatus() const { return _status_default; }
     const CSMesIO::csexe_import_policy_t &policy() const { return _policy; }
   private:
-    const ExecutionName &_title_default;
-    const Executions::execution_status_t &_status_default;
-    const CSMesIO::csexe_import_policy_t &_policy;
+    ExecutionName _title_default;
+    Executions::execution_status_t _status_default;
+    CSMesIO::csexe_import_policy_t _policy;
   private:
     CSMesIO &_csmes;
     QIODevice *_file_p;
