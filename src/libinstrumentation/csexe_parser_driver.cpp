@@ -35,15 +35,22 @@ bool CSExeParserDriver::parse (const QString &f,ExecutionNames &new_executions,Q
   QTime timeWatch;
   timeWatch.restart();
   _flushpos=0;
+  _execution_status= Executions::EXECUTION_STATUS_UNKNOWN;
   _new_executions.clear();
   _progress_p=progress_p;
   _undo_backup_p=undo_backup_p;
   _errmsg.clear();
+  _info.clear();
   _errmsgs.clear();
+  _short_status.clear();
   _skip_module=false;
+  _wrong_executions=false;
+  _execution_title_file.clear();
+  _execution_title.clear();
   _mes_p=NULL;
   _nb_mes_invalid=0;
   _nb_mes_duplicates=0;
+  _mes_p_index=0;
   _execution_nr=0;
   _execution_title_file.clear();
   _mes_new.clear();
@@ -357,9 +364,9 @@ void  CSExeParserDriver::init_add_instrumentation(int line_nr,const QString &mod
   else
   {
     if (_csmes.instrumentations.modules[module].signature!=signature)
-      _wrong_executions=true;
+      mark_execution_as_wrong();
     else if (nb_mes!=_csmes.nbInstrumentations(module))
-      _wrong_executions=true;
+      mark_execution_as_wrong();
   }
 
   if (!_skip_module)
@@ -371,7 +378,7 @@ void  CSExeParserDriver::init_add_instrumentation(int line_nr,const QString &mod
     {
       _errmsg=QObject::tr("Invalid file format")
         +" (" +QObject::tr("Line ")+QString::number(line_nr) +":"+QObject::tr("Wrong instrumentation size")+")";
-      _wrong_executions=true;
+      mark_execution_as_wrong();
       _mes_p=NULL;
     }
   }
@@ -387,7 +394,7 @@ void  CSExeParserDriver::endup_add_instrumentation(int line_nr)
       _errmsg=QObject::tr("Invalid file format")
         +" (" +QObject::tr("Line ")+QString::number(line_nr) +"):"+QObject::tr("Wrong instrumentation size");
       _mes_p=NULL;
-      _wrong_executions=true;
+      mark_execution_as_wrong();
       return;
     }
   }
