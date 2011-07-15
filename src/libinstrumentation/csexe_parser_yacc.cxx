@@ -237,7 +237,7 @@ namespace yy {
 /* Line 480 of lalr1.cc  */
 #line 239 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 	break;
-      case 37: /* "str" */
+      case 39: /* "str" */
 
 /* Line 480 of lalr1.cc  */
 #line 85 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
@@ -467,19 +467,19 @@ namespace yy {
                     }
     break;
 
-  case 10:
+  case 9:
 
 /* Line 678 of lalr1.cc  */
-#line 117 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 116 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
                     driver.begin_measurement();
                   }
     break;
 
-  case 15:
+  case 14:
 
 /* Line 678 of lalr1.cc  */
-#line 131 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 130 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
                         long nb_mes=(yysemantic_stack_[(6) - (2)].l_value);
                         unsigned long signature=(yysemantic_stack_[(6) - (4)].ul_value);
@@ -489,72 +489,72 @@ namespace yy {
                      }
     break;
 
-  case 16:
+  case 15:
 
 /* Line 678 of lalr1.cc  */
-#line 139 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 138 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
                         driver.endup_add_instrumentation((yylocation_stack_[(8) - (1)]).begin.line);
                      }
     break;
 
-  case 19:
+  case 18:
 
 /* Line 678 of lalr1.cc  */
-#line 151 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 150 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yysemantic_stack_[(1) - (1)].str); (yysemantic_stack_[(1) - (1)].str)=NULL; }
+    break;
+
+  case 25:
+
+/* Line 678 of lalr1.cc  */
+#line 166 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+    { driver.set_status(Executions::EXECUTION_STATUS_PASSED); }
     break;
 
   case 26:
 
 /* Line 678 of lalr1.cc  */
-#line 167 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
-    { driver.set_status(Executions::EXECUTION_STATUS_PASSED); }
+#line 168 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+    { driver.set_status(Executions::EXECUTION_STATUS_FAILED); }
     break;
 
   case 27:
 
 /* Line 678 of lalr1.cc  */
-#line 169 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
-    { driver.set_status(Executions::EXECUTION_STATUS_FAILED); }
+#line 170 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+    { driver.set_status(Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY); }
     break;
 
   case 28:
 
 /* Line 678 of lalr1.cc  */
-#line 171 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
-    { driver.set_status(Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY); }
-    break;
-
-  case 29:
-
-/* Line 678 of lalr1.cc  */
-#line 173 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 172 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { driver.set_status(Executions::EXECUTION_STATUS_UNKNOWN); }
     break;
 
-  case 30:
+  case 33:
 
 /* Line 678 of lalr1.cc  */
-#line 177 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 183 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
               driver.set_title(QString::fromUtf8((yysemantic_stack_[(2) - (2)].str)).trimmed());
             }
     break;
 
-  case 31:
+  case 34:
 
 /* Line 678 of lalr1.cc  */
-#line 181 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 187 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     {
               driver.set_title(QString());
             }
     break;
 
-  case 32:
+  case 35:
 
 /* Line 678 of lalr1.cc  */
-#line 187 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 193 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
     { (yyval.str)=(yysemantic_stack_[(1) - (1)].str); }
     break;
 
@@ -766,15 +766,15 @@ namespace yy {
 
   /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
      STATE-NUM.  */
-  const signed char CSExeParser::yypact_ninf_ = -13;
+  const signed char CSExeParser::yypact_ninf_ = -14;
   const signed char
   CSExeParser::yypact_[] =
   {
-         1,    -7,     7,   -13,   -13,     2,   -13,   -13,   -13,   -13,
-     -13,   -13,     9,    -6,   -13,   -13,   -13,     6,   -13,    -2,
-     -13,   -13,   -13,    10,     2,   -13,    -2,   -13,    11,   -13,
-     -13,    13,   -13,    12,     6,   -13,   -13,     4,     0,   -13,
-     -13,   -13
+         1,    -8,     6,   -14,   -14,    -2,   -14,   -14,   -14,   -14,
+     -14,   -14,     8,    -5,   -14,   -14,     5,   -14,     4,   -14,
+      -5,   -14,   -14,   -14,    -1,   -14,    10,    -2,   -14,    -1,
+     -14,     9,   -14,   -14,    15,   -14,    12,     5,   -14,   -14,
+      -3,     0,   -14,   -14,   -14
   };
 
   /* YYDEFACT[S] -- default rule to reduce with in state S when YYTABLE
@@ -783,27 +783,29 @@ namespace yy {
   const unsigned char
   CSExeParser::yydefact_[] =
   {
-        22,     0,     0,     6,    23,    24,    26,    27,    28,    29,
-       1,     2,     6,     0,    25,     5,    10,    31,     7,    11,
-       9,    32,    30,     0,    22,    12,    13,    17,     0,     8,
-      14,     0,    18,     0,     0,    15,    19,     0,     0,    16,
-      21,    20
+        21,     0,     0,     6,    22,    23,    25,    26,    27,    28,
+       1,     2,     6,    29,    24,     5,    34,     7,     0,    30,
+      31,    35,    33,     9,    10,    32,     0,    21,    11,    12,
+      16,     0,     8,    13,     0,    17,     0,     0,    14,    18,
+       0,     0,    15,    20,    19
   };
 
   /* YYPGOTO[NTERM-NUM].  */
   const signed char
   CSExeParser::yypgoto_[] =
   {
-       -13,   -13,    14,   -13,   -13,   -13,   -13,   -13,   -12,   -13,
-     -13,   -13,   -13,   -13,   -13,    -3,    17,   -13,   -13,   -11
+       -14,   -14,    11,   -14,   -14,   -14,   -14,   -14,    -9,   -14,
+     -14,   -14,   -14,   -14,   -14,    -6,    17,   -14,   -14,     7,
+     -14,   -13
   };
 
   /* YYDEFGOTO[NTERM-NUM].  */
   const signed char
   CSExeParser::yydefgoto_[] =
   {
-        -1,     2,    11,    12,    13,    18,    19,    24,    25,    26,
-      37,    28,    33,    35,    39,     3,     4,     5,    20,    22
+        -1,     2,    11,    12,    13,    17,    24,    27,    28,    29,
+      40,    31,    36,    38,    42,     3,     4,     5,    18,    19,
+      20,    22
   };
 
   /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -813,18 +815,18 @@ namespace yy {
   const signed char
   CSExeParser::yytable_[] =
   {
-        40,    -3,    16,     6,     7,     8,     9,    10,    17,    -4,
-       1,     1,    21,    23,    30,    27,    32,    41,    31,    34,
-      38,    29,    14,    36,     0,     0,    15
+        43,    -3,     6,     7,     8,     9,    10,     1,    -4,    16,
+       1,    21,    23,    41,    26,    30,    34,    44,    35,    37,
+      33,    32,    14,    15,    39,     0,     0,    25
   };
 
   /* YYCHECK.  */
   const signed char
   CSExeParser::yycheck_[] =
   {
-         0,     0,     8,    10,    11,    12,    13,     0,    14,     0,
-       9,     9,     6,    15,    26,     5,     3,    17,     7,     7,
-      16,    24,     5,    34,    -1,    -1,    12
+         0,     0,    10,    11,    12,    13,     0,     9,     0,    14,
+       9,     6,     8,    16,    15,     5,     7,    17,     3,     7,
+      29,    27,     5,    12,    37,    -1,    -1,    20
   };
 
   /* STOS_[STATE-NUM] -- The (internal number of the) accessing
@@ -833,10 +835,10 @@ namespace yy {
   CSExeParser::yystos_[] =
   {
          0,     9,    19,    33,    34,    35,    10,    11,    12,    13,
-       0,    20,    21,    22,    34,    20,     8,    14,    23,    24,
-      36,     6,    37,    15,    25,    26,    27,     5,    29,    33,
-      26,     7,     3,    30,     7,    31,    37,    28,    16,    32,
-       0,    17
+       0,    20,    21,    22,    34,    20,    14,    23,    36,    37,
+      38,     6,    39,     8,    24,    37,    15,    25,    26,    27,
+       5,    29,    33,    26,     7,     3,    30,     7,    31,    39,
+      28,    16,    32,     0,    17
   };
 
 #if YYDEBUG
@@ -854,20 +856,20 @@ namespace yy {
   const unsigned char
   CSExeParser::yyr1_[] =
   {
-         0,    18,    19,    19,    20,    20,    22,    21,    23,    23,
-      24,    25,    25,    26,    26,    28,    27,    29,    30,    31,
-      32,    32,    33,    33,    34,    34,    35,    35,    35,    35,
-      36,    36,    37
+         0,    18,    19,    19,    20,    20,    22,    21,    23,    24,
+      25,    25,    26,    26,    28,    27,    29,    30,    31,    32,
+      32,    33,    33,    34,    34,    35,    35,    35,    35,    36,
+      36,    37,    37,    38,    38,    39
   };
 
   /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
   const unsigned char
   CSExeParser::yyr2_[] =
   {
-         0,     2,     2,     0,     1,     2,     0,     2,     3,     1,
-       1,     0,     1,     1,     2,     0,     8,     1,     1,     1,
-       2,     2,     0,     1,     1,     2,     2,     2,     2,     2,
-       2,     1,     1
+         0,     2,     2,     0,     1,     2,     0,     2,     4,     1,
+       0,     1,     1,     2,     0,     8,     1,     1,     1,     2,
+       2,     0,     1,     1,     2,     2,     2,     2,     2,     0,
+       1,     1,     2,     2,     1,     1
   };
 
 #if YYDEBUG || YYERROR_VERBOSE || YYTOKEN_TABLE
@@ -886,7 +888,8 @@ namespace yy {
   "csexe_measurement_", "csexe_start_banner", "csexe_instrumentations_opt",
   "csexe_instrumentations", "csexe_instrumentation", "$@2", "nb_mes",
   "signature", "module_name", "module_instrumentation", "csexe_status_opt",
-  "csexe_status", "csexe_one_status", "csexe_title", "str", 0
+  "csexe_status", "csexe_one_status", "csexe_titles_opt", "csexe_titles",
+  "csexe_title", "str", 0
   };
 #endif
 
@@ -896,14 +899,14 @@ namespace yy {
   CSExeParser::yyrhs_[] =
   {
         19,     0,    -1,    33,    20,    -1,    -1,    21,    -1,    21,
-      20,    -1,    -1,    22,    23,    -1,    24,    25,    33,    -1,
-      36,    -1,     8,    -1,    -1,    26,    -1,    27,    -1,    27,
-      26,    -1,    -1,    15,    29,     7,    30,     7,    31,    28,
-      32,    -1,     5,    -1,     3,    -1,    37,    -1,    16,    17,
-      -1,    16,     0,    -1,    -1,    34,    -1,    35,    -1,    35,
-      34,    -1,     9,    10,    -1,     9,    11,    -1,     9,    12,
-      -1,     9,    13,    -1,    14,    37,    -1,    14,    -1,     6,
-      -1
+      20,    -1,    -1,    22,    23,    -1,    36,    24,    25,    33,
+      -1,     8,    -1,    -1,    26,    -1,    27,    -1,    27,    26,
+      -1,    -1,    15,    29,     7,    30,     7,    31,    28,    32,
+      -1,     5,    -1,     3,    -1,    39,    -1,    16,    17,    -1,
+      16,     0,    -1,    -1,    34,    -1,    35,    -1,    35,    34,
+      -1,     9,    10,    -1,     9,    11,    -1,     9,    12,    -1,
+       9,    13,    -1,    -1,    37,    -1,    38,    -1,    38,    37,
+      -1,    14,    39,    -1,    14,    -1,     6,    -1
   };
 
   /* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
@@ -911,20 +914,20 @@ namespace yy {
   const unsigned char
   CSExeParser::yyprhs_[] =
   {
-         0,     0,     3,     6,     7,     9,    12,    13,    16,    20,
-      22,    24,    25,    27,    29,    32,    33,    42,    44,    46,
-      48,    51,    54,    55,    57,    59,    62,    65,    68,    71,
-      74,    77,    79
+         0,     0,     3,     6,     7,     9,    12,    13,    16,    21,
+      23,    24,    26,    28,    31,    32,    41,    43,    45,    47,
+      50,    53,    54,    56,    58,    61,    64,    67,    70,    73,
+      74,    76,    78,    81,    84,    86
   };
 
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
   const unsigned char
   CSExeParser::yyrline_[] =
   {
-         0,    92,    92,    93,    96,    97,   100,   100,   112,   113,
-     116,   122,   123,   126,   127,   131,   130,   144,   147,   150,
-     154,   155,   158,   159,   162,   163,   166,   168,   170,   172,
-     176,   180,   186
+         0,    92,    92,    93,    96,    97,   100,   100,   112,   115,
+     121,   122,   125,   126,   130,   129,   143,   146,   149,   153,
+     154,   157,   158,   161,   162,   165,   167,   169,   171,   174,
+     175,   178,   179,   182,   186,   192
   };
 
   // Print the state stack on the debug stream.
@@ -1000,8 +1003,8 @@ namespace yy {
   }
 
   const int CSExeParser::yyeof_ = 0;
-  const int CSExeParser::yylast_ = 26;
-  const int CSExeParser::yynnts_ = 20;
+  const int CSExeParser::yylast_ = 27;
+  const int CSExeParser::yynnts_ = 22;
   const int CSExeParser::yyempty_ = -2;
   const int CSExeParser::yyfinal_ = 10;
   const int CSExeParser::yyterror_ = 1;
@@ -1018,11 +1021,11 @@ namespace yy {
 } // yy
 
 /* Line 1054 of lalr1.cc  */
-#line 1022 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
+#line 1025 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser_yacc.cxx"
 
 
 /* Line 1056 of lalr1.cc  */
-#line 190 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
+#line 196 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/csexe_parser.y"
 
 
 #include <stdio.h>

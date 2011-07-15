@@ -109,8 +109,7 @@ csexe_measurement : {
                     }
                   ;
                   
-csexe_measurement_: csexe_start_banner csexe_instrumentations_opt csexe_status_opt
-                  | csexe_title
+csexe_measurement_: csexe_titles_opt csexe_start_banner csexe_instrumentations_opt csexe_status_opt
                   ;
 
 csexe_start_banner: __CSEXE_MEASUREMENT__ 
@@ -172,6 +171,13 @@ csexe_one_status : __CSEXE_STATUS__ __STATUS_PASSED__
                   | __CSEXE_STATUS__ __STATUS_UNKNOWN__ 
                    { driver.set_status(Executions::EXECUTION_STATUS_UNKNOWN); }
                   ;
+csexe_titles_opt : /* empty */
+                 | csexe_titles
+                 ;
+
+csexe_titles: csexe_title
+            | csexe_title csexe_titles
+            ;
 
 csexe_title : __CSEXE_TITLE__ str 
             {
