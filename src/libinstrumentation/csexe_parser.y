@@ -192,7 +192,7 @@ str:  __STRING__
 #include <stdio.h>
 
 
-bool CSExeParser::csexe_parse(const QString &filename,QIODevice &file,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
+bool CSExeParser::parse(const QString &filename,QIODevice &file,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
 {
   info.clear();
   _file_p=&file;

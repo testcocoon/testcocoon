@@ -155,8 +155,11 @@ bool CSExeParserDriver::parse (const QString &f,ExecutionNames &new_executions,Q
 
 void CSExeParserDriver::error (const yy::location& l, const std::string& m)
 {
-  std::cerr << l << ": " << m << std::endl;
-  _errmsg = QString::fromStdString(m);
+  if (l.begin.filename)
+    _errmsg += QString::fromStdString(*l.begin.filename) + ":" ;
+  _errmsg += QString::number(l.begin.line) + "." ;
+  _errmsg += QString::number(l.begin.column) + ":" ;
+  _errmsg += QString::fromStdString(m);
 }
 
 void CSExeParserDriver::error (const std::string& m)

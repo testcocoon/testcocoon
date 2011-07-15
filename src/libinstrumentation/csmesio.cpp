@@ -458,7 +458,7 @@ bool CSMesIO::loadCSExe(QIODevice &file,const ExecutionName &name_orig,csexe_imp
   if (file_p)
     filename=file_p->fileName();
   CSExeParser csexe_parser(*this,name_orig,policy,default_execution_status);
-  result = csexe_parser.csexe_parse(filename,file,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
+  result = csexe_parser.parse(filename,file,new_executions,info,short_status,errmsgs,undo_backup_p,progress_p);
 #else
   QTime timeWatch;
   errmsgs.clear();
