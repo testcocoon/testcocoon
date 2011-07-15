@@ -55,9 +55,8 @@ class CSExeParserDriver
       {
         if (_mes_p_index>static_cast<unsigned int>(_mes_p->size()))
         {
-          _errmsg=QObject::tr("Invalid number of executions (too many instrumentation per file)");
           _mes_p=NULL;
-          mark_execution_as_wrong();
+          mark_execution_as_wrong(QObject::tr("Invalid number of executions (too many instrumentation per file)"));
           return;
         }
         (*_mes_p)[_mes_p_index]=Instrumentation::combineExecution( (*_mes_p)[_mes_p_index] , instrumentation_item ) ;
@@ -76,7 +75,7 @@ class CSExeParserDriver
     void error (const std::string& m);
 
   private:
-    void mark_execution_as_wrong() { _wrong_executions=true; }
+    void mark_execution_as_wrong(const QString &e) { _errmsg=e;  _wrong_executions=true; }
     CSMesIO &_csmes;
     const CSExeParser &_csexe_parser;
     Executions::modules_executions_t _mts;
