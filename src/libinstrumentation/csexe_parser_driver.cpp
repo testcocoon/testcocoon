@@ -40,7 +40,7 @@ bool CSExeParserDriver::parse (const QString &f,ExecutionNames &new_executions,Q
   _new_executions.clear();
   _progress_p=progress_p;
   _undo_backup_p=undo_backup_p;
-  _errmsg.clear();
+  error(QString());
   _info.clear();
   _errmsgs.clear();
   _short_status.clear();
@@ -58,8 +58,8 @@ bool CSExeParserDriver::parse (const QString &f,ExecutionNames &new_executions,Q
   _mes_modif.clear();
   _detailled_info.clear();
   _max_file_size=CSExeParser::qiodevice_p->size();
+  _file = f;
 
-  file = f.toStdString();
   yy::CSExeParser parser (*this);
   //parser.set_debug_level (trace_parsing);
 
@@ -161,19 +161,19 @@ bool CSExeParserDriver::parse (const QString &f,ExecutionNames &new_executions,Q
   return result;
 }
 
-void CSExeParserDriver::error (const yy::location& l, const std::string& m)
+void CSExeParserDriver::error (const QString& m)
 {
-  if (l.begin.filename)
-    _errmsg += QString::fromStdString(*l.begin.filename) + ":" ;
-  _errmsg += QString::number(l.begin.line) + "." ;
-  _errmsg += QString::number(l.begin.column) + ":" ;
-  _errmsg += QString::fromStdString(m);
-}
-
-void CSExeParserDriver::error (const std::string& m)
-{
-  std::cerr << m << std::endl;
-  _errmsg = QString::fromStdString(m);
+  if (m.isEmpty())
+    _errmsg.clear();
+  else
+  {
+    if (file().isEmpty())
+      _errmsg = QObject::tr("Line")+" ";
+    else
+      _errmsg = file()+":";
+    _errmsg += QString::number(line())+":";
+    _errmsg += m;
+  }
 }
 
 bool CSExeParserDriver::begin_csexe_measurement()
@@ -183,7 +183,7 @@ bool CSExeParserDriver::begin_csexe_measurement()
     if (_progress_p(((float)CSExeParser::qiodevice_p->pos())/_max_file_size,false))
       return false; // Interrupt
   }
-  _errmsg.clear();
+  error(QString());
   _execution_status= Executions::EXECUTION_STATUS_UNKNOWN;
   _wrong_executions=false;
   _mts.clear();
@@ -377,8 +377,7 @@ void  CSExeParserDriver::init_add_instrumentation(const QString &module,long nb_
     int mes_p_size=_mes_p->size();
     if (mes_p_size!=nb_mes)
     {
-      mark_execution_as_wrong(QObject::tr("Invalid file format")
-        +" (" +QObject::tr("Line ")+QString::number(line()) +":"+QObject::tr("Wrong instrumentation size")+")");
+      mark_execution_as_wrong(QObject::tr("Invalid file format: wrong instrumentation size"));
       _mes_p=NULL;
     }
   }
@@ -392,8 +391,7 @@ void  CSExeParserDriver::endup_add_instrumentation()
     if (_mes_p_index!=static_cast<unsigned int>(_mes_p->size()))
     {
       _mes_p=NULL;
-      mark_execution_as_wrong(QObject::tr("Invalid file format")
-        +" (" +QObject::tr("Line ")+QString::number(line()) +"):"+QObject::tr("Wrong instrumentation size"));
+      mark_execution_as_wrong(QObject::tr("Invalid file format: wrong instrumentation size"));
       return;
     }
   }
@@ -409,4 +407,10 @@ void CSExeParserDriver::begin_measurement()
 {
   _execution_title=_csmes.executionName(_csexe_parser.defaultTitle(),_execution_title_file,_csexe_parser.policy());
   _execution_title_file.clear();
+}
+
+void CSExeParserDriver::mark_execution_as_wrong(const QString &e)
+{
+  error(e);
+  _wrong_executions=true;
 }

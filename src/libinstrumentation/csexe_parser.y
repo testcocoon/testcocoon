@@ -18,7 +18,6 @@
 
 %{
 #include "csexe_parser.h"
-#include <string.h>
 #include "debug.h"
 #include "executionname.h"
 #include <QString>
@@ -33,7 +32,6 @@
 %define parser_class_name "CSExeParser"
 // The parsing context.
 %code requires {
-#include <string>
 class CSExeParserDriver;
 class CSExeParser;
 #if OS_WIN32
@@ -197,6 +195,7 @@ str:  __STRING__
 %%
 
 #include <stdio.h>
+#include <QString>
 
 
 bool CSExeParser::parse(const QString &filename,QIODevice &file,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p)
@@ -224,5 +223,5 @@ bool CSExeParser::parse(const QString &filename,QIODevice &file,ExecutionNames &
 
 void yy::CSExeParser::error (const yy::CSExeParser::location_type& l, const std::string& m)
 {
- driver.error (l, m);
+ driver.error (QString::fromStdString(m));
 }

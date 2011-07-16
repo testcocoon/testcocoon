@@ -42,7 +42,7 @@ class CSExeParserDriver
 
     // Handling the parser.
     bool parse (const QString & f,ExecutionNames &new_executions,QString &info,QString &short_status,QString &errmsgs,QHash<ExecutionName,Executions::modules_executions_private_t> *undo_backup_p,CSMesIO::progress_function_t progress_p);
-    std::string file;
+    const QString &file() const { return _file ; }
 
 
     void end_csexe_measurement();
@@ -70,15 +70,15 @@ class CSExeParserDriver
     ExecutionName executionName(const ExecutionName &default_name,const ExecutionName &execution_name,CSMesIO::csexe_import_policy_t policy) ;
 
     // Error handling.
-    void error (const std::string& m);
-    void error (const yy::location& l, const std::string& m);
+    void error (const QString & m);
     int line() const {return _line;}
     void incrementLine() { _line++; }
 
   private:
-    void mark_execution_as_wrong(const QString &e) { _errmsg=e;  _wrong_executions=true; }
+    void mark_execution_as_wrong(const QString &e) ;
     CSMesIO &_csmes;
     int _line;
+    QString _file;
     const CSExeParser &_csexe_parser;
     Executions::modules_executions_t _mts;
     Executions::execution_status_t _execution_status;
