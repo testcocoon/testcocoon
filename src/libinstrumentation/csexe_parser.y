@@ -25,7 +25,6 @@
 #define yyerror csexe_parsererror
 #if OS_WIN32
 #pragma warning(disable : 4065)
-#undef max
 #endif
 %}
 %skeleton "lalr1.cc"                          /*  -*- C++ -*- */
@@ -37,6 +36,9 @@
 #include <string>
 class CSExeParserDriver;
 class CSExeParser;
+#if OS_WIN32
+#undef max
+#endif
 }
 
 %parse-param { CSExeParserDriver& driver }
