@@ -25,6 +25,7 @@
 #define yyerror csexe_parsererror
 #if OS_WIN32
 #pragma warning(disable : 4065)
+#undef max
 #endif
 %}
 %skeleton "lalr1.cc"                          /*  -*- C++ -*- */
