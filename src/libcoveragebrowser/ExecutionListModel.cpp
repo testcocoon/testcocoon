@@ -165,7 +165,7 @@ QVariant ExecutionListModel::data (const QModelIndex &index, int role) const
         getAllExecutions(item_p,_executions);
         for (ExecutionNames::const_iterator it=_executions.begin();it!=_executions.end();it++)
         {
-          const QString &execution_name=*it;
+          const ExecutionName &execution_name=*it;
           QString comment_string;
           if (csmes_p->getExecutionComment(execution_name,comment_string) )
           {
@@ -237,7 +237,7 @@ QVariant ExecutionListModel::data (const QModelIndex &index, int role) const
       break;
     case CommentRole:
       {
-        QString execution_name=executionName(rootItem,item_p,false);
+        ExecutionName execution_name=executionName(rootItem,item_p,false);
         QString comment;
         if (! csmes_p->getExecutionComment(execution_name,comment) )
           return QVariant();
@@ -246,7 +246,7 @@ QVariant ExecutionListModel::data (const QModelIndex &index, int role) const
       break;
     case CommentExplanationRole:
       {
-        QString execution_name=executionName(rootItem,item_p,false);
+        ExecutionName execution_name=executionName(rootItem,item_p,false);
         QString comment;
         if (! csmes_p->getExecutionComment(execution_name,comment) )
           return QVariant();
@@ -332,7 +332,7 @@ QVariant ExecutionListModel::data (const QModelIndex &index, int role) const
         case EXECUTION_LIST_COLUMN_COMMENT:
           if (item_p->data(ITEM_MEASUREMENT).toBool())
           {
-            QString execution_name=executionName(rootItem,item_p,false);
+            ExecutionName execution_name=executionName(rootItem,item_p,false);
             QString comment;
             if (! csmes_p->getExecutionComment(execution_name,comment) )
               return QVariant();
@@ -939,7 +939,7 @@ void ExecutionListModel::Select(const QString &pattern,bool filter_comment, bool
       {
         bool comment=false;
         bool no_comment=false;
-        const QString &execution_name=*list_it;
+        const ExecutionName &execution_name=*list_it;
         QString comment_string;
         if (csmes_p->getExecutionComment(execution_name,comment_string) )
         {
@@ -1012,7 +1012,7 @@ void ExecutionListModel::DeSelect(const QString &pattern,bool filter_comment, bo
       {
         bool comment=false;
         bool no_comment=false;
-        const QString &execution_name=*list_it;
+        const ExecutionName &execution_name=*list_it;
         QString comment_string;
         if (csmes_p->getExecutionComment(execution_name,comment_string) )
         {
