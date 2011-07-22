@@ -44,7 +44,7 @@
 namespace yy {
 
 /* Line 1067 of lalr1.cc  */
-#line 48 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/stack.hh"
+#line 48 "stack.hh"
   template <class T, class S = std::deque<T> >
   class stack
   {
@@ -137,7 +137,7 @@ namespace yy {
 } // yy
 
 /* Line 1153 of lalr1.cc  */
-#line 141 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/stack.hh"
+#line 141 "stack.hh"
 
 #endif // not BISON_STACK_HH[]dnl
 

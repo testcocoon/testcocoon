@@ -50,7 +50,7 @@
 namespace yy {
 
 /* Line 162 of location.cc  */
-#line 54 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/location.hh"
+#line 54 "location.hh"
 
   /// Abstract a location.
   class location
@@ -166,6 +166,6 @@ namespace yy {
 } // yy
 
 /* Line 271 of location.cc  */
-#line 170 "/home/sfri/DEV/coveragemeter/testcocoon/src/libinstrumentation/location.hh"
+#line 170 "location.hh"
 
 #endif // not BISON_LOCATION_HH
