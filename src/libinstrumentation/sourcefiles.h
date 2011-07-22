@@ -22,6 +22,7 @@
 #include <QStringList>
 #include <QList>
 #include "sourcefile.h"
+#include <QMetaType>
 
 class SourceFiles : public QList<SourceFile>
 {
@@ -37,5 +38,6 @@ class SourceFiles : public QList<SourceFile>
       return l;
     }
 };
+Q_DECLARE_METATYPE(SourceFiles);
 
 #endif

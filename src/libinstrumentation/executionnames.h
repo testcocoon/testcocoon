@@ -21,6 +21,7 @@
 #include <QString>
 #include <QStringList>
 #include <QList>
+#include <QMetaType>
 #include "executionname.h"
 
 class ExecutionNames : public QList<ExecutionName>
@@ -44,5 +45,6 @@ class ExecutionNames : public QList<ExecutionName>
 	  return n;
 	}
 };
+Q_DECLARE_METATYPE(ExecutionNames);
 
 #endif

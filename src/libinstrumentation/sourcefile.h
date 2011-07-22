@@ -19,6 +19,7 @@
 #ifndef SOURCE_FILE_H
 #define SOURCE_FILE_H
 #include <QString>
+#include <QMetaType>
 
 class SourceFile : public QString
 {
@@ -28,5 +29,6 @@ class SourceFile : public QString
     const QString &toQString() const { return *this; }
 };
 
+Q_DECLARE_METATYPE(SourceFile);
 
 #endif

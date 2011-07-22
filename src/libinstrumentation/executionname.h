@@ -19,6 +19,7 @@
 #ifndef EXECUTION_NAME_H
 #define EXECUTION_NAME_H
 #include <QString>
+#include <QMetaType>
 
 class ExecutionName : public QString
 {
@@ -28,5 +29,6 @@ class ExecutionName : public QString
     const QString &toQString() const { return *this; }
 };
 
+Q_DECLARE_METATYPE(ExecutionName);
 
 #endif

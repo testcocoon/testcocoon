@@ -22,6 +22,7 @@
 #include <QStringList>
 #include <QList>
 #include "modulefile.h"
+#include <QMetaType>
 
 class ModuleFiles : public QList<ModuleFile>
 {
@@ -37,5 +38,6 @@ class ModuleFiles : public QList<ModuleFile>
       return l;
     }
 };
+Q_DECLARE_METATYPE(ModuleFiles);
 
 #endif

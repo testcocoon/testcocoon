@@ -26,6 +26,12 @@
 CSMesBackgroundComputation::CSMesBackgroundComputation(CSMesBackgroundComputations *p) : QThread(p)
 {
   pool_p=p;
+   qRegisterMetaType<ModuleFile>("ModuleFile");
+   qRegisterMetaType<ModuleFiles>("ModuleFiles");
+   qRegisterMetaType<SourceFile>("SourceFile");
+   qRegisterMetaType<SourceFiles>("SourceFiles");
+   qRegisterMetaType<ExecutionName>("ExecutionName");
+   qRegisterMetaType<ExecutionNames>("ExecutionNames");
    qRegisterMetaType<QModelIndex>("QModelIndex");
    qRegisterMetaType<QStringList>("QStringList");
    qRegisterMetaType<ExecutionName>("ExecutionName");

@@ -19,6 +19,7 @@
 #ifndef MODULE_FILE_H
 #define MODULE_FILE_H
 #include <QString>
+#include <QMetaType>
 
 class ModuleFile : public QString
 {
@@ -27,5 +28,6 @@ class ModuleFile : public QString
     ModuleFile() : QString() {}
     const QString &toQString() const { return *this; }
 };
+Q_DECLARE_METATYPE(ModuleFile);
 
 #endif
