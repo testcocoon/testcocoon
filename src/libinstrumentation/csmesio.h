@@ -25,6 +25,7 @@
 #include "csmesfilethread.h"
 class CSExeParser;
 class CSExeParserDriver;
+class CSMesIOLegacy;
 
 class CSMesIO : public CSMesComment
 {
@@ -68,6 +69,7 @@ class CSMesIO : public CSMesComment
   private:
     friend class CSExeParser;
     friend class CSExeParserDriver;
+    friend class CSMesIOLegacy;
     bool isCSExeDirectory(const ExecutionName &) const;
     ExecutionName executionName(const ExecutionName &default_name,const ExecutionName &execution_name,csexe_import_policy_t policy) const;
     bool has_condition_instrumentation;
