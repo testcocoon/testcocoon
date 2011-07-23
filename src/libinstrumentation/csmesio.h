@@ -68,7 +68,6 @@ class CSMesIO : public CSMesComment
   private:
     friend class CSExeParser;
     friend class CSExeParserDriver;
-    bool load_csexe_one(Executions::modules_executions_t &execution, ExecutionName &name,QString &err,QIODevice &data,QString &last_line,int &line_nr,const ExecutionName &name_orig,csexe_import_policy_t policy,Executions::execution_status_t default_execution_status) const;
     bool isCSExeDirectory(const ExecutionName &) const;
     ExecutionName executionName(const ExecutionName &default_name,const ExecutionName &execution_name,csexe_import_policy_t policy) const;
     bool has_condition_instrumentation;
