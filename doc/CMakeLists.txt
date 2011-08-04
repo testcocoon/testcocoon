@@ -11,6 +11,7 @@ SET(LATEX_SRCS
               testcoverageobject.h
               bench_athlon.tex
               bench_pentium_m.tex
+              testcocoon_qt_tutorial.tex
               bench_via.tex
               codesize.tex
               coveragebrowsertutorial.tex
