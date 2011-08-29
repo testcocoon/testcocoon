@@ -100,7 +100,7 @@ used in order to have {\CoverageScanner} instead of the native compiler. {\Cover
 wrapper executable name is the compiler name with the prefix cs. So we simply
 add the following lines to \texttt{textedit.pro} to add instrumentation:
 
-\begin{listings}[H]
+\begin{figureenv}
 \begin{verbatim}
 TestCocoon {
  QMAKE_CC=cs$$QMAKE_CC
@@ -110,7 +110,7 @@ TestCocoon {
 \end{verbatim}
 \caption{Minimal {\qmake} configuration}
 \label{lst:qmake1}
-\end{listings}
+\end{figureenv}
 
 This should be sufficient for most applications, but for {\Qt} applications we need to
 specify some additional parameters in order to skip the instrumentation of the
@@ -142,7 +142,7 @@ report generated upon the application exit.
 
 
 So, the final {\TestCocoon} configuration looks as follows:
-\begin{listings}[H]
+\begin{figureenv}
 \begin{verbatim}
 TestCocoon {
  TESTCOCOON_OPTIONS =  --cs-count --cs-full-instrumentation
@@ -161,7 +161,7 @@ TestCocoon {
 \end{verbatim}
 \caption{Final {\qmake} configuration}
 \label{lst:qmake2}
-\end{listings}
+\end{figureenv}
 
 Compiling {\TextEdit} produces of course the \texttt{textedit.exe} executable and an additional file
 \texttt{textedit.exe.csmes}, this is the  instrumentation database.
@@ -175,7 +175,7 @@ snapshot of the last execution run.
 \sloppy Next step is to  start {\CoverageBrowser} and load \texttt{textedit.exe.csmes} instrumentation database
 (Menu: \GUIMenuTwo{File}{Open\ldots}).  At this state, no coverage information is available
 because no execution reports have been  imported. The instrumented code lines are
-grayed-out and coverage statistics have not been computed. (see \autoref{fig:startup})
+grayed-out and coverage statistics have not been computed. \seefigref{fig:startup}
 
 \begin{figure}[H]
   \begin{center}
@@ -209,10 +209,9 @@ After the import, the coverage information is now visible:
 We will try to validate it interactively, guided by the code coverage analysis.
 
 In the actual output of the source window, all source code lines are marked
-with a background in red, which means that they have not been executed. (see
-    \autoref{lst:src1})
+with a background in red, which means that they have not been executed. \seelstref{lst:src1}
 
-\begin{listings}[H]
+    \begin{figureenv}
   \scriptsize
 \begin{alltt}
 bool TextEdit::fileSave()
@@ -234,7 +233,7 @@ bool TextEdit::fileSave()
 \end{alltt}
 \caption{{\CoverageBrowser} source view of the function TextEdit::save()}
 \label{lst:src1}
-\end{listings}
+\end{figureenv}
 
 The first test we need to execute:
 \begin{enumerate}
@@ -247,9 +246,9 @@ The first test we need to execute:
 After importing the coverage report, {\CoverageBrowser} indicates that the '\verb$return false;$'
 line just after the call of \verb$QMessageBox::warning()$ has been executed (line
     marked with a green background). But the line '\verb$if (fileName.isEmpty())$' is
-marked as partially executed (orange background, see \autoref{lst:src2}).
+marked as partially executed (orange background, \seelstref{lst:src2}.
 
-\begin{listings}[H]
+\begin{figureenv}
   \scriptsize
 \begin{alltt}
 bool TextEdit::fileSave()
@@ -271,15 +270,15 @@ bool TextEdit::fileSave()
 \end{alltt}
 \caption{{\CoverageBrowser} source view  after clicking on the 'Save' button of TextEdit.}
 \label{lst:src2}
-\end{listings}
+\end{figureenv}
 
-The explanation window (see \autoref{lst:src3}) gives the information that the
+The explanation window \seelstref{lst:src3} gives the information that the
 evaluation of the expression '\verb$fileName.isEmpty()$' was true during one execution
 but was never false. In order to fulfil this condition it is necessary to click
 on  the '\textsf{Save As\ldots}' button,  to set the file name and then
 click on the '\textsf{Save}' button.
 
-\begin{listings}[H]
+\begin{figureenv}
   \scriptsize
   \textcolor{orange}{partially executed}: \texttt{fileName.isEmpty()} \par
 \hspace{1cm}
@@ -296,17 +295,17 @@ click on the '\textsf{Save}' button.
 \end{tabularx}
 \caption{{\CoverageBrowser} explanation window after clicking on the 'Save' button of TextEdit.}
 \label{lst:src3}
-\end{listings}
+\end{figureenv}
 
 After importing the new execution report only one source code line remains
-partially untested (see \autoref{lst:src4}). In this case, \CoverageBrowser\ indicates
+partially untested \seelstref{lst:src4}. In this case, \CoverageBrowser\ indicates
 that the boolean variable '\verb$success$' was never false, this means that writing
 the document never fails. Of course it is possible to generate such write failures
 and so achieve a 100\% code coverage of this function, but we will choose
 another test strategy: implement a unit test and import the execution result
 into {\TextEdit} instrumentation database.
 
-\begin{listings}[H]
+\begin{figureenv}
   \scriptsize
 \begin{alltt}
 bool TextEdit::fileSave()
@@ -328,15 +327,15 @@ bool TextEdit::fileSave()
 \end{alltt}
 \caption{{\CoverageBrowser} source view  after clicking on the 'SaveAs\ldots' and 'Save' button of {\TextEdit}.}
 \label{lst:src4}
-\end{listings}
+\end{figureenv}
 
 
 \subsubsection{Writing unit tests}
 
 Writing a unit test which sets an illegal filename and execute \verb$fileSave()$ using
-\QTestLib\ is pretty easy (see \autoref{lst:src5}).
+\QTestLib\ is pretty easy \seelstref{lst:src5}.
 
-\begin{listings}[H]
+\begin{figureenv}
   \scriptsize
 \begin{verbatim}
 #include "tst_textedit.h"
@@ -351,7 +350,7 @@ QTEST_MAIN(TestTextEdit);
 \end{verbatim}
 \caption{{\TextEdit} unit test}
 \label{lst:src5}
-\end{listings}
+\end{figureenv}
 
 To get the instrumentation result of this test into TextEdits own
 instrumentation database, the following strategy can be applied:
@@ -375,12 +374,12 @@ This is unfortunately not enough because per default only source and header
 files from the current directory are instrumented. We need to instrument the folder of
 {\TextEdit} sources: this is achieved by using the \verb$--cs-include-path$ command line option.
 
-This gives us the {\qmake} project file shown in \autoref{lst:qmake3} which generates
+This gives us the {\qmake} project file shown in \ref{lst:qmake3} which generates
 the executable \texttt{tst\_textedit.exe} which then produces the execution report
 \texttt{tst\_textedit.csexe}. This can be imported into \texttt{tst\_textedit.exe.csmes}
 using \CoverageBrowser.
 
-\begin{listings}[H]
+\begin{figureenv}
   \scriptsize
 \begin{verbatim}
 HEADERS         = ../textedit_v1/textedit.h \
@@ -408,17 +407,17 @@ TestCocoon {
 \end{verbatim}
 \caption{Basic {\qmake} project file for unit test}
 \label{lst:qmake3}
-\end{listings}
+\end{figureenv}
 
 We can automatically execute and import the execution report using a post build
 rule. \TestCocoon\ provides on the side a command line tool call \cmcsexeimport\
 which import an execution report into an instrumentation database.
 The post build rule consists to delete first a previous executed report,
 execute the test itself, and finally import it into the execution database of
-\verb$tst_textedit$ (see \autoref{lst:qmake4}).
+\verb$tst_textedit$ \seelstref{lst:qmake4}.
 
 
-\begin{listings}[H]
+\begin{figureenv}
   \scriptsize
 \begin{verbatim}
 TestCocoon {
@@ -438,7 +437,7 @@ TestCocoon {
 \end{verbatim}
 \caption{Post build rules: importing execution report into unit test's instrumentation database}
 \label{lst:qmake4}
-\end{listings}
+\end{figureenv}
 
 The actual implementation imports coverage data without any information about
 the executed tests: an execution called '\textsf{UnitTest}' is created which does
@@ -449,12 +448,12 @@ available on the \TestCocoon\
 homepage\footnote{\url{http://testcocoon.org/testcoverageobject.cpp} and
 \url{http://testcocoon.org/testcoverageobject.h}}. Using it is easy: 
 \begin{itemize}
-  \item Add the two source files in \qmake\ project file (see \autoref{lst:qmake5}).
+  \item Add the two source files in \qmake\ project file \seelstref{lst:qmake5}.
   \item Instead of inheriting the unit test from \texttt{QObject}, inherit it
-    from \texttt{TestCoverageObject} (see \autoref{lst:hdr1}).
+    from \texttt{TestCoverageObject} \seelstref{lst:hdr1}.
 \end{itemize}
 
-\begin{listings}[H]
+\begin{figureenv}
   \scriptsize
 \begin{verbatim}
 HEADERS += testcoverageobject.h
@@ -462,9 +461,9 @@ SOURCES += testcoverageobject.cpp
 \end{verbatim}
 \caption{Including \CoverageScanner\ listener into {\qmake} project file}
 \label{lst:qmake5}
-\end{listings}
+\end{figureenv}
 
-\begin{listings}[H]
+\begin{figureenv}
   \scriptsize
 \begin{verbatim}
 #include "testcoverageobject.h"
@@ -480,9 +479,9 @@ class TestTextEdit : public TestCoverageObject
 \end{verbatim}
 \caption{\TextEdit\ unit test header}
 \label{lst:hdr1}
-\end{listings}
+\end{figureenv}
 
-A small look in \texttt{testcoverageobject.cpp} (see \autoref{lst:src6}) lets
+A small look in \texttt{testcoverageobject.cpp} \seelstref{lst:src6} lets
 us understand how it works: it only provides a \verb$cleanup()$ function to
 \QTestLib, which is executed after each unit test item.
 The code between \verb$#ifdef __COVERAGESCANNER__$ and \verb$#endif$ is 
@@ -495,7 +494,7 @@ The current test status (``PASSED'' or ``FAILED'') is recorded, and
 committed to the execution report by calling \verb$__coveragescanner_save()$.
 
 
-\begin{listings}[H]
+\begin{figureenv}
   \scriptsize
 \begin{verbatim}
 .....
@@ -519,7 +518,7 @@ void TestCoverageObject::cleanup()
 \end{verbatim}
 \caption{\texttt{TestCoverageObject} source code}
 \label{lst:src6}
-\end{listings}
+\end{figureenv}
 
 At this stage we could start \CoverageBrowser, load the \TextEdit\ instrumentation
 database and import the instrumentation database of the unit test
@@ -527,9 +526,9 @@ database and import the instrumentation database of the unit test
 automate this step. \cmmerge\ permits us  to import the execution report from one
 instrumentation database into another. So it is possible to call it in
 the post build rules to import the coverage information into \TextEdit\
-database automatically (see \autoref{lst:qmake6}).
+database automatically \seelstref{lst:qmake6}.
 
-\begin{listings}[H]
+\begin{figureenv}
   \scriptsize
 \begin{verbatim}
 TestCocoon {
@@ -552,11 +551,11 @@ TestCocoon {
 \end{verbatim}
 \caption{Post build rules: merging instrumentation results into \TextEdit\ instrumentation database}
 \label{lst:qmake6}
-\end{listings}
+\end{figureenv}
 
 After building the unit test, the function \verb$fileSave()$ is displayed as
 100\% covered by CoverageBrowser and the execution list contains our 3 manual
-tests and one unit test. (see \autoref{fig:execlist1})
+tests and one unit test. \seefigref{fig:execlist1}
 
 \begin{figure}[H]
   \begin{center}
@@ -595,7 +594,7 @@ to switch into the ``Execution Benefit Analysis'' mode
 (Menu: \GUIMenuTwo{Tools}{Execution Benefit Analysis}). In the execution list select
 the tests ``\textsf{tst\_saveFile}'' and ``\textsf{SaveAs clicked before Save clicked}''. Double
 click on ``\textsf{Save clicked}'' execution: the execution comparison symbol appears in
-front of its name (see \autoref{fig:execlist2}).
+front of its name \seefigref{fig:execlist2}.
 
 \begin{figure}[H]
   \begin{center}
@@ -611,11 +610,11 @@ That's why the overall coverage decreases to 1.3\% which means in this case
 that ``\textsf{Save clicked}'' executes 1.3\% more code than the selected tests. 
 
 A deeper look on the source code shows that  only two lines of the
-\verb$TextEdit::fileSave()$ function (see \autoref{lst:src10}) are not grayed:
+\verb$TextEdit::fileSave()$ function \seelstref{lst:src10} are not grayed:
 the lines which pop-up the error message. This are the lines that needs to be
 modified to change the behaviour behind the ``\textsf{Save}'' button.
 
-\begin{listings}[H]
+\begin{figureenv}
   \scriptsize
 \begin{alltt}
 bool TextEdit::fileSave()
@@ -637,13 +636,13 @@ bool TextEdit::fileSave()
 \end{alltt}
 \caption{{\CoverageBrowser} source view of the benefit of the execution ``Save clicked''.}
 \label{lst:src10}
-\end{listings}
+\end{figureenv}
 
 Correcting the \verb$fileSave()$ function is trivial and consists only to
 replace the call of \verb$QMessageBox::warning()$ through \verb$fileSaveAs()$.
-(see \autoref{lst:src11})
+\seelstref{lst:src11}
 
-\begin{listings}[H]
+\begin{figureenv}
   \scriptsize
 \begin{verbatim}
 bool TextEdit::fileSave()
@@ -660,7 +659,7 @@ bool TextEdit::fileSave()
 \end{verbatim}
 \caption{\TextEdit\ with a modified \texttt{fileSave()} function.}
 \label{lst:src11}
-\end{listings}
+\end{figureenv}
 
 \subsubsection{\label{sec:patchimpact}Evaluation of the impact of a hot fix}
 
@@ -677,7 +676,7 @@ application.
 
 Clicking on \GUIMenuTwo{Tools}{Analysis on Modified Methods} permits to exclude
 all unmodified functions from the coverage analysis. In our case, it is as if
-only the function \verb$TextEdit::fileSave()$ was instrumented. (see \autoref{fig:patchimpact})
+only the function \verb$TextEdit::fileSave()$ was instrumented. \seefigref{fig:patchimpact}
 This also impacts the statistic calculations: the coverage statistic of an
 execution is also limited only to this function. Some executions have now a
 coverage statistic which is not zero, these tests are impacted by the code
@@ -715,7 +714,7 @@ black-box database which does not contain the source code.
 Simply click on \GUIMenuTwo{File}{Generate Black-Box Configuration\ldots} to
 generate a new instrumentation database. This database, with \TextEdit\
 executable, can be transmitted to the test team which can then use it with a
-simplified version of \CoverageBrowser\ (see \autoref{fig:blackbox}): only
+simplified version of \CoverageBrowser\ \seefigref{fig:blackbox}: only
 importing and the managing execution report are possible.
 
 \begin{figure}[h]
@@ -749,7 +748,7 @@ to the first version and activate the analysis on modified functions.
   \label{fig:patchcoverage}
 \end{figure}
 
-The result is visible in \autoref{fig:patchcoverage}: the two tests ``Start
+The result is visible in \ref{fig:patchcoverage}: the two tests ``Start
 clicked'' and ``Start and Exit'' are covering 57\% of
 \verb$TextEdit::fileSave()$ function, the only modified method from our fix.
 
