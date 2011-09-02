@@ -1651,15 +1651,18 @@ cmake.exe -DCMAKE_TOOLCHAIN_FILE=cl.cmake -DCMAKE_BUILD_TYPE=COVERAGE
 # this one is important
 SET(CMAKE_SYSTEM_NAME Linux)
 
-FILE(TO_CMAKE_PATH "/usr/bin" COVERAGESCANNER_PATH)
+find_program(TestCocoon_GCC csgcc)
+find_program(TestCocoon_GXX csgxx)
+find_program(TestCocoon_AR csar)
+
 # specify the cross compiler
-SET(CMAKE_C_COMPILER ${COVERAGESCANNER_PATH}/csgcc 
+SET(CMAKE_C_COMPILER "${TestCocoon_GCC}"
     CACHE FILEPATH "CoverageScanner wrapper" FORCE)
-SET(CMAKE_CXX_COMPILER ${COVERAGESCANNER_PATH}/csg++ 
+SET(CMAKE_CXX_COMPILER "${TestCocoon_GXX}"
     CACHE FILEPATH "CoverageScanner wrapper" FORCE)
-SET(CMAKE_LINKER ${COVERAGESCANNER_PATH}/csg++ 
+SET(CMAKE_LINKER "${TestCocoon_GXX}"
     CACHE FILEPATH "CoverageScanner wrapper" FORCE)
-SET(CMAKE_AR ${COVERAGESCANNER_PATH}/csar 
+SET(CMAKE_AR "${TestCocoon_AR}"
     CACHE FILEPATH "CoverageScanner wrapper" FORCE)
 \end{verbatim}
 \item Create a Makefile project and set the toolchain to \CoverageScanner\ and the build mode to \verb$COVERAGE$.
