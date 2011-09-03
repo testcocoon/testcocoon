@@ -568,10 +568,13 @@ bool CSMesExecution::findModuleSourceForInstrumentation(ModuleFile &mod,SourceFi
 
 ExecutionNames CSMesExecution::executedBy(ModuleFile module,SourceFile source,int instrument_id,bool selected_executions_only, unsigned int max_executions_listed) const
 {
+  ExecutionNames execList;
+  if (max_executions_listed==0)
+    return execList;
+
   findSourceModule(module,source);
   ASSERT(module!="");
   ASSERT(source!="");
-  ExecutionNames execList;
   const CSMesInstrumentations::Instrumentations &inst_lst=instrumentations.modules[module].sources[source].instrumentations;
   const Instrumentation *inst_p=NULL;
   for (CSMesInstrumentations::Instrumentations::const_iterator it=inst_lst.begin();it!=inst_lst.end();++it)

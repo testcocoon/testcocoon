@@ -832,17 +832,21 @@ void CSMesRTF::explanationFragmentFromIndex (Writer &stream,const ModuleFile &mo
      e_col=cur_inst.endColumnPre();
      e_line=cur_inst.endLinePre();
    }
-   for (int i=cur_inst.getMinIndex();i<=cur_inst.getMaxIndex();i++)
+
+   if (executed_by_limit>0)
    {
-      ExecutionNames execByList=executedBy(module,source,i,true,executed_by_limit+1);
-      for (ExecutionNames::const_iterator exeit=execByList.begin();
-         exeit!=execByList.end();
-         ++exeit)
-      {
+     for (int i=cur_inst.getMinIndex();i<=cur_inst.getMaxIndex();i++)
+     {
+       ExecutionNames execByList=executedBy(module,source,i,true,executed_by_limit+1);
+       for (ExecutionNames::const_iterator exeit=execByList.begin();
+           exeit!=execByList.end();
+           ++exeit)
+       {
          if (executionList.contains(*exeit))
-            executedByExecution[i-cur_inst.getMinIndex()]+=*exeit;
-      }
-      qStableSort(executedByExecution[i-cur_inst.getMinIndex()]);
+           executedByExecution[i-cur_inst.getMinIndex()]+=*exeit;
+       }
+       qStableSort(executedByExecution[i-cur_inst.getMinIndex()]);
+     }
    }
 
    if (table_fragment)
