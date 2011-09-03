@@ -92,7 +92,7 @@ class LIBINSTRUMENTATION_API CSMes : public CSMesAnalysis
     void setExecutionStatusStr(const ExecutionName &name,const QString &execution_status) ; 
     bool selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t methode, comparaison_mode_t m) const;
     bool selectExecutionsComparaison(const ExecutionNames &ms,const ExecutionNames &comparaison,bool test_coverage_mode, Instrumentation::coverage_method_t method, comparaison_mode_t m) ;
-    ExecutionNames executedBy(const ModuleFile& module,const SourceFile & source,int index,bool selected_executions_only) const;
+    ExecutionNames executedBy(const ModuleFile& module,const SourceFile & source,int index,bool selected_executions_only,unsigned int max_executions_listed) const;
     static bool executionNameValid(const ExecutionName &name,QString &explanation) { return CSMesExecution::executionNameValid(name,explanation); }
     static QColor executionStatusColor(Executions::execution_status_t v) { return CSMesExecution::executionStatusColor(v);}
 

@@ -317,10 +317,10 @@ bool CSMes::selectExecutionsComparaison(const ExecutionNames &ms,const Execution
   return ret;
 }
 
-ExecutionNames CSMes::executedBy(const ModuleFile& module,const SourceFile & source,int index,bool selected_executions_only) const
+ExecutionNames CSMes::executedBy(const ModuleFile& module,const SourceFile & source,int index,bool selected_executions_only,unsigned int max_executions_listed) const
 {
   AccessLockerRead lock(csmes_locker);
-  return CSMesExecution::executedBy(module,source,index,selected_executions_only) ;
+  return CSMesExecution::executedBy(module,source,index,selected_executions_only,max_executions_listed) ;
 }
 
 

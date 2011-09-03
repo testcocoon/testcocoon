@@ -564,7 +564,7 @@ bool CSMesExecution::findModuleSourceForInstrumentation(ModuleFile &mod,SourceFi
   return false;
 }
 
-ExecutionNames CSMesExecution::executedBy(ModuleFile module,SourceFile source,int instrument_id,bool selected_executions_only) const
+ExecutionNames CSMesExecution::executedBy(ModuleFile module,SourceFile source,int instrument_id,bool selected_executions_only, unsigned int max_executions_listed) const
 {
   findSourceModule(module,source);
   ASSERT(module!="");
@@ -576,6 +576,7 @@ ExecutionNames CSMesExecution::executedBy(ModuleFile module,SourceFile source,in
     if ( (*it).validIndex(instrument_id) )
       inst_p=&(*it);
 
+  unsigned int nb_execution_listed=0;
   ASSERT(inst_p);
   int offset=instrument_id-inst_p->getMinIndex();
   bool first=true;
@@ -604,7 +605,12 @@ ExecutionNames CSMesExecution::executedBy(ModuleFile module,SourceFile source,in
             Instrumentation::execution_state_t exec_state=exec_mod[index];
             if (exec_state>0)
               if (!execList.contains(execName))
+              {
+                nb_execution_listed++;
                 execList+=execName;
+                if (nb_execution_listed>=max_executions_listed)
+                  return execList;
+              }
           }
         }
       }
