@@ -172,7 +172,7 @@ bool CSMesExecution::_selectExecutionsComparaisonCombileExecutions(Executions::m
       int mesp_sz=mesp.size();
       Executions::executions_t &mes=execution.executions[mod];
       int mes_sz=(*modit).nb_measurements_items;
-      ASSERT(mesp_sz<=mes_sz);
+      ASSERT(mesp_sz==mes_sz || mesp_sz==0);
       for (i=0;i<mesp_sz;i++)
       {
         Instrumentation::execution_state_t e=Instrumentation::adjustExecutionCount(mesp.at(i),test_coverage_mode);
