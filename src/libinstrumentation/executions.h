@@ -53,16 +53,21 @@ class LIBINSTRUMENTATION_API Executions
     typedef QVector<Instrumentation::execution_state_t> executions_t;
     typedef QHash<ModuleFile,executions_t> list_modules_executions_t;
     struct modules_executions_t {
-      QString comment;
-      list_modules_executions_t executions;
-      execution_status_t execution_status;
+      private:
+        execution_status_t execution_status;
+      public:
+        void setExecutionStatus(execution_status_t e) { 
+          execution_status = e; 
+        }
+        execution_status_t executionStatus() const { return execution_status; }
+        QString comment;
+        list_modules_executions_t executions;
 
-      void clear() 
-      {
-        executions.clear();
-        comment.clear();
-        execution_status=EXECUTION_STATUS_UNKNOWN;
-      }
+        void clear() 
+        {
+          executions.clear();
+          comment.clear();
+        }
     };
     struct modules_executions_private_t {
       modules_executions_t data;

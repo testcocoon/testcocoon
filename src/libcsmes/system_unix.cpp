@@ -24,6 +24,8 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <errno.h>
+#include <string.h>
 
 
 bool System::call(const char *command,bool capt_stdout)
@@ -141,4 +143,12 @@ int System::getProcessID()
 std::string System::appendExecSuffix(const std::string &f)
 {
    return f;
+}
+
+bool System::fileTruncate(FILE *f ,_I64 s)
+{
+  int fno=fileno(f);
+  int ret = ftruncate(fno,s);
+
+  return ret == 0;
 }

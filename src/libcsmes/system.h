@@ -44,6 +44,7 @@ class LIBCSMES_API System
     static bool delete_file(const char * name);
     static bool rename_file ( const char * oldname , const char * newname );
     static int getProcessID() ;
+    static bool fileTruncate(FILE *,_I64 s);
     static std::string appendExecSuffix(const std::string &);
     static std::string suppressExecSuffix(const std::string &f);
   private:

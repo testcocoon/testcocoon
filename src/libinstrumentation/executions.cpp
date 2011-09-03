@@ -135,7 +135,7 @@ void Executions::setExecutionStatus(const ExecutionName &name,execution_status_t
    AccessLockerWrite lock(&access_locker);
   ASSERT(exists(name));
   ensureLoaded(name);
-  executions[name].data.execution_status=v;
+  executions[name].data.setExecutionStatus(v);
 }
 
 void Executions::setExecutionComment(const ExecutionName &name,const QString &comment)
@@ -175,7 +175,7 @@ Executions::execution_status_t Executions::getExecutionStatus(const ExecutionNam
 {
    AccessLockerRead lock(&access_locker);
   ASSERT(exists(name));
-  return executions.value(name).data.execution_status;
+  return executions.value(name).data.executionStatus();
 }
 
 
@@ -368,7 +368,7 @@ bool Executions::load()
           {
             return false;
           }
-          executions[name].data.execution_status=static_cast<Executions::execution_status_t>(execution_status);
+          executions[name].data.setExecutionStatus(static_cast<Executions::execution_status_t>(execution_status));
           executions[name].execution_section_hint=sec_id;
         }
         break;
@@ -387,7 +387,7 @@ bool Executions::load()
           {
             return false;
           }
-          executions[name].data.execution_status=static_cast<Executions::execution_status_t>(execution_status);
+          executions[name].data.setExecutionStatus(static_cast<Executions::execution_status_t>(execution_status));
         }
         break;
       default:
@@ -488,7 +488,7 @@ bool Executions::save_executions_compact_format()
       QString name(QString::fromUtf8(csmes_p->sectionName(i)).toAscii());
       if (executions.contains(name))
       {
-        execution_status_t exec_status=executions.value(name).data.execution_status;
+        execution_status_t exec_status=executions.value(name).data.executionStatus();
         long iexecst;
         if (csmes_p->readExecutionStatus(i,iexecst))
         {
@@ -541,7 +541,7 @@ bool Executions::save_executions_old_format()
         csmes_p->closeSection();
       }
     }
-    csmes_p->writeExecutionStatus(name_cstr.constData(),static_cast<long>(executions[name].data.execution_status));
+    csmes_p->writeExecutionStatus(name_cstr.constData(),static_cast<long>(executions[name].data.executionStatus()));
   }
   return true;
 }

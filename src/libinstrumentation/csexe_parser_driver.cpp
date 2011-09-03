@@ -209,7 +209,7 @@ void CSExeParserDriver::end_csexe_measurement()
   else
   {
     _detailled_info+="<TD><TT>"+Qt::escape(_execution_title)+"</TT></TD>";
-    _detailled_info+="<TD bgcolor=\""+CSMesIO::executionStatusColor(_mts.execution_status).name()+"\">"+CSMesIO::executionsStatusStr()[_mts.execution_status]+"</TD>";
+    _detailled_info+="<TD bgcolor=\""+CSMesIO::executionStatusColor(_mts.executionStatus()).name()+"\">"+CSMesIO::executionsStatusStr()[_mts.executionStatus()]+"</TD>";
     bool duplicate=false;
     ExecutionName duplicate_execution;
     bool empty_execution=false;
@@ -336,16 +336,16 @@ ExecutionName CSExeParserDriver::executionName(const ExecutionName &default_name
 
 void CSExeParserDriver::set_status(Executions::execution_status_t s) 
 {
-  switch (_mts.execution_status)
+  switch (_mts.executionStatus())
   {
     case Executions::EXECUTION_STATUS_UNKNOWN:
-      _mts.execution_status=s;
+      _mts.setExecutionStatus(s);
       break;
     case Executions::EXECUTION_STATUS_FAILED:
     case Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY:
     case Executions::EXECUTION_STATUS_PASSED:
-      if (_mts.execution_status!=s)
-        _mts.execution_status=Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY;
+      if (_mts.executionStatus()!=s)
+        _mts.setExecutionStatus(Executions::EXECUTION_STATUS_TO_BE_CHECK_MANUALLY);
       break;
   }
 }
@@ -372,7 +372,7 @@ void  CSExeParserDriver::init_add_instrumentation(const QString &module,long nb_
 
   if (!_skip_module)
   {
-    _mts.execution_status=_execution_status;
+    _mts.setExecutionStatus(_execution_status);
     _mes_p=&(_mts.executions[module]);
     int mes_p_size=_mes_p->size();
     if (mes_p_size!=nb_mes)

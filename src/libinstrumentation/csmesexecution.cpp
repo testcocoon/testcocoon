@@ -677,7 +677,7 @@ bool CSMesExecution::getExecutionComment(const ExecutionName &name, QString &com
 
 bool CSMesExecution::createEmptyExecution(Executions::modules_executions_t &mts) const
 {
-  mts.execution_status=Executions::EXECUTION_STATUS_UNKNOWN;
+  mts.setExecutionStatus(Executions::EXECUTION_STATUS_UNKNOWN);
   const QList<ModuleFile> &modules_list=instrumentations.modules.keys();
   for (QList<ModuleFile>::const_iterator mod=modules_list.begin();mod!=modules_list.end();++mod)
   {
