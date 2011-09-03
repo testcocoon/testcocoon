@@ -154,8 +154,11 @@ bool CSMesExecution::_selectExecutionsComparaisonCombileExecutionsComparaison(Ex
   return true;
 }
 
-bool CSMesExecution::_selectExecutionsComparaisonCombileExecutions(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,bool test_coverage_mode,const bool &abort_operation) const
+bool CSMesExecution::_selectExecutionsComparaisonCombileExecutions(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,bool test_coverage_mode,Instrumentation::coverage_method_t method,const bool &abort_operation) const
 {
+  CSMesInstrumentations __instrumentations;
+  if (test_coverage_mode)
+    copyInstrumentation(__instrumentations,_instrumentations);
   CSMesInstrumentations::Modules::const_iterator  modit ;
   ExecutionNames mes=executions.optimizeExecutionListForCaching(ms);
   for ( ExecutionNames::const_iterator msit = mes.begin(); msit != mes.end(); ++msit )
@@ -163,6 +166,8 @@ bool CSMesExecution::_selectExecutionsComparaisonCombileExecutions(Executions::m
     if (abort_operation)
       return false;
     Executions::modules_executions_t modmes=executions.getExecution(*msit);
+    if (test_coverage_mode)
+      _limitExecutionCountToOne(modmes,__instrumentations,method,abort_operation) ;
     for (modit = _instrumentations.modules.begin(); modit != _instrumentations.modules.end(); ++modit )
     {
       int i;
@@ -173,6 +178,7 @@ bool CSMesExecution::_selectExecutionsComparaisonCombileExecutions(Executions::m
       Executions::executions_t &mes=execution.executions[mod];
       int mes_sz=(*modit).nb_measurements_items;
       ASSERT(mesp_sz==mes_sz || mesp_sz==0);
+      ASSERT(mesp_sz<=mes_sz);
       for (i=0;i<mesp_sz;i++)
       {
         Instrumentation::execution_state_t e=Instrumentation::adjustExecutionCount(mesp.at(i),test_coverage_mode);
@@ -188,6 +194,51 @@ bool CSMesExecution::_selectExecutionsComparaisonCombileExecutions(Executions::m
     }
   }
 
+  return true;
+}
+
+bool CSMesExecution::_limitExecutionCountToOne(Executions::modules_executions_t &execution,CSMesInstrumentations &_instrumentations,Instrumentation::coverage_method_t method,const bool &abort_operation) const
+{
+  clearExecutions(_instrumentations);
+  CSMesInstrumentations::Modules::Iterator  modit ;
+  for (modit = _instrumentations.modules.begin(); modit != _instrumentations.modules.end(); ++modit )
+  {
+    if (abort_operation)
+      return false;
+    Executions::executions_t &mes=execution.executions[modit.key()];
+    if (mes.size()==0)
+      continue;
+    // Propagate the state in the equivalent measurements
+    CSMesInstrumentations::Sources::Iterator srcit;
+    for ( srcit = modit.value().sources.begin(); srcit != modit.value().sources.end(); ++srcit )
+    {
+      QString cur_source=srcit.key();
+      CSMesInstrumentations::Instrumentations *inst_p=&(srcit.value().instrumentations);
+      int sz=inst_p->size();
+      int instrument_id;
+
+      for (instrument_id=0;instrument_id<sz;instrument_id++)
+      {
+        /* set the current instrumentation */
+        int i;
+        Instrumentation &ins=(*inst_p)[instrument_id];
+        for (i=ins.getMinIndex();i<=ins.getMaxIndex();i++)
+        {
+          if (static_cast<int>(mes[i])>1)
+            mes[i]=static_cast<Instrumentation::execution_state_t>(1);
+        }
+        setExecutionState(ins,mes,method);
+        for (i=ins.getMinIndex();i<=ins.getMaxIndex();i++)
+        {
+          if (ins.executionCount(i)>1 && static_cast<int>(mes[i])>0)
+            mes[i]=Instrumentation::EXECUTION_STATE_NOT_EXECUTED;
+        }
+
+        for (Instrumentation *equiv=ins.getEquivalent();equiv!=&ins;equiv=equiv->getEquivalent())
+          equiv->copyExecutionState(ins);
+      }
+    }
+  }
   return true;
 }
 
@@ -245,7 +296,7 @@ bool CSMesExecution::_selectExecutionsComparaison(CSMesInstrumentations &_instru
 
   _selectExecutionsComparaisonInit(execution,_instrumentations) ;
 
-  _selectExecutionsComparaisonCombileExecutions(execution,_instrumentations,ms,test_coverage_mode,abort_operation);
+  _selectExecutionsComparaisonCombileExecutions(execution,_instrumentations,ms,test_coverage_mode,method,abort_operation);
 
   if (!abort_operation)
     _selectExecutionsComparaisonCombileExecutionsComparaison(execution,_instrumentations,cmp,abort_operation);

@@ -101,7 +101,8 @@ class CSMesExecution : public CSMesFunctionInfo
     inline bool _selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,const ExecutionNames &cmp,bool test_coverage_mode,Instrumentation::coverage_method_t method,const bool &abort_operation) const;
   private:
     inline bool _selectExecutionsComparaisonInit(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations) const;
-    inline bool _selectExecutionsComparaisonCombileExecutions(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,bool test_coverage_mode,const bool &abort_operation) const;
+    inline bool _selectExecutionsComparaisonCombileExecutions(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,bool test_coverage_mode,Instrumentation::coverage_method_t method,const bool &abort_operation) const;
+    inline bool _limitExecutionCountToOne(Executions::modules_executions_t &execution,CSMesInstrumentations &_instrumentations,Instrumentation::coverage_method_t method,const bool &abort_operation) const;
     inline bool _selectExecutionsComparaisonCombileExecutionsComparaison(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const ExecutionNames &comparaison,const bool &abort_operation) const;
     inline bool _selectExecutionsComparaisonCombileHideExecutions(Executions::modules_executions_t &execution,const CSMesInstrumentations &_instrumentations,const ExecutionNames &comparaison) const;
     inline bool _selectExecutionsComparaisonUpdateInstrumentation(const Executions::modules_executions_t &execution,CSMesInstrumentations &_instrumentations,Instrumentation::coverage_method_t method,const bool &abort_operation) const;
