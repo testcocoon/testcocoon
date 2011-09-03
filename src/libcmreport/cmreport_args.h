@@ -51,6 +51,7 @@ class CMReport
     CSMes::DisplayLevelType_t execution_coverage_display_mode;
     CSMes::DisplaySortingType_t execution_coverage_sorting_mode;
     bool bargraph;
+    int executed_by_limit;
     bool code_fragments_manually_validated;
     bool code_fragments_unexecuted;
     bool code_fragments_executed;
@@ -101,6 +102,7 @@ class CMReport
     static bool getoption_set_level(const char*exp);
     static bool getoption_set_level_method(const char*exp);
     static bool getoption_set_level_execution(const char*exp);
+    static bool getoption_set_executed_by_limit(const char*exp);
     static bool getoption_set_sublevels_execution(const char*exp);
     static bool getoption_set_sublevels_method(const char*exp);
     static bool getoption_set_sublevels_global(const char*exp);

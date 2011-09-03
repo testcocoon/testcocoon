@@ -341,7 +341,8 @@ bool CSMes::exportHtmlReport(
     DisplayLevelType_t execution_coverage_display_mode,
     DisplaySortingType_t execution_coverage_sorting_mode,
     int executions_level, bool toc, bool code_fragments_manually_validated, bool code_fragments_unexecuted, bool code_fragments_executed, bool executions_filter_active, double executions_filter_min, double executions_filter_max,  bool sources_filter_active, double sources_filter_min, double sources_filter_max, bool methods_filter_active, double methods_filter_min, double methods_filter_max, double executions_watermark_medium_level, double executions_watermark_low_level, double global_coverage_watermark_medium_level, double global_coverage_watermark_low_level, int global_coverage_max_intermediate_levels, int methods_max_intermediate_levels, int executions_max_intermediate_levels, int sources_max_intermediate_levels, int  global_coverage_level , Instrumentation::coverage_method_t coverage_method, int methods_level, double methods_watermark_low_level, double methods_watermark_medium_level, double sources_watermark_low_level, double sources_watermark_medium_level, bool test_count_mode,
-    bool bargraph
+    bool bargraph,
+    int executed_by_limit
     )const
 {
   AccessLockerRead lock(csmes_locker);
@@ -388,7 +389,8 @@ bool CSMes::exportHtmlReport(
       sources_watermark_low_level,
       sources_watermark_medium_level,
       test_count_mode,
-      bargraph
+      bargraph,
+      executed_by_limit
         );
 }
 
@@ -434,22 +436,22 @@ QString CSMes::exportHtmlStatisticGlobalCoverage(Writer &stream,int coverage_lev
   return CSMesReport::exportHtmlStatisticGlobalCoverage(stream,coverage_level,method,all_levels, first_level,max_number_of_levels,watermark_low_medium, watermark_medium_high,bargraph);
 }
 
-QString CSMes::exportHtmlExecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method) const
+QString CSMes::exportHtmlExecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method,int executed_by_limit) const
 {
   AccessLockerRead lock(csmes_locker);
-  return CSMesReport::exportHtmlExecutedCode(stream,level,method);
+  return CSMesReport::exportHtmlExecutedCode(stream,level,method,executed_by_limit);
 }
 
-QString CSMes::exportHtmlUnexecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method) const
+QString CSMes::exportHtmlUnexecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method,int executed_by_limit) const
 {
   AccessLockerRead lock(csmes_locker);
-  return CSMesReport::exportHtmlUnexecutedCode(stream,level,method);
+  return CSMesReport::exportHtmlUnexecutedCode(stream,level,method,executed_by_limit);
 }
 
-QString CSMes::exportHtmlManuallyValidated(Writer &stream,int level,Instrumentation::coverage_method_t method) const
+QString CSMes::exportHtmlManuallyValidated(Writer &stream,int level,Instrumentation::coverage_method_t method,int executed_by_limit) const
 {
   AccessLockerRead lock(csmes_locker);
-  return CSMesReport::exportHtmlManuallyValidated(stream,level,method);
+  return CSMesReport::exportHtmlManuallyValidated(stream,level,method,executed_by_limit);
 }
 
 QList<CSMes::functionskey_t> CSMes::Functions() const

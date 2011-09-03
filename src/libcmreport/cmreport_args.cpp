@@ -19,8 +19,7 @@
 #include "cmreportpdef.h"
 #include "cmreport_args.h"
 #include "version.h"
-#include <qstring.h>
-#include <qmessagebox.h>
+#include <QString>
 #include "getoption.h"
 #include <iostream>
 using namespace std;
@@ -50,6 +49,7 @@ void CMReport::clear()
   execution_coverage_display_mode=CSMes::DISPLAY_NOTHING;
   execution_coverage_sorting_mode=CSMes::SORT_NONE;
   bargraph=false;
+  executed_by_limit=0;
   code_fragments_manually_validated=false;
   code_fragments_unexecuted=false;
   code_fragments_executed=false;
@@ -179,6 +179,12 @@ bool CMReport::getoption_set_level(const char*exp)
 bool CMReport::getoption_set_level_method(const char*exp)
 {
   CMReport::instance().methods_level=atoi(exp);
+  return true;
+}
+
+bool CMReport::getoption_set_executed_by_limit(const char*exp)
+{
+  CMReport::instance().executed_by_limit=atoi(exp);
   return true;
 }
 
@@ -654,6 +660,7 @@ bool CMReport::getopt_process(int argc,const char*const* argv)
     { GETOPT_OPTION, NULL , "--unexecuted" , "Unexecuted code fragments (HTML/XML output)" , getoption_set_unexecuted},
     { GETOPT_OPTION, NULL , "--executed" , "Executed code fragments (HTML/XML output)" , getoption_set_executed},
     { GETOPT_OPTION, NULL , "--bargraph" , "Coverage data displayed in a bargraph (HTML output)" , getoption_set_bargraph},
+    { GETOPT_OPTION|GETOPT_HASARG, NULL , "--executed-by-limit" , "Maximum number of executions which covers a source code line" , getoption_set_executed_by_limit},
     { GETOPT_OPTION|GETOPT_HASARG, NULL , "--emma" , "Generate a EMMA-XML report file" , getoption_set_emma},
     { GETOPT_OPTION|GETOPT_HASARG, NULL , "--csv-method" , "Generate a CSV report file for each method" , getoption_set_csv_function},
     { GETOPT_OPTION|GETOPT_HASARG, NULL , "--csv-function" , "Generate a CSV report file for each file" , getoption_set_csv_module},
@@ -797,7 +804,8 @@ bool CMReport::analyse_args(int argc,const char*const * argv)
           sources_watermark_low_level,
           sources_watermark_medium_level,
           selections.isTestCountMode(),
-          bargraph
+          bargraph,
+          executed_by_limit
             ))
           {
             cerr << "Error: could not generate HTML output" <<endl;

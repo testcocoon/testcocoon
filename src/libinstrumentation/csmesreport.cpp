@@ -733,7 +733,7 @@ QString CSMesReport::exportHtmlStatisticExecutions(Writer &stream,int coverage_l
   return exportHtml(Writer::ExecutionStatistics,table,stream,watermark_low_medium, watermark_medium_high,bargraph);
 }
 
-QString CSMesReport::exportHtmlCodeFragments(Writer &stream,int level,Instrumentation::coverage_method_t method,code_fragment_type_t code_fragment_type) const
+QString CSMesReport::exportHtmlCodeFragments(Writer &stream,int level,Instrumentation::coverage_method_t method,code_fragment_type_t code_fragment_type,int executed_by_limit) const
 {
   SourceFiles sources=Sources(NON_EMPTY);
   bool empty_output=true;
@@ -792,7 +792,7 @@ QString CSMesReport::exportHtmlCodeFragments(Writer &stream,int level,Instrument
               WriterSection explanation(stream,sec);
               {
                 WriterSection explanation1(stream,Writer::CodeFragmentItemExplanationItem);
-                explanationFragmentFromIndex(stream,module,source,index,CSMes::ORIGINAL,level,method,-1,true) ;
+                explanationFragmentFromIndex(stream,module,source,index,CSMes::ORIGINAL,level,method,executed_by_limit,true) ;
               }
             }
           }
@@ -813,19 +813,19 @@ QString CSMesReport::exportHtmlCodeFragments(Writer &stream,int level,Instrument
   return QString();
 }
 
-QString CSMesReport::exportHtmlExecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method) const
+QString CSMesReport::exportHtmlExecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method,int executed_by_limit) const
 {
-  return exportHtmlCodeFragments(stream,level,method,FRAGMENTS_EXECUTED);
+  return exportHtmlCodeFragments(stream,level,method,FRAGMENTS_EXECUTED,executed_by_limit);
 }
 
-QString CSMesReport::exportHtmlUnexecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method) const
+QString CSMesReport::exportHtmlUnexecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method,int executed_by_limit) const
 {
-  return exportHtmlCodeFragments(stream,level,method,FRAGMENTS_UNEXECUTED);
+  return exportHtmlCodeFragments(stream,level,method,FRAGMENTS_UNEXECUTED,executed_by_limit);
 }
 
-QString CSMesReport::exportHtmlManuallyValidated(Writer &stream,int level,Instrumentation::coverage_method_t method) const
+QString CSMesReport::exportHtmlManuallyValidated(Writer &stream,int level,Instrumentation::coverage_method_t method,int executed_by_limit) const
 {
-  return exportHtmlCodeFragments(stream,level,method,FRAGMENTS_MANUALLY_VALIDATED);
+  return exportHtmlCodeFragments(stream,level,method,FRAGMENTS_MANUALLY_VALIDATED,executed_by_limit);
 }
 
 
@@ -1180,7 +1180,8 @@ void CSMesReport::generateCodeFragments(
     bool  code_fragments_manually_validated ,
     bool  code_fragments_unexecuted ,
     bool  code_fragments_executed ,
-    Instrumentation::coverage_method_t coverage_method
+    Instrumentation::coverage_method_t coverage_method,
+    int executed_by_limit
     )
 {
   if (!code_fragments)
@@ -1191,7 +1192,7 @@ void CSMesReport::generateCodeFragments(
     stream.begin(Writer::HtmlFragmentsManuallyValidatedTitle);
     stream << QObject::tr("Manually Validated Code Parts") ; 
     stream.end(Writer::HtmlFragmentsManuallyValidatedTitle);
-    csmes.exportHtmlManuallyValidated(stream,1,coverage_method);
+    csmes.exportHtmlManuallyValidated(stream,1,coverage_method,executed_by_limit);
     stream.end(Writer::FragmentsManuallyValidated);
 
   }
@@ -1201,7 +1202,7 @@ void CSMesReport::generateCodeFragments(
     stream.begin(Writer::HtmlFragmentsUnexecutedTitle);
     stream << QObject::tr("Unexecuted Code Parts") ; 
     stream.end(Writer::HtmlFragmentsUnexecutedTitle);
-    csmes.exportHtmlUnexecutedCode(stream,1,coverage_method);
+    csmes.exportHtmlUnexecutedCode(stream,1,coverage_method,executed_by_limit);
     stream.end(Writer::FragmentsUnexecuted);
   }
   if (code_fragments_executed)
@@ -1210,7 +1211,7 @@ void CSMesReport::generateCodeFragments(
     stream.begin(Writer::HtmlFragmentsExecutedTitle);
     stream << QObject::tr("Executed Code Parts") ; 
     stream.end(Writer::HtmlFragmentsExecutedTitle);
-    csmes.exportHtmlExecutedCode(stream,1,coverage_method);
+    csmes.exportHtmlExecutedCode(stream,1,coverage_method,executed_by_limit);
     stream.end(Writer::FragmentsExecuted);
   }
 }
@@ -1265,7 +1266,8 @@ bool CSMesReport::exportHtmlReport(
     double sources_watermark_low_level,
     double sources_watermark_medium_level,
     bool test_count_mode,
-    bool bargraph
+    bool bargraph,
+    int executed_by_limit
     ) const
 {
   if (documentType == DOCUMENT_OPEN_OFFICE)
@@ -1400,7 +1402,8 @@ bool CSMesReport::exportHtmlReport(
       code_fragments_manually_validated ,
       code_fragments_unexecuted ,
       code_fragments_executed ,
-      coverage_method
+      coverage_method,
+      executed_by_limit
       );
   generateFooters( *stream_p);
   output.close();

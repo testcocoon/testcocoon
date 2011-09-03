@@ -148,6 +148,7 @@ WHTMLReport::WHTMLReport(const CSMesUndoRedoFramework *c,QWidget* parent,  Qt::W
   sources_watermark_low_level_p->setValue(Options::get_opt_double(QString(),"MODULE_LOW_COLOR_LEVEL",sources_watermark_low_level_p->value()));
   methods_watermark_medium_level_p->setValue(Options::get_opt_double(QString(),"FUNCTION_MEDIUM_COLOR_LEVEL",methods_watermark_medium_level_p->value()));
   methods_watermark_low_level_p->setValue(Options::get_opt_double(QString(),"FUNCTION_LOW_COLOR_LEVEL",methods_watermark_low_level_p->value()));
+  executed_by_limit_p->setValue(Options::get_opt_double(QString(),"EXECUTED_BY_LIMIT",executed_by_limit_p->value()));
   executions_watermark_medium_level_p->setValue(Options::get_opt_double(QString(),"HTML_REPORT_EXECUTIONS_MEDIUM_LEVEL"));
   executions_watermark_low_level_p->setValue(Options::get_opt_double(QString(),"HTML_REPORT_EXECUTIONS_LOW_LEVEL"));
   global_coverage_watermark_medium_level_p->setValue(Options::get_opt_double(QString(),"HTML_REPORT_SUMMARY_MEDIUM_LEVEL"));
@@ -182,6 +183,7 @@ WHTMLReport::WHTMLReport(const CSMesUndoRedoFramework *c,QWidget* parent,  Qt::W
   connect(sources_watermark_low_level_p,SIGNAL(valueChanged(double)),this,SLOT(checkInput()));
   connect(methods_watermark_medium_level_p,SIGNAL(valueChanged(double)),this,SLOT(checkInput()));
   connect(methods_watermark_low_level_p,SIGNAL(valueChanged(double)),this,SLOT(checkInput()));
+  connect(executed_by_limit_p ,SIGNAL(valueChanged(double)),this,SLOT(checkInput()));
   connect(executions_watermark_medium_level_p,SIGNAL(valueChanged(double)),this,SLOT(checkInput()));
   connect(executions_watermark_low_level_p,SIGNAL(valueChanged(double)),this,SLOT(checkInput()));
   connect(global_coverage_watermark_medium_level_p,SIGNAL(valueChanged(double)),this,SLOT(checkInput()));
@@ -387,7 +389,8 @@ void WHTMLReport::process ()
         sources_watermark_low_level_p->value(),
         sources_watermark_medium_level_p->value(),
         CoverageSettings::object().getTestCoverageMode(),
-        bargraph_p->isChecked()
+        bargraph_p->isChecked(),
+        executed_by_limit_p->value()
           )
           )
           {

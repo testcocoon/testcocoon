@@ -94,16 +94,17 @@ bool exportHtmlReport(
     double sources_watermark_low_level,
     double sources_watermark_medium_level,
     bool test_count_mode,
-    bool bargraph
+    bool bargraph,
+    int executed_by_limit
     )const ;
 
     QString exportHtmlStatisticFunction(Writer &stream,int coverage_level,Instrumentation::coverage_method_t method,bool all_levels, bool first_level,int max_number_of_levels,float exclude_coverage_low,float exclude_coverage_hight, float watermark_low_medium, float watermark_medium_high,bool sort_coverage,bool bargraph) const;
     QString exportHtmlStatisticExecutions(Writer &stream,int coverage_level,Instrumentation::coverage_method_t method,bool all_levels, bool first_level,int max_number_of_levels,float exclude_coverage_low,float exclude_coverage_hight, float watermark_low_medium, float watermark_medium_high,bool sort_coverage,bool bargraph) const;
     QString exportHtmlStatisticSources(Writer &stream,int coverage_level,Instrumentation::coverage_method_t method,bool all_levels, bool first_level,int max_number_of_levels,float exclude_coverage_low,float exclude_coverage_hight, float watermark_low_medium, float watermark_medium_high,bool sort_coverage,bool bargraph) const;
     QString exportHtmlStatisticGlobalCoverage(Writer &stream,int coverage_level,Instrumentation::coverage_method_t method,bool all_levels, bool first_level,int max_number_of_levels,float watermark_low_medium, float watermark_medium_high,bool bargraph) const;
-    QString exportHtmlUnexecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method) const ;
-    QString exportHtmlExecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method) const ;
-    QString exportHtmlManuallyValidated(Writer &stream,int level,Instrumentation::coverage_method_t method) const ;
+    QString exportHtmlUnexecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method,int) const ;
+    QString exportHtmlExecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method,int) const ;
+    QString exportHtmlManuallyValidated(Writer &stream,int level,Instrumentation::coverage_method_t method,int) const ;
   public:
     enum table_format_type_t
     {
@@ -143,7 +144,7 @@ bool exportHtmlReport(
     QString exportStatisticSources(table_t &table,int coverage_level,Instrumentation::coverage_method_t method,bool all_levels, bool first_level,int max_number_of_levels,float exclude_coverage_low,float exclude_coverage_hight, bool sort_coverage) const;
     QString exportStatisticGlobalCoverage(CSMesReport::table_t &table,int coverage_level,Instrumentation::coverage_method_t method,bool all_levels, bool first_level,int max_number_of_levels) const;
     enum code_fragment_type_t { FRAGMENTS_MANUALLY_VALIDATED, FRAGMENTS_UNEXECUTED, FRAGMENTS_EXECUTED };
-    QString exportHtmlCodeFragments(Writer &stream,int level,Instrumentation::coverage_method_t method,code_fragment_type_t ) const ;
+    QString exportHtmlCodeFragments(Writer &stream,int level,Instrumentation::coverage_method_t method,code_fragment_type_t,int ) const ;
     static bool tableLessThanName(const QVector<CSMesReport::table_data_t> &e1,const QVector<CSMesReport::table_data_t> &e2);
     static bool tableLessThanCoverage(const QVector<CSMesReport::table_data_t> &e1,const QVector<CSMesReport::table_data_t> &e2);
   protected:
@@ -250,7 +251,8 @@ static inline void generateCodeFragments(
     bool  code_fragments_manually_validated ,
     bool  code_fragments_unexecuted ,
     bool  code_fragments_executed ,
-    Instrumentation::coverage_method_t coverage_method
+    Instrumentation::coverage_method_t coverage_method,
+    int executed_by_limit
     );
 
 static inline void generateFooters( Writer & stream );

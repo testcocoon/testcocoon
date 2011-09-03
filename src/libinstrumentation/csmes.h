@@ -141,7 +141,8 @@ bool exportHtmlReport(
     double sources_watermark_low_level,
     double sources_watermark_medium_level,
     bool test_count_mode,
-    bool bargraph
+    bool bargraph,
+    int executed_by_limit
     )const ;
     QString exportHtmlStatisticFunction(Writer &stream,int coverage_level,Instrumentation::coverage_method_t method,bool all_levels, bool first_level,int max_number_of_levels,float exclude_coverage_low,float exclude_coverage_hight, float watermark_low_medium, float watermark_medium_high,bool sort_coverage,bool bargraph) const;
     QString exportHtmlStatisticExecutions(Writer &stream,int coverage_level,Instrumentation::coverage_method_t method,bool all_levels, bool first_level,int max_number_of_levels,float exclude_coverage_low,float exclude_coverage_hight, float watermark_low_medium, float watermark_medium_high,bool sort_coverage,bool bargraph) const;
@@ -151,9 +152,9 @@ bool exportHtmlReport(
     QString exportTextReport(const QString &filename,const QString & format_executed,const QString & format_unexecuted,int coverage_level,Instrumentation::coverage_method_t method) const;
     QString exportCSVStatisticModule(const QString &filename,QChar separator,QChar floatSep,int coverage_level,Instrumentation::coverage_method_t method) const;
     QString exportHtmlStatisticGlobalCoverage(Writer &stream,int coverage_level,Instrumentation::coverage_method_t method,bool all_levels, bool first_level,int max_number_of_levels,float watermark_low_medium, float watermark_medium_high,bool bargraph) const;
-    QString exportHtmlUnexecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method) const ;
-    QString exportHtmlExecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method) const ;
-    QString exportHtmlManuallyValidated(Writer &stream,int level,Instrumentation::coverage_method_t method) const ;
+    QString exportHtmlUnexecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method,int executed_by_limit) const ;
+    QString exportHtmlExecutedCode(Writer &stream,int level,Instrumentation::coverage_method_t method,int executed_by_limit) const ;
+    QString exportHtmlManuallyValidated(Writer &stream,int level,Instrumentation::coverage_method_t method,int executed_by_limit) const ;
 
     /* CSMesFunctionInfo */
     QList<functionskey_t> Functions() const ;
