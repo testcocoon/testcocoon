@@ -834,7 +834,7 @@ void CSMesRTF::explanationFragmentFromIndex (Writer &stream,const ModuleFile &mo
    }
    for (int i=cur_inst.getMinIndex();i<=cur_inst.getMaxIndex();i++)
    {
-      ExecutionNames execByList=executedBy(module,source,i,true,executed_by_limit);
+      ExecutionNames execByList=executedBy(module,source,i,true,executed_by_limit+1);
       for (ExecutionNames::const_iterator exeit=execByList.begin();
          exeit!=execByList.end();
          ++exeit)
