@@ -95,7 +95,7 @@ class CSMesExecution : public CSMesFunctionInfo
     Instrumentation::coverage_method_t   _coverage_method;
     ExecutionNames                       _selected_executions;
     ExecutionNames                       _selected_comparaison;
-    inline void setExecutionState(Instrumentation &ins,const Executions::executions_t &mes, Instrumentation::coverage_method_t , int translation) const;
+    inline void setExecutionState(Instrumentation &ins,const Executions::executions_t &mes, Instrumentation::coverage_method_t) const;
     bool findModuleSourceForInstrumentation(ModuleFile &mod,SourceFile &src,const Instrumentation *equiv) const;
     static Executions::execution_status_t combineExecutionStatus(Executions::execution_status_t,Executions::execution_status_t);
     inline bool _selectExecutionsComparaison(CSMesInstrumentations &_instrumentations,const ExecutionNames &ms,const ExecutionNames &cmp,bool test_coverage_mode,Instrumentation::coverage_method_t method,const bool &abort_operation) const;

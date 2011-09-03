@@ -32,7 +32,7 @@ void CSMesExecution::clear()
   _selected_comparaison.clear();
 }
 
-void CSMesExecution::setExecutionState(Instrumentation &ins,const Executions::executions_t &mes, Instrumentation::coverage_method_t method,int translation) const
+void CSMesExecution::setExecutionState(Instrumentation &ins,const Executions::executions_t &mes, Instrumentation::coverage_method_t method) const
 {
   int m=ins.getMaxIndex();
   for (int id=ins.getMinIndex();id<=m;id++)
@@ -45,7 +45,7 @@ void CSMesExecution::setExecutionState(Instrumentation &ins,const Executions::ex
         continue;
       }
     }
-    Instrumentation::execution_state_t  mes_state=mes[id-translation];
+    Instrumentation::execution_state_t  mes_state=mes[id];
     switch (mes_state)
     {
       case Instrumentation::EXECUTION_STATE_NOT_EXECUTED:
@@ -57,10 +57,12 @@ void CSMesExecution::setExecutionState(Instrumentation &ins,const Executions::ex
         break;
       default:
         ASSERT(static_cast<int>(mes_state)>0);
-        /* fall through */
       case Instrumentation::EXECUTION_STATE_HIDDEN:
       case Instrumentation::EXECUTION_STATE_NONE:
-        ins.setExecution(id,mes_state);
+        {
+          Instrumentation::execution_state_t actual_state=ins.getExecution(id);
+          ins.setExecution(id,Instrumentation::combineExecution(actual_state,mes_state));
+        }
         break;
       case Instrumentation::EXECUTION_STATE_UNKNOWN:
         break;
@@ -210,7 +212,7 @@ bool CSMesExecution::_selectExecutionsComparaisonUpdateInstrumentation(const Exe
       {
         /* set the current instrumentation */
         Instrumentation &ins=(*inst_p)[instrument_id];
-        setExecutionState(ins,mes,method, 0);
+        setExecutionState(ins,mes,method);
         ASSERT(ins.status(1,method)!=Instrumentation::STATUS_UNKNOWN);
 
         for (Instrumentation *equiv=ins.getEquivalent();equiv!=&ins;equiv=equiv->getEquivalent())
