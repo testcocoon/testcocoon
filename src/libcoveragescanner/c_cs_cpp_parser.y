@@ -1270,6 +1270,7 @@ expression_statement_no_equal_no_parentesis: expression_statement_no_equal_no_pa
 
 expression_statement_no_equal_no_parentesis_first_item_no_action: _STRUCT_
                                                        | _EXTERN_
+                                                       | _STRUCT_ ':'
                                                        | _PRIVATE_
                                                        | _AND_OP_
                                                        | _OR_OP_
