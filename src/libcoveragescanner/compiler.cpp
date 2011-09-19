@@ -543,8 +543,8 @@ bool Compiler::addmeasures(const char  *filename_in,bool import_symbols,bool ins
   }
   DEBUG2("file open:%s\n",filename.c_str());
   time_t modification_time_object = modification_time(filename_in);
-  if (modification_time_object > modification_time_csmes)
-  {
+  if (modification_time_object > modification_time_csmes + 10)
+  { // .csmes file is more than 10s older than the object
     WARNING2("File '%s' is ignored (outdated).\n",filename.c_str());
     return false;
   }

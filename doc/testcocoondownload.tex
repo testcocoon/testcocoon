@@ -47,6 +47,8 @@ Changes between \TestCocoon\ v1.5 and v1.6:
                     \item \verb$Q_EXPORT_PLUGIN$
                     \item \verb$Q_DECLARE_METATYPE$
                   \end{itemize}
+    \item \BugFix \CoverageScanner\ does not produce any outdated warnings if the .csmes file produced is less than 10 second older as the corresponding object.
+                  This is necessary because some build script copy/rename the output just after building and so modify the date of the object files.
   \end{itemize}
 \item[\CoverageBrowser]
   \begin{itemize}
