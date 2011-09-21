@@ -1710,7 +1710,8 @@ unsafe_statement : _UNSAFE_ statement
                     { $$=$2; }
                   ; 
 
-try_statement : _TRY_ statement_record
+try_statement : _TRY_ statement_record catch_statement
+              | _TRY_ statement_record finally_statement
               ; 
 
 
