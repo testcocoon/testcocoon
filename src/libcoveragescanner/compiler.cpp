@@ -320,7 +320,11 @@ bool Compiler::add_instrumentation_to_source_files(CSMESFile &csmes_file,bool pr
     DEBUG2("Saving function information, name='%s'\n",name);
     functions_p->save(name,&source_filenames_p->files(),expressions_p,signature,csmes_file);
     DEBUG2("Appending '%s' in the cslib\n",name);
-    cslib()->append(name,false,signature);
+    if (!cslib()->appendSource(name,false,signature))
+    {
+      INFO2("File '%s' is compiled/linked twice into the project.\n",name);
+      WARNING2("File '%s' may not be correctly instrumented\n",name);
+    }
     DEBUG1("saving instrumentation\n");
     instrumentation_p->save(csmes.c_str());
 #if LOG
@@ -549,14 +553,26 @@ bool Compiler::addmeasures(const char  *filename_in,bool import_symbols,bool ins
     return false;
   }
 
+  std::set<std::string> added_sections;
   for (int i=0;i<f.nbSections();i++)
   {
 	if ( (f.sectionType(i)==CSMESFile::_INSTRUMENTATION_V1) || (f.sectionType(i)==CSMESFile::_INSTRUMENTATION_V2))
     {
+      bool ret;
+      const char *name=f.sectionModule(i);
+      if (added_sections.find(name)!=added_sections.end())
+        continue;
+
       if (insert_library && (f.flags(i)&CSMES_FILE_FLAG_FORCE_DLL_EXPORT) )
-        cslib()->append(f.sectionModule(i),false,f.sectionSignature(i));
+        ret = cslib()->appendSource(name,false,f.sectionSignature(i));
       else
-        cslib()->append(f.sectionModule(i),import_symbols,f.sectionSignature(i));
+        ret = cslib()->appendSource(name,import_symbols,f.sectionSignature(i));
+      if (!ret)
+      {
+        INFO2("File '%s' is compiled/linked twice into the project.\n",name);
+        WARNING2("File '%s' may not be correctly instrumented\n",name);
+      }
+      added_sections.insert(name);
     }
   }
   unsigned long flags=0;

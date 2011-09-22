@@ -37,7 +37,7 @@ public:
     void save(const char*);
     void savemeasures(Expression::code_style_t code_style,const char *module_name,const FileName *filenames_p,const Expressions *, unsigned long signature,CSMESFile &f) const;
     void clear();
-    static void instrumentation_table(const char *module,char *table_name);
+    static void instrumentation_table(const char *module,const char *module_rel,char *table_name);
     static std::string csmes_c_filename(const char *source);
     static std::string csmes_filename(const char *source);
 #if LOG

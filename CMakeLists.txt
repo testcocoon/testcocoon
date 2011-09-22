@@ -12,6 +12,7 @@ IF(LATEX_COMPILER)
 ENDIF(LATEX_COMPILER)
 
 MESSAGE( STATUS "Build mode: " ${CMAKE_BUILD_TYPE_UPPER} )
+MESSAGE( STATUS "TestCocoon Version: " ${TESTCOCOON_VERSION_DOT} )
 
 SET(SRCTBZ2 ${CMAKE_CURRENT_SOURCE_DIR}/binaries/testcocoon-src-${TESTCOCOON_VERSION_DOT}.tar.bz2)
 SET(SRC_CONTAINS HEAD src/ gen/ doc/ cppunit-1.12.0/ tutorial/ CMakeLists.txt)
