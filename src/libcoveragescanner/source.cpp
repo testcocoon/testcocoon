@@ -703,16 +703,18 @@ void  Source::instrumentation_table(const char *module,const char *module_rel,ch
     long lg = strlen(module);
     unsigned long crc=tm_crc32((const unsigned char*)(module),lg);
     long lg_rel=module_rel?strlen(module_rel):0;
-    unsigned long crc_rel=module_rel?tm_crc32((const unsigned char *)(module_rel),lg_rel):0;
+    unsigned long crc_rel=module_rel?tm_crc32((const unsigned char *)(module_rel),lg_rel):crc;
+    bool two_crc= crc_rel!=crc;
     strcpy(table_name,INSTRUMENTATION_TABLE_STR);
     for (i=0;i<8;i++)
       table_name[i+offset]='a'+ static_cast<char>((crc>>(4*i))&0xF);
     table_name[offset+8]='_';
     offset+=9;
-    if (module_rel)
+    if (two_crc)
     {
+      offset--;
       for (i=0;i<8;i++)
-        table_name[i+offset]='a'+ static_cast<char>((crc>>(4*i))&0xF);
+        table_name[i+offset]='a'+ static_cast<char>((crc_rel>>(4*i))&0xF);
       table_name[offset+8]='_';
       offset+=9;
     }
