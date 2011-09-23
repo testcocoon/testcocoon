@@ -320,11 +320,7 @@ bool Compiler::add_instrumentation_to_source_files(CSMESFile &csmes_file,bool pr
     DEBUG2("Saving function information, name='%s'\n",name);
     functions_p->save(name,&source_filenames_p->files(),expressions_p,signature,csmes_file);
     DEBUG2("Appending '%s' in the cslib\n",name);
-    if (!cslib()->appendSource(name,false,signature))
-    {
-      INFO2("File '%s' is compiled/linked twice into the project.\n",name);
-      WARNING2("File '%s' may not be correctly instrumented\n",name);
-    }
+    !cslib()->append(name,false,signature);
     DEBUG1("saving instrumentation\n");
     instrumentation_p->save(csmes.c_str());
 #if LOG
@@ -564,9 +560,9 @@ bool Compiler::addmeasures(const char  *filename_in,bool import_symbols,bool ins
         continue;
 
       if (insert_library && (f.flags(i)&CSMES_FILE_FLAG_FORCE_DLL_EXPORT) )
-        ret = cslib()->appendSource(name,false,f.sectionSignature(i));
+        ret = cslib()->append(name,false,f.sectionSignature(i));
       else
-        ret = cslib()->appendSource(name,import_symbols,f.sectionSignature(i));
+        ret = cslib()->append(name,import_symbols,f.sectionSignature(i));
       if (!ret)
       {
         INFO2("File '%s' is compiled/linked twice into the project.\n",name);

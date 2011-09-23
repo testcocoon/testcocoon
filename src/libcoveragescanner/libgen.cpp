@@ -47,53 +47,39 @@ void LibGen::clear()
 {
   FUNCTION_TRACE;
   for (int i=0;i<nb_data;i++)
-  {
-    FREE(datas[i].filename_rel);
-    FREE(datas[i].filename_abs);
-  }
+    FREE(datas[i].filename);
 
   if (datas!=NULL) FREE(datas);
   datas=NULL;
   nb_data=0;
 }
 
-bool LibGen::isAppend(const char *filename_rel) const
+bool LibGen::isAppend(const char *text) const
 {
   FUNCTION_TRACE;
   int count = nb_data;
   for (int i=count-1;i>=0;i--)
   {
-    if (strcmp(datas[i].filename_rel,filename_rel)==0) 
-    {
-      char filename_abs[MAX_PATH];
-      realPath(filename_rel,filename_abs);
-      if (strcmp(datas[i].filename_abs,filename_abs)==0)
-        return true;
-    }
+    if (strcmp(datas[i].filename,text)==0)
+      return true;
   }
   return false;
 }
 
-bool LibGen::appendSource(const char *filename_rel,bool import_symbols,unsigned long signature)
+bool LibGen::append(const char *text,bool import_symbols,unsigned long signature)
 {
   FUNCTION_TRACE;
   ASSERT(text!=NULL);
-  DEBUG3("CSLIB:append %s [sig=%lx]\n",filename_rel,signature);
-  if (isAppend(filename_rel))
-  {
-    DEBUG3("CSLIB:NOT append %s [sig=%lx]\n",filename_rel,signature);
-    return false;
-  }
-  char filename_abs[MAX_PATH];
-  realPath(filename_rel,filename_abs);
+  DEBUG3("CSLIB:append %s [sig=%lx]\n",text,signature);
+  if (isAppend(text))
+    return false ;
   if ( (nb_data&0xFF) == 0 )
      datas=(data_t*)REALLOC((void*)datas,sizeof(data_t)*(nb_data+257));
   datas[nb_data].signature=signature;
   datas[nb_data].import_symbols=import_symbols;
-  datas[nb_data].filename_rel=STRDUP(filename_rel);
-  datas[nb_data].filename_abs=STRDUP(filename_abs);
+  datas[nb_data].filename=STRDUP(text);
   nb_data++;
-  DEBUG4("CSLIB:append %s(%s) [sig=%lx]:recorded\n",filename_rel,filename_abs,signature);
+  DEBUG3("CSLIB:append %s [sig=%lx]:recorded\n",text,signature);
   return true;
 }
 

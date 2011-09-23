@@ -30,7 +30,7 @@ public:
     LibGen();
     virtual ~LibGen();
 
-    bool appendSource(const char*,bool import_symbols,unsigned long signature);
+    bool append(const char*,bool import_symbols,unsigned long signature);
     void operator=(const LibGen &src);
     void clear();
     void generate(CompilerInterface &i,const char *default_csexe,bool lock_csexe,bool compile);
@@ -44,8 +44,7 @@ protected:
     virtual void save_source(const char *,const CompilerInterface &,const char *default_csexe,bool lock_csexe)=0;
     struct data_t { 
       unsigned long signature;
-      char *filename_rel; 
-      char *filename_abs; 
+      char *filename; 
       bool import_symbols;
     };
     data_t *datas ;

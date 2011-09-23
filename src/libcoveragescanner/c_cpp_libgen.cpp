@@ -124,7 +124,9 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   for (i=0;i<nb_data;i++)
   {
     char table_name[INSTRUMENTATION_CODE_MAX_LENGTH] ;
-    Source::instrumentation_table(datas[i].filename_abs,datas[i].filename_rel,table_name);
+    char filename_abs[MAX_PATH];
+    realPath(datas[i].filename,filename_abs);
+    Source::instrumentation_table(filename_abs,table_name);
 
 
     if (datas[i].import_symbols)
@@ -138,7 +140,7 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
     fputs_trace(compiler_wrapper.function_attribute(),f);
     fputs_trace(";",f);
     fputs_trace("/* ",f);
-    fputs_trace(datas[i].filename_abs,f);
+    fputs_trace(filename_abs,f);
     fputs_trace(" */\n",f);
   }
   fputs_trace("#ifdef __cplusplus\n",f);
@@ -344,8 +346,10 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   {
     char table_name[INSTRUMENTATION_CODE_MAX_LENGTH] ;
     char filename_abs_escape[MAX_PATH*2];
-    Source::instrumentation_table(datas[i].filename_abs,datas[i].filename_rel,table_name);
-    escape(datas[i].filename_abs,filename_abs_escape);
+    char filename_abs[MAX_PATH];
+    realPath(datas[i].filename,filename_abs);
+    Source::instrumentation_table(filename_abs,table_name);
+    escape(filename_abs,filename_abs_escape);
 
     fputs_trace("      \n\"",f);
     fputs_trace(filename_abs_escape,f);
@@ -363,10 +367,12 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   for (i=0;i<nb_data;i++)
   {
     char table_name[INSTRUMENTATION_CODE_MAX_LENGTH] ;
-    Source::instrumentation_table(datas[i].filename_abs,datas[i].filename_rel,table_name);
+    char filename_abs[MAX_PATH];
+    realPath(datas[i].filename,filename_abs);
+    Source::instrumentation_table(filename_abs,table_name);
 
     fputs_trace("  /* ",f);
-    fputs_trace(datas[i].filename_abs,f);
+    fputs_trace(filename_abs,f);
     fputs_trace(" */\n",f);
     sprintf(indexstr,"%i",i);
     sprintf(tmp,"  __cs_exec[%i]",i);

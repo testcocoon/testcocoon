@@ -493,7 +493,7 @@ void Source::instrumentation_footer_cs(const char *module,const Expressions &exp
   char module_abs[MAX_PATH];
 
   realPath(module,module_abs);
-  instrumentation_table(module_abs,module,table_name);
+  instrumentation_table(module_abs,table_name);
 
   result.append("\n#line hidden\n");
   result.append("#pragma warning disable\n");
@@ -526,7 +526,7 @@ void Source::instrumentation_header_cplusplus(const char *module,const Expressio
   char module_abs[MAX_PATH];
 
   realPath(module,module_abs);
-  instrumentation_table(module_abs,module,table_name);
+  instrumentation_table(module_abs,table_name);
 
   result.append("#line 1 \"coveragescanner\"\n");
   result.append("#ifdef __cplusplus\n");
@@ -631,7 +631,7 @@ void Source::instrument(Expression::code_style_t code_style,const char *module,c
   instrumentation_header(code_style,module,expressions,result,compiler_wrapper);
 
   realPath(module,module_abs);
-  instrumentation_table(module_abs,module,table_name);
+  instrumentation_table(module_abs,table_name);
 
   if (itPatch!=expressions.patches().end())
   {
@@ -693,45 +693,29 @@ void Source::instrument(Expression::code_style_t code_style,const char *module,c
   instrumentation_footer(code_style,module,expressions,result,compiler_wrapper);
 }
 
-void  Source::instrumentation_table(const char *module,const char *module_rel,char *table_name)
+void  Source::instrumentation_table(const char *module,char *table_name)
 {
-  long offset=strlen(INSTRUMENTATION_TABLE_STR);
-  if (module!=NULL)
+  long i,lg;
+  long offset;
+  char enc_tmp[INSTRUMENTATION_CODE_MAX_LENGTH];
+
+  offset=strlen(INSTRUMENTATION_TABLE_STR);
+  lg = strlen(module);
+  unsigned long crc=tm_crc32((const unsigned char*)(module),lg);
+  strcpy(table_name,INSTRUMENTATION_TABLE_STR);
+  for (i=0;i<8;i++)
+    table_name[i+offset]='a'+ static_cast<char>((crc>>(4*i))&0xF);
+  table_name[offset+8]='_';
+  offset+=9;
+  table_name[offset]='\0';
+
+  for (i=lg-1;i>=0;i--)
   {
-    long i;
-
-    long lg = strlen(module);
-    unsigned long crc=tm_crc32((const unsigned char*)(module),lg);
-    long lg_rel=module_rel?strlen(module_rel):0;
-    unsigned long crc_rel=module_rel?tm_crc32((const unsigned char *)(module_rel),lg_rel):crc;
-    bool two_crc= crc_rel!=crc;
-    strcpy(table_name,INSTRUMENTATION_TABLE_STR);
-    for (i=0;i<8;i++)
-      table_name[i+offset]='a'+ static_cast<char>((crc>>(4*i))&0xF);
-    table_name[offset+8]='_';
-    offset+=9;
-    if (two_crc)
-    {
-      offset--;
-      for (i=0;i<8;i++)
-        table_name[i+offset]='a'+ static_cast<char>((crc_rel>>(4*i))&0xF);
-      table_name[offset+8]='_';
-      offset+=9;
-    }
-    table_name[offset]='\0';
-
-    std::string encoded_module_name;
-    char enc_tmp[INSTRUMENTATION_CODE_MAX_LENGTH];
-    for (i=0;i<lg;i++)
-    {
-      instrumentation_table_encode(module[i],enc_tmp);
-      encoded_module_name += enc_tmp;
-    }
-    strncat(table_name,encoded_module_name.c_str(),INSTRUMENTATION_CODE_MAX_LENGTH-strlen(table_name));
+    instrumentation_table_encode(module[i],enc_tmp);
+    if (strlen(table_name)+strlen(enc_tmp)>=INSTRUMENTATION_CODE_MAX_LENGTH-1)
+      break;
+    strcat(table_name,enc_tmp);
   }
-  else
-    strncpy(table_name,INSTRUMENTATION_TABLE_STR,INSTRUMENTATION_CODE_MAX_LENGTH);
-  table_name[INSTRUMENTATION_CODE_MAX_LENGTH-1]='\0';
 }
 
 void  Source::instrumentation_table_encode(char c,char res[4])
