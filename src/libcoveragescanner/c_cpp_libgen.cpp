@@ -413,37 +413,50 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   fputs_trace("}\n",f);
 
 
-  /* __coveragescanner_save */
+  /* __coveragescanner_emptycov */
+  fputs_trace("#ifdef __cplusplus\n",f);
+  fputs_trace("extern \"C\"\n",f);
+  fputs_trace("#endif\n",f);
+  fputs_trace(compiler_wrapper.dll_export(),f);
+  fputs_trace(" int ",f);
+  fputs_trace(" __coveragescanner_emptycov(void)  ",f);
+  fputs_trace(compiler_wrapper.function_attribute(),f);
+  fputs_trace(" ;\n",f);
+  fputs_trace("int ",f);
+  fputs_trace(" __coveragescanner_emptycov(void)\n",f);
+  fputs_trace("{\n",f);
+  fputs_trace("  int i,item;\n",f);
+  fputs_trace("  __cs_exec_init();\n",f);
+
+  fputs_trace("  for (item=0;__cs_exec[item].name!=NULL;item++)\n",f);
+  fputs_trace("  {\n",f);
+  fputs_trace("    for (i=0;i<__cs_exec[item].size;i++)\n",f);
+  fputs_trace("      {\n",f);
+  fputs_trace("          if (__cs_exec[item].values[i]!=0)\n",f);
+  fputs_trace("             return 0;\n",f);
+  fputs_trace("      }\n",f);
+  fputs_trace("  }\n",f);
+  fputs_trace("  return 1;\n",f);
+  fputs_trace("}\n",f);
+  fputs_trace("\n",f);
+
+
+  /* __coveragescanner_savecov */
   fputs_trace("#ifdef __cplusplus\n",f);
   fputs_trace("extern \"C\"\n",f);
   fputs_trace("#endif\n",f);
   fputs_trace(compiler_wrapper.dll_export(),f);
   fputs_trace(" void ",f);
-  fputs_trace(" __coveragescanner_save(void)  ",f);
+  fputs_trace(" __coveragescanner_savecov(void *f)  ",f);
   fputs_trace(compiler_wrapper.function_attribute(),f);
   fputs_trace(" ;\n",f);
   fputs_trace("void ",f);
-  fputs_trace(" __coveragescanner_save(void)\n",f);
+  fputs_trace(" __coveragescanner_savecov(void *f)\n",f);
   fputs_trace("{\n",f);
   fputs_trace("  int i,item;\n",f);
   fputs_trace("  char tmp[35];\n",f);
-  fputs_trace("  void *f;\n\n",f);
 
-  fputs_trace("  __cs_sem_init();\n",f);
   fputs_trace("  __cs_exec_init();\n",f);
-  fputs_trace("  if (__cs_sem_lock()==0) return ;\n",f);
-  fputs_trace("  f=cs_fopenappend(__cs_appname);\n",f);
-  fputs_trace("  if (f==NULL) return ;\n",f);
-
-  fputs_trace("  if (__cs_testname[0]!='\\0') {\n",f);
-  fputs_trace("    cs_fputs(\"*\",f);\n",f);
-  fputs_trace("    cs_fputs(__cs_testname,f);\n",f);
-  fputs_trace("    cs_fputs(\"\\n\",f);\n",f);
-  fputs_trace("  }\n",f);
-
-  fputs_trace("  cs_fputs(\"# Measurements\\n\",f);\n",f);
-
-  /* Recording code */
   fputs_trace("  for (item=0;__cs_exec[item].name!=NULL;item++)\n",f);
   fputs_trace("  {\n",f);
   fputs_trace("    int empty=1;\n",f);
@@ -491,8 +504,40 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   fputs_trace("      }\n",f);
   fputs_trace("    cs_fputs(\"\\n\",f);\n",f);
   fputs_trace("  }\n",f);
+  fputs_trace("}\n",f);
+  fputs_trace("\n",f);
 
-  /* saving the execution statue */
+  /* __coveragescanner_save */
+  fputs_trace("#ifdef __cplusplus\n",f);
+  fputs_trace("extern \"C\"\n",f);
+  fputs_trace("#endif\n",f);
+  fputs_trace(compiler_wrapper.dll_export(),f);
+  fputs_trace(" void ",f);
+  fputs_trace(" __coveragescanner_save(void)  ",f);
+  fputs_trace(compiler_wrapper.function_attribute(),f);
+  fputs_trace(" ;\n",f);
+  fputs_trace("void ",f);
+  fputs_trace(" __coveragescanner_save(void)\n",f);
+  fputs_trace("{\n",f);
+  fputs_trace("  void *f;\n\n",f);
+
+  fputs_trace("  __cs_sem_init();\n",f);
+  fputs_trace("  __cs_exec_init();\n",f);
+  fputs_trace("  if (__coveragescanner_emptycov()) return ;\n",f);
+  fputs_trace("  if (__cs_sem_lock()==0) return ;\n",f);
+  fputs_trace("  f=cs_fopenappend(__cs_appname);\n",f);
+  fputs_trace("  if (f==NULL) return ;\n",f);
+
+  fputs_trace("  if (__cs_testname[0]!='\\0') {\n",f);
+  fputs_trace("    cs_fputs(\"*\",f);\n",f);
+  fputs_trace("    cs_fputs(__cs_testname,f);\n",f);
+  fputs_trace("    cs_fputs(\"\\n\",f);\n",f);
+  fputs_trace("  }\n",f);
+
+  fputs_trace("  cs_fputs(\"# Measurements\\n\",f);\n",f);
+  fputs_trace("  __coveragescanner_savecov(f);\n",f);
+
+  /* saving the execution status */
   fputs_trace("  if (__cs_teststate[0]!='\\0') {\n",f);
   fputs_trace("    cs_fputs(\"!\",f);\n",f);
   fputs_trace("    cs_fputs(__cs_teststate,f);\n",f);
