@@ -75,7 +75,7 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   if (compiler_wrapper.setupMS() || compiler_wrapper.setupMSCE())
     fputs_trace("#pragma warning(disable : 4996)\n",f);
 #endif
-  if (!compiler_wrapper.customSetup())
+  if ( (!compiler_wrapper.customSetup()) || compiler_wrapper.pluginRegistrationFeature() )
   {
     fputs_trace("#include <stdlib.h>\n",f);
     fputs_trace("#include <stdio.h>\n",f);
@@ -101,7 +101,17 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
     fputs_trace("#include <sys/types.h>\n",f);
     fputs_trace("#include <unistd.h>\n",f);
   }
+  if (compiler_wrapper.pluginRegistrationFeature())
+  {
+    if (!compiler_wrapper.setupMS())
+      fputs_trace("#include <dlfcn.h>\n",f);
+  }
   fputs_trace("#define  CHAINE_LEN 1024\n",f);
+  if (compiler_wrapper.pluginRegistrationFeature())
+  {
+    fputs_trace("static char **__cs_plugins=NULL;\n",f);
+    fputs_trace("static int __cs_nb_plugins=0;\n",f);
+  }
 
   fputs_trace("static char __cs_appname[CHAINE_LEN+10]=\"",f);
   fputs_trace(default_csexe_escaped,f);
@@ -146,6 +156,33 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   fputs_trace("#ifdef __cplusplus\n",f);
   fputs_trace("}\n",f);
   fputs_trace("#endif\n",f);
+
+  if (compiler_wrapper.customSetup())
+  { /* Custom IO */
+    fputs_trace("static char *(*__cs_fgets)(char *s, int size, void *stream)=NULL;\n",f);
+    fputs_trace("static int (*__cs_fputs)(const char *s, void *stream)=NULL;\n",f);
+    fputs_trace("static void *(*__cs_fopenappend)(const char *path)=NULL;\n",f);
+    fputs_trace("static void *(*__cs_fopenread)(const char *path)=NULL;\n",f);
+    fputs_trace("static void *(*__cs_fopenwrite)(const char *path)=NULL;\n",f);
+    fputs_trace("static int (*__cs_fclose)(void *fp)=NULL;\n",f);
+    fputs_trace("static int (*__cs_remove)(const char *n)=NULL;\n",f);
+  }
+  else
+  { /* Custom IO */
+    fputs_trace("static void * __fopenread(const char *name) { return (void *)fopen(name,\"r\"); }\n",f);
+    fputs_trace("static void * __fopenappend(const char *name) { return (void *)fopen(name,\"a+\"); }\n",f);
+    fputs_trace("static void * __fopenwrite(const char *name) { return (void *)fopen(name,\"w\"); }\n",f);
+    fputs_trace("static char *(*__cs_fgets)(char *s, int size, void *stream)=(char *(*)(char *s, int size, void *stream))fgets;\n",f);
+    fputs_trace("static int (*__cs_fputs)(const char *s, void *stream)=(int (*)(const char *s, void *stream))fputs;\n",f);
+    fputs_trace("static void *(*__cs_fopenappend)(const char *path)=__fopenappend;\n",f);
+    fputs_trace("static void *(*__cs_fopenread)(const char *path)=__fopenread;\n",f);
+    fputs_trace("static void *(*__cs_fopenwrite)(const char *path)=__fopenwrite;\n",f);
+    fputs_trace("static int (*__cs_fclose)(void *fp)=(int (*)(void *fp))fclose;\n",f);
+    if (lock_csexe)
+      fputs_trace("static int (*__cs_remove)(const char *n)=remove;\n",f);
+    else
+      fputs_trace("static int (*__cs_remove)(const char *n)=NULL;\n",f);
+  }
 
   fputs_trace("typedef struct { int size; int signature; const char *name;volatile int *values;} __cs_exec_t ;\n",f);
   fputs_trace("static __cs_exec_t *__cs_exec= NULL;\n",f);
@@ -339,6 +376,58 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
     }
   }
   fputs_trace("}\n",f);
+  if ( compiler_wrapper.pluginRegistrationFeature() )
+  {
+    /* symbol extraction */
+    fputs_trace("static void * __cs_symbol_address( const char *module, const char *symbol)\n",f);
+    fputs_trace("{\n",f);
+    fputs_trace("  void *addr=NULL;\n",f);
+    if (compiler_wrapper.setupMS())
+    {
+      fputs_trace("  HMODULE mod=NULL;\n",f);
+      fputs_trace("  mod=LoadLibrary(module);\n",f);
+      fputs_trace("  if (mod)\n",f);
+      fputs_trace("  {\n",f);
+      fputs_trace("    addr=(void*)GetProcAddress(mod,symbol);\n",f);
+      fputs_trace("    FreeLibrary(mod);\n",f);
+      fputs_trace("  }\n",f);
+    }
+    else
+    {
+      fputs_trace("  void *mod=NULL;\n",f);
+      fputs_trace("  mod=dlopen(module,RTLD_NOLOAD);\n",f);
+      fputs_trace("  if (mod)\n",f);
+      fputs_trace("  {\n",f);
+      fputs_trace("    addr=(void*)dlsym(mod,symbol);\n",f);
+      fputs_trace("    dlclose(mod);\n",f);
+      fputs_trace("  }\n",f);
+    }
+    fputs_trace("  return addr;\n",f);
+    fputs_trace("}\n",f);
+  }
+  fputs_trace("static void __cs_custon_io_init(void)\n",f);
+  fputs_trace("{\n",f);
+  if ( compiler_wrapper.pluginRegistrationFeature() )
+  {
+    fputs_trace("    int iplg;\n",f);
+    fputs_trace("    for (iplg=0;iplg<__cs_nb_plugins;iplg++)\n",f);
+    fputs_trace("    {\n",f);
+    fputs_trace("      typedef void (*fn_t)\n",f);
+    fputs_trace("       (",f);
+    fputs_trace("         char *(*cs_fgets)(char *s, int size, void *stream),",f);
+    fputs_trace("         int (*cs_fputs)(const char *s, void *stream),",f);
+    fputs_trace("         void *(*cs_fopenappend)(const char *path),",f);
+    fputs_trace("         void *(*cs_fopenread)(const char *path),",f);
+    fputs_trace("         void *(*cs_fopenwrite)(const char *path),",f);
+    fputs_trace("         int (*cs_fclose)(void *fp),",f);
+    fputs_trace("         int (*cs_remove)(const char *name)",f);
+    fputs_trace("       );\n",f);
+    fputs_trace("      fn_t fn=(fn_t)__cs_symbol_address(__cs_plugins[iplg],\"__coveragescanner_set_custom_io\");\n",f);
+    fputs_trace("      if (fn)\n",f);
+    fputs_trace("        fn(__cs_fgets,__cs_fputs,__cs_fopenappend,__cs_fopenread,__cs_fopenwrite,__cs_fclose,__cs_remove);",f);
+    fputs_trace("    }\n",f);
+  }
+  fputs_trace("}\n",f);
   fputs_trace("static void __cs_exec_init(void)\n",f);
   fputs_trace("{\n",f);
   fputs_trace("  static const char *filenames[] = {",f);
@@ -412,6 +501,35 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   fputs_trace(tmp,f); fputs_trace(".values=NULL;\n\n",f);
   fputs_trace("}\n",f);
 
+  if (compiler_wrapper.pluginRegistrationFeature())
+  {
+    /* __coveragescanner_register_library */
+    fputs_trace("#ifdef __cplusplus\n",f);
+    fputs_trace("extern \"C\"\n",f);
+    fputs_trace("#endif\n",f);
+    fputs_trace(compiler_wrapper.dll_export(),f);
+    fputs_trace(" void ",f);
+    fputs_trace(" __coveragescanner_register_library(const char*)  ",f);
+    fputs_trace(compiler_wrapper.function_attribute(),f);
+    fputs_trace(" ;\n",f);
+    fputs_trace("void ",f);
+    fputs_trace(" __coveragescanner_register_library(const char*p)\n",f);
+    fputs_trace("{\n",f);
+    fputs_trace("  int i;\n",f);
+    fputs_trace("  int found=0;\n",f);
+    fputs_trace("  if (p==NULL) return;\n",f);
+    fputs_trace("  for (i=0;i<__cs_nb_plugins;i++)\n",f);
+    fputs_trace("  {\n",f);
+    fputs_trace("    if (strcmp(p,__cs_plugins[i])==0)\n",f);
+    fputs_trace("      return;\n",f);
+    fputs_trace("  }\n",f);
+    fputs_trace("  __cs_nb_plugins++;\n",f);
+    fputs_trace("  __cs_plugins=(char **)realloc(__cs_plugins,__cs_nb_plugins*sizeof(char*));\n",f);
+    fputs_trace("  __cs_plugins[__cs_nb_plugins-1]=strdup(p);\n",f);
+    fputs_trace("  __cs_custon_io_init();\n",f);
+    fputs_trace("}\n",f);
+    fputs_trace("\n",f);
+  }
 
   /* __coveragescanner_emptycov */
   fputs_trace("#ifdef __cplusplus\n",f);
@@ -428,6 +546,22 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   fputs_trace("  int i,item;\n",f);
   fputs_trace("  __cs_exec_init();\n",f);
 
+  if ( compiler_wrapper.pluginRegistrationFeature() )
+  {
+    fputs_trace("  {\n",f);
+    fputs_trace("    int iplg;\n",f);
+    fputs_trace("    for (iplg=0;iplg<__cs_nb_plugins;iplg++)\n",f);
+    fputs_trace("    {\n",f);
+    fputs_trace("      typedef int (*fn_t)();\n",f);
+    fputs_trace("      fn_t fn=(fn_t)__cs_symbol_address(__cs_plugins[iplg],\"__coveragescanner_emptycov\");\n",f);
+    fputs_trace("      if (fn)\n",f);
+    fputs_trace("      {\n",f);
+    fputs_trace("        if ( fn() == 0 )\n",f);
+    fputs_trace("          return 0;\n",f);
+    fputs_trace("      }\n",f);
+    fputs_trace("    }\n",f);
+    fputs_trace("  }\n",f);
+  }
   fputs_trace("  for (item=0;__cs_exec[item].name!=NULL;item++)\n",f);
   fputs_trace("  {\n",f);
   fputs_trace("    for (i=0;i<__cs_exec[item].size;i++)\n",f);
@@ -457,6 +591,19 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   fputs_trace("  char tmp[35];\n",f);
 
   fputs_trace("  __cs_exec_init();\n",f);
+  if ( compiler_wrapper.pluginRegistrationFeature() )
+  {
+    fputs_trace("  {\n",f);
+    fputs_trace("    int iplg;\n",f);
+    fputs_trace("    for (iplg=0;iplg<__cs_nb_plugins;iplg++)\n",f);
+    fputs_trace("    {\n",f);
+    fputs_trace("      typedef void (*fn_t)(void*);\n",f);
+    fputs_trace("      fn_t fn=(fn_t)__cs_symbol_address(__cs_plugins[iplg],\"__coveragescanner_savecov\");\n",f);
+    fputs_trace("      if (fn)\n",f);
+    fputs_trace("        fn(f);\n",f);
+    fputs_trace("    }\n",f);
+    fputs_trace("  }\n",f);
+  }
   fputs_trace("  for (item=0;__cs_exec[item].name!=NULL;item++)\n",f);
   fputs_trace("  {\n",f);
   fputs_trace("    int empty=1;\n",f);
@@ -523,6 +670,7 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
 
   fputs_trace("  __cs_sem_init();\n",f);
   fputs_trace("  __cs_exec_init();\n",f);
+  fputs_trace("  __cs_custon_io_init();\n",f);
   fputs_trace("  if (__coveragescanner_emptycov()) return ;\n",f);
   fputs_trace("  if (__cs_sem_lock()==0) return ;\n",f);
   fputs_trace("  f=cs_fopenappend(__cs_appname);\n",f);
@@ -598,6 +746,20 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   fputs_trace("  int i,item;\n",f);
   fputs_trace("  __cs_sem_init();\n",f);
   fputs_trace("  __cs_exec_init();\n",f);
+  fputs_trace("  __cs_custon_io_init();\n",f);
+  if ( compiler_wrapper.pluginRegistrationFeature() )
+  {
+    fputs_trace("  {\n",f);
+    fputs_trace("    int iplg;\n",f);
+    fputs_trace("    for (iplg=0;iplg<__cs_nb_plugins;iplg++)\n",f);
+    fputs_trace("    {\n",f);
+    fputs_trace("      typedef void (*fn_t)();\n",f);
+    fputs_trace("      fn_t fn=(fn_t)__cs_symbol_address(__cs_plugins[iplg],\"__coveragescanner_clear\");\n",f);
+    fputs_trace("      if (fn)\n",f);
+    fputs_trace("        fn();\n",f);
+    fputs_trace("    }\n",f);
+    fputs_trace("  }\n",f);
+  }
   fputs_trace("  for (item=0;__cs_exec[item].values!=NULL;item++)\n",f);
   fputs_trace("    for (i=0;i<__cs_exec[item].size;i++)\n",f);
   fputs_trace("        __cs_exec[item].values[i]=0;\n",f);
@@ -717,32 +879,6 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
       fputs_trace("}\n",f);
     }
   }
-  if (compiler_wrapper.customSetup())
-  { /* Custom IO */
-    fputs_trace("static char *(*__cs_fgets)(char *s, int size, void *stream)=NULL;\n",f);
-    fputs_trace("static int (*__cs_fputs)(const char *s, void *stream)=NULL;\n",f);
-    fputs_trace("static void *(*__cs_fopenappend)(const char *path)=NULL;\n",f);
-    fputs_trace("static void *(*__cs_fopenread)(const char *path)=NULL;\n",f);
-    fputs_trace("static void *(*__cs_fopenwrite)(const char *path)=NULL;\n",f);
-    fputs_trace("static int (*__cs_fclose)(void *fp)=NULL;\n",f);
-    fputs_trace("static int (*__cs_remove)(const char *n)=NULL;\n",f);
-  }
-  else
-  { /* Custom IO */
-    fputs_trace("static void * __fopenread(const char *name) { return (void *)fopen(name,\"r\"); }\n",f);
-    fputs_trace("static void * __fopenappend(const char *name) { return (void *)fopen(name,\"a+\"); }\n",f);
-    fputs_trace("static void * __fopenwrite(const char *name) { return (void *)fopen(name,\"w\"); }\n",f);
-    fputs_trace("static char *(*__cs_fgets)(char *s, int size, void *stream)=(char *(*)(char *s, int size, void *stream))fgets;\n",f);
-    fputs_trace("static int (*__cs_fputs)(const char *s, void *stream)=(int (*)(const char *s, void *stream))fputs;\n",f);
-    fputs_trace("static void *(*__cs_fopenappend)(const char *path)=__fopenappend;\n",f);
-    fputs_trace("static void *(*__cs_fopenread)(const char *path)=__fopenread;\n",f);
-    fputs_trace("static void *(*__cs_fopenwrite)(const char *path)=__fopenwrite;\n",f);
-    fputs_trace("static int (*__cs_fclose)(void *fp)=(int (*)(void *fp))fclose;\n",f);
-    if (lock_csexe)
-      fputs_trace("static int (*__cs_remove)(const char *n)=remove;\n",f);
-    else
-      fputs_trace("static int (*__cs_remove)(const char *n)=NULL;\n",f);
-  }
   fputs_trace("static char __out_buffer[1024]=\"\";\n",f);
   fputs_trace("static int cs_remove_defined()\n",f);
   fputs_trace("{\n",f);
@@ -831,6 +967,7 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   fputs_trace("  __cs_fopenwrite=cs_fopenwrite;\n",f);
   fputs_trace("  __cs_fclose=cs_fclose;\n",f);
   fputs_trace("  __cs_remove=cs_remove;\n",f);
+  fputs_trace("  __cs_custon_io_init();\n",f);
   fputs_trace("}\n",f);
 
 

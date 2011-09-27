@@ -90,6 +90,7 @@ public:
     virtual bool setupMS() const=0;
     virtual bool setupGNU() const=0;
     virtual bool enableCoveragescannerPerDefault() const =0 ;
+    bool pluginRegistrationFeature() const;
     virtual const char* toolName() const=0;
     const Argv &  param_args() const { return args; } 
     virtual bool stdinMriScript(const Argv & ) const=0;

@@ -74,6 +74,7 @@ CompilerWrapper::CompilerWrapper(const Option &t) : CompilerInterface(t), option
   library_path_option_append                         = new CompilerWrapperEnumOption ( pool,"LIBRARY_PATH_OPTION_APPEND");
   link_library_option_append                         = new CompilerWrapperEnumOption ( pool,"LINK_LIBRARY_OPTION_APPEND");
   link_output_default_str                            = new CompilerWrapperTextOption ( pool,"LINK_OUTPUT_DEFAULT");
+  link_additional_args                               = new CompilerWrapperTextOption ( pool,"LINK_ADDITIONAL_ARGUMENTS");
   link_output_option_append                          = new CompilerWrapperEnumOption ( pool,"LINK_OUTPUT_OPTION_APPEND");
   linker_hide_option_1_arg_append                    = new CompilerWrapperEnumOption ( pool,"LINKER_HIDE_OPTION_ONE_ARG_APPEND");
   pdb_output_option_append                           = new CompilerWrapperEnumOption ( pool,"PDB_OUTPUT_OPTION_APPEND");
@@ -247,6 +248,7 @@ CompilerWrapper::~CompilerWrapper()
   delete     library_path_option_append                         ;
   delete     link_library_option_append                         ;
   delete     link_output_default_str                            ;
+  delete     link_additional_args                               ;
   delete     link_output_option_append                          ;
   delete     linker_hide_option_1_arg_append                    ;
   delete     pdb_output_option_append                           ;
@@ -423,6 +425,7 @@ bool CompilerWrapper::checkProfile() const
   valid = checkOptionDefined(table_library_path_option)                          && valid;
   valid = checkOptionDefined(table_dll_output_static_lib)                        && valid;
   valid = checkOptionDefined(link_output_default_str)                            && valid;
+  valid = checkOptionDefined(link_additional_args)                               && valid;
   valid = checkOptionDefined(compiler_output_default_str)                        && valid;
   valid = checkOptionDefined(table_link_library_option)                          && valid;
   valid = checkOptionDefined(table_compiler_hide_option_no_arg)                  && valid;
@@ -1873,10 +1876,13 @@ std::string CompilerWrapper::preprocessor_temp_filename(const std::string &name)
 
 bool CompilerWrapper::append_cslibrary(char **new_command_p,const char *compiler_command,const char *libname) const
 {
-  *new_command_p=(char*)MALLOC(strlen(libname)+4+2*strlen(compiler_command));
+  *new_command_p=(char*)MALLOC(strlen(linkAdditionalArguments().c_str())+strlen(libname)+8+2*strlen(compiler_command));
   strcpy(*new_command_p,compiler_command);
   strcat(*new_command_p," ");
   strcat(*new_command_p,System::quoteArgument(libname).c_str());
+  strcat(*new_command_p," ");
+  strcat(*new_command_p,linkAdditionalArguments().c_str());
+  
   return true;
 }
 

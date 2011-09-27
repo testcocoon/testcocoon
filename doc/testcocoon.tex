@@ -2269,6 +2269,13 @@ int main(argc,char *argv[])
     \NOTE{Setting the execution report file name is necessary if the initialization function 
          \CppLibraryFunction{install} is not used.}
 
+\subsection{\CppLibraryFunction{register\_library}} 
+{\itshape Syntax:} \lstinline$void __coveragescanner_register_library(const char *library_name)$ \bigskip \\
+    \verb$__coveragescanner_register_library$ register a shared library loaded on demand.
+    Once registered the code coverage of the library is saved transparently when calling \verb$__coveragescanner_save$
+    from the main application.
+
+
 \subsection{\CppLibraryFunction{set\_custom\_io}}
 {\itshape Syntax:} \lstinline$void __coveragescanner_set_custom_io($\\
   \hspace{4cm}\lstinline$char *(*csfgets)(char *s, int size, void *stream),$\\
@@ -3041,6 +3048,9 @@ A profile file can contain:
                           The base name is the filename without extension.
                    \end{description}
                    (ex:~\$BASENAME\_SRC\$.exe)
+                  \\ \hline
+        \ProfileOption{LINK\_ADDITIONAL\_ARGUMENTS} & string & 
+                  Additional arguments passed to the linker when instrumenting the source code.
                   \\ \hline
         \ProfileOption{DEFAULT\_LIB\_PATH} & string & 
                   List of directories which contains the shared libraries (ex:~/usr/library;/usr/share/library).

@@ -78,6 +78,7 @@ class CompilerWrapper:public CompilerInterface
     bool setupCpp() const;
     bool setupMSCE() const;
     bool setupGNU() const;
+    std::string linkAdditionalArguments() const { return std::string(link_additional_args->value()) ; }
     bool unixLibraryName() const;
     bool useResponseFile() const ;
     void display_temporary_files() const;
@@ -164,6 +165,7 @@ class CompilerWrapper:public CompilerInterface
     CompilerWrapperEnumOption *library_path_option_append ;
     CompilerWrapperEnumOption *link_library_option_append;
     CompilerWrapperTextOption *link_output_default_str;
+    CompilerWrapperTextOption *link_additional_args;
     CompilerWrapperEnumOption *link_output_option_append;
     CompilerWrapperEnumOption *linker_hide_option_1_arg_append;
     CompilerWrapperEnumOption *pdb_output_option_append;

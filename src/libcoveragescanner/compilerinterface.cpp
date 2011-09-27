@@ -402,3 +402,7 @@ bool CompilerInterface::responseFileToArgumentList (const std::string& rsp_file,
   return res;
 }
 
+bool CompilerInterface::pluginRegistrationFeature() const
+{
+  return (codeStyle()==Expression::CODESTYLE_CPP) && (setupMS() || setupGNU() || setupPOSIX());
+}
