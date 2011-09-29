@@ -92,7 +92,8 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   {
     if ( (compiler_wrapper.setupMS()) || (compiler_wrapper.setupMSCE()) )
     {
-      fputs_trace("#include <windows.h>\n",f);
+       if (!compiler_wrapper.pluginRegistrationFeature())
+          fputs_trace("#include <windows.h>\n",f);
       fputs_trace("#include <process.h>\n",f);
     }
   }
@@ -103,7 +104,9 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   }
   if (compiler_wrapper.pluginRegistrationFeature())
   {
-    if (!compiler_wrapper.setupMS())
+    if (compiler_wrapper.setupMS())
+      fputs_trace("#include <windows.h>\n",f);
+    else
       fputs_trace("#include <dlfcn.h>\n",f);
   }
   fputs_trace("#define  CHAINE_LEN 1024\n",f);
@@ -552,16 +555,17 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
     fputs_trace("      return 1;\n",f);
     fputs_trace("    }\n",f);
     fputs_trace("  }\n",f);
+    fputs_trace("  {\n",f);
     if (compiler_wrapper.setupMS())
     {
-      fputs_trace("  HMODULE mod=NULL;\n",f);
+      fputs_trace("  HMODULE mod;\n",f);
       fputs_trace("  mod=LoadLibrary(p);\n",f);
       fputs_trace("  if (!mod)\n",f);
       fputs_trace("    return -1;\n",f);
     }
     else
     {
-      fputs_trace("  void *mod=NULL;\n",f);
+      fputs_trace("  void *mod;\n",f);
       fputs_trace("  mod=dlopen(p,RTLD_LAZY);\n",f);
       fputs_trace("  if (!mod)\n",f);
       fputs_trace("    return -1;\n",f);
@@ -590,6 +594,7 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
     fputs_trace("  if (!__cs_plugins[__cs_nb_plugins-1].__coveragescanner_savecov) return 2;\n",f);
     fputs_trace("  if (!__cs_plugins[__cs_nb_plugins-1].__coveragescanner_clear) return 2;\n",f);
     fputs_trace("  return 0;\n",f);
+    fputs_trace("  }\n",f);
     fputs_trace("}\n",f);
     fputs_trace("\n",f);
   }
