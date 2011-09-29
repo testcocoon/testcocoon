@@ -109,7 +109,28 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   fputs_trace("#define  CHAINE_LEN 1024\n",f);
   if (compiler_wrapper.pluginRegistrationFeature())
   {
-    fputs_trace("static char **__cs_plugins=NULL;\n",f);
+    fputs_trace("typedef struct {\n",f);
+    fputs_trace("  char *name;\n",f);
+    fputs_trace("  int use_count;\n",f);
+    fputs_trace("  void (*__coveragescanner_clear)();\n",f);
+    fputs_trace("  void (*__coveragescanner_savecov)(void*);\n",f);
+    fputs_trace("  void (*__coveragescanner_set_custom_io)\n",f);
+    fputs_trace("       (",f);
+    fputs_trace("         char *(*cs_fgets)(char *s, int size, void *stream),",f);
+    fputs_trace("         int (*cs_fputs)(const char *s, void *stream),",f);
+    fputs_trace("         void *(*cs_fopenappend)(const char *path),",f);
+    fputs_trace("         void *(*cs_fopenread)(const char *path),",f);
+    fputs_trace("         void *(*cs_fopenwrite)(const char *path),",f);
+    fputs_trace("         int (*cs_fclose)(void *fp),",f);
+    fputs_trace("         int (*cs_remove)(const char *name)",f);
+    fputs_trace("       );\n",f);
+    fputs_trace("  int (*__coveragescanner_emptycov)();\n",f);
+    if (compiler_wrapper.setupMS())
+      fputs_trace("  HMODULE handle;\n",f);
+    else
+      fputs_trace("  void * handle;\n",f);
+    fputs_trace("} __cs_plugins_t;\n",f);
+    fputs_trace("static __cs_plugins_t *__cs_plugins=NULL;\n",f);
     fputs_trace("static int __cs_nb_plugins=0;\n",f);
   }
 
@@ -126,6 +147,7 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   fputs_trace("static void *cs_fopenread(const char *path);\n",f);
   fputs_trace("static void *cs_fopenwrite(const char *path);\n",f);
   fputs_trace("static int cs_fclose(void *fp);\n",f);
+  fputs_trace("static void cs_fflush(void *fp);\n",f);
   fputs_trace("static int cs_remove(const char *n);\n",f);
 
   fputs_trace("#ifdef __cplusplus\n",f);
@@ -376,35 +398,6 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
     }
   }
   fputs_trace("}\n",f);
-  if ( compiler_wrapper.pluginRegistrationFeature() )
-  {
-    /* symbol extraction */
-    fputs_trace("static void * __cs_symbol_address( const char *module, const char *symbol)\n",f);
-    fputs_trace("{\n",f);
-    fputs_trace("  void *addr=NULL;\n",f);
-    if (compiler_wrapper.setupMS())
-    {
-      fputs_trace("  HMODULE mod=NULL;\n",f);
-      fputs_trace("  mod=LoadLibrary(module);\n",f);
-      fputs_trace("  if (mod)\n",f);
-      fputs_trace("  {\n",f);
-      fputs_trace("    addr=(void*)GetProcAddress(mod,symbol);\n",f);
-      fputs_trace("    FreeLibrary(mod);\n",f);
-      fputs_trace("  }\n",f);
-    }
-    else
-    {
-      fputs_trace("  void *mod=NULL;\n",f);
-      fputs_trace("  mod=dlopen(module,RTLD_NOLOAD);\n",f);
-      fputs_trace("  if (mod)\n",f);
-      fputs_trace("  {\n",f);
-      fputs_trace("    addr=(void*)dlsym(mod,symbol);\n",f);
-      fputs_trace("    dlclose(mod);\n",f);
-      fputs_trace("  }\n",f);
-    }
-    fputs_trace("  return addr;\n",f);
-    fputs_trace("}\n",f);
-  }
   fputs_trace("static void __cs_custon_io_init(void)\n",f);
   fputs_trace("{\n",f);
   if ( compiler_wrapper.pluginRegistrationFeature() )
@@ -412,19 +405,8 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
     fputs_trace("    int iplg;\n",f);
     fputs_trace("    for (iplg=0;iplg<__cs_nb_plugins;iplg++)\n",f);
     fputs_trace("    {\n",f);
-    fputs_trace("      typedef void (*fn_t)\n",f);
-    fputs_trace("       (",f);
-    fputs_trace("         char *(*cs_fgets)(char *s, int size, void *stream),",f);
-    fputs_trace("         int (*cs_fputs)(const char *s, void *stream),",f);
-    fputs_trace("         void *(*cs_fopenappend)(const char *path),",f);
-    fputs_trace("         void *(*cs_fopenread)(const char *path),",f);
-    fputs_trace("         void *(*cs_fopenwrite)(const char *path),",f);
-    fputs_trace("         int (*cs_fclose)(void *fp),",f);
-    fputs_trace("         int (*cs_remove)(const char *name)",f);
-    fputs_trace("       );\n",f);
-    fputs_trace("      fn_t fn=(fn_t)__cs_symbol_address(__cs_plugins[iplg],\"__coveragescanner_set_custom_io\");\n",f);
-    fputs_trace("      if (fn)\n",f);
-    fputs_trace("        fn(__cs_fgets,__cs_fputs,__cs_fopenappend,__cs_fopenread,__cs_fopenwrite,__cs_fclose,__cs_remove);",f);
+    fputs_trace("      if (__cs_plugins[iplg].__coveragescanner_set_custom_io)\n",f);
+    fputs_trace("        __cs_plugins[iplg].__coveragescanner_set_custom_io(__cs_fgets,__cs_fputs,__cs_fopenappend,__cs_fopenread,__cs_fopenwrite,__cs_fclose,__cs_remove);",f);
     fputs_trace("    }\n",f);
   }
   fputs_trace("}\n",f);
@@ -503,30 +485,111 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
 
   if (compiler_wrapper.pluginRegistrationFeature())
   {
+    /* __coveragescanner_unregister_library */
+    fputs_trace("#ifdef __cplusplus\n",f);
+    fputs_trace("extern \"C\"\n",f);
+    fputs_trace("#endif\n",f);
+    fputs_trace(compiler_wrapper.dll_export(),f);
+    fputs_trace(" int ",f);
+    fputs_trace(" __coveragescanner_unregister_library(const char*)  ",f);
+    fputs_trace(compiler_wrapper.function_attribute(),f);
+    fputs_trace(" ;\n",f);
+    fputs_trace("int ",f);
+    fputs_trace(" __coveragescanner_unregister_library(const char*p)\n",f);
+    fputs_trace("{\n",f);
+    fputs_trace("  int i;\n",f);
+    fputs_trace("  int found=0;\n",f);
+    fputs_trace("  if (p==NULL) return -2;\n",f);
+    fputs_trace("  for (i=0;i<__cs_nb_plugins;i++)\n",f);
+    fputs_trace("  {\n",f);
+    fputs_trace("    if (strcmp(p,__cs_plugins[i].name)==0)\n",f);
+    fputs_trace("    {\n",f);
+    fputs_trace("      __cs_plugins[i].use_count--;\n",f);
+    fputs_trace("      if (__cs_plugins[i].use_count==0)\n",f);
+    fputs_trace("      {\n",f);
+    fputs_trace("        free(__cs_plugins[i].name);\n",f);
+    if (compiler_wrapper.setupMS())
+      fputs_trace("        FreeLibrary(__cs_plugins[i].handle);\n",f);
+    else
+      fputs_trace("        dlclose(__cs_plugins[i].handle);\n",f);
+    fputs_trace("        __cs_nb_plugins--;\n",f);
+    fputs_trace("        for (;i<__cs_nb_plugins;i++)\n",f);
+    fputs_trace("           __cs_plugins[i]=__cs_plugins[i+1];\n",f);
+    fputs_trace("        if (__cs_nb_plugins==0)\n",f);
+    fputs_trace("        {\n",f);
+    fputs_trace("          free(__cs_plugins);\n",f);
+    fputs_trace("          __cs_plugins=NULL;\n",f);
+    fputs_trace("        }\n",f);
+    fputs_trace("        return 1;\n",f);
+    fputs_trace("      }\n",f);
+    fputs_trace("      return 0;\n",f);
+    fputs_trace("    }\n",f);
+    fputs_trace("  }\n",f);
+    fputs_trace("  return -1;\n",f);
+    fputs_trace("}\n",f);
+    fputs_trace("\n",f);
+
     /* __coveragescanner_register_library */
     fputs_trace("#ifdef __cplusplus\n",f);
     fputs_trace("extern \"C\"\n",f);
     fputs_trace("#endif\n",f);
     fputs_trace(compiler_wrapper.dll_export(),f);
-    fputs_trace(" void ",f);
+    fputs_trace(" int ",f);
     fputs_trace(" __coveragescanner_register_library(const char*)  ",f);
     fputs_trace(compiler_wrapper.function_attribute(),f);
     fputs_trace(" ;\n",f);
-    fputs_trace("void ",f);
+    fputs_trace("int ",f);
     fputs_trace(" __coveragescanner_register_library(const char*p)\n",f);
     fputs_trace("{\n",f);
     fputs_trace("  int i;\n",f);
     fputs_trace("  int found=0;\n",f);
-    fputs_trace("  if (p==NULL) return;\n",f);
+    fputs_trace("  if (p==NULL) return -2;\n",f);
     fputs_trace("  for (i=0;i<__cs_nb_plugins;i++)\n",f);
     fputs_trace("  {\n",f);
-    fputs_trace("    if (strcmp(p,__cs_plugins[i])==0)\n",f);
-    fputs_trace("      return;\n",f);
+    fputs_trace("    if (strcmp(p,__cs_plugins[i].name)==0)\n",f);
+    fputs_trace("    {\n",f);
+    fputs_trace("      __cs_plugins[i].use_count++;\n",f);
+    fputs_trace("      return 1;\n",f);
+    fputs_trace("    }\n",f);
     fputs_trace("  }\n",f);
+    if (compiler_wrapper.setupMS())
+    {
+      fputs_trace("  HMODULE mod=NULL;\n",f);
+      fputs_trace("  mod=LoadLibrary(p);\n",f);
+      fputs_trace("  if (!mod)\n",f);
+      fputs_trace("    return -1;\n",f);
+    }
+    else
+    {
+      fputs_trace("  void *mod=NULL;\n",f);
+      fputs_trace("  mod=dlopen(p,RTLD_LAZY);\n",f);
+      fputs_trace("  if (!mod)\n",f);
+      fputs_trace("    return -1;\n",f);
+    }
     fputs_trace("  __cs_nb_plugins++;\n",f);
-    fputs_trace("  __cs_plugins=(char **)realloc(__cs_plugins,__cs_nb_plugins*sizeof(char*));\n",f);
-    fputs_trace("  __cs_plugins[__cs_nb_plugins-1]=strdup(p);\n",f);
+    fputs_trace("  __cs_plugins=(__cs_plugins_t *)realloc(__cs_plugins,__cs_nb_plugins*sizeof(__cs_plugins_t));\n",f);
+    fputs_trace("  __cs_plugins[__cs_nb_plugins-1].name=strdup(p);\n",f);
+    fputs_trace("  __cs_plugins[__cs_nb_plugins-1].use_count=1;\n",f);
+    fputs_trace("  __cs_plugins[__cs_nb_plugins-1].handle=mod;\n",f);
+    if (compiler_wrapper.setupMS())
+    {
+      fputs_trace("    __cs_plugins[__cs_nb_plugins-1].__coveragescanner_emptycov=(int (*)())GetProcAddress(mod,\"__coveragescanner_emptycov\");\n",f);
+      fputs_trace("    __cs_plugins[__cs_nb_plugins-1].__coveragescanner_savecov=(void (*)(void*))GetProcAddress(mod,\"__coveragescanner_savecov\");\n",f);
+      fputs_trace("    __cs_plugins[__cs_nb_plugins-1].__coveragescanner_set_custom_io=(void (*)(char* (*)(char*, int, void*), int (*)(const char*, void*), void* (*)(const char*), void* (*)(const char*), void* (*)(const char*), int (*)(void*), int (*)(const char*)))GetProcAddress(mod,\"__coveragescanner_set_custom_io\");\n",f);
+      fputs_trace("    __cs_plugins[__cs_nb_plugins-1].__coveragescanner_clear=(void (*)())GetProcAddress(mod,\"__coveragescanner_clear\");\n",f);
+    }
+    else
+    {
+      fputs_trace("    __cs_plugins[__cs_nb_plugins-1].__coveragescanner_emptycov=(int (*)()) dlsym(mod,\"__coveragescanner_emptycov\");\n",f);
+      fputs_trace("    __cs_plugins[__cs_nb_plugins-1].__coveragescanner_savecov=(void (*)(void*))dlsym(mod,\"__coveragescanner_savecov\");\n",f);
+      fputs_trace("    __cs_plugins[__cs_nb_plugins-1].__coveragescanner_set_custom_io=(void (*)(char* (*)(char*, int, void*), int (*)(const char*, void*), void* (*)(const char*), void* (*)(const char*), void* (*)(const char*), int (*)(void*), int (*)(const char*)))dlsym(mod,\"__coveragescanner_set_custom_io\");\n",f);
+      fputs_trace("    __cs_plugins[__cs_nb_plugins-1].__coveragescanner_clear=(void (*)())dlsym(mod,\"__coveragescanner_clear\");\n",f);
+    }
     fputs_trace("  __cs_custon_io_init();\n",f);
+    fputs_trace("  if (!__cs_plugins[__cs_nb_plugins-1].__coveragescanner_emptycov) return 2;\n",f);
+    fputs_trace("  if (!__cs_plugins[__cs_nb_plugins-1].__coveragescanner_savecov) return 2;\n",f);
+    fputs_trace("  if (!__cs_plugins[__cs_nb_plugins-1].__coveragescanner_clear) return 2;\n",f);
+    fputs_trace("  return 0;\n",f);
     fputs_trace("}\n",f);
     fputs_trace("\n",f);
   }
@@ -552,11 +615,9 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
     fputs_trace("    int iplg;\n",f);
     fputs_trace("    for (iplg=0;iplg<__cs_nb_plugins;iplg++)\n",f);
     fputs_trace("    {\n",f);
-    fputs_trace("      typedef int (*fn_t)();\n",f);
-    fputs_trace("      fn_t fn=(fn_t)__cs_symbol_address(__cs_plugins[iplg],\"__coveragescanner_emptycov\");\n",f);
-    fputs_trace("      if (fn)\n",f);
+    fputs_trace("      if (__cs_plugins[iplg].__coveragescanner_emptycov)\n",f);
     fputs_trace("      {\n",f);
-    fputs_trace("        if ( fn() == 0 )\n",f);
+    fputs_trace("        if ( __cs_plugins[iplg].__coveragescanner_emptycov() == 0 )\n",f);
     fputs_trace("          return 0;\n",f);
     fputs_trace("      }\n",f);
     fputs_trace("    }\n",f);
@@ -597,10 +658,8 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
     fputs_trace("    int iplg;\n",f);
     fputs_trace("    for (iplg=0;iplg<__cs_nb_plugins;iplg++)\n",f);
     fputs_trace("    {\n",f);
-    fputs_trace("      typedef void (*fn_t)(void*);\n",f);
-    fputs_trace("      fn_t fn=(fn_t)__cs_symbol_address(__cs_plugins[iplg],\"__coveragescanner_savecov\");\n",f);
-    fputs_trace("      if (fn)\n",f);
-    fputs_trace("        fn(f);\n",f);
+    fputs_trace("      if (__cs_plugins[iplg].__coveragescanner_savecov)\n",f);
+    fputs_trace("        __cs_plugins[iplg].__coveragescanner_savecov(f);\n",f);
     fputs_trace("    }\n",f);
     fputs_trace("  }\n",f);
   }
@@ -651,6 +710,7 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   fputs_trace("      }\n",f);
   fputs_trace("    cs_fputs(\"\\n\",f);\n",f);
   fputs_trace("  }\n",f);
+  fputs_trace("  cs_fflush(f);\n",f);
   fputs_trace("}\n",f);
   fputs_trace("\n",f);
 
@@ -683,6 +743,7 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   fputs_trace("  }\n",f);
 
   fputs_trace("  cs_fputs(\"# Measurements\\n\",f);\n",f);
+  fputs_trace("  cs_fflush(f);\n",f);
   fputs_trace("  __coveragescanner_savecov(f);\n",f);
 
   /* saving the execution status */
@@ -753,10 +814,8 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
     fputs_trace("    int iplg;\n",f);
     fputs_trace("    for (iplg=0;iplg<__cs_nb_plugins;iplg++)\n",f);
     fputs_trace("    {\n",f);
-    fputs_trace("      typedef void (*fn_t)();\n",f);
-    fputs_trace("      fn_t fn=(fn_t)__cs_symbol_address(__cs_plugins[iplg],\"__coveragescanner_clear\");\n",f);
-    fputs_trace("      if (fn)\n",f);
-    fputs_trace("        fn();\n",f);
+    fputs_trace("      if (__cs_plugins[iplg].__coveragescanner_clear)\n",f);
+    fputs_trace("        __cs_plugins[iplg].__coveragescanner_clear();\n",f);
     fputs_trace("    }\n",f);
     fputs_trace("  }\n",f);
   }
@@ -927,10 +986,14 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
   fputs_trace("  __out_buffer[0]='\\0';\n",f);
   fputs_trace("  return __cs_fopenwrite(path);\n",f);
   fputs_trace("}\n",f);
-  fputs_trace("static int cs_fclose(void *fp)\n",f);
+  fputs_trace("static void cs_fflush(void *fp)\n",f);
   fputs_trace("{\n",f);
   fputs_trace("  if (__out_buffer[0]!='\\0') __cs_fputs(__out_buffer,fp);\n",f);
   fputs_trace("  __out_buffer[0]='\\0';\n",f);
+  fputs_trace("}\n",f);
+  fputs_trace("static int cs_fclose(void *fp)\n",f);
+  fputs_trace("{\n",f);
+  fputs_trace("  cs_fflush(fp);\n",f);
   fputs_trace("  return __cs_fclose(fp);\n",f);
   fputs_trace("}\n",f);
   fputs_trace("#ifdef __cplusplus\n",f);

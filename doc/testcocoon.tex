@@ -2275,6 +2275,10 @@ int main(argc,char *argv[])
     Once registered the code coverage of the library is saved transparently when calling \verb$__coveragescanner_save$
     from the main application.
 
+\subsection{\CppLibraryFunction{unregister\_library}} 
+{\itshape Syntax:} \lstinline$void __coveragescanner_unregister_library(const char *library_name)$ \bigskip \\
+    \verb$__coveragescanner_unregister_library$ cancel a register of a shared library loaded on demand.
+
 
 \subsection{\CppLibraryFunction{set\_custom\_io}}
 {\itshape Syntax:} \lstinline$void __coveragescanner_set_custom_io($\\

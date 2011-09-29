@@ -581,9 +581,13 @@ void Source::instrumentation_header_cplusplus(const char *module,const Expressio
   result.append(" __coveragescanner_teststate(const char *) ");
   result.append(compiler_wrapper.function_attribute());
   result.append(" ;\n");
-  if (!compiler_wrapper.pluginRegistrationFeature())
+  if (compiler_wrapper.pluginRegistrationFeature())
   {
-    result.append("void ");
+    result.append("int ");
+    result.append(" __coveragescanner_unregister_library(const char *) ");
+    result.append(compiler_wrapper.function_attribute());
+    result.append(" ;\n");
+    result.append("int ");
     result.append(" __coveragescanner_register_library(const char *) ");
     result.append(compiler_wrapper.function_attribute());
     result.append(" ;\n");
