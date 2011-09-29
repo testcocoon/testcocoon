@@ -21,6 +21,7 @@
 #include <stdio.h> 
 #include <windows.h> 
 #pragma comment(lib, "User32.lib")
+#include <io.h> 
 
 #define BUFSIZE 4096 
 
@@ -321,3 +322,10 @@ std::string System::appendExecSuffix(const std::string & exec_param)
       return exec_param;
 }
 
+bool System::fileTruncate(FILE *f ,_I64 s)
+{
+  int fno=fileno(f);
+  int ret = _chsize_s(fno,s);
+
+  return ret == 0;
+}
