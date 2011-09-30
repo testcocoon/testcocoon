@@ -523,9 +523,9 @@ void CppLibGen::save_source(const char *filename, const CompilerInterface &compi
     fputs_trace("          free(__cs_plugins);\n",f);
     fputs_trace("          __cs_plugins=NULL;\n",f);
     fputs_trace("        }\n",f);
-    fputs_trace("        return 1;\n",f);
+    fputs_trace("        return 0;\n",f);
     fputs_trace("      }\n",f);
-    fputs_trace("      return 0;\n",f);
+    fputs_trace("      return 1;\n",f);
     fputs_trace("    }\n",f);
     fputs_trace("  }\n",f);
     fputs_trace("  return -1;\n",f);

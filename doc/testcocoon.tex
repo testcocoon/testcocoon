@@ -2270,14 +2270,33 @@ int main(argc,char *argv[])
          \CppLibraryFunction{install} is not used.}
 
 \subsection{\CppLibraryFunction{register\_library}} 
-{\itshape Syntax:} \lstinline$void __coveragescanner_register_library(const char *library_name)$ \bigskip \\
+{\itshape Syntax:} \lstinline$int __coveragescanner_register_library(const char *library_name)$ \bigskip \\
     \verb$__coveragescanner_register_library$ register a shared library loaded on demand.
     Once registered the code coverage of the library is saved transparently when calling \verb$__coveragescanner_save$
     from the main application.
+    \bigskip \\
+    Returned values:
+    \begin{description}
+       \item[0] Success.
+       \item[-1] Error: library cannot be loaded.
+       \item[-2] Error: invalid library name.
+       \item[1] Success, but library was already registered. Use count is incremented.
+       \item[2] Success, but library is not instrumented.
+    \end{description}
+
 
 \subsection{\CppLibraryFunction{unregister\_library}} 
-{\itshape Syntax:} \lstinline$void __coveragescanner_unregister_library(const char *library_name)$ \bigskip \\
+{\itshape Syntax:} \lstinline$int __coveragescanner_unregister_library(const char *library_name)$ \bigskip \\
     \verb$__coveragescanner_unregister_library$ cancel a register of a shared library loaded on demand.
+    \bigskip \\
+    Returned values:
+    \begin{description}
+       \item[0] Success.
+       \item[-1] Error: library not registered.
+       \item[-2] Error: invalid library name.
+       \item[1] Success, but library is not unregistered because the use count is not null.
+       \item[2] Success, but library is not instrumented.
+    \end{description}
 
 
 \subsection{\CppLibraryFunction{set\_custom\_io}}

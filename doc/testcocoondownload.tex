@@ -44,6 +44,7 @@ Changes between \TestCocoon\ v1.5 and v1.6:
     \item \BugFix Anonymous local struct are now supported.
     \item \BugFix Instrumentation of \verb$for$ statement in the form: \verb$for (.....;void *p=....;....)$
     \item \NewFeature If no code a executed, a coverage report will not saved.
+    \item \NewFeature new CoverageScanner API functions: \verb$__coveragescanner_register_library$ and \verb$__coveragescanner_unregister_library$.
     \item \BugFix \verb$try$/\verb$catch$ of an \verb$if$ statement was not instrumented correctly.
     \item \BugFix \CMDoption{qt4} does no more instrument:
                   \begin{itemize}
