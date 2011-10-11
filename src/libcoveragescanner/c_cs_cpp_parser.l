@@ -168,6 +168,7 @@ static inline int return_a_token() { return !(ignore_file || ignore_define) ; }
 <PARSE_C,PARSE_CPP,PARSE_CS>"--"			{ process_token(yytext,yyleng,&yylval,&yylloc); RETURN_TOKEN(_SOMETHING_); }
 <PARSE_C,PARSE_CPP,PARSE_CS>[+\-^/%]			{ process_token(yytext,yyleng,&yylval,&yylloc); RETURN_TOKEN(_SOME_BINARY_OPERATOR_); }
 <PARSE_C,PARSE_CPP,PARSE_CS>{UTF8_BYTE_ORDER_MARK}     { }
+<PARSE_C,PARSE_CPP>"__extension__"          { process_token(yytext,yyleng,&yylval,&yylloc); keepStartPosition(); }
 <PARSE_C,PARSE_CPP,PARSE_CS>{identifier}          { process_token(yytext,yyleng,&yylval,&yylloc); int token=token_for(yytext,parse_language); if (token!=_TOKEN_TO_IGNORE_) { RETURN_TOKEN(token); } }
 <PARSE_C,PARSE_CPP,PARSE_CS>{at_identifier}       { process_token(yytext,yyleng,&yylval,&yylloc); RETURN_TOKEN(_IDENTIFIER_); }
 <PARSE_C,PARSE_CPP,PARSE_CS>{SP}+		{ process_spaces(yytext,yyleng,&yylval,&yylloc); }
@@ -188,7 +189,6 @@ static struct name_value_c_cpp const keywords_c_cpp [] = {
   {"__asm"         , _ASM_             , _ASM_             , _IDENTIFIER_                     } ,
   {"__asm__"       , _ASM_             , _ASM_             , _IDENTIFIER_                     } ,
   {"__except"      , _CATCH_           , _IDENTIFIER_      , _IDENTIFIER_                     } ,
-  {"__extension__" , _TOKEN_TO_IGNORE_ , _TOKEN_TO_IGNORE_ , _IDENTIFIER_                     } ,
   {"__finally"     , _FINALLY_         , _IDENTIFIER_      , _IDENTIFIER_                     } ,
   {"__stdcall"     , _TOKEN_TO_IGNORE_ , _TOKEN_TO_IGNORE_ , _IDENTIFIER_                     } ,
   {"__try"         , _TRY_             , _IDENTIFIER_      , _IDENTIFIER_                     } ,

@@ -54,6 +54,7 @@ Functions *parser_functions_p=NULL;
 Expressions *parser_expressions_p=NULL;
 LinePos *parser_line_pos_p=NULL;
 
+static bool keep_start_position=false;
 static Scope current_scope;
 static int (*input)()=NULL;
 const char *filename;
@@ -63,6 +64,11 @@ long line;
 long column;
 long start_column = FIRST_COLUMN_ID ;
 long start_line_absolute = 1;
+
+void keepStartPosition()
+{
+  keep_start_position=true;
+}
 
 void filenames_abs_pos(long line_abs,long &line_orig,long &line_rel,const char *&file)
 {
@@ -998,19 +1004,25 @@ void init_parser_lex(int (*input_p)(),int size,const char *filename_orig)
   byte_pos = 0;
   start_column = FIRST_COLUMN_ID ;
   start_line_absolute = 1;
+  keep_start_position = false;
 }
 
 /*!
  * \retval Pointer pointer into the source of the token
  */
 static const char* adjust_position(const char *yytext, /*!< Test to be appended */
-                             bool ignore_text /*!< Test is not added in the source code (for intern CoverageScanner pragma) */)
+                             bool ignore_text, /*!< Test is not added in the source code (for intern CoverageScanner pragma) */
+                             bool keep_start_position
+                             )
 {
   FUNCTION_TRACE;
   int i;
 
-  start_line_absolute=line_absolute;
-  start_column=column;
+  if (!keep_start_position)
+  {
+    start_line_absolute=line_absolute;
+    start_column=column;
+  }
   for (i = 0; yytext[i] != '\0'; i++)
   {
     byte_pos++;
@@ -1103,7 +1115,7 @@ void extract_name_preprocessor_line(const char *yytext,int yyleng,void * /*yylva
   }
 
   line=cLin-1;
-  adjust_position (yytext,false);
+  adjust_position (yytext,false,false);
   long line_orig=line;
   filename = filenames_append(name,line_orig,line_absolute);
 }
@@ -1205,7 +1217,7 @@ void process_pragma(pragma_t type,bool ignore_text,const char *yytext,int /*yyle
       push_instrumentation_option(line,option);
       break;
   }
-  adjust_position(yytext,ignore_text);
+  adjust_position(yytext,ignore_text,false);
 }
 
 
@@ -1241,7 +1253,7 @@ void skip_attribute(char *yytext,int yyleng,void * /*yylval_p*/,YYLTYPE * yylloc
   if (strstr(text.c_str(),"CoverageScanner")) 
     process_pragma_coveragescanner(true,text.c_str(),0,NULL,yylloc_p);
   else
-    adjust_position(text.c_str(),false);
+    adjust_position(text.c_str(),false,false);
 }
 
   
@@ -1268,7 +1280,8 @@ const char* process_token(const char *yytext,int /*yyleng*/,void *yylval_p,YYLTY
 {
   FUNCTION_TRACE;
   const char *yytext_str;
-  yytext_str=adjust_position(yytext,false);
+  yytext_str=adjust_position(yytext,false,keep_start_position);
+  keep_start_position = false;
   ASSERT(yytext_str);
 
  

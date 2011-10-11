@@ -173,6 +173,7 @@ Expression * record_expression_condition_false_only(const void * instruction,int
 Expression * record_expression_if_then_else(const void * instruction,const void *patch1,const void *patch2,int level,Expression* expression_id1);
 void skip_area(const void * area);
 void yyprint_token(FILE *f,const char  *); /*!< used to print a token from the bison output */
+void keepStartPosition();
 
 void pushCurrentScope(const Scope *);
 void popCurrentScope();
