@@ -1085,7 +1085,7 @@ std::string CompilerWrapper::replace_basename_src(const std::string &var) const
   char *basename_src=extractBasename();
   if (basename_src)
   {
-    std::string tmp=replace_var(var,"$BASENAME_SRC$",System::quoteArgument(basename_src).c_str(),replace_performed);
+    std::string tmp=replace_var(var,"$BASENAME_SRC$",basename_src,replace_performed);
     return tmp;
   }
   return var;
