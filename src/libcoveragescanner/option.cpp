@@ -472,6 +472,9 @@ bool Option::processArgs (const Argv &args,Argv &processed_args,const CompilerIn
       filterFunction.appendDefault(true,FilterFunctions::FUNCTION_REGULAR_EXPRESSION,"^qt_plugin_query_verification_data$");
       filterFunction.appendDefault(true,FilterFunctions::FUNCTION_REGULAR_EXPRESSION,"^qt_plugin_instance$");
       filterFunction.appendDefault(true,FilterFunctions::FUNCTION_REGULAR_EXPRESSION,"^QMetaTypeId::qt_metatype_id$");
+      filterFunction.appendDefault(true,FilterFunctions::FUNCTION_REGULAR_EXPRESSION,"^qobject_interface_iid$");
+      filterFunction.appendDefault(true,FilterFunctions::FUNCTION_REGULAR_EXPRESSION,"^qobject_cast$");
+      filterFunction.appendDefault(true,FilterFunctions::FUNCTION_REGULAR_EXPRESSION,"^QTypeInfo::name$");
 
       suppress_arg(processed_args,i);
       modifyed=true;
