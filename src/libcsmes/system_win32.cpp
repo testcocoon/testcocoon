@@ -107,7 +107,7 @@ HANDLE System::PrepAndLaunchRedirectedChild(
   // redirect.c launch redirect from a command line to prevent location
   // confusion.
   if (!CreateProcess(file_abs_w,cmdBuffer_w,NULL,NULL,TRUE,
-        CREATE_NO_WINDOW, // was:CREATE_NEW_CONSOLE
+        0,
         NULL,NULL,&si,&pi))
   {
     ERROR2("CreateProcess errno:%i\n",GetLastError());
