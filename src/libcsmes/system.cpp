@@ -198,13 +198,13 @@ int System::exec(const char *command,const char *stdout_filename,const char *inp
 
     for (;;)
     {
-      int nb_read=sys.readStdout(buffer,sizeof(buffer));
+      size_t nb_read=sys.readStdout(buffer,sizeof(buffer));
       if (nb_read!=0)
       {
-        int nb_written=0;
+        size_t nb_written=0;
         do
         {
-          int nb_wr=fwrite(buffer,1,nb_read,output_stream);
+          size_t nb_wr=fwrite(buffer,1,nb_read,output_stream);
           nb_written+=nb_wr;
         } while (nb_written!=nb_read);
       }
@@ -215,6 +215,7 @@ int System::exec(const char *command,const char *stdout_filename,const char *inp
   }
   
   int ret = sys.exitValue();
+
   DEBUG2("end system call, ret=%i\n",ret);
   return ret;
 }
@@ -228,41 +229,6 @@ std::string System::quoteArgument(const std::string &str)
   FREE(s);
   return r;
 }
-
-char * System::quote_argument(const char*str)
-{
-  FUNCTION_TRACE;
-  char *out;
-
-  if (str==NULL)
-    return NULL;
-
-  if (needQuotes(str))
-  {
-    out=(char*)MALLOC(strlen(str)*2+3);
-    char *c_out=out;
-    *c_out='"'; c_out++;
-    for (const char *c_str=str;*c_str;c_str++)
-    {
-      switch(*c_str)
-      {
-        case '\\':
-        case '"':
-          *c_out='\\';
-          c_out++; 
-          break;
-      }
-      *c_out=*c_str;
-      c_out++;
-    }
-    *c_out='"'; c_out++;
-    *c_out='\0';
-  }
-  else
-    out=STRDUP(str);
-  return out;
-}
-
 
 bool System::needQuotes(const char *str)
 {
@@ -289,42 +255,6 @@ void System::stripQuotes(std::string &str)
   strip_quotes(s);
   str=std::string(s);
   FREE(s);
-}
-
-void System::strip_quotes(char *
-#if defined(OS_WIN32)
-    arg
-#endif
-    )
-{
-  FUNCTION_TRACE;
-#if defined(OS_WIN32)
-  int id=0;
-  bool escape=false;
-  while (arg[id]!='\0')
-  {
-    if (arg[id]=='"')
-    { /* stripping quotes */
-      char *tmp=&arg[id];
-      while (*tmp) 
-      {
-        *tmp=*(tmp+1);
-        tmp++;
-      }
-    }
-    else
-      id++;
-    if (arg[id]=='\\')
-    {
-      if (escape)
-        escape=false;
-      else
-        escape=true;
-    }
-    else
-      escape=false;
-  }
-#endif
 }
 
 bool System::rename_file ( const char * oldname , const char * newname )
@@ -358,7 +288,7 @@ bool System::delete_file(const char * name)
 
 std::string System::suppressExecSuffix(const std::string &f)
 {
-    int pos=f.length()-4;
+    size_t pos=f.length()-4;
     if (pos>0 && strcasecmp(&(f.c_str())[pos],".exe")==0)
     {
       return f.substr(0,pos);

@@ -33,8 +33,8 @@ class LIBCSMES_API System
   public:
     static int exec(const char *command,const char *stdout_filename,const char *input_txt=NULL);
     bool call(const char *command,bool capture_stdout);
-    int readStdout(char *buffer,int buffer_sz);
-    int writeStdin(const char *buffer,int buffer_sz);
+    int readStdout(char *buffer,size_t buffer_sz);
+    int writeStdin(const char *buffer,size_t buffer_sz);
     int exitValue();
     static void command2argv(const char *command,char **argv_p[]);
     static void strip_quotes(char *);

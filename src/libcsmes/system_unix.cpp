@@ -89,11 +89,11 @@ bool System::call(const char *command,bool capt_stdout)
   return false;
 }
 
-int System::writeStdin(const char *buffer,int buffer_sz)
+int System::writeStdin(const char *buffer,size_t buffer_sz)
 {
   FUNCTION_TRACE;
   ASSERT(capture_stdout);
-  int nb_written=0;
+  size_t nb_written=0;
   do
   {
     nb_written+=fwrite(buffer+nb_written,1,buffer_sz-nb_written,child_stream_stdin);
@@ -103,11 +103,11 @@ int System::writeStdin(const char *buffer,int buffer_sz)
   return nb_written;
 }
 
-int System::readStdout(char *buffer,int buffer_sz)
+int System::readStdout(char *buffer,size_t buffer_sz)
 {
   FUNCTION_TRACE;
   ASSERT(capture_stdout);
-  int nb_read=0;
+  size_t nb_read=0;
   do
   {
     if (feof(child_stream_stdout))
@@ -128,6 +128,9 @@ int System::exitValue()
   }
   /* Wait for the child process to finish.  */
   waitpid (child_pid, &status, 0);
+  status = (status >> 8) & 0xFF;
+  if (status&0x80)
+    status = - 256 + (status&0xFF);
   return status;
 }
 
@@ -152,3 +155,43 @@ bool System::fileTruncate(FILE *f ,_I64 s)
 
   return ret == 0;
 }
+
+char * System::quote_argument(const char*str)
+{
+  FUNCTION_TRACE;
+  char *out;
+
+  if (str==NULL)
+    return NULL;
+
+  if (needQuotes(str))
+  {
+    out=(char*)MALLOC(strlen(str)*2+3);
+    char *c_out=out;
+    *c_out='"'; c_out++;
+    for (const char *c_str=str;*c_str;c_str++)
+    {
+      switch(*c_str)
+      {
+        case '\\':
+        case '"':
+          *c_out='\\';
+          c_out++; 
+          break;
+      }
+      *c_out=*c_str;
+      c_out++;
+    }
+    *c_out='"'; c_out++;
+    *c_out='\0';
+    DEBUG3("Quoting argument '%s'->'%s'\n",str,out);
+  }
+  else
+    out=STRDUP(str);
+  return out;
+}
+
+void System::strip_quotes(char *)
+{
+}
+

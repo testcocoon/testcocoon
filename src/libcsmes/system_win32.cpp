@@ -20,6 +20,7 @@
 #include "libcsmespdef.h"
 #include <stdio.h> 
 #include <windows.h> 
+#include <io.h> 
 #pragma comment(lib, "User32.lib")
 #include <io.h> 
 
@@ -62,20 +63,20 @@ HANDLE System::PrepAndLaunchRedirectedChild(
     memcpy(file,command,pos);
   file[pos]='\0';
   const char*extension=".exe";
-  int file_lg=strlen(file);
+  size_t file_lg=strlen(file);
   if (file_lg<4 || ! (strcmp(extension,&file[file_lg-4])==0) )
     strcat(file,extension);
 
   wchar_t actDirBuffer[MAX_PATH];
   GetCurrentDirectory(MAX_PATH, actDirBuffer);
-  int file_sz=strlen(file);
+  size_t file_sz=strlen(file);
   wchar_t *file_w=(wchar_t*)MALLOC((file_sz+1)*sizeof(wchar_t));
   wchar_t file_abs_w[MAX_PATH+4];
   wchar_t *file_name_w;
   wchar_t extension_w[50];;
   mbstowcs(extension_w,extension,sizeof(extension));
   mbstowcs(file_w,file,file_sz+1);
-  int cmdBuffer_sz=strlen(command);
+  size_t cmdBuffer_sz=strlen(command);
   wchar_t *cmdBuffer_w=(wchar_t*)MALLOC((cmdBuffer_sz+1)*sizeof(wchar_t));
   mbstowcs(cmdBuffer_w,command,cmdBuffer_sz+1);
   if (SearchPath(NULL,file_w,extension_w,MAX_PATH,file_abs_w,&file_name_w)==0)
@@ -106,7 +107,7 @@ HANDLE System::PrepAndLaunchRedirectedChild(
   // redirect.c launch redirect from a command line to prevent location
   // confusion.
   if (!CreateProcess(file_abs_w,cmdBuffer_w,NULL,NULL,TRUE,
-        0, // was:CREATE_NEW_CONSOLE
+        CREATE_NO_WINDOW, // was:CREATE_NEW_CONSOLE
         NULL,NULL,&si,&pi))
   {
     ERROR2("CreateProcess errno:%i\n",GetLastError());
@@ -248,35 +249,35 @@ static int stripChars(char *buffer,int buffer_sz)
   return new_buffer_sz;
 }
 
-int System::writeStdin(const char *buffer,int buffer_sz)
+int System::writeStdin(const char *buffer,size_t buffer_sz)
 {
   FUNCTION_TRACE;
   ASSERT(capture_stdout);
-  int nb_written=0;
+  size_t nb_written=0;
   do
   {
     DWORD nb_wr=0;
-    if (!WriteFile(hInputWrite,buffer+nb_written,buffer_sz-nb_written,&nb_wr,NULL))
-      return nb_written;
+    if (!WriteFile(hInputWrite,buffer+nb_written, static_cast<DWORD>(buffer_sz-nb_written),&nb_wr,NULL))
+      return (int)nb_written;
     nb_written+=nb_wr;
   } 
   while (nb_written!=buffer_sz);
-  return nb_written;
+  return (int)nb_written;
 }
 
-int System::readStdout(char *buffer,int buffer_sz)
+int System::readStdout(char *buffer,size_t buffer_sz)
 {
   FUNCTION_TRACE;
   ASSERT(capture_stdout);
   DWORD dwRead;
   do
   {
-    if( !ReadFile( hOutputRead, buffer, buffer_sz, &dwRead, NULL) )
+    if( !ReadFile( hOutputRead, buffer, static_cast<DWORD>(buffer_sz), &dwRead, NULL) )
       return 0;
   }
   while (dwRead==0);
   //dwRead=stripChars(buffer,dwRead);
-  return dwRead;
+  return static_cast<size_t>(dwRead);
 }
 
 int System::exitValue()
@@ -299,6 +300,7 @@ int System::exitValue()
   GetExitCodeProcess(pi.hProcess,&ret_value);
   CloseHandle(pi.hProcess);
   CloseHandle(pi.hThread);
+
   return ret_value;
 }
 
@@ -313,7 +315,7 @@ int System::getProcessID()
 std::string System::appendExecSuffix(const std::string & exec_param)
 {
   FUNCTION_TRACE;
-	int lg_exec_param=exec_param.length();
+	size_t lg_exec_param=exec_param.length();
 	if (lg_exec_param<4 || strcasecmp(&(exec_param.c_str())[lg_exec_param-4],".exe")!=0)
 	{ // append .exe extension
       return exec_param+".exe";
@@ -329,3 +331,59 @@ bool System::fileTruncate(FILE *f ,_I64 s)
 
   return ret == 0;
 }
+
+char * System::quote_argument(const char*str)
+{
+  FUNCTION_TRACE;
+  char *out;
+
+  if (str==NULL)
+    return NULL;
+
+  if (needQuotes(str))
+  {
+    out=(char*)MALLOC(strlen(str)+3);
+    strcpy(out,"\"");
+    strcat(out,str);
+    strcat(out,"\"");
+    DEBUG3("Quoting argument '%s'->'%s'\n",str,out);
+  }
+  else
+    out=STRDUP(str);
+  return out;
+}
+
+
+void System::strip_quotes(char * arg)
+{
+  FUNCTION_TRACE;
+  int id=0;
+  bool escape=false;
+  while (arg[id]!='\0')
+  {
+      bool have_stripped = false;
+      if (arg[id]=='"' && !escape)
+      { /* stripping quotes */
+          char *tmp=&arg[id];
+          while (*tmp) 
+          {
+              *tmp=*(tmp+1);
+              tmp++;
+          }
+          have_stripped=true;
+      }
+
+      if (arg[id]=='\\')
+      {
+          if (escape)
+              escape=false;
+          else
+              escape=true;
+      }
+      else
+          escape=false;
+      if (!have_stripped)
+          id++;
+  }
+}
+
