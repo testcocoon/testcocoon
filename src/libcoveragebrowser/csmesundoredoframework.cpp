@@ -291,7 +291,6 @@ bool CSMesUndoRedoFramework::loadCSExe(QIODevice &data,const ExecutionName &name
 
     title += " ("+short_status+")";
     endUndoGroup(title);
-    unlock_csexe(data);
   }
   else
   {
@@ -299,6 +298,7 @@ bool CSMesUndoRedoFramework::loadCSExe(QIODevice &data,const ExecutionName &name
     QString err;
     ret = CSMes::loadCSExe(data,name,p,default_execution_status,new_executions,info,short_status,err,NULL,progress);
   }
+  unlock_csexe(data);
 
   return ret;
 }
